@@ -4311,7 +4311,7 @@ namespace TCEE
                 if(lbGroups.SelectedIndex > -1)
                 {
                     string groupName = "";
-                    if(PopUpForm.InputBox("Rename group", "Enter a name for the group. Only a-z A-Z 0-9 space - and _ are allowed.", ref groupName) == DialogResult.OK)
+                    if(PopUpForm.InputBox("Rename group", "Enter a name for the group. Only a-z A-Z 0-9 space + - and _ are allowed.", ref groupName) == DialogResult.OK)
                     {
                         if(!string.IsNullOrWhiteSpace(groupName))
                         {
@@ -4776,7 +4776,7 @@ namespace TCEE
                                                         sErrorMessage2 += "Could not select biome \"" + biomeNames[k].Trim() + "\" for property \"" + prop.PropertyName + "\" in biome group \"" + biomeGroup.Name + "\".\r\n";
                                                     }
                                                 } else {
-                                                    if (!newBiomeNames.Contains((string)biomeNames[k].Trim() + ","))
+                                                    if (newBiomeNames != (string)biomeNames[k].Trim() + "," && !newBiomeNames.Contains("," + (string)biomeNames[k].Trim() + ","))
                                                     {
                                                         newBiomeNames += (string)biomeNames[k].Trim() + ",";
                                                     }
@@ -5731,7 +5731,7 @@ namespace TCEE
                     form.Text = "Create group";
 
                     Label label = new Label();
-                    label.Text = "Enter a name for the group. Only a-z A-Z 0-9 space - and _ are allowed.";
+                    label.Text = "Enter a name for the group. Only a-z A-Z 0-9 space + - and _ are allowed.";
                     label.SetBounds(9, 20, 372, 13);
 
                     TextBox textBox = new TextBox();
@@ -5768,7 +5768,7 @@ namespace TCEE
                                     if(listBox.SelectedIndices.Count > 1)
                                     {
                                         //if (System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                                        if (System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_ -]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                                        if (System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_ -+]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                                         {
                                             PopupFormSelectedItem = textBox.Text;
                                             form.DialogResult = DialogResult.OK;
@@ -5867,7 +5867,7 @@ namespace TCEE
                         {
                             if (!string.IsNullOrWhiteSpace(textBox.Text))
                             {
-                                if (!allowBracesCommasDotsColons ? System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_ -]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase) : System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_(),.: -]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                                if (!allowBracesCommasDotsColons ? System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_ -+]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase) : System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_(),.: -]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                                 {
                                     PopupFormSelectedItem = textBox.Text;
                                     form.DialogResult = DialogResult.OK;
