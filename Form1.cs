@@ -426,7 +426,7 @@ namespace TCEE
                             btMergeWithDefaults.Name = "Merge";
                             btMergeWithDefaults.CheckedChanged += btOverrideAllWorld_CheckedChanged;
                             pCheckBoxes.Controls.Add(btMergeWithDefaults);
-                            ToolTip1.SetToolTip(btMergeWithDefaults, "Adds selected values to the default values. Some properties must be unique such as Ore(GOLD_ORE, Vein(GOLD_ORE and UnderWaterOre(GOLD_ORE and will replace existing values. Unique properties are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nProperty name and * must be unique.\r\n\r\nUpdate: An exception is made for Vein(), Ore() and UnderWaterOre(), they only have to be unique when used with ores (IRON_ORE, GOLD_ORE etc), if used with non-ore materials they can appear multiple times and will not override other settings.\r\n\r\nUnique properties and parameters can be configured in the VersionConfig.xml.");
+                            ToolTip1.SetToolTip(btMergeWithDefaults, "Instead of overriding previously defined values this setting makes the resourcequeue add its values to the default values\r\nand the values defined in biome groups that are higher in the biome groups list.\r\n\r\nSome property and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE settings. Unique properties are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nProperty name and * must be unique.\r\n\r\nProperties that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique properties, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\n\r\nUpdate: It is now allowed to add multiple resources of the same type to this list even if they are configured\r\nas \"must be unique\", a popup will ask if you want to override or keep the existing items. This does not\r\naffect the merging behaviours between biome groups / default values.");
 
                             CheckBox btIgnoreParentMerge = new CheckBox();
                             btIgnoreParentMerge.Anchor = AnchorStyles.Left | AnchorStyles.Top;
@@ -529,8 +529,7 @@ namespace TCEE
                             btMergeWithDefaults2.Name = "Merge";
                             btMergeWithDefaults2.CheckedChanged += btOverrideAllWorld_CheckedChanged;
                             pCheckBoxes2.Controls.Add(btMergeWithDefaults2);
-                            ToolTip1.SetToolTip(btMergeWithDefaults2, "Adds selected values to the default values. Some properties must be unique such as Ore(GOLD_ORE, Vein(GOLD_ORE and UnderWaterOre(GOLD_ORE and will replace existing values. Unique properties are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nProperty name and * must be unique.\r\n\r\nUpdate: An exception is made for Vein(), Ore() and UnderWaterOre(), they only have to be unique when used with ores (IRON_ORE, GOLD_ORE etc), if used with non-ore materials they can appear multiple times and will not override other settings.\r\n\r\nUnique properties and parameters can be configured in the VersionConfig.xml.");
-
+                            ToolTip1.SetToolTip(btMergeWithDefaults2, "Instead of overriding previously defined values this setting makes the resourcequeue add its values to the default values\r\nand the values defined in biome groups that are higher in the biome groups list.\r\n\r\nSome property and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE settings. Unique properties are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nProperty name and * must be unique.\r\n\r\nProperties that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique properties, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\n\r\nUpdate: It is now allowed to add multiple resources of the same type to this list even if they are configured\r\nas \"must be unique\", a popup will ask if you want to override or keep the existing items. This does not\r\naffect the merging behaviours between biome groups / default values.");
 
                             CheckBox btIgnoreParentMerge2 = new CheckBox();
                             btIgnoreParentMerge2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
@@ -699,7 +698,7 @@ namespace TCEE
                         btMergeWithDefaults.Name = "Merge";
                         btMergeWithDefaults.CheckedChanged += btOverrideAllBiome_CheckedChanged;
                         pCheckBoxes.Controls.Add(btMergeWithDefaults);
-                        ToolTip1.SetToolTip(btMergeWithDefaults, "Adds selected values to the default values. Some properties must be unique such as Ore(GOLD_ORE, Vein(GOLD_ORE and UnderWaterOre(GOLD_ORE and will replace existing values. Unique properties are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nProperty name and * must be unique.\r\n\r\nUpdate: An exception is made for Vein(), Ore() and UnderWaterOre(), they only have to be unique when used with ores (IRON_ORE, GOLD_ORE etc), if used with non-ore materials they can appear multiple times and will not override other settings.\r\n\r\nUnique properties and parameters can be configured in the VersionConfig.xml.");
+                        ToolTip1.SetToolTip(btMergeWithDefaults, "Instead of overriding previously defined values this setting makes the resourcequeue add its values to the default values\r\nand the values defined in biome groups that are higher in the biome groups list.\r\n\r\nSome property and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE settings. Unique properties are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nProperty name and * must be unique.\r\n\r\nProperties that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique properties, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\n\r\nUpdate: It is now allowed to add multiple resources of the same type to this list even if they are configured\r\nas \"must be unique\", a popup will ask if you want to override or keep the existing items. This does not\r\naffect the merging behaviours between biome groups / default values.");
 
                         CheckBox btIgnoreParentMerge = new CheckBox();
                         btIgnoreParentMerge.Anchor = AnchorStyles.Left | AnchorStyles.Top;
@@ -800,7 +799,7 @@ namespace TCEE
                                 btMergeWithDefaults.Checked = true;
                                 btMergeWithDefaults.CheckedChanged += btOverrideAllBiome_CheckedChanged;
                                 pCheckBoxes.Controls.Add(btMergeWithDefaults);
-                                ToolTip1.SetToolTip(btMergeWithDefaults, "Adds selected values to the default values. Some properties must be unique such as Ore(GOLD_ORE, Vein(GOLD_ORE and UnderWaterOre(GOLD_ORE and will replace existing values. Unique properties are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nProperty name and * must be unique.\r\n\r\nUpdate: An exception is made for Vein(), Ore() and UnderWaterOre(), they only have to be unique when used with ores (IRON_ORE, GOLD_ORE etc), if used with non-ore materials they can appear multiple times and will not override other settings.\r\n\r\nUnique properties and parameters can be configured in the VersionConfig.xml.");
+                                ToolTip1.SetToolTip(btMergeWithDefaults, "Instead of overriding previously defined values this setting makes the resourcequeue add its values to the default values\r\nand the values defined in biome groups that are higher in the biome groups list.\r\n\r\nSome property and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE settings. Unique properties are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nProperty name and * must be unique.\r\n\r\nProperties that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique properties, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\n\r\nUpdate: It is now allowed to add multiple resources of the same type to this list even if they are configured\r\nas \"must be unique\", a popup will ask if you want to override or keep the existing items. This does not\r\naffect the merging behaviours between biome groups / default values.");
 
                                 CheckBox btIgnoreParentMerge = new CheckBox();
                                 btIgnoreParentMerge.Anchor = AnchorStyles.Left | AnchorStyles.Top;
@@ -1785,10 +1784,19 @@ namespace TCEE
 
             private void AddToResourceQueueWorld(TCProperty property, string propertyValue, bool showDuplicateWarnings = true)
             {
-                if (propertyValue == null || string.IsNullOrEmpty(propertyValue.Trim()))
+                if (propertyValue == null || string.IsNullOrEmpty(propertyValue.Trim().Replace("\r", "").Replace("\n", "")))
                 {
                     return;
                 }
+
+                if (!copyPasting)
+                {
+                    addingMultipleResourcesXToAll = DialogResult.Abort;
+                    addingMultipleResourcesXToAll2 = DialogResult.Abort;
+                    addingMultipleResourcesXToAll3 = DialogResult.Abort;
+                }
+
+                propertyValue = propertyValue.Replace("\r", "").Replace("\n", "");
 
                 ListBox lb = ((ListBox)WorldSettingsInputs[property].Item1);
                 List<string> newPropertyValue = new List<string>();
@@ -1798,29 +1806,317 @@ namespace TCEE
                 }
 
                 bool bAllowed = false;
-                if (newPropertyValue != null)
+                bool bOverrideExisting = false;
+                ResourceQueueItem selectedOption = null;
+                foreach (ResourceQueueItem option in VersionConfig.ResourceQueueOptions)
                 {
-                    bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)propertyValue) || (propertyValue.StartsWith("CustomObject(") && MessageBox.Show("An item with the value \"" + propertyValue + "\" already exists, are you sure you want to add another?", "Allow duplicate?", MessageBoxButtons.OKCancel) == DialogResult.OK);
-                    if (duplicatePermission)
+                    if (propertyValue.StartsWith(option.Name))
                     {
-                        if (property.Name == "Mob spawning")
+                        selectedOption = option;
+                        break;
+                    }
+                }
+
+                if (newPropertyValue != null && selectedOption != null)
+                {
+                    DialogResult permissionGiven = DialogResult.Abort;
+                    bool bFound = false;
+                    if ((!selectedOption.HasUniqueParameter && newPropertyValue.Any(a => a.StartsWith(selectedOption.Name)) || (selectedOption.HasUniqueParameter && newPropertyValue.Any(a => (string)a == (string)propertyValue))))
+                    {
+                        if (selectedOption.HasUniqueParameter && !newPropertyValue.Any(a => (string)a == (string)propertyValue))
+                        {
+                            if (addingMultipleResourcesXToAll == DialogResult.Abort)
+                            {
+                                string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                            }
+                            permissionGiven = addingMultipleResourcesXToAll;
+                            if (permissionGiven == DialogResult.No)
+                            {
+                                bOverrideExisting = true;
+                            }
+                            if (permissionGiven == DialogResult.Cancel)
+                            {
+                                return;
+                            }
+                        } else {
+                            if (newPropertyValue.Any(a => (string)a == (string)propertyValue))
+                            {
+                                if (addingMultipleResourcesXToAll2 == DialogResult.Abort)
+                                {
+                                    addingMultipleResourcesXToAll2 = MessageBox.Show("Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Add exact duplicate?", MessageBoxButtons.YesNo);
+                                }
+                                permissionGiven = addingMultipleResourcesXToAll2;
+                            } else {
+                                if (addingMultipleResourcesXToAll3 == DialogResult.Abort)
+                                {
+                                    addingMultipleResourcesXToAll3 = MessageBox.Show("One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep same resource with different parameters?", MessageBoxButtons.YesNoCancel);
+                                }
+                                permissionGiven = addingMultipleResourcesXToAll3;
+                                if (permissionGiven == DialogResult.No)
+                                {
+                                    bOverrideExisting = true;
+                                }
+                                if (permissionGiven == DialogResult.Cancel)
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                        if (permissionGiven == DialogResult.Yes)
                         {
                             bAllowed = true;
-                        } else {
-                            if (propertyValue.Contains('(') && propertyValue.Contains(')'))
+                        }
+                        bFound = true;
+                    }
+                    if (!bFound || bOverrideExisting)
+                    {
+                        if (propertyValue.Contains('(') && propertyValue.Contains(')'))
+                        {
+                            if (selectedOption.IsUnique)
                             {
-                                bool bFound3 = false;
-                                ResourceQueueItem selectedOption = null;
-                                foreach (ResourceQueueItem option in VersionConfig.ResourceQueueOptions)
+                                List<string> possibleDuplicates = new List<string>();
+                                foreach (string value2 in newPropertyValue)
                                 {
-                                    if (propertyValue.StartsWith(option.Name))
+                                    if (value2.StartsWith(selectedOption.Name))
                                     {
-                                        bFound3 = true;
-                                        selectedOption = option;
-                                        break;
+                                        if (!selectedOption.HasUniqueParameter && bOverrideExisting) // Is duplicate tag, but not necessarily same params
+                                        {
+                                            //Delete old add new
+                                            DeleteResourceQueueItemWorld(property, value2);
+                                        } else {
+                                            possibleDuplicates.Add(value2);
+                                        }
                                     }
                                 }
-                                if (bFound3)
+                                if (possibleDuplicates.Any())
+                                {
+                                    string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                    foreach (string existingValue in possibleDuplicates)
+                                    {
+                                        string[] existingParameters = existingValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                        if (existingParameters.Length > selectedOption.UniqueParameterIndex && newParameters.Length > selectedOption.UniqueParameterIndex)
+                                        {
+                                            bool bFound4 = false;
+                                            if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
+                                            {
+                                                if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(newParameters[selectedOption.UniqueParameterIndex].ToLower().Trim())))
+                                                {
+                                                    if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
+                                                    {
+                                                        bFound4 = true;
+                                                    }
+                                                }
+                                            } else {
+                                                if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
+                                                {
+                                                    bFound4 = true;
+                                                }
+                                            }
+                                            if (bFound4)
+                                            {
+                                                //Delete old add new
+                                                if (permissionGiven == DialogResult.Abort)
+                                                {
+                                                    if (addingMultipleResourcesXToAll == DialogResult.Abort)
+                                                    {
+                                                        addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                                    }
+                                                    permissionGiven = addingMultipleResourcesXToAll;
+                                                }
+                                                if (permissionGiven == DialogResult.No)
+                                                {
+                                                    DeleteResourceQueueItemWorld(property, existingValue);
+                                                }
+                                                if (permissionGiven == DialogResult.Cancel)
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (newParameters.Length > selectedOption.UniqueParameterIndex)
+                                    {
+                                        bAllowed = true;
+                                    } else {
+                                        MessageBox.Show("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
+                                    }
+                                } else {
+                                    bAllowed = true;
+                                }
+                            } else {
+                                bAllowed = true;
+                            }
+                        } else {
+                            string[] propertyNames = VersionConfig.ResourceQueueOptions.Select(a => a.Name).ToArray();
+                            string sPropertyNames = "";
+                            foreach (string a in propertyNames)
+                            {
+                                sPropertyNames += a + "\r\n";
+                            }
+                            MessageBox.Show("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
+                        }
+                    }
+                } else {
+                    if (newPropertyValue == null)
+                    {
+                        bAllowed = true;
+                    }
+                    else if (selectedOption == null)
+                    {
+                        MessageBox.Show("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
+                    }
+                }
+                if (bAllowed)
+                {
+                    if (!copyPasting)
+                    {
+                        AddResourceToWorld(property, propertyValue);
+                    } else {
+                        resourcesToAdd.Add(propertyValue);
+                    }
+                }
+            }
+
+            public void AddResourceToWorld(TCProperty property, string propertyValue)
+            {
+                IgnoreOverrideCheckChangedWorld = true;
+
+                string s = !String.IsNullOrEmpty(WorldConfig1.GetPropertyValueAsString(property)) ? WorldConfig1.GetPropertyValueAsString(property) + "\r\n" + propertyValue.Trim() : propertyValue.Trim();
+                if (WorldConfigDefaultValues != null)
+                {
+                    bool bIsDefault = true;
+                    if (WorldConfig1.GetPropertyValueAsString(property) == null)
+                    {
+                        s = WorldConfigDefaultValues.GetPropertyValueAsString(property) + "\r\n" + propertyValue.Trim();
+                        bIsDefault = false;
+                    } else {
+                        bIsDefault = CompareResourceQueues(s, WorldConfigDefaultValues.GetPropertyValueAsString(property));
+                    }
+
+                    if (!bIsDefault)
+                    {
+                        WorldConfig1.SetProperty(property, s, WorldSettingsInputs[property].Item6 != null && ((RadioButton)WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, WorldSettingsInputs[property].Item6 != null && ((CheckBox)WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
+                        WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = true;
+                        WorldSettingsInputs[property].Item2.Checked = true;
+                    } else {
+                        WorldConfig1.SetProperty(property, null, WorldSettingsInputs[property].Item6 != null && ((RadioButton)WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, WorldSettingsInputs[property].Item6 != null && ((CheckBox)WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
+                        WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = false;
+                        WorldSettingsInputs[property].Item2.Checked = false;
+                    }
+                } else {
+                    WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = true;
+                    WorldSettingsInputs[property].Item2.Checked = true;
+                    WorldConfig1.SetProperty(property, s, WorldSettingsInputs[property].Item6 != null && ((RadioButton)WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, WorldSettingsInputs[property].Item6 != null && ((CheckBox)WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
+                }
+                WorldConfig1.SetProperty(property, s.Trim(), WorldSettingsInputs[property].Item6 != null && ((RadioButton)WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, WorldSettingsInputs[property].Item6 != null && ((CheckBox)WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
+
+                ((ListBox)WorldSettingsInputs[property].Item1).Items.Clear();
+                string[] resourceQueueItemNames = WorldConfig1.GetPropertyValueAsString(property).Replace("\r", "").Split('\n');
+                foreach (string resourceQueueItemName in resourceQueueItemNames)
+                {
+                    if (!String.IsNullOrEmpty(resourceQueueItemName))
+                    {
+                        ((ListBox)WorldSettingsInputs[property].Item1).Items.Add(resourceQueueItemName.Trim());
+                    }
+                }
+                IgnoreOverrideCheckChangedWorld = false;
+            }
+
+            void btEditResourceQueueItemWorld_Click(object sender, EventArgs e)
+            {
+                addingMultipleResourcesXToAll = DialogResult.Abort;
+                addingMultipleResourcesXToAll2 = DialogResult.Abort;
+                addingMultipleResourcesXToAll3 = DialogResult.Abort;
+
+                TCProperty property = ResourceQueueInputs[sender];
+                ListBox lb = ((ListBox)WorldSettingsInputs[property].Item1);
+                string originalPropertyValue = (string)lb.SelectedItem.ToString();
+                string propertyValue = (string)lb.SelectedItem.ToString();
+
+                if (PopUpForm.InputBox("Edit item", "", ref propertyValue, true) == DialogResult.OK && !propertyValue.Equals(originalPropertyValue))
+                {
+                    if (propertyValue != null && !String.IsNullOrEmpty(propertyValue.Trim()))
+                    {
+                        List<string> newPropertyValue = new List<string>();
+                        bool bFound1 = false;
+                        foreach (string item in lb.Items)
+                        {
+                            if (!item.Equals(originalPropertyValue) || bFound1)
+                            {
+                                newPropertyValue.Add(item.Trim());
+                            } else {
+                                bFound1 = true;
+                            }
+                        }
+
+                        bool bAllowed = false;
+                        bool bOverrideExisting = false;
+                        ResourceQueueItem selectedOption = null;
+                        foreach (ResourceQueueItem option in VersionConfig.ResourceQueueOptions)
+                        {
+                            if (propertyValue.StartsWith(option.Name))
+                            {
+                                selectedOption = option;
+                                break;
+                            }
+                        }
+
+                        if (newPropertyValue != null && selectedOption != null)
+                        {
+                            DialogResult permissionGiven = DialogResult.Abort;
+                            bool bFound = false;
+                            if ((!selectedOption.HasUniqueParameter && newPropertyValue.Any(a => a.StartsWith(selectedOption.Name)) || (selectedOption.HasUniqueParameter && newPropertyValue.Any(a => (string)a == (string)propertyValue))))
+                            {
+                                if (selectedOption.HasUniqueParameter && !newPropertyValue.Any(a => (string)a == (string)propertyValue))
+                                {
+                                    if (addingMultipleResourcesXToAll == DialogResult.Abort)
+                                    {
+                                        string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                        addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                    }
+                                    permissionGiven = addingMultipleResourcesXToAll;
+                                    if (permissionGiven == DialogResult.No)
+                                    {
+                                        bOverrideExisting = true;
+                                    }
+                                    if (permissionGiven == DialogResult.Cancel)
+                                    {
+                                        return;
+                                    }
+                                } else {
+                                    if (newPropertyValue.Any(a => (string)a == (string)propertyValue))
+                                    {
+                                        if (addingMultipleResourcesXToAll2 == DialogResult.Abort)
+                                        {
+                                            addingMultipleResourcesXToAll2 = MessageBox.Show("Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Add exact duplicate?", MessageBoxButtons.YesNo);
+                                        }
+                                        permissionGiven = addingMultipleResourcesXToAll2;
+                                    } else {
+                                        if (addingMultipleResourcesXToAll3 == DialogResult.Abort)
+                                        {
+                                            addingMultipleResourcesXToAll3 = MessageBox.Show("One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep same resource with different parameters?", MessageBoxButtons.YesNoCancel);
+                                        }
+                                        permissionGiven = addingMultipleResourcesXToAll3;
+                                        if (permissionGiven == DialogResult.No)
+                                        {
+                                            bOverrideExisting = true;
+                                        }
+                                        if (permissionGiven == DialogResult.Cancel)
+                                        {
+                                            return;
+                                        }
+                                    }
+                                }
+                                if (permissionGiven == DialogResult.Yes)
+                                {
+                                    bAllowed = true;
+                                }
+                                bFound = true;
+                            }
+                            if (!bFound || bOverrideExisting)
+                            {
+                                if (propertyValue.Contains('(') && propertyValue.Contains(')'))
                                 {
                                     if (selectedOption.IsUnique)
                                     {
@@ -1829,7 +2125,7 @@ namespace TCEE
                                         {
                                             if (value2.StartsWith(selectedOption.Name))
                                             {
-                                                if (!selectedOption.HasUniqueParameter) // Is duplicate tag, but not necessarily same params
+                                                if (!selectedOption.HasUniqueParameter && bOverrideExisting) // Is duplicate tag, but not necessarily same params
                                                 {
                                                     //Delete old add new
                                                     DeleteResourceQueueItemWorld(property, value2);
@@ -1840,57 +2136,56 @@ namespace TCEE
                                         }
                                         if (possibleDuplicates.Any())
                                         {
-                                            //if (selectedOption.HasUniqueParameter)
-                                            //{
-                                                bool bFound4 = false;
-                                                string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                foreach (string existingValue in possibleDuplicates)
+                                            string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                            foreach (string existingValue in possibleDuplicates)
+                                            {
+                                                string[] existingParameters = existingValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                                if (existingParameters.Length > selectedOption.UniqueParameterIndex && newParameters.Length > selectedOption.UniqueParameterIndex)
                                                 {
-                                                    string[] existingParameters = existingValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                    if (existingParameters.Length > selectedOption.UniqueParameterIndex && newParameters.Length > selectedOption.UniqueParameterIndex)
+                                                    bool bFound4 = false;
+                                                    if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
                                                     {
-                                                        if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
+                                                        if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(newParameters[selectedOption.UniqueParameterIndex].ToLower().Trim())))
                                                         {
-                                                            if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(newParameters[selectedOption.UniqueParameterIndex].ToLower().Trim())))
-                                                            {
-                                                                if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
-                                                                {
-                                                                    //bFound4 = true;
-                                                                    //Delete old add new
-                                                                    DeleteResourceQueueItemWorld(property, existingValue);
-                                                                }
-                                                            }
-                                                        } else {
                                                             if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
                                                             {
-                                                                //bFound4 = true;
-                                                                //Delete old add new
-                                                                DeleteResourceQueueItemWorld(property, existingValue);
+                                                                bFound4 = true;
                                                             }
+                                                        }
+                                                    } else {
+                                                        if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
+                                                        {
+                                                            bFound4 = true;
+                                                        }
+                                                    }
+                                                    if (bFound4)
+                                                    {
+                                                        //Delete old add new
+                                                        if (permissionGiven == DialogResult.Abort)
+                                                        {
+                                                            if (addingMultipleResourcesXToAll == DialogResult.Abort)
+                                                            {
+                                                                addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                                            }
+                                                            permissionGiven = addingMultipleResourcesXToAll;
+                                                        }
+                                                        if (permissionGiven == DialogResult.No)
+                                                        {
+                                                            DeleteResourceQueueItemWorld(property, existingValue);
+                                                        }
+                                                        if (permissionGiven == DialogResult.Cancel)
+                                                        {
+                                                            return;
                                                         }
                                                     }
                                                 }
-                                                //if (!bFound4)
-                                                //{
-                                                    //bAllowed = true;
-                                                //} else {
-                                                    if (newParameters.Length > selectedOption.UniqueParameterIndex)
-                                                    {
-                                                        bAllowed = true;
-                                                        //if (showDuplicateWarnings)
-                                                        //{
-                                                            //MessageBox.Show("Cannot add item. An item for property \"" + selectedOption.Name + "\" with parameter " + parameters2[selectedOption.UniqueParameterIndex] + " already exists and \"" + selectedOption.Name + parameters2[selectedOption.UniqueParameterIndex] + "\" must be unique.\r\n\r\nUnique properties and parameters can be configured in the VersionConfig.xml.", "Error: Illegal input");
-                                                        //}
-                                                    } else {
-                                                        MessageBox.Show("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
-                                                    }
-                                                //}
-                                            //} else {
-                                                //if (showDuplicateWarnings)
-                                                //{
-                                                    //MessageBox.Show("Cannot add item. An item for property \"" + selectedOption.Name + "\" already exists and \"" + selectedOption.Name + "\" must be unique.\r\n\r\nUnique properties and parameters can be configured in the VersionConfig.xml.", "Error: Illegal input");
-                                                //}
-                                            //}
+                                            }
+                                            if (newParameters.Length > selectedOption.UniqueParameterIndex)
+                                            {
+                                                bAllowed = true;
+                                            } else {
+                                                MessageBox.Show("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
+                                            }
                                         } else {
                                             bAllowed = true;
                                         }
@@ -1906,258 +2201,21 @@ namespace TCEE
                                     }
                                     MessageBox.Show("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
                                 }
-                            } else {
+                            }
+                        } else {
+                            if (newPropertyValue == null)
+                            {
+                                bAllowed = true;
+                            }
+                            else if (selectedOption == null)
+                            {
                                 MessageBox.Show("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
                             }
                         }
-                    } else {
-                        if (!propertyValue.StartsWith("CustomObject("))
+                        if (bAllowed)
                         {
-                            if (showDuplicateWarnings)
-                            {
-                                MessageBox.Show("Cannot add item. An item with the value \"" + propertyValue + "\" already exists.", "Error: Illegal input");
-                            }
-                        }
-                    }
-                } else {
-                    bAllowed = true;
-                }
-                if (bAllowed)
-                {
-                    IgnoreOverrideCheckChangedWorld = true;
-
-                    string s = !String.IsNullOrEmpty(WorldConfig1.GetPropertyValueAsString(property)) ? WorldConfig1.GetPropertyValueAsString(property) + "\r\n" + propertyValue.Trim() : propertyValue.Trim();
-                    if (WorldConfigDefaultValues != null)
-                    {
-                        bool bIsDefault = true;
-                        if (WorldConfig1.GetPropertyValueAsString(property) == null)
-                        {
-                            s = WorldConfigDefaultValues.GetPropertyValueAsString(property) + "\r\n" + propertyValue.Trim();
-                            bIsDefault = false;
-                        } else {
-                            bIsDefault = CompareResourceQueues(s, WorldConfigDefaultValues.GetPropertyValueAsString(property));
-                        }
-
-                        if (!bIsDefault)
-                        {
-                            WorldConfig1.SetProperty(property, s, WorldSettingsInputs[property].Item6 != null && ((RadioButton)WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, WorldSettingsInputs[property].Item6 != null && ((CheckBox)WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                            WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = true;
-                            WorldSettingsInputs[property].Item2.Checked = true;
-                        } else {
-                            WorldConfig1.SetProperty(property, null, WorldSettingsInputs[property].Item6 != null && ((RadioButton)WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, WorldSettingsInputs[property].Item6 != null && ((CheckBox)WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                            WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = false;
-                            WorldSettingsInputs[property].Item2.Checked = false;
-                        }
-                    } else {
-                        WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = true;
-                        WorldSettingsInputs[property].Item2.Checked = true;
-                        WorldConfig1.SetProperty(property, s, WorldSettingsInputs[property].Item6 != null && ((RadioButton)WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, WorldSettingsInputs[property].Item6 != null && ((CheckBox)WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                    }
-                    WorldConfig1.SetProperty(property, s.Trim(), WorldSettingsInputs[property].Item6 != null && ((RadioButton)WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, WorldSettingsInputs[property].Item6 != null && ((CheckBox)WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-
-                    ((ListBox)WorldSettingsInputs[property].Item1).Items.Clear();
-                    string[] resourceQueueItemNames = WorldConfig1.GetPropertyValueAsString(property).Replace("\r", "").Split('\n');
-                    foreach (string resourceQueueItemName in resourceQueueItemNames)
-                    {
-                        if (!String.IsNullOrEmpty(resourceQueueItemName))
-                        {
-                            ((ListBox)WorldSettingsInputs[property].Item1).Items.Add(resourceQueueItemName.Trim());
-                        }
-                    }
-                    IgnoreOverrideCheckChangedWorld = false;
-                }
-            }
-
-            void btEditResourceQueueItemWorld_Click(object sender, EventArgs e)
-            {
-                bool showDuplicateWarnings = true;
-
-                TCProperty property = ResourceQueueInputs[sender];
-                ListBox lb = ((ListBox)WorldSettingsInputs[property].Item1);
-                string propertyValue = (string)lb.SelectedItem;
-                if (PopUpForm.InputBox("Edit item", "", ref propertyValue, true) == DialogResult.OK)
-                {
-                    if (propertyValue != null && !String.IsNullOrEmpty(propertyValue.Trim()))
-                    {
-                        if (lb.SelectedItem != null)
-                        {
-                            List<string> newPropertyValue = new List<string>();
-                            foreach (string item in lb.Items)
-                            {
-                                if (item != (string)lb.SelectedItem)
-                                {
-                                    newPropertyValue.Add(item.Trim());
-                                }
-                            }
-
-                            bool bAllowed = false;
-                            if (newPropertyValue != null)
-                            {
-                                bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)propertyValue) || (propertyValue.StartsWith("CustomObject(") && MessageBox.Show("An item with the value \"" + propertyValue + "\" already exists, are you sure you want to add another?", "Allow duplicate?", MessageBoxButtons.OKCancel) == DialogResult.OK);
-                                if (duplicatePermission)
-                                {
-                                    if (property.Name == "Mob spawning")
-                                    {
-                                        bAllowed = true;
-                                    } else {
-                                        if (propertyValue.Contains('(') && propertyValue.Contains(')'))
-                                        {
-                                            bool bFound3 = false;
-                                            ResourceQueueItem selectedOption = null;
-                                            foreach (ResourceQueueItem option in VersionConfig.ResourceQueueOptions)
-                                            {
-                                                if (propertyValue.StartsWith(option.Name))
-                                                {
-                                                    bFound3 = true;
-                                                    selectedOption = option;
-                                                    break;
-                                                }
-                                            }
-                                            if (bFound3)
-                                            {
-                                                if (selectedOption.IsUnique)
-                                                {
-                                                    List<string> possibleDuplicates = new List<string>();
-                                                    foreach (string value2 in newPropertyValue)
-                                                    {
-                                                        if (value2.StartsWith(selectedOption.Name))
-                                                        {                                                            
-                                                            if (!selectedOption.HasUniqueParameter) // Is duplicate tag, but not necessarily same params
-                                                            {
-                                                                //Delete old add new
-                                                                DeleteResourceQueueItemWorld(property, value2);
-                                                            } else {
-                                                                possibleDuplicates.Add(value2);
-                                                            }
-                                                        }
-                                                    }
-                                                    if (possibleDuplicates.Any())
-                                                    {
-                                                        //if (selectedOption.HasUniqueParameter)
-                                                        //{
-                                                            bool bFound4 = false;
-                                                            string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                            foreach (string existingValue in possibleDuplicates)
-                                                            {
-                                                                string[] existingParameters = existingValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                                if (existingParameters.Length > selectedOption.UniqueParameterIndex && newParameters.Length > selectedOption.UniqueParameterIndex)
-                                                                {
-                                                                    if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
-                                                                    {
-                                                                        if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(newParameters[selectedOption.UniqueParameterIndex].ToLower().Trim())))
-                                                                        {
-                                                                            if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
-                                                                            {
-                                                                                //bFound4 = true;
-                                                                                //Delete old add new
-                                                                                //lb.Items.Remove(existingValue);
-                                                                                DeleteResourceQueueItemWorld(property, existingValue);
-                                                                            }
-                                                                        }
-                                                                    } else {
-                                                                        if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
-                                                                        {
-                                                                            //bFound4 = true;
-                                                                            //Delete old add new
-                                                                            DeleteResourceQueueItemWorld(property, existingValue);
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                            //if (!bFound4)
-                                                            //{
-                                                                //bAllowed = true;
-                                                            //} //else {
-                                                                if (newParameters.Length > selectedOption.UniqueParameterIndex)
-                                                                {
-                                                                    bAllowed = true;
-                                                                    //if (showDuplicateWarnings)
-                                                                    //{
-                                                                        //MessageBox.Show("Cannot add item. An item for property \"" + selectedOption.Name + "\" with parameter " + parameters2[selectedOption.UniqueParameterIndex] + " already exists and \"" + selectedOption.Name + parameters2[selectedOption.UniqueParameterIndex] + "\" must be unique.\r\n\r\nUnique properties and parameters can be configured in the VersionConfig.xml.", "Error: Illegal input");
-                                                                    //}
-                                                                } else {
-                                                                    MessageBox.Show("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
-                                                                }
-                                                            //}
-                                                        //}// else {
-                                                            //if (showDuplicateWarnings)
-                                                            //{
-                                                                //MessageBox.Show("Cannot add item. An item for property \"" + selectedOption.Name + "\" already exists and \"" + selectedOption.Name + "\" must be unique.\r\n\r\nUnique properties and parameters can be configured in the VersionConfig.xml.", "Error: Illegal input");
-                                                            //}
-                                                        //}
-                                                    } else {
-                                                        bAllowed = true;
-                                                    }
-                                                } else {
-                                                    bAllowed = true;
-                                                }
-                                            } else {
-                                                string[] propertyNames = VersionConfig.ResourceQueueOptions.Select(a => a.Name).ToArray();
-                                                string sPropertyNames = "";
-                                                foreach (string a in propertyNames)
-                                                {
-                                                    sPropertyNames += a + "\r\n";
-                                                }
-                                                MessageBox.Show("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
-                                            }
-                                        } else {
-                                            MessageBox.Show("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
-                                        }
-                                    }
-                                } else {
-                                    if (!propertyValue.StartsWith("CustomObject("))
-                                    {
-                                        if (showDuplicateWarnings)
-                                        {
-                                            MessageBox.Show("Cannot add item. An item with the value \"" + propertyValue + "\" already exists.", "Error: Illegal input");
-                                        }
-                                    }
-                                }
-                            } else {
-                                bAllowed = true;
-                            }
-                            if (bAllowed)
-                            {
-                                IgnoreOverrideCheckChangedWorld = true;
-                                string s = WorldConfig1.GetPropertyValueAsString(property) ?? (WorldConfigDefaultValues != null && WorldConfigDefaultValues.GetPropertyValueAsString(property) != null ? WorldConfigDefaultValues.GetPropertyValueAsString(property) : "");
-                                if (((string)lb.SelectedItem).Length > 0)
-                                {
-                                    if (s.IndexOf("\r\n" + (string)lb.SelectedItem + "\r\n") > -1) { s = (s.Replace("\r\n" + (string)lb.SelectedItem + "\r\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf("\r\n" + (string)lb.SelectedItem + "\n") > -1) { s = (s.Replace("\r\n" + (string)lb.SelectedItem + "\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf("\n" + (string)lb.SelectedItem + "\r\n") > -1) { s = (s.Replace("\n" + (string)lb.SelectedItem + "\r\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf("\n" + (string)lb.SelectedItem + "\n") > -1) { s = (s.Replace("\n" + (string)lb.SelectedItem + "\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf((string)lb.SelectedItem + "\r\n") > -1) { s = (s.Replace((string)lb.SelectedItem + "\r\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf((string)lb.SelectedItem + "\r\n") > -1) { s = (s.Replace((string)lb.SelectedItem + "\r\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf((string)lb.SelectedItem + "\n") > -1) { s = (s.Replace((string)lb.SelectedItem + "\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf("\r\n" + (string)lb.SelectedItem) > -1) { s = (s.Replace("\r\n" + (string)lb.SelectedItem, "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf("\n" + (string)lb.SelectedItem) > -1) { s = (s.Replace("\n" + (string)lb.SelectedItem, "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf((string)lb.SelectedItem) > -1) { s = (s.Replace((string)lb.SelectedItem, "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                }
-
-                                bool bIsDefault = CompareResourceQueues(s, WorldConfigDefaultValues != null && WorldConfigDefaultValues.GetPropertyValueAsString(property) != null ? WorldConfigDefaultValues.GetPropertyValueAsString(property) : "");
-
-                                if (!bIsDefault)
-                                {
-                                    WorldConfig1.SetProperty(property, s, WorldSettingsInputs[property].Item6 != null && ((RadioButton)WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, WorldSettingsInputs[property].Item6 != null && ((CheckBox)WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                                    WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = true;
-                                    WorldSettingsInputs[property].Item2.Checked = true;
-                                } else {
-                                    WorldConfig1.SetProperty(property, null, WorldSettingsInputs[property].Item6 != null && ((RadioButton)WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, WorldSettingsInputs[property].Item6 != null && ((CheckBox)WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                                    WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = false;
-                                    WorldSettingsInputs[property].Item2.Checked = false;
-                                }
-
-                                ((ListBox)WorldSettingsInputs[property].Item1).Items.Clear();
-                                string[] resourceQueueItemNames = s.Replace("\r", "").Split('\n');
-                                foreach (string resourceQueueItemName in resourceQueueItemNames)
-                                {
-                                    if (!String.IsNullOrEmpty(resourceQueueItemName))
-                                    {
-                                        ((ListBox)WorldSettingsInputs[property].Item1).Items.Add(resourceQueueItemName.Trim());
-                                    }
-                                }
-                                IgnoreOverrideCheckChangedWorld = false;
-                            }
+                            DeleteResourceQueueItemWorld(property, originalPropertyValue);
+                            AddResourceToWorld(property, propertyValue);
                         }
                     }
                 }
@@ -2587,12 +2645,19 @@ namespace TCEE
                                 int valueStringLength = 0;
                                 //float originalValue = 0;
 
-                                while (sDefaultText.Substring(valueStringStartIndex + skipCharsLength + valueStringLength, 1) != "\n")
+                                try
                                 {
-                                    valueStringLength += 1;
+                                    while (sDefaultText.Substring(valueStringStartIndex + skipCharsLength + valueStringLength, 1) != "\n")
+                                    {
+                                        valueStringLength += 1;
+                                    }
+                                    propertyValue = sDefaultText.Substring(valueStringStartIndex + skipCharsLength, valueStringLength).Trim();
+                                    bDefaultConfig.SetProperty(property, propertyValue, false, false);
                                 }
-                                propertyValue = sDefaultText.Substring(valueStringStartIndex + skipCharsLength, valueStringLength).Trim();
-                                bDefaultConfig.SetProperty(property, propertyValue, false, false);
+                                catch(Exception ex)
+                                {
+                                    throw new Exception("Property value for property " + property.Name + " could not be read from file " + file.Name + ". There is either an error in the file or TCEE needs to be updated to support the value's formatting. Ex: " + ex.Message);
+                                }
                             } else {
                                 throw new Exception("Property value for property " + property.Name + " could not be read from file " + file.Name + ". There is either an error in the file or TCEE needs to be updated to support the value's formatting.");
                             }
@@ -3320,10 +3385,19 @@ namespace TCEE
 
             private void AddToResourceQueue(TCProperty property, string propertyValue, bool showDuplicateWarnings = true)
             {
-                if(propertyValue == null || string.IsNullOrEmpty(propertyValue.Trim()))
+                if (propertyValue == null || string.IsNullOrEmpty(propertyValue.Trim().Replace("\r", "").Replace("\n", "")))
                 {
                     return;
                 }
+
+                if (!copyPasting)
+                {
+                    addingMultipleResourcesXToAll = DialogResult.Abort;
+                    addingMultipleResourcesXToAll2 = DialogResult.Abort;
+                    addingMultipleResourcesXToAll3 = DialogResult.Abort;
+                }
+
+                propertyValue = propertyValue.Replace("\r", "").Replace("\n", "");
 
                 ListBox lb = ((ListBox)BiomeSettingsInputs[property].Item1);
                 List<string> newPropertyValue = new List<string>();
@@ -3333,29 +3407,325 @@ namespace TCEE
                 }
 
                 bool bAllowed = false;
-                if (newPropertyValue != null)
+                bool bOverrideExisting = false;
+                ResourceQueueItem selectedOption = null;
+                foreach (ResourceQueueItem option in VersionConfig.ResourceQueueOptions)
                 {
-                    bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)propertyValue) || (propertyValue.StartsWith("CustomObject(") && MessageBox.Show("An item with the value \"" + propertyValue + "\" already exists, are you sure you want to add another?", "Allow duplicate?", MessageBoxButtons.OKCancel) == DialogResult.OK);
-                    if (duplicatePermission)
+                    if (propertyValue.StartsWith(option.Name))
                     {
-                        if (property.Name == "Mob spawning")
+                        selectedOption = option;
+                        break;
+                    }
+                }
+
+                if (newPropertyValue != null && selectedOption != null)
+                {
+                    DialogResult permissionGiven = DialogResult.Abort;
+                    bool bFound = false;
+                    if ((!selectedOption.HasUniqueParameter && newPropertyValue.Any(a => a.StartsWith(selectedOption.Name)) || (selectedOption.HasUniqueParameter && newPropertyValue.Any(a => (string)a == (string)propertyValue))))
+                    {
+                        if (selectedOption.HasUniqueParameter && !newPropertyValue.Any(a => (string)a == (string)propertyValue))
+                        {
+                            if (addingMultipleResourcesXToAll == DialogResult.Abort)
+                            {
+                                string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                            }
+                            permissionGiven = addingMultipleResourcesXToAll;
+                            if (permissionGiven == DialogResult.No)
+                            {
+                                bOverrideExisting = true;
+                            }
+                            if (permissionGiven == DialogResult.Cancel)
+                            {
+                                return;
+                            }
+                        } else {
+                            if (newPropertyValue.Any(a => (string)a == (string)propertyValue))
+                            {
+                                if (addingMultipleResourcesXToAll2 == DialogResult.Abort)
+                                {
+                                    addingMultipleResourcesXToAll2 = MessageBox.Show("Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Add exact duplicate?", MessageBoxButtons.YesNo);
+                                }
+                                permissionGiven = addingMultipleResourcesXToAll2;
+                            } else {
+                                if (addingMultipleResourcesXToAll3 == DialogResult.Abort)
+                                {
+                                    addingMultipleResourcesXToAll3 = MessageBox.Show("One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep same resource with different parameters?", MessageBoxButtons.YesNoCancel);
+                                }
+                                permissionGiven = addingMultipleResourcesXToAll3;
+                                if (permissionGiven == DialogResult.No)
+                                {
+                                    bOverrideExisting = true;
+                                }
+                                if (permissionGiven == DialogResult.Cancel)
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                        if (permissionGiven == DialogResult.Yes)
                         {
                             bAllowed = true;
-                        } else {
-                            if (propertyValue.Contains('(') && propertyValue.Contains(')'))
+                        }
+                        bFound = true;
+                    }
+                    if (!bFound || bOverrideExisting)
+                    {
+                        if (propertyValue.Contains('(') && propertyValue.Contains(')'))
+                        {
+                            if (selectedOption.IsUnique)
                             {
-                                bool bFound3 = false;
-                                ResourceQueueItem selectedOption = null;
-                                foreach (ResourceQueueItem option in VersionConfig.ResourceQueueOptions)
+                                List<string> possibleDuplicates = new List<string>();
+                                foreach (string value2 in newPropertyValue)
                                 {
-                                    if (propertyValue.StartsWith(option.Name))
+                                    if (value2.StartsWith(selectedOption.Name))
                                     {
-                                        bFound3 = true;
-                                        selectedOption = option;
-                                        break;
+                                        if (!selectedOption.HasUniqueParameter && bOverrideExisting) // Is duplicate tag, but not necessarily same params
+                                        {
+                                            //Delete old add new
+                                            DeleteResourceQueueItem(property, value2);
+                                        } else {
+                                            possibleDuplicates.Add(value2);
+                                        }
                                     }
                                 }
-                                if (bFound3)
+                                if (possibleDuplicates.Any())
+                                {
+                                    string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                    foreach (string existingValue in possibleDuplicates)
+                                    {
+                                        string[] existingParameters = existingValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                        if (existingParameters.Length > selectedOption.UniqueParameterIndex && newParameters.Length > selectedOption.UniqueParameterIndex)
+                                        {
+                                            bool bFound4 = false;
+                                            if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
+                                            {
+                                                if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(newParameters[selectedOption.UniqueParameterIndex].ToLower().Trim())))
+                                                {
+                                                    if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
+                                                    {
+                                                        bFound4 = true;
+                                                    }
+                                                }
+                                            } else {
+                                                if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
+                                                {
+                                                    bFound4 = true;
+                                                }
+                                            }
+                                            if (bFound4)
+                                            {
+                                                //Delete old add new
+                                                if (permissionGiven == DialogResult.Abort)
+                                                {
+                                                    if (addingMultipleResourcesXToAll == DialogResult.Abort)
+                                                    {
+                                                        addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                                    }
+                                                    permissionGiven = addingMultipleResourcesXToAll;
+                                                }
+                                                if (permissionGiven == DialogResult.No)
+                                                {
+                                                    DeleteResourceQueueItem(property, existingValue);
+                                                }
+                                                if (permissionGiven == DialogResult.Cancel)
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (newParameters.Length > selectedOption.UniqueParameterIndex)
+                                    {
+                                        bAllowed = true;
+                                    } else {
+                                        MessageBox.Show("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
+                                    }
+                                } else {
+                                    bAllowed = true;
+                                }
+                            } else {
+                                bAllowed = true;
+                            }
+                        } else {
+                            string[] propertyNames = VersionConfig.ResourceQueueOptions.Select(a => a.Name).ToArray();
+                            string sPropertyNames = "";
+                            foreach (string a in propertyNames)
+                            {
+                                sPropertyNames += a + "\r\n";
+                            }
+                            MessageBox.Show("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
+                        }
+                    }
+                } else {
+                    if (newPropertyValue == null)
+                    {
+                        bAllowed = true;
+                    }
+                    else if (selectedOption == null)
+                    {
+                        MessageBox.Show("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
+                    }
+                }
+                if(bAllowed)
+                {
+                    if(!copyPasting)
+                    {
+                        AddResourceToBiome(property, propertyValue);
+                    } else {
+                        resourcesToAdd.Add(propertyValue);
+                    }
+                }
+            }
+
+            public void AddResourceToBiome(TCProperty property, string propertyValue)
+            {
+                IgnoreOverrideCheckChangedBiome = true;
+                Group g = BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                BiomeConfig biomeConfig = g.BiomeConfig;
+
+                BiomeConfig biomeDefaultConfig = null;
+                if (g.showDefaults)
+                {
+                    biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                }
+
+                string s = !String.IsNullOrEmpty(biomeConfig.GetPropertyValueAsString(property)) ? biomeConfig.GetPropertyValueAsString(property) + "\r\n" + propertyValue.Trim() : propertyValue.Trim();
+                if (biomeDefaultConfig != null)
+                {
+                    bool bIsDefault = true;
+                    if (biomeConfig.GetPropertyValueAsString(property) == null)
+                    {
+                        s = biomeDefaultConfig.GetPropertyValueAsString(property) + "\r\n" + propertyValue.Trim();
+                        bIsDefault = false;
+                    } else {
+                        bIsDefault = CompareResourceQueues(s, biomeDefaultConfig.GetPropertyValueAsString(property));
+                    }
+
+                    if (!bIsDefault)
+                    {
+                        biomeConfig.SetProperty(property, s, BiomeSettingsInputs[property].Item6 != null && ((RadioButton)BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, BiomeSettingsInputs[property].Item6 != null && ((CheckBox)BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
+                        biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = true;
+                        BiomeSettingsInputs[property].Item2.Checked = true;
+                    } else {
+                        biomeConfig.SetProperty(property, null, BiomeSettingsInputs[property].Item6 != null && ((RadioButton)BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, BiomeSettingsInputs[property].Item6 != null && ((CheckBox)BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
+                        biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = false;
+                        BiomeSettingsInputs[property].Item2.Checked = false;
+                    }
+                } else {
+                    biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = true;
+                    BiomeSettingsInputs[property].Item2.Checked = true;
+                    biomeConfig.SetProperty(property, s, BiomeSettingsInputs[property].Item6 != null && ((RadioButton)BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, BiomeSettingsInputs[property].Item6 != null && ((CheckBox)BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
+                }
+                biomeConfig.SetProperty(property, s.Trim(), BiomeSettingsInputs[property].Item6 != null && ((RadioButton)BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, BiomeSettingsInputs[property].Item6 != null && ((CheckBox)BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
+
+                ((ListBox)BiomeSettingsInputs[property].Item1).Items.Clear();
+                string[] resourceQueueItemNames = biomeConfig.GetPropertyValueAsString(property).Replace("\r", "").Split('\n');
+                foreach (string resourceQueueItemName in resourceQueueItemNames)
+                {
+                    if (!String.IsNullOrEmpty(resourceQueueItemName))
+                    {
+                        ((ListBox)BiomeSettingsInputs[property].Item1).Items.Add(resourceQueueItemName.Trim());
+                    }
+                }
+                IgnoreOverrideCheckChangedBiome = false;
+            }
+
+            void btEditResourceQueueItem_Click(object sender, EventArgs e)
+            {
+                addingMultipleResourcesXToAll = DialogResult.Abort;
+                addingMultipleResourcesXToAll2 = DialogResult.Abort;
+                addingMultipleResourcesXToAll3 = DialogResult.Abort;
+
+                TCProperty property = ResourceQueueInputs[sender];
+                ListBox lb = ((ListBox)BiomeSettingsInputs[property].Item1);
+                string originalPropertyValue = (string)lb.SelectedItem.ToString();
+                string propertyValue = (string)lb.SelectedItem.ToString();
+
+                if (PopUpForm.InputBox("Edit item", "", ref propertyValue, true) == DialogResult.OK && !propertyValue.Equals(originalPropertyValue))
+                {
+                    if (propertyValue != null && !String.IsNullOrEmpty(propertyValue.Trim()))
+                    {
+                        List<string> newPropertyValue = new List<string>();
+                        bool bFound1 = false;
+                        foreach (string item in lb.Items)
+                        {
+                            if (!item.Equals(originalPropertyValue) || bFound1)
+                            {
+                                newPropertyValue.Add(item.Trim());
+                            } else {
+                                bFound1 = true;
+                            }
+                        }
+
+                        bool bAllowed = false;
+                        bool bOverrideExisting = false;
+                        ResourceQueueItem selectedOption = null;
+                        foreach (ResourceQueueItem option in VersionConfig.ResourceQueueOptions)
+                        {
+                            if (propertyValue.StartsWith(option.Name))
+                            {
+                                selectedOption = option;
+                                break;
+                            }
+                        }
+
+                        if (newPropertyValue != null && selectedOption != null)
+                        {
+                            DialogResult permissionGiven = DialogResult.Abort;
+                            bool bFound = false;
+                            if ((!selectedOption.HasUniqueParameter && newPropertyValue.Any(a => a.StartsWith(selectedOption.Name)) || (selectedOption.HasUniqueParameter && newPropertyValue.Any(a => (string)a == (string)propertyValue))))
+                            {
+                                if (selectedOption.HasUniqueParameter && !newPropertyValue.Any(a => (string)a == (string)propertyValue))
+                                {
+                                    if (addingMultipleResourcesXToAll == DialogResult.Abort)
+                                    {
+                                        string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                        addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                    }
+                                    permissionGiven = addingMultipleResourcesXToAll;
+                                    if (permissionGiven == DialogResult.No)
+                                    {
+                                        bOverrideExisting = true;
+                                    }
+                                    if (permissionGiven == DialogResult.Cancel)
+                                    {
+                                        return;
+                                    }
+                                } else {
+                                    if (newPropertyValue.Any(a => (string)a == (string)propertyValue))
+                                    {
+                                        if (addingMultipleResourcesXToAll2 == DialogResult.Abort)
+                                        {
+                                            addingMultipleResourcesXToAll2 = MessageBox.Show("Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Add exact duplicate?", MessageBoxButtons.YesNo);
+                                        }
+                                        permissionGiven = addingMultipleResourcesXToAll2;
+                                    } else {
+                                        if (addingMultipleResourcesXToAll3 == DialogResult.Abort)
+                                        {
+                                            addingMultipleResourcesXToAll3 = MessageBox.Show("One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep same resource with different parameters?", MessageBoxButtons.YesNoCancel);
+                                        }
+                                        permissionGiven = addingMultipleResourcesXToAll3;
+                                        if (permissionGiven == DialogResult.No)
+                                        {
+                                            bOverrideExisting = true;
+                                        }
+                                        if (permissionGiven == DialogResult.Cancel)
+                                        {
+                                            return;
+                                        }
+                                    }
+                                }
+                                if (permissionGiven == DialogResult.Yes)
+                                {
+                                    bAllowed = true;
+                                }
+                                bFound = true;
+                            }
+                            if (!bFound || bOverrideExisting)
+                            {
+                                if (propertyValue.Contains('(') && propertyValue.Contains(')'))
                                 {
                                     if (selectedOption.IsUnique)
                                     {
@@ -3364,7 +3734,7 @@ namespace TCEE
                                         {
                                             if (value2.StartsWith(selectedOption.Name))
                                             {
-                                                if (!selectedOption.HasUniqueParameter) // Is duplicate tag, but not necessarily same params
+                                                if (!selectedOption.HasUniqueParameter && bOverrideExisting) // Is duplicate tag, but not necessarily same params
                                                 {
                                                     //Delete old add new
                                                     DeleteResourceQueueItem(property, value2);
@@ -3375,57 +3745,56 @@ namespace TCEE
                                         }
                                         if (possibleDuplicates.Any())
                                         {
-                                            //if (selectedOption.HasUniqueParameter)
-                                            //{
-                                                bool bFound4 = false;
-                                                string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                foreach (string existingValue in possibleDuplicates)
+                                            string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                            foreach (string existingValue in possibleDuplicates)
+                                            {
+                                                string[] existingParameters = existingValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                                if (existingParameters.Length > selectedOption.UniqueParameterIndex && newParameters.Length > selectedOption.UniqueParameterIndex)
                                                 {
-                                                    string[] existingParameters = existingValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                    if (existingParameters.Length > selectedOption.UniqueParameterIndex && newParameters.Length > selectedOption.UniqueParameterIndex)
+                                                    bool bFound4 = false;
+                                                    if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
                                                     {
-                                                        if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
+                                                        if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(newParameters[selectedOption.UniqueParameterIndex].ToLower().Trim())))
                                                         {
-                                                            if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(newParameters[selectedOption.UniqueParameterIndex].ToLower().Trim())))
-                                                            {
-                                                                if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
-                                                                {
-                                                                    //bFound4 = true;
-                                                                    //Delete old add new
-                                                                    DeleteResourceQueueItem(property, existingValue);
-                                                                }
-                                                            }
-                                                        } else {
                                                             if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
                                                             {
-                                                                //bFound4 = true;
-                                                                //Delete old add new
-                                                                DeleteResourceQueueItem(property, existingValue);
+                                                                bFound4 = true;
                                                             }
+                                                        }
+                                                    } else {
+                                                        if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
+                                                        {
+                                                            bFound4 = true;
+                                                        }
+                                                    }
+                                                    if (bFound4)
+                                                    {
+                                                        //Delete old add new
+                                                        if (permissionGiven == DialogResult.Abort)
+                                                        {
+                                                            if (addingMultipleResourcesXToAll == DialogResult.Abort)
+                                                            {
+                                                                addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                                            }
+                                                            permissionGiven = addingMultipleResourcesXToAll;
+                                                        }
+                                                        if (permissionGiven == DialogResult.No)
+                                                        {
+                                                            DeleteResourceQueueItem(property, existingValue);
+                                                        }
+                                                        if (permissionGiven == DialogResult.Cancel)
+                                                        {
+                                                            return;
                                                         }
                                                     }
                                                 }
-                                                //if (!bFound4)
-                                                //{
-                                                    //bAllowed = true;
-                                                //} else {
-                                                    if (newParameters.Length > selectedOption.UniqueParameterIndex)
-                                                    {
-                                                        bAllowed = true;
-                                                        //if (showDuplicateWarnings)
-                                                        //{
-                                                            //MessageBox.Show("Cannot add item. An item for property \"" + selectedOption.Name + "\" with parameter " + parameters2[selectedOption.UniqueParameterIndex] + " already exists and \"" + selectedOption.Name + parameters2[selectedOption.UniqueParameterIndex] + "\" must be unique.\r\n\r\nUnique properties and parameters can be configured in the VersionConfig.xml.", "Error: Illegal input");
-                                                        //}
-                                                    } else {
-                                                        MessageBox.Show("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
-                                                    }
-                                                //}
-                                            //} else {
-                                                //if (showDuplicateWarnings)
-                                                //{
-                                                    //MessageBox.Show("Cannot add item. An item for property \"" + selectedOption.Name + "\" already exists and \"" + selectedOption.Name + "\" must be unique.\r\n\r\nUnique properties and parameters can be configured in the VersionConfig.xml.", "Error: Illegal input");
-                                                //}
-                                            //}
+                                            }
+                                            if (newParameters.Length > selectedOption.UniqueParameterIndex)
+                                            {
+                                                bAllowed = true;
+                                            } else {
+                                                MessageBox.Show("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
+                                            }
                                         } else {
                                             bAllowed = true;
                                         }
@@ -3435,279 +3804,27 @@ namespace TCEE
                                 } else {
                                     string[] propertyNames = VersionConfig.ResourceQueueOptions.Select(a => a.Name).ToArray();
                                     string sPropertyNames = "";
-                                    foreach(string a in propertyNames)
+                                    foreach (string a in propertyNames)
                                     {
                                         sPropertyNames += a + "\r\n";
                                     }
                                     MessageBox.Show("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
                                 }
-                            } else {
+                            }
+                        } else {
+                            if(newPropertyValue == null)
+                            {
+                                bAllowed = true;
+                            }
+                            else if(selectedOption == null)
+                            {
                                 MessageBox.Show("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
                             }
                         }
-                    } else {
-                        if (!propertyValue.StartsWith("CustomObject("))
+                        if(bAllowed)
                         {
-                            if (showDuplicateWarnings)
-                            {
-                                MessageBox.Show("Cannot add item. An item with the value \"" + propertyValue + "\" already exists.", "Error: Illegal input");
-                            }
-                        }
-                    }
-                } else {
-                    bAllowed = true;
-                }
-                if(bAllowed)
-                {
-                    IgnoreOverrideCheckChangedBiome = true;
-                    Group g = BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
-                    BiomeConfig biomeConfig = g.BiomeConfig;
-
-                    BiomeConfig biomeDefaultConfig = null;
-                    if (g.showDefaults)
-                    {
-                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
-                    }
-
-                    string s = !String.IsNullOrEmpty(biomeConfig.GetPropertyValueAsString(property)) ? biomeConfig.GetPropertyValueAsString(property) + "\r\n" + propertyValue.Trim() : propertyValue.Trim();
-                    if (biomeDefaultConfig != null)
-                    {
-                        bool bIsDefault = true;
-                        if (biomeConfig.GetPropertyValueAsString(property) == null)
-                        {
-                            s = biomeDefaultConfig.GetPropertyValueAsString(property) + "\r\n" + propertyValue.Trim();
-                            bIsDefault = false;
-                        } else {
-                            bIsDefault = CompareResourceQueues(s, biomeDefaultConfig.GetPropertyValueAsString(property));
-                        }
-
-                        if (!bIsDefault)
-                        {
-                            biomeConfig.SetProperty(property, s, BiomeSettingsInputs[property].Item6 != null && ((RadioButton)BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, BiomeSettingsInputs[property].Item6 != null && ((CheckBox)BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                            biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = true;
-                            BiomeSettingsInputs[property].Item2.Checked = true;
-                        } else {
-                            biomeConfig.SetProperty(property, null, BiomeSettingsInputs[property].Item6 != null && ((RadioButton)BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, BiomeSettingsInputs[property].Item6 != null && ((CheckBox)BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                            biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = false;
-                            BiomeSettingsInputs[property].Item2.Checked = false;
-                        }
-                    } else {
-                        biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = true;
-                        BiomeSettingsInputs[property].Item2.Checked = true;
-                        biomeConfig.SetProperty(property, s, BiomeSettingsInputs[property].Item6 != null && ((RadioButton)BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, BiomeSettingsInputs[property].Item6 != null && ((CheckBox)BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                    }
-                    biomeConfig.SetProperty(property, s.Trim(), BiomeSettingsInputs[property].Item6 != null && ((RadioButton)BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, BiomeSettingsInputs[property].Item6 != null && ((CheckBox)BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-
-                    ((ListBox)BiomeSettingsInputs[property].Item1).Items.Clear();
-                    string[] resourceQueueItemNames = biomeConfig.GetPropertyValueAsString(property).Replace("\r", "").Split('\n');
-                    foreach (string resourceQueueItemName in resourceQueueItemNames)
-                    {
-                        if (!String.IsNullOrEmpty(resourceQueueItemName))
-                        {
-                            ((ListBox)BiomeSettingsInputs[property].Item1).Items.Add(resourceQueueItemName.Trim());
-                        }
-                    }
-                    IgnoreOverrideCheckChangedBiome = false;
-                }
-            }
-
-            void btEditResourceQueueItem_Click(object sender, EventArgs e)
-            {
-                bool showDuplicateWarnings = true;
-                TCProperty property = ResourceQueueInputs[sender];
-                ListBox lb = ((ListBox)BiomeSettingsInputs[property].Item1);
-                string propertyValue = (string)lb.SelectedItem;
-                if (PopUpForm.InputBox("Edit item", "", ref propertyValue, true) == DialogResult.OK)
-                {
-                    if(propertyValue != null && !String.IsNullOrEmpty(propertyValue.Trim()))
-                    {
-                        if (lb.SelectedItem != null)
-                        {
-                            List<string> newPropertyValue = new List<string>();
-                            foreach (string item in lb.Items)
-                            {
-                                if(item != (string)lb.SelectedItem)
-                                {
-                                    newPropertyValue.Add(item.Trim());
-                                }
-                            }
-
-                            bool bAllowed = false;
-                            if (newPropertyValue != null)
-                            {
-                                bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)propertyValue) || (propertyValue.StartsWith("CustomObject(") && MessageBox.Show("An item with the value \"" + propertyValue + "\" already exists, are you sure you want to add another?", "Allow duplicate?", MessageBoxButtons.OKCancel) == DialogResult.OK);
-                                if (duplicatePermission)
-                                {
-                                    if (property.Name == "Mob spawning")
-                                    {
-                                        bAllowed = true;
-                                    } else {
-                                        if (propertyValue.Contains('(') && propertyValue.Contains(')'))
-                                        {
-                                            bool bFound3 = false;
-                                            ResourceQueueItem selectedOption = null;
-                                            foreach (ResourceQueueItem option in VersionConfig.ResourceQueueOptions)
-                                            {
-                                                if (propertyValue.StartsWith(option.Name))
-                                                {
-                                                    bFound3 = true;
-                                                    selectedOption = option;
-                                                    break;
-                                                }
-                                            }
-                                            if (bFound3)
-                                            {
-                                                if (selectedOption.IsUnique)
-                                                {
-                                                    List<string> possibleDuplicates = new List<string>();
-                                                    foreach (string value2 in newPropertyValue)
-                                                    {
-                                                        if (value2.StartsWith(selectedOption.Name))
-                                                        {
-                                                            if (!selectedOption.HasUniqueParameter) // Is duplicate tag, but not necessarily same params
-                                                            {
-                                                                //Delete old add new
-                                                                DeleteResourceQueueItem(property, value2);
-                                                            } else {
-                                                                possibleDuplicates.Add(value2);
-                                                            }
-                                                        }
-                                                    }
-                                                    if (possibleDuplicates.Any())
-                                                    {
-                                                        //if (selectedOption.HasUniqueParameter)
-                                                        //{
-                                                            bool bFound4 = false;
-                                                            string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                            foreach (string existingValue in possibleDuplicates)
-                                                            {
-                                                                string[] existingParameters = existingValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                                if (existingParameters.Length > selectedOption.UniqueParameterIndex && newParameters.Length > selectedOption.UniqueParameterIndex)
-                                                                {
-                                                                    if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
-                                                                    {
-                                                                        if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(newParameters[selectedOption.UniqueParameterIndex].ToLower().Trim())))
-                                                                        {
-                                                                            if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
-                                                                            {
-                                                                                //bFound4 = true;
-                                                                                //Delete old add new
-                                                                                DeleteResourceQueueItem(property, existingValue);
-                                                                            }
-                                                                        }
-                                                                    } else {
-                                                                        if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
-                                                                        {
-                                                                            //bFound4 = true;
-                                                                            //Delete old add new
-                                                                            DeleteResourceQueueItem(property, existingValue);
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                            //if (!bFound4)
-                                                            //{
-                                                                //bAllowed = true;
-                                                            //} else {
-                                                                if (newParameters.Length > selectedOption.UniqueParameterIndex)
-                                                                {
-                                                                    bAllowed = true;
-                                                                    //if (showDuplicateWarnings)
-                                                                    //{
-                                                                        //MessageBox.Show("Cannot add item. An item for property \"" + selectedOption.Name + "\" with parameter " + parameters2[selectedOption.UniqueParameterIndex] + " already exists and \"" + selectedOption.Name + parameters2[selectedOption.UniqueParameterIndex] + "\" must be unique.\r\n\r\nUnique properties and parameters can be configured in the VersionConfig.xml.", "Error: Illegal input");
-                                                                    //}
-                                                                } else {
-                                                                    MessageBox.Show("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
-                                                                }
-                                                            //}
-                                                        //} else {
-                                                            //if (showDuplicateWarnings)
-                                                            //{
-                                                                //MessageBox.Show("Cannot add item. An item for property \"" + selectedOption.Name + "\" already exists and \"" + selectedOption.Name + "\" must be unique.\r\n\r\nUnique properties and parameters can be configured in the VersionConfig.xml.", "Error: Illegal input");
-                                                            //}
-                                                        //}
-                                                    } else {
-                                                        bAllowed = true;
-                                                    }
-                                                } else {
-                                                    bAllowed = true;
-                                                }
-                                            } else {
-                                                string[] propertyNames = VersionConfig.ResourceQueueOptions.Select(a => a.Name).ToArray();
-                                                string sPropertyNames = "";
-                                                foreach (string a in propertyNames)
-                                                {
-                                                    sPropertyNames += a + "\r\n";
-                                                }
-                                                MessageBox.Show("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
-                                            }
-                                        } else {
-                                            MessageBox.Show("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
-                                        }
-                                    }
-                                } else {
-                                    if (!propertyValue.StartsWith("CustomObject("))
-                                    {
-                                        if (showDuplicateWarnings)
-                                        {
-                                            MessageBox.Show("Cannot add item. An item with the value \"" + propertyValue + "\" already exists.", "Error: Illegal input");
-                                        }
-                                    }
-                                }
-                            } else {
-                                bAllowed = true;
-                            }
-                            if(bAllowed)
-                            {
-                                IgnoreOverrideCheckChangedBiome = true;
-                                Group g = BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
-                                BiomeConfig biomeConfig = g.BiomeConfig;
-
-                                BiomeConfig biomeDefaultConfig = null;
-                                if (g.showDefaults)
-                                {
-                                    biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
-                                }
-
-                                string s = biomeConfig.GetPropertyValueAsString(property) ?? (biomeDefaultConfig != null && biomeDefaultConfig.GetPropertyValueAsString(property) != null ? biomeDefaultConfig.GetPropertyValueAsString(property) : "");
-                                if (((string)lb.SelectedItem).Length > 0)
-                                {
-                                    if (s.IndexOf("\r\n" + (string)lb.SelectedItem + "\r\n") > -1) { s = (s.Replace("\r\n" + (string)lb.SelectedItem + "\r\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf("\r\n" + (string)lb.SelectedItem + "\n") > -1) { s = (s.Replace("\r\n" + (string)lb.SelectedItem + "\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf("\n" + (string)lb.SelectedItem + "\r\n") > -1) { s = (s.Replace("\n" + (string)lb.SelectedItem + "\r\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf("\n" + (string)lb.SelectedItem + "\n") > -1) { s = (s.Replace("\n" + (string)lb.SelectedItem + "\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf((string)lb.SelectedItem + "\r\n") > -1) { s = (s.Replace((string)lb.SelectedItem + "\r\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf((string)lb.SelectedItem + "\r\n") > -1) { s = (s.Replace((string)lb.SelectedItem + "\r\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf((string)lb.SelectedItem + "\n") > -1) { s = (s.Replace((string)lb.SelectedItem + "\n", "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf("\r\n" + (string)lb.SelectedItem) > -1) { s = (s.Replace("\r\n" + (string)lb.SelectedItem, "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf("\n" + (string)lb.SelectedItem) > -1) { s = (s.Replace("\n" + (string)lb.SelectedItem, "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                    else if (s.IndexOf((string)lb.SelectedItem) > -1) { s = (s.Replace((string)lb.SelectedItem, "\r\n" + propertyValue + "\r\n")).Trim(); }
-                                }
-
-                                bool bIsDefault = CompareResourceQueues(s, biomeDefaultConfig != null && biomeDefaultConfig.GetPropertyValueAsString(property) != null ? biomeDefaultConfig.GetPropertyValueAsString(property) : "");
-
-                                if (!bIsDefault)
-                                {
-                                    biomeConfig.SetProperty(property, s, BiomeSettingsInputs[property].Item6 != null && ((RadioButton)BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, BiomeSettingsInputs[property].Item6 != null && ((CheckBox)BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                                    biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = true;
-                                    BiomeSettingsInputs[property].Item2.Checked = true;
-                                } else {
-                                    biomeConfig.SetProperty(property, null, BiomeSettingsInputs[property].Item6 != null && ((RadioButton)BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, BiomeSettingsInputs[property].Item6 != null && ((CheckBox)BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                                    biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = false;
-                                    BiomeSettingsInputs[property].Item2.Checked = false;
-                                }
-
-                                ((ListBox)BiomeSettingsInputs[property].Item1).Items.Clear();
-                                string[] resourceQueueItemNames = s.Replace("\r", "").Split('\n');
-                                foreach (string resourceQueueItemName in resourceQueueItemNames)
-                                {
-                                    if (!String.IsNullOrEmpty(resourceQueueItemName))
-                                    {
-                                        ((ListBox)BiomeSettingsInputs[property].Item1).Items.Add(resourceQueueItemName.Trim());
-                                    }
-                                }
-                                IgnoreOverrideCheckChangedBiome = false;
-                            }
+                            DeleteResourceQueueItem(property, originalPropertyValue);
+                            AddResourceToBiome(property, propertyValue);
                         }
                     }
                 }
@@ -4993,78 +5110,69 @@ namespace TCEE
                                                 {
                                                     if (value1 != null && !string.IsNullOrEmpty(value1.Trim()))
                                                     {
-                                                        //bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)value1) || MessageBox.Show("An item with the same value already exists, are you sure you want to add another?", "Allow duplicate?", MessageBoxButtons.OKCancel) == DialogResult.OK;
-                                                        bool duplicatePermission = value1.StartsWith("CustomObject(") || !newPropertyValue.Any(a => (string)a == (string)value1);
-                                                        //bool duplicatePermission = true;
+                                                        bool duplicatePermission = value1.StartsWith("CustomObject(") || !newPropertyValue.Any(a => (string)a.Replace("\r", "").Replace("\n", "") == (string)value1.Replace("\r", "").Replace("\n", ""));
                                                         if (duplicatePermission)
                                                         {
-                                                            if (property.Name == "Mob spawning")
+                                                            if (value1.Contains('(') && value1.Contains(')'))
                                                             {
-                                                                newPropertyValue.Add(value1.Trim());
-                                                            } else {
-                                                                if (value1.Contains('(') && value1.Contains(')'))
+                                                                ResourceQueueItem selectedOption = null;
+                                                                foreach (ResourceQueueItem option in VersionConfig.ResourceQueueOptions)
                                                                 {
-                                                                    bool bFound3 = false;
-                                                                    ResourceQueueItem selectedOption = null;
-                                                                    foreach (ResourceQueueItem option in VersionConfig.ResourceQueueOptions)
+                                                                    if (value1.StartsWith(option.Name))
                                                                     {
-                                                                        if (value1.StartsWith(option.Name))
-                                                                        {
-                                                                            bFound3 = true;
-                                                                            selectedOption = option;
-                                                                            break;
-                                                                        }
+                                                                        selectedOption = option;
+                                                                        break;
                                                                     }
-                                                                    if (bFound3)
+                                                                }
+                                                                if (selectedOption != null)
+                                                                {
+                                                                    if (selectedOption.IsUnique)
                                                                     {
-                                                                        if (selectedOption.IsUnique)
+                                                                        List<string> possibleDuplicates = new List<string>();
+                                                                        foreach (string value2 in newPropertyValue)
                                                                         {
-                                                                            List<string> possibleDuplicates = new List<string>();
-                                                                            foreach (string value2 in newPropertyValue)
+                                                                            if (value2.StartsWith(selectedOption.Name))
                                                                             {
-                                                                                if (value2.StartsWith(selectedOption.Name))
-                                                                                {
-                                                                                    possibleDuplicates.Add(value2);
-                                                                                }
+                                                                                possibleDuplicates.Add(value2);
                                                                             }
-                                                                            if (possibleDuplicates.Any())
+                                                                        }
+                                                                        if (possibleDuplicates.Any())
+                                                                        {
+                                                                            if (selectedOption.HasUniqueParameter)
                                                                             {
-                                                                                if (selectedOption.HasUniqueParameter)
+                                                                                foreach (string value3 in possibleDuplicates)
                                                                                 {
-                                                                                    foreach (string value3 in possibleDuplicates)
+                                                                                    string[] parameters = value3.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                                                                    string[] parameters2 = value1.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                                                                    if (parameters.Length > selectedOption.UniqueParameterIndex && parameters2.Length > selectedOption.UniqueParameterIndex)
                                                                                     {
-                                                                                        string[] parameters = value3.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                                                        string[] parameters2 = value1.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                                                        if (parameters.Length > selectedOption.UniqueParameterIndex && parameters2.Length > selectedOption.UniqueParameterIndex)
+                                                                                        if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
                                                                                         {
-                                                                                            if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
+                                                                                            if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(parameters2[selectedOption.UniqueParameterIndex].ToLower().Trim())))
                                                                                             {
-                                                                                                if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(parameters2[selectedOption.UniqueParameterIndex].ToLower().Trim())))
-                                                                                                {
-                                                                                                    if (parameters[selectedOption.UniqueParameterIndex].Trim() == parameters2[selectedOption.UniqueParameterIndex].Trim())
-                                                                                                    {
-                                                                                                        newPropertyValue.RemoveAll(a => a.StartsWith(selectedOption.Name + parameters2[selectedOption.UniqueParameterIndex]));
-                                                                                                    }
-                                                                                                }
-                                                                                            } else {
                                                                                                 if (parameters[selectedOption.UniqueParameterIndex].Trim() == parameters2[selectedOption.UniqueParameterIndex].Trim())
                                                                                                 {
                                                                                                     newPropertyValue.RemoveAll(a => a.StartsWith(selectedOption.Name + parameters2[selectedOption.UniqueParameterIndex]));
                                                                                                 }
                                                                                             }
+                                                                                        } else {
+                                                                                            if (parameters[selectedOption.UniqueParameterIndex].Trim() == parameters2[selectedOption.UniqueParameterIndex].Trim())
+                                                                                            {
+                                                                                                newPropertyValue.RemoveAll(a => a.StartsWith(selectedOption.Name + parameters2[selectedOption.UniqueParameterIndex]));
+                                                                                            }
                                                                                         }
                                                                                     }
-                                                                                    newPropertyValue.Add(value1.Trim());
-                                                                                } else {
-                                                                                    newPropertyValue.RemoveAll(a => a.StartsWith(selectedOption.Name));
-                                                                                    newPropertyValue.Add(value1.Trim());
                                                                                 }
+                                                                                newPropertyValue.Add(value1.Trim());
                                                                             } else {
+                                                                                newPropertyValue.RemoveAll(a => a.StartsWith(selectedOption.Name));
                                                                                 newPropertyValue.Add(value1.Trim());
                                                                             }
                                                                         } else {
                                                                             newPropertyValue.Add(value1.Trim());
                                                                         }
+                                                                    } else {
+                                                                        newPropertyValue.Add(value1.Trim());
                                                                     }
                                                                 }
                                                             }
@@ -5219,74 +5327,132 @@ namespace TCEE
                         {
                             StringBuilder defaultText = new StringBuilder(System.IO.File.ReadAllText(file.FullName));
                             string sDefaultText = defaultText.ToString();
-
                             foreach (TCProperty property in versionConfig.BiomeConfig)
                             {
-                                string value = "";
+                                List<string> valuesPerBiomeGroup = new List<string>();
+
+                                string newValue = "";
+                                string aggregateValue = "";
+                                string defaultValue = "";
+
                                 if (property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
                                 {
                                     if (!BiomeGroups.Any(a => a.Biomes.Any(b => b == defaultBiome.BiomeName) && a.BiomeConfig.Properties.First(c => c.PropertyName == property.Name).Override))
                                     {
                                         //Never overriden, set to default value
-                                        value = defaultBiome.GetPropertyValueAsString(property);
+                                        defaultValue = defaultBiome.GetPropertyValueAsString(property);
                                     }
                                 } else {
-                                    value = defaultBiome.GetPropertyValueAsString(property);
+                                    defaultValue = defaultBiome.GetPropertyValueAsString(property);
                                 }
+
+                                newValue += defaultValue;
+                                aggregateValue += defaultValue;
+                                if (!String.IsNullOrEmpty(defaultValue))
+                                {
+                                    valuesPerBiomeGroup.Add(defaultValue);
+                                }
+
                                 bool bOverride = false;
                                 bool bOverrideParentvalues = false;
                                 bool bMerge = false;
-                                foreach (Group biomeGroup in BiomeGroups)
-                                {
-                                    if (biomeGroup.Biomes.Any(a => a == defaultBiome.BiomeName))
-                                    {
-                                        if (biomeGroup.BiomeConfig.Properties.Any(a => a.PropertyName == property.Name) && biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override)
-                                        {
-                                            if (!biomeGroup.BiomeConfig.GetPropertyMerge(property))
-                                            {
-                                                bOverride = true;
-                                            }
-                                            bMerge = biomeGroup.BiomeConfig.GetPropertyMerge(property);
-                                            bOverrideParentvalues = biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).OverrideParentValues;
 
-                                            if (biomeGroup.BiomeConfig.GetPropertyOverrideParentValues(property) || (property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue"))
+                                // Make sure that the biome groups are processed in the correct order
+                                foreach(string biomeGroupName in lbGroups.Items)
+                                {
+                                    Group biomeGroup = BiomeGroups.FirstOrDefault(a => a.Name.Equals(biomeGroupName));
+                                    if (biomeGroup != null)
+                                    {
+                                        string groupvalue = "";
+                                        if (biomeGroup.Biomes.Any(a => a == defaultBiome.BiomeName))
+                                        {
+                                            if (biomeGroup.BiomeConfig.Properties.Any(a => a.PropertyName == property.Name) && biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override)
                                             {
-                                                if (!String.IsNullOrEmpty(biomeGroup.BiomeConfig.GetPropertyValueAsString(property)) || property.PropertyType == "String" || property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
+                                                if (!biomeGroup.BiomeConfig.GetPropertyMerge(property))
                                                 {
-                                                    value = biomeGroup.BiomeConfig.GetPropertyValueAsString(property);
+                                                    bOverride = true;
                                                 }
-                                            }
-                                            else if (property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
-                                            {
-                                                if (property.PropertyType == "BiomesList" && biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override)
+                                                if (file.Name.Contains("Swamp Jungle L") && property.PropertyType == "ResourceQueue")
                                                 {
-                                                    if (value != null && !String.IsNullOrEmpty(value.Trim()))
+                                                    String breakpoint = "";
+                                                }
+
+                                                bMerge = biomeGroup.BiomeConfig.GetPropertyMerge(property);
+                                                bOverrideParentvalues = biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).OverrideParentValues;
+
+                                                if (biomeGroup.BiomeConfig.GetPropertyOverrideParentValues(property) || (property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue"))
+                                                {
+                                                    if (!String.IsNullOrEmpty(biomeGroup.BiomeConfig.GetPropertyValueAsString(property)) || property.PropertyType == "String" || property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
                                                     {
-                                                        value += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? ", " + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
-                                                    } else {
-                                                        value += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
+                                                        groupvalue = biomeGroup.BiomeConfig.GetPropertyValueAsString(property);
+                                                        aggregateValue = biomeGroup.BiomeConfig.GetPropertyValueAsString(property);
                                                     }
                                                 }
-                                                else if (property.PropertyType == "ResourceQueue" && biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override)
+                                                else if (property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
                                                 {
-                                                    if (value != null && !String.IsNullOrEmpty(value.Trim()))
+                                                    if (property.PropertyType == "BiomesList" && biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override)
                                                     {
-                                                        value += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? "\r\n" + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
-                                                    } else {
-                                                        value += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
+                                                        if (groupvalue != null && !String.IsNullOrEmpty(groupvalue.Trim()))
+                                                        {
+                                                            groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? ", " + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
+                                                        } else {
+                                                            groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
+                                                        }
+
+                                                        if (aggregateValue != null && !String.IsNullOrEmpty(aggregateValue.Trim()))
+                                                        {
+                                                            aggregateValue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? ", " + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
+                                                        } else {
+                                                            aggregateValue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
+                                                        }
                                                     }
-                                                } else {
-                                                    MessageBox.Show("One does not simply merge a non-BiomesList, non-ResourceQueue property. Property \"" + property.Name + "\" group \"" + biomeGroup.Name + "\". Biome generation aborted.", "Generation error");
-                                                    return;
+                                                    else if (property.PropertyType == "ResourceQueue" && biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override)
+                                                    {
+                                                        if (groupvalue != null && !String.IsNullOrEmpty(groupvalue.Trim()))
+                                                        {
+                                                            groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? "\r\n" + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
+                                                        } else {
+                                                            groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
+                                                        }
+
+                                                        if (aggregateValue != null && !String.IsNullOrEmpty(aggregateValue.Trim()))
+                                                        {
+                                                            aggregateValue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? "\r\n" + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
+                                                        } else {
+                                                            aggregateValue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
+                                                        }
+
+                                                    } else {
+                                                        MessageBox.Show("One does not simply merge a non-BiomesList, non-ResourceQueue property. Property \"" + property.Name + "\" group \"" + biomeGroup.Name + "\". Biome generation aborted.", "Generation error");
+                                                        return;
+                                                    }
                                                 }
                                             }
                                         }
+                                        if(!String.IsNullOrEmpty(groupvalue))
+                                        {
+                                            valuesPerBiomeGroup.Add(groupvalue);
+                                        }
+                                    } else {
+                                        throw new Exception("Biome Group data could not be found. This is not supposed to happen! Please contact the developer with a bug report.");
                                     }
                                 }
+
+                                if (file.Name.Contains("Swamp Jungle L") && property.PropertyType == "ResourceQueue")
+                                {
+                                    String breakpoint = "";
+                                }
+
                                 bMerge = (!bOverride || (bMerge && bOverrideParentvalues)) && bMerge;
 
                                 if (property.PropertyType == "ResourceQueue")
                                 {
+
+                                    if (file.Name.Contains("Swamp Jungle L") && property.PropertyType == "ResourceQueue")
+                                    {
+                                        String breakpoint = "";
+                                    }
+
                                     bool bFound = false;
                                     int replaceStartIndex = sDefaultText.ToLower().IndexOf(property.ScriptHandle.ToLower());
                                     if (replaceStartIndex > -1)
@@ -5321,6 +5487,12 @@ namespace TCEE
                                                 }
                                             }
                                         }
+
+                                        if (file.Name.Contains("Swamp Jungle L") && property.PropertyType == "ResourceQueue")
+                                        {
+                                            String breakpoint = "";
+                                        }
+
                                         if (replaceStartIndex > -1)
                                         {
                                             int replaceLength = 0;
@@ -5335,25 +5507,120 @@ namespace TCEE
                                             }
                                             if (replaceLength > 0)
                                             {
-                                                string[] biomesListItemNames = value != null ? value.Replace("\r", "").Split('\n') : null;
+                                                if (file.Name.Contains("Swamp Jungle L") && property.PropertyType == "ResourceQueue")
+                                                {
+                                                    String breakpoint = "";
+                                                }
+
                                                 string[] defaultBiomesListItemNames = defaultBiome.GetPropertyValueAsString(property) != null ? defaultBiome.GetPropertyValueAsString(property).Replace("\r", "").Split('\n') : null;
                                                 List<string> newPropertyValue = new List<string>();
+                                                //List<string> defaultPropertyValue = new List<string>();
 
+                                                //string finalBiomeGroupValue = newValue;                                                    
                                                 if (defaultBiomesListItemNames != null && bMerge)
                                                 {
                                                     foreach (string value1 in defaultBiomesListItemNames)
                                                     {
-                                                        if(value1 != null && !string.IsNullOrEmpty(value1.Trim()))
+                                                        if (value1 != null && !string.IsNullOrEmpty(value1.Trim()))
                                                         {
                                                             //bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)value1) || MessageBox.Show("An item with the same value already exists, are you sure you want to add another?", "Allow duplicate?", MessageBoxButtons.OKCancel) == DialogResult.OK;
-                                                            bool duplicatePermission = value1.StartsWith("CustomObject(") || !newPropertyValue.Any(a => (string)a == (string)value1);
+                                                            bool duplicatePermission = value1.StartsWith("CustomObject(") || !newPropertyValue.Any(a => (string)a.Replace("\r", "").Replace("\n", "") == (string)value1.Replace("\r", "").Replace("\n", ""));
                                                             //bool duplicatePermission = true;
                                                             if (duplicatePermission)
                                                             {
-                                                                if (property.Name == "Mob spawning")
+                                                                if (value1.Contains('(') && value1.Contains(')'))
                                                                 {
-                                                                    newPropertyValue.Add(value1.Trim());
-                                                                } else {
+                                                                    bool bFound3 = false;
+                                                                    ResourceQueueItem selectedOption = null;
+                                                                    foreach (ResourceQueueItem option in versionConfig.ResourceQueueOptions)
+                                                                    {
+                                                                        if (value1.StartsWith(option.Name))
+                                                                        {
+                                                                            bFound3 = true;
+                                                                            selectedOption = option;
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                    if (bFound3)
+                                                                    {
+                                                                        if (selectedOption.IsUnique)
+                                                                        {
+                                                                            List<string> possibleDuplicates = new List<string>();
+                                                                            foreach (string value2 in newPropertyValue)
+                                                                            {
+                                                                                if (value2.StartsWith(selectedOption.Name))
+                                                                                {
+                                                                                    possibleDuplicates.Add(value2);
+                                                                                }
+                                                                            }
+                                                                            if (possibleDuplicates.Any())
+                                                                            {
+                                                                                if (selectedOption.HasUniqueParameter)
+                                                                                {
+                                                                                    bool bFound4 = false;
+                                                                                    foreach (string value3 in possibleDuplicates)
+                                                                                    {
+                                                                                        string[] parameters = value3.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                                                                        string[] parameters2 = value1.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                                                                        if (parameters.Length > selectedOption.UniqueParameterIndex && parameters2.Length > selectedOption.UniqueParameterIndex)
+                                                                                        {
+                                                                                            if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
+                                                                                            {
+                                                                                                if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(parameters2[selectedOption.UniqueParameterIndex].ToLower().Trim())))
+                                                                                                {
+                                                                                                    if (parameters[selectedOption.UniqueParameterIndex].Trim() == parameters2[selectedOption.UniqueParameterIndex].Trim())
+                                                                                                    {
+                                                                                                        bFound4 = true;
+                                                                                                    }
+                                                                                                }
+                                                                                            } else {
+                                                                                                if (parameters[selectedOption.UniqueParameterIndex].Trim() == parameters2[selectedOption.UniqueParameterIndex].Trim())
+                                                                                                {
+                                                                                                    bFound4 = true;
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                    if (!bFound4)
+                                                                                    {
+                                                                                        newPropertyValue.Add(value1.Trim());
+                                                                                    }
+                                                                                }
+                                                                            } else                                                                            {
+                                                                                newPropertyValue.Add(value1.Trim());
+                                                                            }
+                                                                        } else {
+                                                                            newPropertyValue.Add(value1.Trim());
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if (file.Name.Contains("Swamp Jungle L") && property.PropertyType == "ResourceQueue")
+                                                    {
+                                                        String breakpoint = "";
+                                                    }
+                                                }
+
+                                                foreach (string biomeGroupValue in valuesPerBiomeGroup)
+                                                {
+                                                    string[] biomesListItemNames = biomeGroupValue != null ? biomeGroupValue.Replace("\r", "").Split('\n') : null;
+                                                    List<string> newGroupPropertyValue = new List<string>();
+
+                                                    if (biomesListItemNames != null)
+                                                    {
+                                                        foreach (string value1 in biomesListItemNames)
+                                                        {
+                                                            if (value1 != null && !string.IsNullOrEmpty(value1.Trim()))
+                                                            {
+                                                                //bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)value1) || MessageBox.Show("An item with the same value already exists, are you sure you want to add another?", "Allow duplicate?", MessageBoxButtons.OKCancel) == DialogResult.OK;
+                                                                //bool duplicatePermission = value1.StartsWith("CustomObject(") || !newPropertyValue.Any(a => (string)a == (string)value1);
+                                                                //bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)value1);
+                                                                bool duplicatePermission = true;
+                                                                if (duplicatePermission)
+                                                                {
                                                                     if (value1.Contains('(') && value1.Contains(')'))
                                                                     {
                                                                         bool bFound3 = false;
@@ -5383,94 +5650,6 @@ namespace TCEE
                                                                                 {
                                                                                     if (selectedOption.HasUniqueParameter)
                                                                                     {
-                                                                                        bool bFound4 = false;
-                                                                                        foreach (string value3 in possibleDuplicates)
-                                                                                        {
-                                                                                            string[] parameters = value3.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                                                            string[] parameters2 = value1.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                                                            if (parameters.Length > selectedOption.UniqueParameterIndex && parameters2.Length > selectedOption.UniqueParameterIndex)
-                                                                                            {
-                                                                                                if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
-                                                                                                {
-                                                                                                    if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(parameters2[selectedOption.UniqueParameterIndex].ToLower().Trim())))
-                                                                                                    {
-                                                                                                        if (parameters[selectedOption.UniqueParameterIndex].Trim() == parameters2[selectedOption.UniqueParameterIndex].Trim())
-                                                                                                        {
-                                                                                                            bFound4 = true;
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                                else
-                                                                                                {
-                                                                                                    if (parameters[selectedOption.UniqueParameterIndex].Trim() == parameters2[selectedOption.UniqueParameterIndex].Trim())
-                                                                                                    {
-                                                                                                        bFound4 = true;
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                        if (!bFound4)
-                                                                                        {
-                                                                                            newPropertyValue.Add(value1.Trim());
-                                                                                        }
-                                                                                    }
-                                                                                } else {
-                                                                                    newPropertyValue.Add(value1.Trim());
-                                                                                }
-                                                                            } else {
-                                                                                newPropertyValue.Add(value1.Trim());
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                if(biomesListItemNames != null)
-                                                {
-                                                    foreach (string value1 in biomesListItemNames)
-                                                    {
-                                                        if (value1 != null && !string.IsNullOrEmpty(value1.Trim()))
-                                                        {
-                                                            //bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)value1) || MessageBox.Show("An item with the same value already exists, are you sure you want to add another?", "Allow duplicate?", MessageBoxButtons.OKCancel) == DialogResult.OK;
-                                                            bool duplicatePermission = value1.StartsWith("CustomObject(") || !newPropertyValue.Any(a => (string)a == (string)value1);
-                                                            //bool duplicatePermission = true;
-                                                            if (duplicatePermission)
-                                                            {
-                                                                if(property.Name == "Mob spawning")
-                                                                {
-                                                                    newPropertyValue.Add(value1.Trim());
-                                                                } else {
-                                                                    if (value1.Contains('(') && value1.Contains(')'))
-                                                                    {
-                                                                        bool bFound3 = false;
-                                                                        ResourceQueueItem selectedOption = null;
-                                                                        foreach (ResourceQueueItem option in versionConfig.ResourceQueueOptions)
-                                                                        {
-                                                                            if(value1.StartsWith(option.Name))
-                                                                            {
-                                                                                bFound3 = true;
-                                                                                selectedOption = option;
-                                                                                break;
-                                                                            }
-                                                                        }
-                                                                        if(bFound3)
-                                                                        {
-                                                                            if(selectedOption.IsUnique)
-                                                                            {
-                                                                                List<string> possibleDuplicates = new List<string>();
-                                                                                foreach(string value2 in newPropertyValue)
-                                                                                {
-                                                                                    if(value2.StartsWith(selectedOption.Name))
-                                                                                    {
-                                                                                        possibleDuplicates.Add(value2);
-                                                                                    }
-                                                                                }
-                                                                                if(possibleDuplicates.Any())
-                                                                                {
-                                                                                    if (selectedOption.HasUniqueParameter)
-                                                                                    {
                                                                                         foreach (string value3 in possibleDuplicates)
                                                                                         {
                                                                                             string[] parameters = value3.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
@@ -5496,16 +5675,22 @@ namespace TCEE
                                                                                                 }
                                                                                             }
                                                                                         }
-                                                                                        newPropertyValue.Add(value1.Trim());
-                                                                                    } else {
-                                                                                        newPropertyValue.RemoveAll(a => a.StartsWith(selectedOption.Name));
-                                                                                        newPropertyValue.Add(value1.Trim());
+                                                                                        newGroupPropertyValue.Add(value1.Trim());
                                                                                     }
-                                                                                } else {
-                                                                                    newPropertyValue.Add(value1.Trim());
+                                                                                    else
+                                                                                    {
+                                                                                        newPropertyValue.RemoveAll(a => a.StartsWith(selectedOption.Name));
+                                                                                        newGroupPropertyValue.Add(value1.Trim());
+                                                                                    }
                                                                                 }
-                                                                            } else {
-                                                                                newPropertyValue.Add(value1.Trim());
+                                                                                else
+                                                                                {
+                                                                                    newGroupPropertyValue.Add(value1.Trim());
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                newGroupPropertyValue.Add(value1.Trim());
                                                                             }
                                                                         }
                                                                     }
@@ -5513,12 +5698,19 @@ namespace TCEE
                                                             }
                                                         }
                                                     }
+                                                    newPropertyValue.AddRange(newGroupPropertyValue);
                                                 }
-                                                value = "";
+
+                                                if (file.Name.Contains("Swamp Jungle L") && property.PropertyType == "ResourceQueue")
+                                                {
+                                                    String breakpoint = "";
+                                                }
+
+                                                newValue = "";
                                                 int i = 0;
                                                 foreach (string value1 in newPropertyValue)
                                                 {
-                                                    value += (i != newPropertyValue.Count() - 1 ? value1 + "\r\n" : value1);
+                                                    newValue += (i != newPropertyValue.Count() - 1 ? value1 + "\r\n" : value1);
                                                     i++;
                                                 }
                                             }
@@ -5526,13 +5718,13 @@ namespace TCEE
                                             {
                                                 defaultText = defaultText.Remove(replaceStartIndex, replaceLength);
                                             }
-                                            defaultText = defaultText.Insert(replaceStartIndex, value + "\r\n");
+                                            defaultText = defaultText.Insert(replaceStartIndex, newValue + "\r\n");
                                             sDefaultText = defaultText.ToString();
                                         } else {
 
                                             if (!property.Optional)
                                             {
-                                                defaultText.Append(property.ScriptHandle + " " + value + "\r\n");
+                                                defaultText.Append(property.ScriptHandle + " " + newValue + "\r\n");
 
                                                 errorsTxt += "\r\nVersion config error: The value for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Added it to the end of the file.";
                                             }
@@ -5544,7 +5736,7 @@ namespace TCEE
 
                                         if (!property.Optional)
                                         {
-                                            defaultText.Append(property.ScriptHandle + " " + value + "\r\n");
+                                            defaultText.Append(property.ScriptHandle + " " + newValue + "\r\n");
 
                                             errorsTxt += "\r\nVersion config error: Handle for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Added it to the end of the file.";
                                         }
@@ -5552,6 +5744,9 @@ namespace TCEE
                                         //return;
                                     }
                                 } else {
+
+                                    newValue = aggregateValue;
+
                                     bool bFound = false;
                                     int valueStringStartIndex = sDefaultText.ToLower().IndexOf(property.ScriptHandle.ToLower());
                                     if (valueStringStartIndex > -1)
@@ -5581,7 +5776,7 @@ namespace TCEE
 
                                             if (property.PropertyType == "BiomesList" && bMerge && valueStringLength > 0)
                                             {
-                                                string[] biomesListItemNames = value != null ? value.Split(',') : null;
+                                                string[] biomesListItemNames = newValue != null ? newValue.Split(',') : null;
                                                 string[] defaultBiomesListItemNames = defaultBiome.GetPropertyValueAsString(property) != null ? defaultBiome.GetPropertyValueAsString(property).Split(',') : null;
                                                 List<string> newPropertyValue = new List<string>();
                                                 if(biomesListItemNames != null)
@@ -5605,23 +5800,23 @@ namespace TCEE
                                                     }
                                                 }
 
-                                                value = "";
+                                                newValue = "";
                                                 foreach (string value1 in newPropertyValue)
                                                 {
-                                                    value += (value1 != newPropertyValue[newPropertyValue.Count() - 1] ? value1 + ", " : value1);
+                                                    newValue += (value1 != newPropertyValue[newPropertyValue.Count() - 1] ? value1 + ", " : value1);
                                                 }
                                             }
                                             if (valueStringLength > 0)
                                             {
                                                 defaultText = defaultText.Remove(valueStringStartIndex + skipCharsLength, valueStringLength);
                                             }
-                                            defaultText = defaultText.Insert(valueStringStartIndex + skipCharsLength, " " + value);
+                                            defaultText = defaultText.Insert(valueStringStartIndex + skipCharsLength, " " + newValue);
                                             sDefaultText = defaultText.ToString();
                                         } else {
 
                                             if(!property.Optional)
                                             {
-                                                defaultText.Append(property.ScriptHandle + " " + value + "\r\n");
+                                                defaultText.Append(property.ScriptHandle + " " + newValue + "\r\n");
 
                                                 errorsTxt += "\r\nVersion config error: The value for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Added it to the end of the file.";
                                             }
@@ -5639,7 +5834,7 @@ namespace TCEE
 
                                         if (!property.Optional)
                                         {
-                                            defaultText.Append(property.ScriptHandle + " " + value + "\r\n");
+                                            defaultText.Append(property.ScriptHandle + " " + newValue + "\r\n");
 
                                             errorsTxt += "\r\nVersion config error: The value for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Added it to the end of the file.";
                                         }
@@ -5768,7 +5963,7 @@ namespace TCEE
                                     if(listBox.SelectedIndices.Count > 1)
                                     {
                                         //if (System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                                        if (System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_ -+]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                                        if (System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_+ -]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                                         {
                                             PopupFormSelectedItem = textBox.Text;
                                             form.DialogResult = DialogResult.OK;
@@ -5867,7 +6062,7 @@ namespace TCEE
                         {
                             if (!string.IsNullOrWhiteSpace(textBox.Text))
                             {
-                                if (!allowBracesCommasDotsColons ? System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_ -+]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase) : System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_(),.: -]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                                if (!allowBracesCommasDotsColons ? System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_+ -]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase) : System.Text.RegularExpressions.Regex.IsMatch(textBox.Text, "^[a-z0-9_+(),.: -]*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                                 {
                                     PopupFormSelectedItem = textBox.Text;
                                     form.DialogResult = DialogResult.OK;
@@ -6459,14 +6654,24 @@ namespace TCEE
             }
             if (e.Control && e.KeyCode == Keys.V)
             {
-                e.SuppressKeyPress = true; 
+                e.SuppressKeyPress = true;
 
                 ListBox lb = (ListBox)sender;
                 String[] clipBoardStrings = Clipboard.GetText().Replace("\r\n", "/").Split('/');
+                addingMultipleResourcesXToAll = DialogResult.Abort;
+                addingMultipleResourcesXToAll2 = DialogResult.Abort;
+                addingMultipleResourcesXToAll3 = DialogResult.Abort;
+                resourcesToAdd = new List<string>();
+                copyPasting = true;
                 foreach (String selectedItem in clipBoardStrings)
                 {
                     AddToResourceQueueWorld(property, selectedItem, false);
                 }
+                foreach (string itemToAdd in resourcesToAdd)
+                {
+                    AddResourceToWorld(property, itemToAdd);
+                }
+                copyPasting = false;
             }
             if(e.KeyCode == Keys.Delete)
             {
@@ -6486,6 +6691,11 @@ namespace TCEE
             }
         }
 
+        DialogResult addingMultipleResourcesXToAll = DialogResult.Abort;
+        DialogResult addingMultipleResourcesXToAll2 = DialogResult.Abort;
+        DialogResult addingMultipleResourcesXToAll3 = DialogResult.Abort;
+        List<string> resourcesToAdd = new List<string>();
+        bool copyPasting = false;
         void lbPropertyInput_KeyDown(object sender, KeyEventArgs e)
         {
             TCProperty property = BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item1 == sender).Key;
@@ -6500,8 +6710,11 @@ namespace TCEE
                 {
                     clipBoardString += selectedItem + "\r\n";
                 }
-                clipBoardString = clipBoardString.Substring(0, clipBoardString.Length - 1); // Remove trailing "/"
-                Clipboard.SetText(clipBoardString);
+                if (clipBoardString.Length > 0)
+                {
+                    clipBoardString = clipBoardString.Substring(0, clipBoardString.Length - 1); // Remove trailing "/"
+                    Clipboard.SetText(clipBoardString);
+                }
             }
             if (e.Control && e.KeyCode == Keys.V)
             {
@@ -6509,10 +6722,20 @@ namespace TCEE
 
                 ListBox lb = (ListBox)sender;
                 String[] clipBoardStrings = Clipboard.GetText().Replace("\r\n","/").Split('/');
+                addingMultipleResourcesXToAll = DialogResult.Abort;
+                addingMultipleResourcesXToAll2 = DialogResult.Abort;
+                addingMultipleResourcesXToAll3 = DialogResult.Abort;
+                resourcesToAdd = new List<string>();
+                copyPasting = true;
                 foreach (String selectedItem in clipBoardStrings)
                 {
                     AddToResourceQueue(property, selectedItem, false);
                 }
+                foreach (string itemToAdd in resourcesToAdd)
+                {
+                    AddResourceToBiome(property, itemToAdd);
+                }                
+                copyPasting = false;
             }
             if (e.KeyCode == Keys.Delete)
             {
@@ -6530,7 +6753,20 @@ namespace TCEE
                     }
                 }
             }
-        }    
+        }
+    }
+
+    public static class StringExtensionMethods
+    {
+        public static string ReplaceFirst(this string text, string search, string replace)
+        {
+            int pos = text.IndexOf(search);
+            if (pos < 0)
+            {
+                return text;
+            }
+            return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
+        }
     }
 
     class CopyDir
@@ -6775,6 +7011,9 @@ namespace TCEE
             public bool IsUnique;
             [DataMember]
             public List<string> UniqueParameterValues;
+
+            [DataMember]
+            public bool PopupAskForOverride = false;
         }
 
         [DataContract]
