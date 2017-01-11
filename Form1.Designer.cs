@@ -87,6 +87,7 @@
             this.btnConvertSchematicToBO3 = new System.Windows.Forms.Button();
             this.btCopyBO3s = new System.Windows.Forms.Button();
             this.btImportWorld = new System.Windows.Forms.Button();
+            this.btCloneGroup = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -164,9 +165,9 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage2);
@@ -191,9 +192,9 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.btSetToDefault);
             this.groupBox1.Controls.Add(this.tlpWorldSettings);
@@ -212,7 +213,7 @@
             this.label2.Size = new System.Drawing.Size(488, 13);
             this.label2.TabIndex = 23;
             this.label2.Text = "Tick a checkbox to apply the value. Only applied values are used by \"Generate\" an" +
-    "d \"Save settings\".";
+                "d \"Save settings\".";
             // 
             // btSetToDefault
             // 
@@ -226,9 +227,9 @@
             // 
             // tlpWorldSettings
             // 
-            this.tlpWorldSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpWorldSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tlpWorldSettings.AutoScroll = true;
             this.tlpWorldSettings.ColumnCount = 8;
             this.tlpWorldSettings.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
@@ -259,9 +260,10 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.btCloneGroup);
             this.groupBox4.Controls.Add(this.btGroupMoveDown);
             this.groupBox4.Controls.Add(this.btGroupMoveUp);
             this.groupBox4.Controls.Add(this.btEditGroup);
@@ -309,9 +311,9 @@
             // 
             // btEditGroup
             // 
-            this.btEditGroup.Location = new System.Drawing.Point(75, 163);
+            this.btEditGroup.Location = new System.Drawing.Point(53, 163);
             this.btEditGroup.Name = "btEditGroup";
-            this.btEditGroup.Size = new System.Drawing.Size(62, 23);
+            this.btEditGroup.Size = new System.Drawing.Size(40, 23);
             this.btEditGroup.TabIndex = 32;
             this.btEditGroup.TabStop = false;
             this.btEditGroup.Text = "Edit";
@@ -342,9 +344,9 @@
             // 
             // btDeleteGroup
             // 
-            this.btDeleteGroup.Location = new System.Drawing.Point(143, 163);
+            this.btDeleteGroup.Location = new System.Drawing.Point(99, 163);
             this.btDeleteGroup.Name = "btDeleteGroup";
-            this.btDeleteGroup.Size = new System.Drawing.Size(62, 23);
+            this.btDeleteGroup.Size = new System.Drawing.Size(50, 23);
             this.btDeleteGroup.TabIndex = 29;
             this.btDeleteGroup.TabStop = false;
             this.btDeleteGroup.Text = "Delete";
@@ -355,7 +357,7 @@
             // 
             this.btNewGroup.Location = new System.Drawing.Point(8, 163);
             this.btNewGroup.Name = "btNewGroup";
-            this.btNewGroup.Size = new System.Drawing.Size(62, 23);
+            this.btNewGroup.Size = new System.Drawing.Size(39, 23);
             this.btNewGroup.TabIndex = 28;
             this.btNewGroup.TabStop = false;
             this.btNewGroup.Text = "New";
@@ -429,13 +431,13 @@
             this.label3.Size = new System.Drawing.Size(488, 13);
             this.label3.TabIndex = 21;
             this.label3.Text = "Tick a checkbox to apply the value. Only applied values are used by \"Generate\" an" +
-    "d \"Save settings\".";
+                "d \"Save settings\".";
             // 
             // tlpBiomeSettings
             // 
-            this.tlpBiomeSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpBiomeSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tlpBiomeSettings.AutoScroll = true;
             this.tlpBiomeSettings.ColumnCount = 8;
             this.tlpBiomeSettings.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
@@ -455,8 +457,8 @@
             // 
             // lbBiomes
             // 
-            this.lbBiomes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbBiomes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.lbBiomes.FormattingEnabled = true;
             this.lbBiomes.Location = new System.Drawing.Point(9, 354);
             this.lbBiomes.Name = "lbBiomes";
@@ -479,9 +481,9 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.richTextBox11);
             this.groupBox3.Controls.Add(this.textBox1);
             this.groupBox3.Controls.Add(this.richTextBox10);
@@ -517,7 +519,7 @@
             this.richTextBox11.TabIndex = 26;
             this.richTextBox11.TabStop = false;
             this.richTextBox11.Text = "JFromHollands\'s Terra Incognita:  http://forum.mctcp.com/t/download-first-beta-re" +
-    "lease-terra-incognita/839/23";
+                "lease-terra-incognita/839/23";
             // 
             // textBox1
             // 
@@ -570,7 +572,7 @@
             this.richTextBox8.TabIndex = 22;
             this.richTextBox8.TabStop = false;
             this.richTextBox8.Text = "MCW forum thread:  http://forum.mctcp.com/t/minecraft-worlds-mod-beta-download/66" +
-    "0/9";
+                "0/9";
             // 
             // richTextBox7
             // 
@@ -584,7 +586,7 @@
             this.richTextBox7.TabIndex = 21;
             this.richTextBox7.TabStop = false;
             this.richTextBox7.Text = "MCW forum thread:  http://www.minecraftforum.net/forums/mapping-and-modding/minec" +
-    "raft-tools/2592678-minecraft-worlds-ultimate-world-generator-tons-of";
+                "raft-tools/2592678-minecraft-worlds-ultimate-world-generator-tons-of";
             // 
             // richTextBox6
             // 
@@ -598,7 +600,7 @@
             this.richTextBox6.TabIndex = 20;
             this.richTextBox6.TabStop = false;
             this.richTextBox6.Text = "Most BO3s in the demonstration worlds were made using schematics from:  http://ww" +
-    "w.minecraft-schematics.com/";
+                "w.minecraft-schematics.com/";
             // 
             // richTextBox5
             // 
@@ -612,7 +614,7 @@
             this.richTextBox5.TabIndex = 19;
             this.richTextBox5.TabStop = false;
             this.richTextBox5.Text = "TCEE download & bugs thread: http://forum.mctcp.com/t/terraincontrol-editor-tcee-" +
-    "beta-download-bugs-thread/561";
+                "beta-download-bugs-thread/561";
             // 
             // richTextBox4
             // 
@@ -626,7 +628,7 @@
             this.richTextBox4.TabIndex = 18;
             this.richTextBox4.TabStop = false;
             this.richTextBox4.Text = "How to make TCEE work for any version of TC:  http://forum.mctcp.com/t/terraincon" +
-    "trol-editor-tcee-how-to-make-it-work-for-any-version-of-tc/563/3";
+                "trol-editor-tcee-how-to-make-it-work-for-any-version-of-tc/563/3";
             // 
             // richTextBox3
             // 
@@ -666,7 +668,7 @@
             this.richTextBox1.TabIndex = 15;
             this.richTextBox1.TabStop = false;
             this.richTextBox1.Text = "TCEE tutorial: http://forum.mctcp.com/t/terraincontrol-editor-tcee-tutorials-thre" +
-    "ad/562";
+                "ad/562";
             // 
             // textBox10
             // 
@@ -834,6 +836,17 @@
             this.btImportWorld.UseVisualStyleBackColor = true;
             this.btImportWorld.Click += new System.EventHandler(this.btImportWorld_Click);
             // 
+            // btCloneGroup
+            // 
+            this.btCloneGroup.Location = new System.Drawing.Point(155, 163);
+            this.btCloneGroup.Name = "btCloneGroup";
+            this.btCloneGroup.Size = new System.Drawing.Size(50, 23);
+            this.btCloneGroup.TabIndex = 35;
+            this.btCloneGroup.TabStop = false;
+            this.btCloneGroup.Text = "Clone";
+            this.btCloneGroup.UseVisualStyleBackColor = true;
+            this.btCloneGroup.Click += new System.EventHandler(this.btCloneGroup_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -935,6 +948,7 @@
         private System.Windows.Forms.RichTextBox richTextBox11;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.RichTextBox richTextBox10;
+        private System.Windows.Forms.Button btCloneGroup;
 
     }
 }

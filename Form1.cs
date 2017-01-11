@@ -4460,6 +4460,48 @@ namespace TCEE
                 }
             }
 
+            private void btCloneGroup_Click(object sender, EventArgs e)
+            {
+                if (lbGroups.SelectedIndex > -1)
+                {
+                    Group groupToClone = BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.Items[lbGroups.SelectedIndex]);
+                    if(groupToClone != null && groupToClone.Biomes.Count > 1)
+                    {
+                        string groupName = "";
+                        if (PopUpForm.InputBox("Name new group", "Enter a name for the group. Only a-z A-Z 0-9 space + - and _ are allowed.", ref groupName) == DialogResult.OK)
+                        {
+                            if (!string.IsNullOrWhiteSpace(groupName))
+                            {
+                                if (!BiomeGroups.Any(a => a.Name == groupName))
+                                {
+                                    Group g = new Group(groupName, VersionConfig);
+                                    g.Biomes.AddRange(groupToClone.Biomes);                                                                
+                                    foreach(Property prop in groupToClone.BiomeConfig.Properties)
+                                    {
+                                        TCProperty tcProp = VersionConfig.BiomeConfig.FirstOrDefault(a => a.Name == prop.PropertyName);
+                                        if(tcProp != null)
+                                        {
+                                            g.BiomeConfig.SetProperty(tcProp, groupToClone.BiomeConfig.GetPropertyValueAsString(tcProp), groupToClone.BiomeConfig.GetPropertyMerge(tcProp), groupToClone.BiomeConfig.GetPropertyOverrideParentValues(tcProp));
+                                            g.BiomeConfig.Properties.First(a => a.PropertyName == tcProp.Name).Override = true;
+                                        }
+                                    }
+                                    BiomeGroups.Add(g);
+
+                                    lbGroups.Items.Add(groupName);
+                                    lbGroups.SelectedIndex = -1;
+                                    lbGroups.SelectedIndex = lbGroups.Items.Count - 1;
+
+                                } else {
+                                    MessageBox.Show("A group with this name already exists", "Error: Illegal input");
+                                }
+                            }
+                        }
+                    } else {
+                        MessageBox.Show("Cannot clone a biome group with a single biome (yet, sorry).");
+                    }
+                }
+            }
+
             private void lbGroup_SelectedIndexChanged(object sender, EventArgs e)
             {
                 if (lbGroup.SelectedIndex > -1)
@@ -4641,7 +4683,7 @@ namespace TCEE
                            
                                     if (WorldConfig1.Properties.FirstOrDefault(a => a.PropertyName == property.Name) == null)
                                     {
-                                        WorldConfig1.Properties.Add(new Property(null, false, property.Name, false, false, property.Optional));
+                                        WorldConfig1.Properties.Add(new Property(null, false, property.Name, false, false));
                                     }
 
                                     string s = WorldConfigDefaultValues.GetPropertyValueAsString(property);
@@ -4873,7 +4915,7 @@ namespace TCEE
                                         {
                                             if (!biomeGroup.BiomeConfig.Properties.Any(a => (string)a.PropertyName == (string)tcProp.Name))
                                             {
-                                                biomeGroup.BiomeConfig.Properties.Add(new Property(null, false, tcProp.Name, false, false, tcProp.Optional));
+                                                biomeGroup.BiomeConfig.Properties.Add(new Property(null, false, tcProp.Name, false, false));
                                             }
                                         }
                                         foreach (Property prop in biomeGroup.BiomeConfig.Properties.Where(c => c.Override && !VersionConfig.BiomeConfig.Any(d => (string)d.Name == (string)c.PropertyName)))
@@ -5699,11 +5741,6 @@ namespace TCEE
                                                         }
                                                     }
                                                     newPropertyValue.AddRange(newGroupPropertyValue);
-                                                }
-
-                                                if (file.Name.Contains("Swamp Jungle L") && property.PropertyType == "ResourceQueue")
-                                                {
-                                                    String breakpoint = "";
                                                 }
 
                                                 newValue = "";
@@ -6706,7 +6743,7 @@ namespace TCEE
 
                 ListBox lb = (ListBox)sender;
                 String clipBoardString = "";
-                foreach(String selectedItem in lb.SelectedItems)
+                foreach (String selectedItem in lb.SelectedItems)
                 {
                     clipBoardString += selectedItem + "\r\n";
                 }
@@ -6850,7 +6887,7 @@ namespace TCEE
                 Properties = new List<Property>();
                 foreach (TCProperty property in config.WorldConfig)
                 {
-                    Properties.Add(new Property(null, false, property.Name, false, property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue", property.Optional));
+                    Properties.Add(new Property(null, false, property.Name, false, property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue"));
                 }
             }
 
@@ -6914,7 +6951,7 @@ namespace TCEE
                 Properties = new List<Property>();
                 foreach (TCProperty property in config.BiomeConfig)
                 {
-                    Properties.Add(new Property(null, false, property.Name, false, property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue", property.Optional));
+                    Properties.Add(new Property(null, false, property.Name, false, property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue"));
                 }
             }
 
@@ -6966,7 +7003,7 @@ namespace TCEE
             [DataMember]
             public bool OverrideParentValues;
 
-            public Property(string value, bool bOverride, string propertyName, bool merge, bool overrideParentValues, bool optional)
+            public Property(string value, bool bOverride, string propertyName, bool merge, bool overrideParentValues)
             {
                 Value = value;
                 Override = bOverride;
