@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace TCEE
+namespace TCEE.Utils
 {
     public static class PopUpForm
     {

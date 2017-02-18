@@ -89,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Biomes.cs" />
-    <Compile Include="Classes\PopupForm.cs" />
+    <Compile Include="Classes\Utils\PopupForm.cs" />
     <Compile Include="Classes\Session.cs" />
     <Compile Include="Classes\Utils\Utils.cs" />
     <Compile Include="Classes\World.cs" />

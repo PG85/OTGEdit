@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Runtime.Serialization;
 using TCEE.XML;
+using TCEE.Utils;
 
 namespace TCEE
 {
