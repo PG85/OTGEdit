@@ -88,6 +88,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Biomes.cs" />
+    <Compile Include="Classes\PopupForm.cs" />
+    <Compile Include="Classes\Session.cs" />
+    <Compile Include="Classes\Utils\Utils.cs" />
+    <Compile Include="Classes\World.cs" />
+    <Compile Include="Classes\XML\BiomeConfig.cs" />
+    <Compile Include="Classes\XML\Group.cs" />
+    <Compile Include="Classes\XML\Property.cs" />
+    <Compile Include="Classes\XML\ResourceQueueItem.cs" />
+    <Compile Include="Classes\XML\SettingsFile.cs" />
+    <Compile Include="Classes\XML\SettingsType.cs" />
+    <Compile Include="Classes\XML\TCProperty.cs" />
+    <Compile Include="Classes\XML\VersionConfig.cs" />
+    <Compile Include="Classes\XML\WorldConfig.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,7 +110,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SchematicToBO3.cs" />
+    <Compile Include="Classes\Utils\SchematicToBO3.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

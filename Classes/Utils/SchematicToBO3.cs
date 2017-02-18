@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using fNbt;
 
-namespace TCEE
+namespace TCEE.Utils
 {
     public class Coordinates : IEquatable<Coordinates>
     {
@@ -502,13 +502,18 @@ namespace TCEE
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# This settings is currently unavailable for MCW (1.0.4).\r\n");
+                            BO3String.Append("# This settings is currently unavailable for MCW.\r\n");
                             BO3String.Append("Tree: false\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# Minimum distance in chunks between structures with the same filename.\r\n");
-                            BO3String.Append("Frequency: 40\r\n");
+                            BO3String.Append("# The rarity of the BO3 from 0 to 100. Each spawn attempt has rarity% chance to succeed when using the CustomObject(...) resource.\r\n");
+                            BO3String.Append("# Ignored by MCW for Tree(..), Sapling(..) and CustomStructure(..).\r\n");
+                            BO3String.Append("Rarity: 100\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# This settings is currently unavailable for MCW (1.0.4).\r\n");
+                            BO3String.Append("# Minimum distance in chunks between structures with the same filename.\r\n");
+                            BO3String.Append("Frequency: 0\r\n");
+                            BO3String.Append("\r\n");
+                            BO3String.Append("# This settings is currently unavailable for MCW, you can easily work around this though by creating a master bo3 without blocks that has the real starting BO3 as a branch.\r\n");
+                            BO3String.Append("# You can then duplicate the master BO3 3 times and give each copy's branch a different rotation.\r\n");
                             BO3String.Append("RotateRandomly: false\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("# The spawn height of the BO3 - randomY or highestBlock.\r\n");
@@ -561,6 +566,12 @@ namespace TCEE
                             BO3String.Append("\r\n");
                             BO3String.Append("# If this is set to true then this BO3 can only spawn underneath an existing BO3. Used to make sure that dungeons only appear underneath buildings\r\n");
                             BO3String.Append("#MustBeBelowOther: false\r\n");
+                            BO3String.Append("\r\n");
+                            BO3String.Append("# A comma-seperated list of BO3s, this BO3 must touch one of these when spawned or it will not be able to spawn.\r\n");
+                            BO3String.Append("#MustBeInside: \r\n");
+                            BO3String.Append("\r\n");
+                            BO3String.Append("# A comma-seperated list of BO3s, this BO3 cannot touch one of these when spawned, if it does it will not be able to spawn.\r\n");
+                            BO3String.Append("#CannotBeInside: \r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("# Defaults to true. Set to false if the BO3 is not allowed to spawn on a water block\r\n");
                             BO3String.Append("#CanSpawnOnWater: true\r\n");
@@ -700,7 +711,7 @@ namespace TCEE
                             BO3String.Append("# rotation - NORTH, SOUTH, EAST or WEST.\r\n");
                             BO3String.Append("# chance - Chance to spawn between 0 and 100\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# WeightedBranch(x,y,z,isBranchEnding,branchName,rotation,chance,branchLength,[anotherBranchName,rotation,chance,branchLenght[,...]],maxChanceOutOf)\r\n");
+                            BO3String.Append("# WeightedBranch(x,y,z,isBranchEnding,branchName,rotation,chance,branchLength,[anotherBranchName,rotation,chance,branchLength[,...]],maxChanceOutOf)\r\n");
                             BO3String.Append("# maxChanceOutOf - The chance all branches have to spawn out of, assumed to be 100 when left blank\r\n");
                             BO3String.Append("# Example: WeightedBranch(0,0,0,true,RandomInterior1,NORTH,20,0,RandomInterior2,NORTH,20,0,RandomInterior3,NORTH,20,0,RandomInterior4,NORTH,20,0)\r\n");
                             BO3String.Append("\r\n");
