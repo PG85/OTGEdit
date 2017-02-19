@@ -183,7 +183,7 @@ namespace TCEE
 
                 convertBO3fbd = new FolderBrowserDialog();
                 convertBO3fbd.Description = "Select output directory";
-                convertBO3ofd = new OpenFileDialog() { DefaultExt = "schematic", InitialDirectory = dir.FullName };
+                convertBO3ofd = new OpenFileDialog() { DefaultExt = "schematic" };
                 convertBO3ofd.Title = "Select schematic(s) to convert";
                 convertBO3ofd.Multiselect = true;
 
@@ -4893,6 +4893,8 @@ namespace TCEE
                     int converted = 0;
                     foreach (String fileName in convertBO3ofd.FileNames)
                     {
+                        convertBO3ofd.InitialDirectory = fileName.Substring(0, fileName.LastIndexOf("\\"));
+
                         if (fileName.ToLower().EndsWith(".schematic"))
                         {
                             converted += 1;
@@ -4901,7 +4903,7 @@ namespace TCEE
                     }
                     System.Windows.Forms.MessageBox.Show(converted + " schematics were converted to BO3s and saved at " + convertBO3fbd.SelectedPath, "Converting schematics to BO3s");
                 }
-            }
+            }            
         }
 
         private void Link_Clicked(object sender, System.Windows.Forms.LinkClickedEventArgs e)
