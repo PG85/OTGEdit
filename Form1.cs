@@ -111,6 +111,8 @@ namespace TCEE
                 Session.btSave = btSave;
                 Session.btLoad = btLoad;
                 Session.btGenerate = btGenerate;
+                Session.rbSummerSkin = rbSummerSkin;
+                Session.rbWinterSkin = rbWinterSkin;
                 Session.lbGroups = lbGroups;
                 Session.btCopyBO3s = btCopyBO3s;
                 Session.cbDeleteRegion = cbDeleteRegion;
@@ -259,7 +261,8 @@ namespace TCEE
                     Session.WorldConfigDefaultValues = World.LoadWorldConfigFromFile(new FileInfo(Session.SourceConfigsDir + "WorldConfig.ini"), Session.VersionConfig, true);
                     if (Session.WorldConfigDefaultValues == null)
                     {
-                        throw new Exception("WorldConfig.ini could not be loaded. Please make sure that WorldConfig.ini is present in the TCVersionConfig directory for the selected version. Exiting TCEE.");
+                        MessageBox.Show("WorldConfig.ini could not be loaded. Please make sure that WorldConfig.ini is present in the TCVersionConfig directory for the selected version.", "Incompatible WorldConfig.ini");
+                        UnloadUI();
                     } else {
 
                         LoadBiomesList();
@@ -277,6 +280,32 @@ namespace TCEE
                         btSetToDefault.Text = "Set to defaults";
                     }
                 }
+            }
+
+            public void UnloadUI()
+            {
+                tabControl1.Visible = false;
+                btGenerate.Visible = false;
+                btCopyBO3s.Visible = false;
+                rbSummerSkin.Visible = false;
+                rbWinterSkin.Visible = false;
+                cbDeleteRegion.Visible = false;
+                btSave.Enabled = false;
+                btLoad.Enabled = false;
+                tlpBiomeSettings.Visible = false;
+                btBiomeSettingsResetToDefaults.Visible = false;
+
+                label3.Visible = false;
+                label4.Visible = false;
+                label5.Visible = false;
+
+                rbSummerSkin.Visible = false;
+                rbWinterSkin.Visible = false;
+
+                AutoSize = false;
+
+                Width = 1179;
+                Height = 202;
             }
 
             public void LoadUI()
@@ -298,6 +327,8 @@ namespace TCEE
                 tabControl1.Visible = false;
                 btGenerate.Visible = false;
                 btCopyBO3s.Visible = false;
+                rbSummerSkin.Visible = false;
+                rbWinterSkin.Visible = false;
                 cbDeleteRegion.Visible = false;
                 btSave.Enabled = false;
                 btLoad.Enabled = false;
@@ -5062,6 +5093,72 @@ namespace TCEE
                     }
                 }
             }
+        }
+
+        private void rbSummerSkin_CheckedChanged(object sender, EventArgs e)
+        {
+            this.BackgroundImage = global::TCEE.Properties.Resources.BGSummer;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+
+            this.tabPage1.BackColor = System.Drawing.Color.Wheat;
+            this.tabPage2.BackColor = System.Drawing.Color.Wheat;
+            this.tabPage3.BackColor = System.Drawing.Color.Wheat;
+
+            this.groupBox1.BackColor = System.Drawing.Color.Wheat;
+            this.groupBox2.BackColor = System.Drawing.Color.Wheat;
+            this.groupBox3.BackColor = System.Drawing.Color.Wheat;
+            this.groupBox4.BackColor = System.Drawing.Color.Wheat;
+
+            this.richTextBox1.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox2.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox3.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox4.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox5.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox6.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox7.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox8.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox9.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox10.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox11.BackColor = System.Drawing.Color.Wheat;
+
+            this.textBox1.BackColor = System.Drawing.Color.Wheat;
+            this.textBox6.BackColor = System.Drawing.Color.Wheat;
+            this.textBox7.BackColor = System.Drawing.Color.Wheat;
+            this.textBox9.BackColor = System.Drawing.Color.Wheat;
+            this.textBox10.BackColor = System.Drawing.Color.Wheat;
+        }
+
+        private void rbWinterSkin_CheckedChanged(object sender, EventArgs e)
+        {
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+
+            this.tabPage1.BackColor = System.Drawing.Color.GhostWhite;
+            this.tabPage2.BackColor = System.Drawing.Color.GhostWhite;
+            this.tabPage3.BackColor = System.Drawing.Color.GhostWhite;
+
+            this.groupBox1.BackColor = System.Drawing.Color.GhostWhite;
+            this.groupBox2.BackColor = System.Drawing.Color.GhostWhite;
+            this.groupBox3.BackColor = System.Drawing.Color.GhostWhite;
+            this.groupBox4.BackColor = System.Drawing.Color.GhostWhite;
+
+            this.richTextBox1.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox2.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox3.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox4.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox5.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox6.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox7.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox8.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox9.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox10.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox11.BackColor = System.Drawing.Color.GhostWhite;
+
+            this.textBox1.BackColor = System.Drawing.Color.GhostWhite;
+            this.textBox6.BackColor = System.Drawing.Color.GhostWhite;
+            this.textBox7.BackColor = System.Drawing.Color.GhostWhite;
+            this.textBox9.BackColor = System.Drawing.Color.GhostWhite;
+            this.textBox10.BackColor = System.Drawing.Color.GhostWhite;
+
         }
     }
 }

@@ -37,6 +37,8 @@ namespace TCEE
         public static Button btSave;
         public static Button btLoad;
         public static Button btGenerate;
+        public static RadioButton rbSummerSkin;
+        public static RadioButton rbWinterSkin;
         public static ListBox lbGroups;
         public static Button btCopyBO3s;
         public static CheckBox cbDeleteRegion;
