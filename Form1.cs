@@ -5130,6 +5130,7 @@ namespace TCEE
 
         private void rbWinterSkin_CheckedChanged(object sender, EventArgs e)
         {
+            this.BackgroundImage = global::TCEE.Properties.Resources.BGWinter;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 
             this.tabPage1.BackColor = System.Drawing.Color.GhostWhite;

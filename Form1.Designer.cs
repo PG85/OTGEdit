@@ -88,6 +88,8 @@
             this.btnConvertSchematicToBO3 = new System.Windows.Forms.Button();
             this.btCopyBO3s = new System.Windows.Forms.Button();
             this.btImportWorld = new System.Windows.Forms.Button();
+            this.rbSummerSkin = new System.Windows.Forms.RadioButton();
+            this.rbWinterSkin = new System.Windows.Forms.RadioButton();
             this.groupBox2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -123,7 +125,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.BackColor = System.Drawing.Color.Wheat;
+            this.groupBox2.BackColor = System.Drawing.Color.GhostWhite;
             this.groupBox2.Controls.Add(this.cbWorld);
             this.groupBox2.Controls.Add(this.cbVersion);
             this.groupBox2.Controls.Add(this.label8);
@@ -181,7 +183,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.BackColor = System.Drawing.Color.Wheat;
+            this.tabPage1.BackColor = System.Drawing.Color.GhostWhite;
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
@@ -195,6 +197,7 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.BackColor = System.Drawing.Color.GhostWhite;
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.btSetToDefault);
             this.groupBox1.Controls.Add(this.tlpWorldSettings);
@@ -249,7 +252,7 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.BackColor = System.Drawing.Color.Wheat;
+            this.tabPage3.BackColor = System.Drawing.Color.GhostWhite;
             this.tabPage3.Controls.Add(this.groupBox4);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
@@ -263,6 +266,7 @@
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.BackColor = System.Drawing.Color.GhostWhite;
             this.groupBox4.Controls.Add(this.btCloneGroup);
             this.groupBox4.Controls.Add(this.btGroupMoveDown);
             this.groupBox4.Controls.Add(this.btGroupMoveUp);
@@ -481,7 +485,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.BackColor = System.Drawing.Color.Wheat;
+            this.tabPage2.BackColor = System.Drawing.Color.GhostWhite;
             this.tabPage2.Controls.Add(this.groupBox3);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -495,6 +499,7 @@
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.BackColor = System.Drawing.Color.GhostWhite;
             this.groupBox3.Controls.Add(this.richTextBox11);
             this.groupBox3.Controls.Add(this.textBox1);
             this.groupBox3.Controls.Add(this.richTextBox10);
@@ -520,7 +525,7 @@
             // 
             // richTextBox11
             // 
-            this.richTextBox11.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox11.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox11.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox11.Location = new System.Drawing.Point(20, 323);
             this.richTextBox11.Multiline = false;
@@ -534,7 +539,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.BackColor = System.Drawing.Color.Wheat;
+            this.textBox1.BackColor = System.Drawing.Color.GhostWhite;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(20, 270);
@@ -547,7 +552,7 @@
             // 
             // richTextBox10
             // 
-            this.richTextBox10.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox10.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox10.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox10.Location = new System.Drawing.Point(20, 299);
             this.richTextBox10.Multiline = false;
@@ -560,7 +565,7 @@
             // 
             // richTextBox9
             // 
-            this.richTextBox9.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox9.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox9.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox9.Location = new System.Drawing.Point(20, 223);
             this.richTextBox9.Multiline = false;
@@ -573,7 +578,7 @@
             // 
             // richTextBox8
             // 
-            this.richTextBox8.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox8.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox8.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox8.Location = new System.Drawing.Point(20, 198);
             this.richTextBox8.Multiline = false;
@@ -587,7 +592,7 @@
             // 
             // richTextBox7
             // 
-            this.richTextBox7.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox7.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox7.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox7.Location = new System.Drawing.Point(20, 174);
             this.richTextBox7.Multiline = false;
@@ -601,7 +606,7 @@
             // 
             // richTextBox6
             // 
-            this.richTextBox6.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox6.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox6.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox6.Location = new System.Drawing.Point(20, 444);
             this.richTextBox6.Multiline = false;
@@ -615,7 +620,7 @@
             // 
             // richTextBox5
             // 
-            this.richTextBox5.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox5.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox5.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox5.Location = new System.Drawing.Point(20, 150);
             this.richTextBox5.Multiline = false;
@@ -629,7 +634,7 @@
             // 
             // richTextBox4
             // 
-            this.richTextBox4.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox4.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox4.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox4.Location = new System.Drawing.Point(20, 126);
             this.richTextBox4.Multiline = false;
@@ -643,7 +648,7 @@
             // 
             // richTextBox3
             // 
-            this.richTextBox3.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox3.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox3.Location = new System.Drawing.Point(20, 103);
             this.richTextBox3.Multiline = false;
@@ -656,7 +661,7 @@
             // 
             // richTextBox2
             // 
-            this.richTextBox2.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox2.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox2.Location = new System.Drawing.Point(20, 80);
             this.richTextBox2.Multiline = false;
@@ -669,7 +674,7 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.BackColor = System.Drawing.Color.Wheat;
+            this.richTextBox1.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox1.Location = new System.Drawing.Point(20, 57);
             this.richTextBox1.Multiline = false;
@@ -683,7 +688,7 @@
             // 
             // textBox10
             // 
-            this.textBox10.BackColor = System.Drawing.Color.Wheat;
+            this.textBox10.BackColor = System.Drawing.Color.GhostWhite;
             this.textBox10.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox10.Location = new System.Drawing.Point(20, 27);
@@ -696,7 +701,7 @@
             // 
             // textBox9
             // 
-            this.textBox9.BackColor = System.Drawing.Color.Wheat;
+            this.textBox9.BackColor = System.Drawing.Color.GhostWhite;
             this.textBox9.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox9.Location = new System.Drawing.Point(20, 369);
@@ -709,7 +714,7 @@
             // 
             // textBox7
             // 
-            this.textBox7.BackColor = System.Drawing.Color.Wheat;
+            this.textBox7.BackColor = System.Drawing.Color.GhostWhite;
             this.textBox7.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox7.Location = new System.Drawing.Point(20, 421);
             this.textBox7.Name = "textBox7";
@@ -721,7 +726,7 @@
             // 
             // textBox6
             // 
-            this.textBox6.BackColor = System.Drawing.Color.Wheat;
+            this.textBox6.BackColor = System.Drawing.Color.GhostWhite;
             this.textBox6.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox6.Location = new System.Drawing.Point(20, 398);
             this.textBox6.Name = "textBox6";
@@ -755,6 +760,7 @@
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = global::TCEE.Properties.Resources.pictureBox1;
             this.pictureBox1.Location = new System.Drawing.Point(544, 7);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(626, 123);
@@ -846,14 +852,44 @@
             this.btImportWorld.UseVisualStyleBackColor = true;
             this.btImportWorld.Click += new System.EventHandler(this.btImportWorld_Click);
             // 
+            // rbSummerSkin
+            // 
+            this.rbSummerSkin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.rbSummerSkin.AutoSize = true;
+            this.rbSummerSkin.Location = new System.Drawing.Point(606, 689);
+            this.rbSummerSkin.Name = "rbSummerSkin";
+            this.rbSummerSkin.Size = new System.Drawing.Size(87, 17);
+            this.rbSummerSkin.TabIndex = 38;
+            this.rbSummerSkin.Text = "Summer Skin";
+            this.rbSummerSkin.UseVisualStyleBackColor = true;
+            this.rbSummerSkin.Visible = false;
+            this.rbSummerSkin.CheckedChanged += new System.EventHandler(this.rbSummerSkin_CheckedChanged);
+            // 
+            // rbWinterSkin
+            // 
+            this.rbWinterSkin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.rbWinterSkin.AutoSize = true;
+            this.rbWinterSkin.Checked = true;
+            this.rbWinterSkin.Location = new System.Drawing.Point(697, 689);
+            this.rbWinterSkin.Name = "rbWinterSkin";
+            this.rbWinterSkin.Size = new System.Drawing.Size(80, 17);
+            this.rbWinterSkin.TabIndex = 39;
+            this.rbWinterSkin.TabStop = true;
+            this.rbWinterSkin.Text = "Winter Skin";
+            this.rbWinterSkin.UseVisualStyleBackColor = true;
+            this.rbWinterSkin.Visible = false;
+            this.rbWinterSkin.CheckedChanged += new System.EventHandler(this.rbWinterSkin_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.BackgroundImage = global::TCEE.Properties.Resources.BGWinter;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1163, 718);
+            this.Controls.Add(this.rbWinterSkin);
+            this.Controls.Add(this.rbSummerSkin);
             this.Controls.Add(this.btImportWorld);
             this.Controls.Add(this.btCopyBO3s);
             this.Controls.Add(this.btnConvertSchematicToBO3);
@@ -867,9 +903,10 @@
             this.Controls.Add(this.btGenerate);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "TCEE : TerrainControl\'s Excellent Editor (TM) by PeeGee85";
+            this.Text = "TerrainControl\'s Excellent Editor";
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabControl1.ResumeLayout(false);
@@ -949,6 +986,8 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.RichTextBox richTextBox10;
         private System.Windows.Forms.Button btCloneGroup;
+        private System.Windows.Forms.RadioButton rbSummerSkin;
+        private System.Windows.Forms.RadioButton rbWinterSkin;
 
     }
 }
