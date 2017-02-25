@@ -330,7 +330,6 @@ namespace TCEE.Utils
                 {
                     for (int i = 0; i < 1; i++)
                     {
-
                         BO3String = new StringBuilder();
                         BO3String.Append("#######################################################################\r\n");
                         BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
@@ -431,6 +430,22 @@ namespace TCEE.Utils
                             {
                                 BO3String.Append("\r\n");
                             }
+                            BO3String.Append("\r\n");
+                            BO3String.Append("#######################################################################\r\n");
+                            BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
+                            BO3String.Append("# |                             Entities                            | #\r\n");
+                            BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
+                            BO3String.Append("#######################################################################\r\n");
+                            BO3String.Append("\r\n");
+                            BO3String.Append("# Forge only (this may have changed, check for updates).\r\n");
+                            BO3String.Append("# Entity() spawns an entity instead of a block. The entity is spawned only once when the BO3 is spawned.\r\n");
+                            BO3String.Append("# Entities are persistent by default so they don't de-spawn when no player is near, they are only unloaded.\r\n");
+                            BO3String.Append("# Usage: Entity(x,y,z,mobName,groupSize,NameTagOrNBTFileName) or Entity(x,y,z,mobName,groupSize)\r\n");
+                            BO3String.Append("# Use /tc entities to get a list of entities that can be used as mobName, this includes entities added by other mods.\r\n");
+                            BO3String.Append("# NameTagOrNBTFileName can be either a nametag for the mob or an nbt file (such as mymobinfo.nbt or mymobinfo.txt).\r\n");
+                            BO3String.Append("# When using a text file you can use the same mob spawning parameters used with the /summon command to equip the\r\n");
+                            BO3String.Append("# entity and give it custom attributes etc. You can copy the DATA part of a summon command including surrounding\r\n");
+                            BO3String.Append("# curly braces to a .txt file, for instance for: \"/summon Skeleton x y z {DATA}\"\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
@@ -642,7 +657,6 @@ namespace TCEE.Utils
                             BO3String.Append("# Defaults to 7, if spawnPointY > -1 and this BO3 is spawned at the spawn point then the player spawn point is placed within this BO3 at a x y and z offsets (spawnPointX, spawnPointY, spawnPointZ) relative to x0y0z0 in this BO3.\r\n");
                             BO3String.Append("#SpawnPointZ: 7\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                             BO3String.Append("# |                              Blocks                             | #\r\n");
@@ -664,6 +678,13 @@ namespace TCEE.Utils
                                     BO3String.Append("\r\n");
                                 }
                             }
+                            BO3String.Append("\r\n");
+                            BO3String.Append("#######################################################################\r\n");
+                            BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
+                            BO3String.Append("# |                             ModData                             | #\r\n");
+                            BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
+                            BO3String.Append("#######################################################################\r\n");
+                            BO3String.Append("\r\n");
                             BO3String.Append("# Use the ModData() tag to include data that other mods can use\r\n");
                             BO3String.Append("# ModData(x,y,z,ModName,DataText)\r\n");
                             BO3String.Append("# Example: ModData(x,y,z,MyCystomNPCMod,SpawnBobHere/WithAPotato/And50Health)\r\n");
@@ -689,6 +710,54 @@ namespace TCEE.Utils
                             BO3String.Append("# Mod makers can use ModData and the /mcw GetModData command to test IMC communications between MCW\r\n");
                             BO3String.Append("# and their mod.\r\n");
                             BO3String.Append("# Normal users can use it to spawn some mobs and blocks on command!\r\n");
+                            BO3String.Append("\r\n");
+                            BO3String.Append("#######################################################################\r\n");
+                            BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
+                            BO3String.Append("# |                             Entities                            | #\r\n");
+                            BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
+                            BO3String.Append("#######################################################################\r\n");
+                            BO3String.Append("\r\n");
+                            BO3String.Append("# Entity() spawns an entity instead of a block. The entity is spawned only once when the BO3 is spawned.\r\n");
+                            BO3String.Append("# Entities are persistent by default so they don't de-spawn when no player is near, they are only unloaded.\r\n");
+                            BO3String.Append("# Usage: Entity(x,y,z,mobName,groupSize,NameTagOrNBTFileName) or Entity(x,y,z,mobName,groupSize)\r\n");
+                            BO3String.Append("# Use /tc entities to get a list of entities that can be used as mobName, this includes entities added by other mods.\r\n");
+                            BO3String.Append("# NameTagOrNBTFileName can be either a nametag for the mob or an nbt file (such as mymobinfo.nbt or mymobinfo.txt).\r\n");
+                            BO3String.Append("# When using a text file you can use the same mob spawning parameters used with the /summon command to equip the\r\n");
+                            BO3String.Append("# entity and give it custom attributes etc. You can copy the DATA part of a summon command including surrounding\r\n");
+                            BO3String.Append("# curly braces to a .txt file, for instance for: \"/summon Skeleton x y z {DATA}\"\r\n");
+                            BO3String.Append("\r\n");
+                            BO3String.Append("#######################################################################\r\n");
+                            BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
+                            BO3String.Append("# |                             Spawners                            | #\r\n");
+                            BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
+                            BO3String.Append("#######################################################################\r\n");
+                            BO3String.Append("\r\n");
+                            BO3String.Append("# Spawner(x,y,z,EntityType,count,interval,chance,max,despawnTime,velocityX,velocityY,velocityZ,yaw,pitch) tag for BO3's,\r\n");
+                            BO3String.Append("# works just like the Block() tag and is spawned when the BO3 is spawned. Spawners are invisible ingame but can be blocked\r\n");
+                            BO3String.Append("# up with a solid or liquid block (depending on if the entity being spawned can spawn in those blocks) to prevent entities\r\n");
+                            BO3String.Append("# from spawning. A spawner tries to spawn <count> number of <entityType> each <interval> seconds, with each entity having\r\n");
+                            BO3String.Append("# a spawn chance of <chance>%. The spawner can only spawn an entity if there are not more than <max> of the same EntityType\r\n");
+                            BO3String.Append("# in the surrounding chunks (3x3 chunk area centered on the spawner). If an entity is assigned a <despawnTime> in seconds\r\n");
+                            BO3String.Append("# then the entity will automatically be despawned after the specified time. Entities spawned using a Spawner will have the\r\n");
+                            BO3String.Append("# same light level requirements as they do when they normally spawn in the world, so most monsters only spawn in the dark.\r\n");
+                            BO3String.Append("# A spawner will not spawn if the spawn location is blocked by another entity, it can however spawn multiple mobs at once.\r\n");
+                            BO3String.Append("# The last 6 parameters are optional and are set to 0 by default (despawnTime,velocityX,velocityY,velocityZ,yaw,pitch), you\r\n");
+                            BO3String.Append("# only need to add as many of those parameters as you need. So for instance all of these work: \"Spawner(0,0,0,Arrow,1,5,100,5)\"\r\n");
+                            BO3String.Append("# \"Spawner(0,0,0,Arrow,1,5,100,5, 1,0,1)\" \"Spawner(0,0,0,Arrow,1,5,100,5,1,0,1,180,180)\"\r\n");
+                            BO3String.Append("# Use the /mcw entities console command (ops only) to see a list of available entityTypes.\r\n");
+                            BO3String.Append("\r\n");
+                            BO3String.Append("#######################################################################\r\n");
+                            BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
+                            BO3String.Append("# |                             Particles                           | #\r\n");
+                            BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
+                            BO3String.Append("#######################################################################\r\n");
+                            BO3String.Append("\r\n");
+                            BO3String.Append("# Continually spawns particles in the world at the specified coordinates, interval and velocity.\r\n");
+                            BO3String.Append("# For a list of particles use /mcw particles.\r\n");
+                            BO3String.Append("# When no velocity is supplied a small random velocity is used.\r\n");
+                            BO3String.Append("# Particles will disappear if a solid block is placed on them for at least one second.\r\n");
+                            BO3String.Append("# Usage1: Particle(x, y , z, particleName, interval\r\n");
+                            BO3String.Append("# Usage2: Particle(x, y , z, particleName, interval, velocityX, velocityY, velocityZ)\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
