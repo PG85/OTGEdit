@@ -24,9 +24,6 @@ namespace TCEE
         FolderBrowserDialog fbdDestinationWorldDir = new FolderBrowserDialog();
         OpenFileDialog convertBO3ofd;
 
-        bool playerStopped = true;
-        WMPLib.WindowsMediaPlayer player = new WMPLib.WindowsMediaPlayer();
-
         List<ListBox> BiomeListInputs = new List<ListBox>();
         Dictionary<object, TCProperty> ResourceQueueInputs = new Dictionary<object, TCProperty>();
 
@@ -133,13 +130,8 @@ namespace TCEE
                 this.DragEnter += new DragEventHandler(Form1_DragEnter);
                 this.DragDrop += new DragEventHandler(Form1_DragDrop);
 
-                player.settings.autoStart = false;
-                player.settings.playCount = -1;
-                player.settings.volume = 50;
-                player.URL = Path.GetDirectoryName(Application.ExecutablePath) + "/Resources/Kenny Burrell - Birk's Works (TCEE Edit).mp3";
-                player.PlayStateChange += new WMPLib._WMPOCXEvents_PlayStateChangeEventHandler(delegate(int arse) { if (player.playState == WMPLib.WMPPlayState.wmppsStopped && !playerStopped) { player.controls.play(); } });
-
-                this.Height = 202;
+                this.Width = 565;
+                this.Height = 152;
 
                 btSave.Enabled = false;
                 btLoad.Enabled = false;
@@ -233,7 +225,7 @@ namespace TCEE
                         Session.WorldConfig1 = new WorldConfig(Session.VersionConfig);
                         LoadUI();
                     } else {
-                        MessageBox.Show("Y u do dis? :(");
+                        PopUpForm.CustomMessageBox("Y u do dis? :(");
                     }
 
                     Session.SourceConfigsDir = Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/" + cbVersion.SelectedItem + "/Worlds/" + cbWorld.SelectedItem + "/";
@@ -261,7 +253,7 @@ namespace TCEE
                     Session.WorldConfigDefaultValues = World.LoadWorldConfigFromFile(new FileInfo(Session.SourceConfigsDir + "WorldConfig.ini"), Session.VersionConfig, true);
                     if (Session.WorldConfigDefaultValues == null)
                     {
-                        MessageBox.Show("WorldConfig.ini could not be loaded. Please make sure that WorldConfig.ini is present in the TCVersionConfig directory for the selected version.", "Incompatible WorldConfig.ini");
+                        PopUpForm.CustomMessageBox("WorldConfig.ini could not be loaded. Please make sure that WorldConfig.ini is present in the TCVersionConfig directory for the selected version.", "Incompatible WorldConfig.ini");
                         UnloadUI();
                     } else {
 
@@ -296,8 +288,6 @@ namespace TCEE
                 btBiomeSettingsResetToDefaults.Visible = false;
 
                 label3.Visible = false;
-                label4.Visible = false;
-                label5.Visible = false;
 
                 rbSummerSkin.Visible = false;
                 rbWinterSkin.Visible = false;
@@ -336,8 +326,6 @@ namespace TCEE
                 btBiomeSettingsResetToDefaults.Visible = false;
 
                 label3.Visible = false;
-                label4.Visible = false;
-                label5.Visible = false;
 
                 string uniqueResourceQueueItems = "";
                 foreach (ResourceQueueItem resourceQueueItem in Session.VersionConfig.ResourceQueueOptions)
@@ -1523,7 +1511,8 @@ namespace TCEE
                             if (addingMultipleResourcesXToAll == DialogResult.Abort)
                             {
                                 string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                //addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                addingMultipleResourcesXToAll = System.Windows.Forms.DialogResult.Yes;
                             }
                             permissionGiven = addingMultipleResourcesXToAll;
                             if (permissionGiven == DialogResult.No)
@@ -1539,13 +1528,15 @@ namespace TCEE
                             {
                                 if (addingMultipleResourcesXToAll2 == DialogResult.Abort)
                                 {
-                                    addingMultipleResourcesXToAll2 = MessageBox.Show("Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Add exact duplicate?", MessageBoxButtons.YesNo);
+                                    //addingMultipleResourcesXToAll2 = PopUpForm.CustomYesNoBox("Add exact duplicate?", "Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Yes", "No");
+                                    addingMultipleResourcesXToAll2 = System.Windows.Forms.DialogResult.Yes;
                                 }
                                 permissionGiven = addingMultipleResourcesXToAll2;
                             } else {
                                 if (addingMultipleResourcesXToAll3 == DialogResult.Abort)
                                 {
-                                    addingMultipleResourcesXToAll3 = MessageBox.Show("One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep same resource with different parameters?", MessageBoxButtons.YesNoCancel);
+                                    //addingMultipleResourcesXToAll3 = PopUpForm.CustomYesNoBox("Keep same resource with different parameters?", "One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                    addingMultipleResourcesXToAll3 = System.Windows.Forms.DialogResult.Yes;
                                 }
                                 permissionGiven = addingMultipleResourcesXToAll3;
                                 if (permissionGiven == DialogResult.No)
@@ -1615,7 +1606,7 @@ namespace TCEE
                                                 {
                                                     if (addingMultipleResourcesXToAll == DialogResult.Abort)
                                                     {
-                                                        addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                                        addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
                                                     }
                                                     permissionGiven = addingMultipleResourcesXToAll;
                                                 }
@@ -1634,7 +1625,7 @@ namespace TCEE
                                     {
                                         bAllowed = true;
                                     } else {
-                                        MessageBox.Show("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
+                                        PopUpForm.CustomMessageBox("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
                                     }
                                 } else {
                                     bAllowed = true;
@@ -1649,7 +1640,7 @@ namespace TCEE
                             {
                                 sPropertyNames += a + "\r\n";
                             }
-                            MessageBox.Show("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
+                            PopUpForm.CustomMessageBox("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
                         }
                     }
                 } else {
@@ -1659,7 +1650,7 @@ namespace TCEE
                     }
                     else if (selectedOption == null)
                     {
-                        MessageBox.Show("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
+                        PopUpForm.CustomMessageBox("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
                     }
                 }
                 if (bAllowed)
@@ -1768,7 +1759,8 @@ namespace TCEE
                                     if (addingMultipleResourcesXToAll == DialogResult.Abort)
                                     {
                                         string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                        addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                        //addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                        addingMultipleResourcesXToAll = System.Windows.Forms.DialogResult.Yes;
                                     }
                                     permissionGiven = addingMultipleResourcesXToAll;
                                     if (permissionGiven == DialogResult.No)
@@ -1784,13 +1776,15 @@ namespace TCEE
                                     {
                                         if (addingMultipleResourcesXToAll2 == DialogResult.Abort)
                                         {
-                                            addingMultipleResourcesXToAll2 = MessageBox.Show("Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Add exact duplicate?", MessageBoxButtons.YesNo);
+                                            //addingMultipleResourcesXToAll2 = PopUpForm.CustomYesNoBox("Add exact duplicate?", "Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Yes", "No");
+                                            addingMultipleResourcesXToAll2 = System.Windows.Forms.DialogResult.Yes;
                                         }
                                         permissionGiven = addingMultipleResourcesXToAll2;
                                     } else {
                                         if (addingMultipleResourcesXToAll3 == DialogResult.Abort)
                                         {
-                                            addingMultipleResourcesXToAll3 = MessageBox.Show("One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep same resource with different parameters?", MessageBoxButtons.YesNoCancel);
+                                            //addingMultipleResourcesXToAll3 = PopUpForm.CustomYesNoBox("Keep same resource with different parameters?", "One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                            addingMultipleResourcesXToAll3 = System.Windows.Forms.DialogResult.Yes;
                                         }
                                         permissionGiven = addingMultipleResourcesXToAll3;
                                         if (permissionGiven == DialogResult.No)
@@ -1860,7 +1854,8 @@ namespace TCEE
                                                         {
                                                             if (addingMultipleResourcesXToAll == DialogResult.Abort)
                                                             {
-                                                                addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                                                //addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                                                addingMultipleResourcesXToAll = System.Windows.Forms.DialogResult.Yes;
                                                             }
                                                             permissionGiven = addingMultipleResourcesXToAll;
                                                         }
@@ -1879,7 +1874,7 @@ namespace TCEE
                                             {
                                                 bAllowed = true;
                                             } else {
-                                                MessageBox.Show("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
+                                                PopUpForm.CustomMessageBox("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
                                             }
                                         } else {
                                             bAllowed = true;
@@ -1894,7 +1889,7 @@ namespace TCEE
                                     {
                                         sPropertyNames += a + "\r\n";
                                     }
-                                    MessageBox.Show("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
+                                    PopUpForm.CustomMessageBox("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
                                 }
                             }
                         } else {
@@ -1904,7 +1899,7 @@ namespace TCEE
                             }
                             else if (selectedOption == null)
                             {
-                                MessageBox.Show("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
+                                PopUpForm.CustomMessageBox("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
                             }
                         }
                         if (bAllowed)
@@ -2891,7 +2886,8 @@ namespace TCEE
                             if (addingMultipleResourcesXToAll == DialogResult.Abort)
                             {
                                 string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                //addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                addingMultipleResourcesXToAll = System.Windows.Forms.DialogResult.Yes;
                             }
                             permissionGiven = addingMultipleResourcesXToAll;
                             if (permissionGiven == DialogResult.No)
@@ -2907,13 +2903,15 @@ namespace TCEE
                             {
                                 if (addingMultipleResourcesXToAll2 == DialogResult.Abort)
                                 {
-                                    addingMultipleResourcesXToAll2 = MessageBox.Show("Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Add exact duplicate?", MessageBoxButtons.YesNo);
+                                    //addingMultipleResourcesXToAll2 = PopUpForm.CustomYesNoBox("Add exact duplicate?", "Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Yes", "No");
+                                    addingMultipleResourcesXToAll2 = System.Windows.Forms.DialogResult.Yes;
                                 }
                                 permissionGiven = addingMultipleResourcesXToAll2;
                             } else {
                                 if (addingMultipleResourcesXToAll3 == DialogResult.Abort)
                                 {
-                                    addingMultipleResourcesXToAll3 = MessageBox.Show("One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep same resource with different parameters?", MessageBoxButtons.YesNoCancel);
+                                    //addingMultipleResourcesXToAll3 = PopUpForm.CustomYesNoBox("Keep same resource with different parameters?", "One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                    addingMultipleResourcesXToAll3 = System.Windows.Forms.DialogResult.Yes;
                                 }
                                 permissionGiven = addingMultipleResourcesXToAll3;
                                 if (permissionGiven == DialogResult.No)
@@ -2983,7 +2981,8 @@ namespace TCEE
                                                 {
                                                     if (addingMultipleResourcesXToAll == DialogResult.Abort)
                                                     {
-                                                        addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                                        //addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                                        addingMultipleResourcesXToAll = System.Windows.Forms.DialogResult.Yes;
                                                     }
                                                     permissionGiven = addingMultipleResourcesXToAll;
                                                 }
@@ -3002,7 +3001,7 @@ namespace TCEE
                                     {
                                         bAllowed = true;
                                     } else {
-                                        MessageBox.Show("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
+                                        PopUpForm.CustomMessageBox("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
                                     }
                                 } else {
                                     bAllowed = true;
@@ -3017,7 +3016,7 @@ namespace TCEE
                             {
                                 sPropertyNames += a + "\r\n";
                             }
-                            MessageBox.Show("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
+                            PopUpForm.CustomMessageBox("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
                         }
                     }
                 } else {
@@ -3027,7 +3026,7 @@ namespace TCEE
                     }
                     else if (selectedOption == null)
                     {
-                        MessageBox.Show("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
+                        PopUpForm.CustomMessageBox("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
                     }
                 }
                 if(bAllowed)
@@ -3144,7 +3143,8 @@ namespace TCEE
                                     if (addingMultipleResourcesXToAll == DialogResult.Abort)
                                     {
                                         string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                        addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                        //addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                        addingMultipleResourcesXToAll = System.Windows.Forms.DialogResult.Yes;
                                     }
                                     permissionGiven = addingMultipleResourcesXToAll;
                                     if (permissionGiven == DialogResult.No)
@@ -3160,13 +3160,15 @@ namespace TCEE
                                     {
                                         if (addingMultipleResourcesXToAll2 == DialogResult.Abort)
                                         {
-                                            addingMultipleResourcesXToAll2 = MessageBox.Show("Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Add exact duplicate?", MessageBoxButtons.YesNo);
+                                            //addingMultipleResourcesXToAll2 = PopUpForm.CustomYesNoBox("Add exact duplicate?", "Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Yes", "No");
+                                            addingMultipleResourcesXToAll2 = System.Windows.Forms.DialogResult.Yes;
                                         }
                                         permissionGiven = addingMultipleResourcesXToAll2;
                                     } else {
                                         if (addingMultipleResourcesXToAll3 == DialogResult.Abort)
                                         {
-                                            addingMultipleResourcesXToAll3 = MessageBox.Show("One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep same resource with different parameters?", MessageBoxButtons.YesNoCancel);
+                                            //addingMultipleResourcesXToAll3 = PopUpForm.CustomYesNoBox("Keep same resource with different parameters?", "One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                            addingMultipleResourcesXToAll3 = System.Windows.Forms.DialogResult.Yes;
                                         }
                                         permissionGiven = addingMultipleResourcesXToAll3;
                                         if (permissionGiven == DialogResult.No)
@@ -3236,7 +3238,7 @@ namespace TCEE
                                                         {
                                                             if (addingMultipleResourcesXToAll == DialogResult.Abort)
                                                             {
-                                                                addingMultipleResourcesXToAll = MessageBox.Show("One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources (yes) or override them (no)?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep existing items?", MessageBoxButtons.YesNoCancel);
+                                                                addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
                                                             }
                                                             permissionGiven = addingMultipleResourcesXToAll;
                                                         }
@@ -3255,7 +3257,7 @@ namespace TCEE
                                             {
                                                 bAllowed = true;
                                             } else {
-                                                MessageBox.Show("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
+                                                PopUpForm.CustomMessageBox("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
                                             }
                                         } else {
                                             bAllowed = true;
@@ -3270,7 +3272,7 @@ namespace TCEE
                                     {
                                         sPropertyNames += a + "\r\n";
                                     }
-                                    MessageBox.Show("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
+                                    PopUpForm.CustomMessageBox("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
                                 }
                             }
                         } else {
@@ -3280,7 +3282,7 @@ namespace TCEE
                             }
                             else if(selectedOption == null)
                             {
-                                MessageBox.Show("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
+                                PopUpForm.CustomMessageBox("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
                             }
                         }
                         if(bAllowed)
@@ -3880,7 +3882,7 @@ namespace TCEE
                         lbGroups.SelectedIndex = -1;
                         lbGroups.SelectedIndex = lbGroups.Items.Count - 1;
                     } else {
-                        MessageBox.Show("A group with this name already exists", "Error: Illegal input");
+                        PopUpForm.CustomMessageBox("A group with this name already exists", "Error: Illegal input");
                     }
                 }
             }
@@ -3899,7 +3901,7 @@ namespace TCEE
                                 Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.Items[lbGroups.SelectedIndex]).Name = groupName;
                                 lbGroups.Items[lbGroups.SelectedIndex] = groupName;                        
                             } else {
-                                MessageBox.Show("A group with this name already exists", "Error: Illegal input");
+                                PopUpForm.CustomMessageBox("A group with this name already exists", "Error: Illegal input");
                             }
                         }
                     }
@@ -3954,12 +3956,12 @@ namespace TCEE
                                     lbGroups.SelectedIndex = lbGroups.Items.Count - 1;
 
                                 } else {
-                                    MessageBox.Show("A group with this name already exists", "Error: Illegal input");
+                                    PopUpForm.CustomMessageBox("A group with this name already exists", "Error: Illegal input");
                                 }
                             }
                         }
                     } else {
-                        MessageBox.Show("Cannot clone a biome group with a single biome (yet, sorry).");
+                        PopUpForm.CustomMessageBox("Cannot clone a biome group with a single biome (yet, sorry).");
                     }
                 }
             }
@@ -4033,7 +4035,7 @@ namespace TCEE
                 } else {
                     if (lbGroup.Items.Count == 1 || lbGroup.SelectedItems.Count >= lbGroup.Items.Count)
                     {
-                        MessageBox.Show("Cannot delete the selected biome(s). A group must contain at least one biome.", "Error: Illegal input");
+                        PopUpForm.CustomMessageBox("Cannot delete the selected biome(s). A group must contain at least one biome.", "Error: Illegal input");
                     }
                 }
             }
@@ -4074,7 +4076,7 @@ namespace TCEE
                     }
                     System.IO.File.WriteAllText(sfd.FileName, xmlString);
 
-                    MessageBox.Show("Settings saved as: " + sfd.FileName, "Settings saved");
+                    PopUpForm.CustomMessageBox("Settings saved as: " + sfd.FileName, "Settings saved");
                 }
             }
 
@@ -4088,7 +4090,7 @@ namespace TCEE
                     {
                         if (!ofd.FileName.ToLower().EndsWith("xml"))
                         {
-                            MessageBox.Show("Error: The selected file was not a valid TCEE save file");
+                            PopUpForm.CustomMessageBox("Error: The selected file was not a valid TCEE save file");
                         } else {
                             SettingsFile settingsFile = null;
                             var serializer = new DataContractSerializer(typeof(SettingsFile));
@@ -4410,20 +4412,20 @@ namespace TCEE
                         }
                     }
                 } else {
-                    MessageBox.Show("No source world found. Load a source world before loading a settings file.", "Version warning");
+                    PopUpForm.CustomMessageBox("No source world found. Load a source world before loading a settings file.", "Version warning");
                 }
                 string sErrorMessageFinal = "";
                 if(!String.IsNullOrEmpty(sErrorMessage))
                 {
-                    sErrorMessageFinal = sErrorMessage + "These properties do not exist in the selected version of TerrainControl.";
+                    sErrorMessageFinal = sErrorMessage + "\r\nThese properties do not exist in the selected version of TerrainControl.";
                 }
                 if (!String.IsNullOrEmpty(sErrorMessage2))
                 {
-                    sErrorMessageFinal = sErrorMessageFinal + "\r\n\r\n" + sErrorMessage2 + "These biomes do not exist in the selected version of TerrainControl.";
+                    sErrorMessageFinal = sErrorMessageFinal + "\r\n\r\n" + sErrorMessage2 + "\r\nThese biomes do not exist in the selected version of TerrainControl.";
                 }
                 if(!String.IsNullOrEmpty(sErrorMessageFinal))
                 {
-                    MessageBox.Show(sErrorMessageFinal, "Version warnings");
+                    PopUpForm.CustomMessageBox(sErrorMessageFinal, "Version warnings");
                 }
             }        
 
@@ -4437,7 +4439,7 @@ namespace TCEE
                     String ares = fbdDestinationWorldDir.SelectedPath.Substring(0, fbdDestinationWorldDir.SelectedPath.LastIndexOf("\\"));
                     if (!fbdDestinationWorldDir.SelectedPath.Substring(0, fbdDestinationWorldDir.SelectedPath.LastIndexOf("\\")).EndsWith("TerrainControl\\worlds"))
                     {
-                        go = MessageBox.Show("The selected directory was not a TerrainControl/MCW world directory, are you sure you want to generate files here?", "Generate files here?", MessageBoxButtons.OKCancel) == DialogResult.OK;
+                        go = PopUpForm.CustomYesNoBox("Generate files here?", "The selected directory was not a TerrainControl/MCW world directory, are you sure you want to generate files here?", "Yes", "No") == DialogResult.OK;
                     }
                     if (go)
                     {
@@ -4462,7 +4464,7 @@ namespace TCEE
                                 }
                                 catch (System.IO.IOException ex)
                                 {
-                                    MessageBox.Show("Could not delete /regions directory because it is currently in use. Please make sure that no one is playing the selected world and try again.", "Generation error");
+                                    PopUpForm.CustomMessageBox("Could not delete /regions directory because it is currently in use. Please make sure that no one is playing the selected world and try again.", "Generation error");
                                 }
                             }
 
@@ -4477,7 +4479,7 @@ namespace TCEE
                                 }
                                 catch (System.IO.IOException ex)
                                 {
-                                    MessageBox.Show("Could not delete /data directory because it is currently in use. Please make sure that no one is playing the selected world and try again.", "Generation error");
+                                    PopUpForm.CustomMessageBox("Could not delete /data directory because it is currently in use. Please make sure that no one is playing the selected world and try again.", "Generation error");
                                 }
                             }
 
@@ -4492,7 +4494,7 @@ namespace TCEE
                                 }
                                 catch (System.IO.IOException ex)
                                 {
-                                    MessageBox.Show("Could not delete /StructureData directory because it is currently in use. Please make sure that no one is playing the selected world and try again.", "Generation error");
+                                    PopUpForm.CustomMessageBox("Could not delete /StructureData directory because it is currently in use. Please make sure that no one is playing the selected world and try again.", "Generation error");
                                 }
                             }
 
@@ -4527,7 +4529,7 @@ namespace TCEE
 
                         if (bDone)
                         {
-                            MessageBox.Show("Done", "Generating");
+                            PopUpForm.CustomMessageBox("Done", "Generating");
                         }
                     }
                 }
@@ -4684,10 +4686,10 @@ namespace TCEE
                                         {
                                             msgboxmsg += msg + "\r\n";
                                         }
-                                        MessageBox.Show(msgboxmsg);
+                                        PopUpForm.CustomMessageBox(msgboxmsg);
                                     }
 
-                                    bool useDefaults = MessageBox.Show("Use TC biome default values for this world and save any non-default values to a TCEE save file? Select No to use the imported world's values as default values instead. If you are unsure, just click No.", "Use TC default values?", MessageBoxButtons.YesNo) == DialogResult.Yes;
+                                    bool useDefaults = PopUpForm.CustomYesNoBox("Use TC default values?", "Use TC biome default values for this world and save any non-default values to a TCEE save file? Select No to use the imported world's values as default values instead. If you are unsure, just click No.", "Yes", "No") == DialogResult.Yes;
 
                                     bool isDefaultWorld = worldObjectsDir == null;
 
@@ -4769,7 +4771,7 @@ namespace TCEE
                                                 }
                                             }
                                             System.IO.File.WriteAllText(sfd.FileName, xmlString);
-                                            MessageBox.Show("Settings saved as: " + sfd.FileName, "Settings saved");
+                                            PopUpForm.CustomMessageBox("Settings saved as: " + sfd.FileName, "Settings saved");
 
                                             // Copy default WorldConfig, BiomeConfigs and WorldObjects to world output dir if the pre-set is not compatible with the default world
                                             if (!isDefaultWorld || !useDefaults)
@@ -4795,7 +4797,7 @@ namespace TCEE
                                                         destinationWorldObjectsDir.Create();
                                                     }
 
-                                                    System.Windows.Forms.MessageBox.Show("Copying BO3s to output directory, this can take a while depending on the number and size of the BO3s!", "Copying BO3s");
+                                                    PopUpForm.CustomMessageBox("Copying BO3's to output directory, this can take a while depending on the number and size of the BO3's.", "Copying BO3's");
                                                     System.Security.AccessControl.DirectorySecurity sec = destinationWorldObjectsDir.GetAccessControl();
                                                     System.Security.AccessControl.FileSystemAccessRule accRule = new System.Security.AccessControl.FileSystemAccessRule(Environment.UserDomainName + "\\" + Environment.UserName, System.Security.AccessControl.FileSystemRights.FullControl, System.Security.AccessControl.AccessControlType.Allow);
                                                     sec.AddAccessRule(accRule);
@@ -4841,21 +4843,21 @@ namespace TCEE
                                                     }
                                                 }
 
-                                                System.Windows.Forms.MessageBox.Show("World import completed, you can now select the world and load your TCEE save.", "Import completed");
+                                                PopUpForm.CustomMessageBox("World import completed, you can now select the world and load your TCEE save.", "Import completed");
                                             }
                                         } else {
-                                            MessageBox.Show("Derp! 1");
+                                            PopUpForm.CustomMessageBox("Derp! 1");
                                         }
                                     }
                                 } else {
-                                    MessageBox.Show("Y u do dis? :(");
+                                    PopUpForm.CustomMessageBox("Y u do dis? :(");
                                 }
                             } else {
-                                MessageBox.Show("Could not find ");
+                                PopUpForm.CustomMessageBox("Could not find ");
                             }
                         }
                     } else {
-                        MessageBox.Show("Could not find WorldBiomes or WorldObjects directory. At least one is required.");
+                        PopUpForm.CustomMessageBox("Could not find WorldBiomes or WorldObjects directory. At least one is required.");
                     }
                 }
 
@@ -4890,49 +4892,64 @@ namespace TCEE
 
         # endregion
 
-        #region Music
-
-            private void label5_Click(object sender, EventArgs e)
-            {
-                if(((Label)sender).ForeColor == Color.FromKnownColor(KnownColor.Maroon))
-                {
-                    ((Label)sender).ForeColor = Color.FromKnownColor(KnownColor.DarkGreen);
-                    ((Label)sender).Text = "on";
-                    playerStopped = false;
-                    player.controls.play();
-                }
-                else if (((Label)sender).ForeColor == Color.FromKnownColor(KnownColor.DarkGreen))
-                {
-                    ((Label)sender).ForeColor = Color.FromKnownColor(KnownColor.Maroon);
-                    ((Label)sender).Text = "off";
-                    playerStopped = true;
-                    player.controls.stop();
-                }
-            }
-
-        #endregion
-
         private void btnConvertSchematicToBO3_Click(object sender, EventArgs e)
         {
             if (convertBO3ofd.ShowDialog() == DialogResult.OK)
             {
                 if (convertBO3ofd.FileNames.Length > 0 && convertBO3fbd.ShowDialog() == DialogResult.OK)
                 {
-                    bool exportForTC = PopUpForm.CustomOkCancelBox("Export for TC/MCW", "Do you want to export BO3s for TerrainControl (TC) or Minecraft Worlds (MCW)?", "TC", "MCW") == DialogResult.OK;
-
-                    System.Windows.Forms.MessageBox.Show("Converting schematics to BO3s, this can take a while depending on the number and size of the schematics!", "Converting schematics to BO3s");
-                    int converted = 0;
-                    foreach (String fileName in convertBO3ofd.FileNames)
+                    DialogResult useBranchesResult = PopUpForm.CustomYesNoBox("CustomObject or CustomStructure?", "Export schematic as:\r\n\r\n- CustomObject: A single BO3 containing all blocks.\r\n- CustomStructure: Slice the schematic into 16x16 BO3's connected via branches.\r\n\r\nFor small schematics (<= 32x32) such as trees and rocks use CustomObject.\r\nFor large schematics (> 32x32) such as structures use CustomStructure.", "CustomObject", "CustomStructure");
+                    if (useBranchesResult != System.Windows.Forms.DialogResult.Cancel)
                     {
-                        convertBO3ofd.InitialDirectory = fileName.Substring(0, fileName.LastIndexOf("\\"));
+                        bool useBranches = useBranchesResult == DialogResult.No;
 
-                        if (fileName.ToLower().EndsWith(".schematic"))
+                        DialogResult exportForTCResult = !useBranches ? DialogResult.Yes : PopUpForm.CustomYesNoBox("TC/OTG or MCW/OTG+?", "Export BO3's for TC/OTG or MCW/OTG+?", "TC/OTG", "MCW/OTG+");
+                        if (exportForTCResult != System.Windows.Forms.DialogResult.Cancel)
                         {
-                            converted += 1;
-                            Utils.SchematicToBO3.doSchematicToBO3(new FileInfo(fileName), new DirectoryInfo(convertBO3fbd.SelectedPath), exportForTC);
+                            bool exportForTC = useBranchesResult == DialogResult.Yes;
+
+                            DialogResult removeAirResult = PopUpForm.CustomYesNoBox("Remove air blocks?", "", "Remove air", "Keep air");
+                            if(removeAirResult != System.Windows.Forms.DialogResult.Cancel)
+                            {
+                                bool removeAir = removeAirResult == DialogResult.Yes;
+
+                                string centerBlockIdString = null;
+                                if (!useBranches)
+                                {
+                                    DialogResult useCenterBlockResult = PopUpForm.InputBox("Use a center block?", "Center the BO3 around a specific block? If so, enter the block id (number).", ref centerBlockIdString, false, true, true);
+                                    if (useCenterBlockResult == System.Windows.Forms.DialogResult.Cancel)
+                                    {
+                                        return;
+                                    }
+                                }
+
+                                int centerBlockId = -1;
+                                if (!String.IsNullOrEmpty(centerBlockIdString))
+                                {
+                                    int.TryParse(centerBlockIdString, out centerBlockId);
+                                }
+
+                                PopUpForm.CustomMessageBox("Converting schematics to BO3's, this can take a while depending on the number and size of the schematics.", "Converting schematics to BO3's");
+                                int converted = 0;
+                                foreach (String fileName in convertBO3ofd.FileNames)
+                                {
+                                    convertBO3ofd.InitialDirectory = fileName.Substring(0, fileName.LastIndexOf("\\"));
+
+                                    if (fileName.ToLower().EndsWith(".schematic"))
+                                    {
+                                        converted += 1;
+                                        Utils.SchematicToBO3.doSchematicToBO3(new FileInfo(fileName), new DirectoryInfo(convertBO3fbd.SelectedPath), exportForTC, useBranches, centerBlockId, removeAir);
+                                    }
+                                }
+                                if (converted > 1)
+                                {
+                                    PopUpForm.CustomMessageBox(converted + " schematics were converted to BO3's and saved at " + convertBO3fbd.SelectedPath, "Converting schematics to BO3's");
+                                } else {
+                                    PopUpForm.CustomMessageBox(converted + " schematic was converted to BO3's and saved at " + convertBO3fbd.SelectedPath, "Converting schematic to BO3's");
+                                }
+                            }
                         }
                     }
-                    System.Windows.Forms.MessageBox.Show(converted + " schematics were converted to BO3s and saved at " + convertBO3fbd.SelectedPath, "Converting schematics to BO3s");
                 }
             }            
         }
@@ -4949,14 +4966,13 @@ namespace TCEE
                 bool go = true;
                 if (!copyBO3fbd.SelectedPath.EndsWith("GlobalObjects") && !copyBO3fbd.SelectedPath.EndsWith("WorldObjects"))
                 {
-                    go = MessageBox.Show("The selected directory was not a GlobalObjects or WorldObjects directory, are you sure you want to copy here?", "Copy BO3s here?", MessageBoxButtons.OKCancel) == DialogResult.OK;
+                    go = PopUpForm.CustomYesNoBox("Copy BO3's here?", "The selected directory was not a GlobalObjects or WorldObjects directory, are you sure you want to copy here?", "Yes", "No") == DialogResult.OK;
                 }
                 if (go)
                 {
-                    System.Windows.Forms.MessageBox.Show("Copying BO3s to output directory, this can take a while depending on the number and size of the BO3s!", "Copying BO3s");
+                    PopUpForm.CustomMessageBox("Copying BO3's to output directory, this can take a while depending on the number and size of the BO3's.", "Copying BO3's");
                     System.IO.DirectoryInfo SourceWorldDirectory = new System.IO.DirectoryInfo(Session.SourceConfigsDir + "/WorldObjects");
                     System.IO.DirectoryInfo DestinationWorldDirectory = new System.IO.DirectoryInfo(copyBO3fbd.SelectedPath);
-                    int copied = 0;
                     if (SourceWorldDirectory.Exists)
                     {
                         if(!DestinationWorldDirectory.Exists)
@@ -4970,7 +4986,7 @@ namespace TCEE
 
                         Utils.CopyDir.CopyAll(SourceWorldDirectory, DestinationWorldDirectory);
                     }
-                    System.Windows.Forms.MessageBox.Show("All BO3s were copied to " + copyBO3fbd.SelectedPath, "Copying BO3s");
+                    PopUpForm.CustomMessageBox("All BO3's were copied to " + copyBO3fbd.SelectedPath, "Copying BO3's");
                 }
             }
         }
@@ -5121,10 +5137,6 @@ namespace TCEE
             this.richTextBox10.BackColor = System.Drawing.Color.Wheat;
             this.richTextBox11.BackColor = System.Drawing.Color.Wheat;
 
-            this.textBox1.BackColor = System.Drawing.Color.Wheat;
-            this.textBox6.BackColor = System.Drawing.Color.Wheat;
-            this.textBox7.BackColor = System.Drawing.Color.Wheat;
-            this.textBox9.BackColor = System.Drawing.Color.Wheat;
             this.textBox10.BackColor = System.Drawing.Color.Wheat;
         }
 
@@ -5154,8 +5166,6 @@ namespace TCEE
             this.richTextBox10.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox11.BackColor = System.Drawing.Color.GhostWhite;
 
-            this.textBox1.BackColor = System.Drawing.Color.GhostWhite;
-            this.textBox6.BackColor = System.Drawing.Color.GhostWhite;
             this.textBox7.BackColor = System.Drawing.Color.GhostWhite;
             this.textBox9.BackColor = System.Drawing.Color.GhostWhite;
             this.textBox10.BackColor = System.Drawing.Color.GhostWhite;

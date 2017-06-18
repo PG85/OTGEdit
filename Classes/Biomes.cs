@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using TCEE.XML;
 using System.Windows.Forms;
+using TCEE.Utils;
 
 namespace TCEE
 {
@@ -49,9 +50,7 @@ namespace TCEE
                             {
                                 replaceStartIndex = lineStart;
                                 bFound = true;
-                            }
-                            else
-                            {
+                            } else {
                                 replaceStartIndex = sDefaultText.Substring(replaceStartIndex).IndexOf("\n") + 1 + replaceStartIndex;
                                 if (replaceStartIndex < 0 || replaceStartIndex == sDefaultText.Length)
                                 {
@@ -90,20 +89,14 @@ namespace TCEE
                                             if (!String.IsNullOrWhiteSpace(s) && !s.Replace("\n", "").Replace("\r", "").StartsWith("#"))
                                             {
                                                 break;
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 lastNoHashLineBeforeComment = arg;
                                             }
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             lastNoHashLineBeforeComment = -1;
                                             break;
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         break;
                                     }
                                 }
@@ -129,19 +122,13 @@ namespace TCEE
 
                             propertyValue = sDefaultText.Substring(replaceStartIndex, replaceLength).Trim();
                             bDefaultConfig.SetProperty(property, propertyValue, false, false);
-                        }
-                        else
-                        {
+                        } else {
                             throw new Exception("Property value for property " + property.Name + " could not be read from file " + file.Name + ". There is either an error in the file or TCEE needs to be updated to support the value's formatting.");
                         }
-                    }
-                    else
-                    {
+                    } else {
                         throw new Exception("ScriptHandle for property \"" + property.Name + "\" could not be found in biome file " + file.Name);
                     }
-                }
-                else
-                {
+                } else {
                     bool bFound = false;
                     int valueStringStartIndex = sDefaultText.ToLower().IndexOf(property.ScriptHandle.ToLower());
                     if (valueStringStartIndex > -1)
@@ -151,9 +138,7 @@ namespace TCEE
                             if (sDefaultText.Substring(0, valueStringStartIndex).LastIndexOf("\n") > sDefaultText.Substring(0, valueStringStartIndex).LastIndexOf("#"))
                             {
                                 bFound = true;
-                            }
-                            else
-                            {
+                            } else {
                                 valueStringStartIndex = sDefaultText.Substring(valueStringStartIndex + property.ScriptHandle.Length).ToLower().IndexOf(property.ScriptHandle.ToLower()) + valueStringStartIndex + property.ScriptHandle.Length;
                                 if (valueStringStartIndex < 0)
                                 {
@@ -181,20 +166,14 @@ namespace TCEE
                                             if (!String.IsNullOrWhiteSpace(s) && !s.Replace("\n", "").Replace("\r", "").StartsWith("#"))
                                             {
                                                 break;
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 lastNoHashLineBeforeComment = arg;
                                             }
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             lastNoHashLineBeforeComment = -1;
                                             break;
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         break;
                                     }
                                 }
@@ -235,14 +214,10 @@ namespace TCEE
                             {
                                 throw new Exception("Property value for property " + property.Name + " could not be read from file " + file.Name + ". There is either an error in the file or TCEE needs to be updated to support the value's formatting. Ex: " + ex.Message);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             throw new Exception("Property value for property " + property.Name + " could not be read from file " + file.Name + ". There is either an error in the file or TCEE needs to be updated to support the value's formatting.");
                         }
-                    }
-                    else
-                    {
+                    } else {
 
                         if (loadComments)
                         {
@@ -253,8 +228,8 @@ namespace TCEE
                         //TODO: solve ReplaceToBiomeName problem!
                         if (property.Name != "ReplaceToBiomeName" && !property.Optional)// && property.Name != "BiomeSizeWhenIsle" && property.Name != "BiomeRarityWhenIsle" && property.Name != "BiomeSizeWhenBorder")
                         {
-                            MessageBox.Show("ScriptHandle for property \"" + property.Name + "\" could not be found in biome file " + file.Name, "Error reading configuration files");
-                            MessageBox.Show("The files you are trying to import have caused an error. They were probably not generated by the selected version of TC or MCW. MCW and TC are backwards compatible though, so for instance you can use TC2.6.3 settings (MCW 1.0.5. and lower) in TC2.7.2 (MCW 1.0.6. or higher). When TC or MCW detects old world and biomeconfigs it should update the files automatically. You can then import the generated world into TCEE using the new version.", "Error reading configuration files");
+                            PopUpForm.CustomMessageBox("ScriptHandle for property \"" + property.Name + "\" could not be found in biome file " + file.Name, "Error reading configuration files");
+                            PopUpForm.CustomMessageBox("The files you are trying to import have caused an error, they were probably not generated with the selected version of TC/MCW/OTG/OTG+.\r\n\r\nDefault values will be used where settings are missing, unupported settings will be ignored.", "Error reading configuration files");
                             //throw new InvalidDataException("ScriptHandle for property \"" + property.Name + "\" could not be found in biome file " + file.Name);
                         }
                     }
@@ -295,9 +270,7 @@ namespace TCEE
                                     //Never overriden, set to default value
                                     defaultValue = defaultBiome.GetPropertyValueAsString(property);
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 defaultValue = defaultBiome.GetPropertyValueAsString(property);
                             }
 
@@ -369,18 +342,14 @@ namespace TCEE
                                                         if (groupvalue != null && !String.IsNullOrEmpty(groupvalue.Trim()))
                                                         {
                                                             groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? ", " + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
-                                                        }
-                                                        else
-                                                        {
+                                                        } else {
                                                             groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
                                                         }
 
                                                         if (aggregateValue != null && !String.IsNullOrEmpty(aggregateValue.Trim()))
                                                         {
                                                             aggregateValue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? ", " + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
-                                                        }
-                                                        else
-                                                        {
+                                                        } else {
                                                             aggregateValue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
                                                         }
                                                     }
@@ -389,25 +358,19 @@ namespace TCEE
                                                         if (groupvalue != null && !String.IsNullOrEmpty(groupvalue.Trim()))
                                                         {
                                                             groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? "\r\n" + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
-                                                        }
-                                                        else
-                                                        {
+                                                        } else {
                                                             groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
                                                         }
 
                                                         if (aggregateValue != null && !String.IsNullOrEmpty(aggregateValue.Trim()))
                                                         {
                                                             aggregateValue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? "\r\n" + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
-                                                        }
-                                                        else
-                                                        {
+                                                        } else {
                                                             aggregateValue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
                                                         }
 
-                                                    }
-                                                    else
-                                                    {
-                                                        MessageBox.Show("One does not simply merge a non-BiomesList, non-ResourceQueue property. Property \"" + property.Name + "\" group \"" + biomeGroup.Name + "\". Biome generation aborted.", "Generation error");
+                                                    } else {
+                                                        PopUpForm.CustomMessageBox("One does not simply merge a non-BiomesList, non-ResourceQueue property. Property \"" + property.Name + "\" group \"" + biomeGroup.Name + "\". Biome generation aborted.", "Generation error");
                                                         return;
                                                     }
                                                 }
@@ -417,9 +380,7 @@ namespace TCEE
                                         {
                                             valuesPerBiomeGroup.Add(groupvalue);
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         throw new Exception("Biome Group data could not be found. This is not supposed to happen! Please contact the developer with a bug report.");
                                     }
                                 }
@@ -491,7 +452,7 @@ namespace TCEE
                                                 {
                                                     if (value1 != null && !string.IsNullOrEmpty(value1.Trim()))
                                                     {
-                                                        //bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)value1) || MessageBox.Show("An item with the same value already exists, are you sure you want to add another?", "Allow duplicate?", MessageBoxButtons.OKCancel) == DialogResult.OK;
+                                                        //bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)value1) || PopupForm.CustomMessageBox("An item with the same value already exists, are you sure you want to add another?", "Allow duplicate?", MessageBoxButtons.OKCancel) == DialogResult.OK;
                                                         bool duplicatePermission = value1.StartsWith("CustomObject(") || !newPropertyValue.Any(a => (string)a.Replace("\r", "").Replace("\n", "") == (string)value1.Replace("\r", "").Replace("\n", ""));
                                                         //bool duplicatePermission = true;
                                                         if (duplicatePermission)
@@ -584,7 +545,7 @@ namespace TCEE
                                                     {
                                                         if (value1 != null && !string.IsNullOrEmpty(value1.Trim()))
                                                         {
-                                                            //bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)value1) || MessageBox.Show("An item with the same value already exists, are you sure you want to add another?", "Allow duplicate?", MessageBoxButtons.OKCancel) == DialogResult.OK;
+                                                            //bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)value1) || PopupForm.CustomMessageBox("An item with the same value already exists, are you sure you want to add another?", "Allow duplicate?", MessageBoxButtons.OKCancel) == DialogResult.OK;
                                                             //bool duplicatePermission = value1.StartsWith("CustomObject(") || !newPropertyValue.Any(a => (string)a == (string)value1);
                                                             //bool duplicatePermission = !newPropertyValue.Any(a => (string)a == (string)value1);
                                                             bool duplicatePermission = true;
@@ -695,7 +656,7 @@ namespace TCEE
                                             //errorsTxt += "\r\nVersion config error: The value for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Added it to the end of the file.";
                                         }
 
-                                        //MessageBox.Show("Version config error: The value for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Biome generation aborted.", "Generation error");
+                                        //PopupForm.CustomMessageBox("Version config error: The value for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Biome generation aborted.", "Generation error");
                                         //return;
                                     }
                                 }
@@ -708,7 +669,7 @@ namespace TCEE
 
                                         //errorsTxt += "\r\nVersion config error: Handle for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Added it to the end of the file.";
                                     }
-                                    //MessageBox.Show("Version config error: Handle for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Biome generation aborted.", "Generation error");
+                                    //PopupForm.CustomMessageBox("Version config error: Handle for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Biome generation aborted.", "Generation error");
                                     //return;
                                 }
                             }
@@ -795,7 +756,7 @@ namespace TCEE
                                             //errorsTxt += "\r\nVersion config error: The value for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Added it to the end of the file.";
                                         }
 
-                                        //MessageBox.Show("Version config error: The value for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Biome generation aborted.", "Generation error");
+                                        //PopupForm.CustomMessageBox("Version config error: The value for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Biome generation aborted.", "Generation error");
                                         //return;
                                     }
                                 }
@@ -804,7 +765,7 @@ namespace TCEE
                                     //TODO: solve ReplaceToBiomeName problem!
                                     //if (property.Name != "ReplaceToBiomeName")// && property.Name != "BiomeSizeWhenIsle" && property.Name != "BiomeRarityWhenIsle" && property.Name != "BiomeSizeWhenBorder")
                                     //{
-                                    //MessageBox.Show("Version config error: Handle for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Biome generation aborted.", "Generation error");
+                                    //PopupForm.CustomMessageBox("Version config error: Handle for property \"" + property.Name + "\" could not be found in file \"" + file.FullName + "\". Biome generation aborted.", "Generation error");
                                     //return;
                                     //}
 
@@ -824,7 +785,7 @@ namespace TCEE
                 }
                 if (errorsTxt.Length > 0)
                 {
-                    MessageBox.Show(errorsTxt, "Version config warnings");
+                    PopUpForm.CustomMessageBox(errorsTxt, "Version config warnings");
                 }
             }
         }

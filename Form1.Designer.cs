@@ -29,12 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.btSelectSourceWorld = new System.Windows.Forms.Button();
             this.btGenerate = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cbWorld = new System.Windows.Forms.ComboBox();
-            this.cbVersion = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -62,35 +57,33 @@
             this.lbBiomes = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.richTextBox11 = new System.Windows.Forms.RichTextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.richTextBox10 = new System.Windows.Forms.RichTextBox();
             this.richTextBox9 = new System.Windows.Forms.RichTextBox();
             this.richTextBox8 = new System.Windows.Forms.RichTextBox();
             this.richTextBox7 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox6 = new System.Windows.Forms.RichTextBox();
             this.richTextBox5 = new System.Windows.Forms.RichTextBox();
             this.richTextBox4 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
             this.btSave = new System.Windows.Forms.Button();
             this.btLoad = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.cbDeleteRegion = new System.Windows.Forms.CheckBox();
             this.btnConvertSchematicToBO3 = new System.Windows.Forms.Button();
             this.btCopyBO3s = new System.Windows.Forms.Button();
             this.btImportWorld = new System.Windows.Forms.Button();
             this.rbSummerSkin = new System.Windows.Forms.RadioButton();
             this.rbWinterSkin = new System.Windows.Forms.RadioButton();
-            this.groupBox2.SuspendLayout();
+            this.richTextBox6 = new System.Windows.Forms.RichTextBox();
+            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
+            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.richTextBox10 = new System.Windows.Forms.RichTextBox();
+            this.richTextBox11 = new System.Windows.Forms.RichTextBox();
+            this.btSelectSourceWorld = new System.Windows.Forms.Button();
+            this.cbVersion = new System.Windows.Forms.ComboBox();
+            this.cbWorld = new System.Windows.Forms.ComboBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -98,18 +91,8 @@
             this.groupBox4.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btSelectSourceWorld
-            // 
-            this.btSelectSourceWorld.Location = new System.Drawing.Point(412, 22);
-            this.btSelectSourceWorld.Name = "btSelectSourceWorld";
-            this.btSelectSourceWorld.Size = new System.Drawing.Size(95, 23);
-            this.btSelectSourceWorld.TabIndex = 8;
-            this.btSelectSourceWorld.Text = "Select";
-            this.btSelectSourceWorld.UseVisualStyleBackColor = true;
-            this.btSelectSourceWorld.Click += new System.EventHandler(this.SelectSourceWorld_Click);
             // 
             // btGenerate
             // 
@@ -122,48 +105,6 @@
             this.btGenerate.UseVisualStyleBackColor = true;
             this.btGenerate.Visible = false;
             this.btGenerate.Click += new System.EventHandler(this.btGenerate_Click);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.BackColor = System.Drawing.Color.GhostWhite;
-            this.groupBox2.Controls.Add(this.cbWorld);
-            this.groupBox2.Controls.Add(this.cbVersion);
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.btSelectSourceWorld);
-            this.groupBox2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox2.Location = new System.Drawing.Point(12, 12);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(524, 61);
-            this.groupBox2.TabIndex = 21;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "General settings";
-            // 
-            // cbWorld
-            // 
-            this.cbWorld.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbWorld.FormattingEnabled = true;
-            this.cbWorld.Location = new System.Drawing.Point(271, 23);
-            this.cbWorld.Name = "cbWorld";
-            this.cbWorld.Size = new System.Drawing.Size(135, 21);
-            this.cbWorld.TabIndex = 33;
-            // 
-            // cbVersion
-            // 
-            this.cbVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbVersion.FormattingEnabled = true;
-            this.cbVersion.Location = new System.Drawing.Point(130, 23);
-            this.cbVersion.Name = "cbVersion";
-            this.cbVersion.Size = new System.Drawing.Size(135, 21);
-            this.cbVersion.TabIndex = 31;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 27);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(110, 13);
-            this.label8.TabIndex = 30;
-            this.label8.Text = "TerrainControl version";
             // 
             // tabControl1
             // 
@@ -501,7 +442,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.BackColor = System.Drawing.Color.GhostWhite;
             this.groupBox3.Controls.Add(this.richTextBox11);
-            this.groupBox3.Controls.Add(this.textBox1);
             this.groupBox3.Controls.Add(this.richTextBox10);
             this.groupBox3.Controls.Add(this.richTextBox9);
             this.groupBox3.Controls.Add(this.richTextBox8);
@@ -515,7 +455,6 @@
             this.groupBox3.Controls.Add(this.textBox10);
             this.groupBox3.Controls.Add(this.textBox9);
             this.groupBox3.Controls.Add(this.textBox7);
-            this.groupBox3.Controls.Add(this.textBox6);
             this.groupBox3.Location = new System.Drawing.Point(4, 7);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(1121, 526);
@@ -523,51 +462,11 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Help";
             // 
-            // richTextBox11
-            // 
-            this.richTextBox11.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox11.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox11.Location = new System.Drawing.Point(20, 323);
-            this.richTextBox11.Multiline = false;
-            this.richTextBox11.Name = "richTextBox11";
-            this.richTextBox11.ReadOnly = true;
-            this.richTextBox11.Size = new System.Drawing.Size(560, 25);
-            this.richTextBox11.TabIndex = 26;
-            this.richTextBox11.TabStop = false;
-            this.richTextBox11.Text = "JFromHollands\'s Terra Incognita:  http://forum.mctcp.com/t/download-first-beta-re" +
-    "lease-terra-incognita/839/23";
-            // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.Color.GhostWhite;
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(20, 270);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(701, 13);
-            this.textBox1.TabIndex = 25;
-            this.textBox1.TabStop = false;
-            this.textBox1.Text = "MCW 1.0.6 has been tested with:";
-            // 
-            // richTextBox10
-            // 
-            this.richTextBox10.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox10.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox10.Location = new System.Drawing.Point(20, 299);
-            this.richTextBox10.Multiline = false;
-            this.richTextBox10.Name = "richTextBox10";
-            this.richTextBox10.ReadOnly = true;
-            this.richTextBox10.Size = new System.Drawing.Size(560, 25);
-            this.richTextBox10.TabIndex = 24;
-            this.richTextBox10.TabStop = false;
-            this.richTextBox10.Text = "MCPitman\'s Biome Bundle:  https://sites.google.com/site/biomebundle/";
-            // 
             // richTextBox9
             // 
             this.richTextBox9.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox9.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox9.Location = new System.Drawing.Point(20, 223);
+            this.richTextBox9.Location = new System.Drawing.Point(20, 262);
             this.richTextBox9.Multiline = false;
             this.richTextBox9.Name = "richTextBox9";
             this.richTextBox9.ReadOnly = true;
@@ -580,7 +479,7 @@
             // 
             this.richTextBox8.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox8.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox8.Location = new System.Drawing.Point(20, 198);
+            this.richTextBox8.Location = new System.Drawing.Point(20, 239);
             this.richTextBox8.Multiline = false;
             this.richTextBox8.Name = "richTextBox8";
             this.richTextBox8.ReadOnly = true;
@@ -594,7 +493,7 @@
             // 
             this.richTextBox7.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox7.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox7.Location = new System.Drawing.Point(20, 174);
+            this.richTextBox7.Location = new System.Drawing.Point(20, 216);
             this.richTextBox7.Multiline = false;
             this.richTextBox7.Name = "richTextBox7";
             this.richTextBox7.ReadOnly = true;
@@ -604,25 +503,11 @@
             this.richTextBox7.Text = "MCW forum thread:  http://www.minecraftforum.net/forums/mapping-and-modding/minec" +
     "raft-tools/2592678-minecraft-worlds-ultimate-world-generator-tons-of";
             // 
-            // richTextBox6
-            // 
-            this.richTextBox6.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox6.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox6.Location = new System.Drawing.Point(20, 444);
-            this.richTextBox6.Multiline = false;
-            this.richTextBox6.Name = "richTextBox6";
-            this.richTextBox6.ReadOnly = true;
-            this.richTextBox6.Size = new System.Drawing.Size(701, 23);
-            this.richTextBox6.TabIndex = 20;
-            this.richTextBox6.TabStop = false;
-            this.richTextBox6.Text = "Most BO3s in the demonstration worlds were made using schematics from:  http://ww" +
-    "w.minecraft-schematics.com/";
-            // 
             // richTextBox5
             // 
             this.richTextBox5.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox5.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox5.Location = new System.Drawing.Point(20, 150);
+            this.richTextBox5.Location = new System.Drawing.Point(20, 193);
             this.richTextBox5.Multiline = false;
             this.richTextBox5.Name = "richTextBox5";
             this.richTextBox5.ReadOnly = true;
@@ -636,7 +521,7 @@
             // 
             this.richTextBox4.BackColor = System.Drawing.Color.GhostWhite;
             this.richTextBox4.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox4.Location = new System.Drawing.Point(20, 126);
+            this.richTextBox4.Location = new System.Drawing.Point(20, 170);
             this.richTextBox4.Multiline = false;
             this.richTextBox4.Name = "richTextBox4";
             this.richTextBox4.ReadOnly = true;
@@ -645,46 +530,6 @@
             this.richTextBox4.TabStop = false;
             this.richTextBox4.Text = "How to make TCEE work for any version of TC:  http://forum.mctcp.com/t/terraincon" +
     "trol-editor-tcee-how-to-make-it-work-for-any-version-of-tc/563/3";
-            // 
-            // richTextBox3
-            // 
-            this.richTextBox3.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox3.Location = new System.Drawing.Point(20, 103);
-            this.richTextBox3.Multiline = false;
-            this.richTextBox3.Name = "richTextBox3";
-            this.richTextBox3.ReadOnly = true;
-            this.richTextBox3.Size = new System.Drawing.Size(701, 23);
-            this.richTextBox3.TabIndex = 17;
-            this.richTextBox3.TabStop = false;
-            this.richTextBox3.Text = "TerrainControl forums: http://forum.mctcp.com/";
-            // 
-            // richTextBox2
-            // 
-            this.richTextBox2.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox2.Location = new System.Drawing.Point(20, 80);
-            this.richTextBox2.Multiline = false;
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.ReadOnly = true;
-            this.richTextBox2.Size = new System.Drawing.Size(701, 23);
-            this.richTextBox2.TabIndex = 16;
-            this.richTextBox2.TabStop = false;
-            this.richTextBox2.Text = "TerrainControl Wiki: https://github.com/MCTCP/TerrainControl/wiki";
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.Location = new System.Drawing.Point(20, 57);
-            this.richTextBox1.Multiline = false;
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(701, 23);
-            this.richTextBox1.TabIndex = 15;
-            this.richTextBox1.TabStop = false;
-            this.richTextBox1.Text = "TCEE tutorial: http://forum.mctcp.com/t/terraincontrol-editor-tcee-tutorials-thre" +
-    "ad/562";
             // 
             // textBox10
             // 
@@ -704,7 +549,7 @@
             this.textBox9.BackColor = System.Drawing.Color.GhostWhite;
             this.textBox9.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox9.Location = new System.Drawing.Point(20, 369);
+            this.textBox9.Location = new System.Drawing.Point(20, 304);
             this.textBox9.Name = "textBox9";
             this.textBox9.ReadOnly = true;
             this.textBox9.Size = new System.Drawing.Size(701, 13);
@@ -716,29 +561,17 @@
             // 
             this.textBox7.BackColor = System.Drawing.Color.GhostWhite;
             this.textBox7.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox7.Location = new System.Drawing.Point(20, 421);
+            this.textBox7.Location = new System.Drawing.Point(20, 335);
             this.textBox7.Name = "textBox7";
             this.textBox7.ReadOnly = true;
             this.textBox7.Size = new System.Drawing.Size(701, 13);
             this.textBox7.TabIndex = 10;
             this.textBox7.TabStop = false;
-            this.textBox7.Text = "TCEE and MCW by:  PeeGee85";
-            // 
-            // textBox6
-            // 
-            this.textBox6.BackColor = System.Drawing.Color.GhostWhite;
-            this.textBox6.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox6.Location = new System.Drawing.Point(20, 398);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.ReadOnly = true;
-            this.textBox6.Size = new System.Drawing.Size(701, 13);
-            this.textBox6.TabIndex = 9;
-            this.textBox6.TabStop = false;
-            this.textBox6.Text = "TerrainControl by:  Khoorn/Wickth, RutgerKok, TimeThor";
+            this.textBox7.Text = "TCEE:  PeeGee85";
             // 
             // btSave
             // 
-            this.btSave.Location = new System.Drawing.Point(11, 79);
+            this.btSave.Location = new System.Drawing.Point(11, 80);
             this.btSave.Name = "btSave";
             this.btSave.Size = new System.Drawing.Size(105, 25);
             this.btSave.TabIndex = 26;
@@ -748,63 +581,13 @@
             // 
             // btLoad
             // 
-            this.btLoad.Location = new System.Drawing.Point(122, 79);
+            this.btLoad.Location = new System.Drawing.Point(122, 80);
             this.btLoad.Name = "btLoad";
             this.btLoad.Size = new System.Drawing.Size(109, 25);
             this.btLoad.TabIndex = 28;
             this.btLoad.Text = "Load settings";
             this.btLoad.UseVisualStyleBackColor = true;
             this.btLoad.Click += new System.EventHandler(this.btLoad_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::TCEE.Properties.Resources.pictureBox1;
-            this.pictureBox1.Location = new System.Drawing.Point(544, 7);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(626, 123);
-            this.pictureBox1.TabIndex = 29;
-            this.pictureBox1.TabStop = false;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(1083, 694);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 13);
-            this.label1.TabIndex = 30;
-            this.label1.Text = "v1.0.9 2017";
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.ForeColor = System.Drawing.Color.DimGray;
-            this.label4.Location = new System.Drawing.Point(905, 694);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(147, 13);
-            this.label4.TabIndex = 31;
-            this.label4.Text = "Athmospheric enhancements:";
-            this.label4.Visible = false;
-            // 
-            // label5
-            // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.ForeColor = System.Drawing.Color.Maroon;
-            this.label5.Location = new System.Drawing.Point(1052, 694);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(19, 13);
-            this.label5.TabIndex = 32;
-            this.label5.Text = "off";
-            this.label5.Visible = false;
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // cbDeleteRegion
             // 
@@ -822,7 +605,7 @@
             // 
             // btnConvertSchematicToBO3
             // 
-            this.btnConvertSchematicToBO3.Location = new System.Drawing.Point(367, 79);
+            this.btnConvertSchematicToBO3.Location = new System.Drawing.Point(367, 80);
             this.btnConvertSchematicToBO3.Name = "btnConvertSchematicToBO3";
             this.btnConvertSchematicToBO3.Size = new System.Drawing.Size(169, 25);
             this.btnConvertSchematicToBO3.TabIndex = 35;
@@ -844,7 +627,7 @@
             // 
             // btImportWorld
             // 
-            this.btImportWorld.Location = new System.Drawing.Point(237, 79);
+            this.btImportWorld.Location = new System.Drawing.Point(237, 80);
             this.btImportWorld.Name = "btImportWorld";
             this.btImportWorld.Size = new System.Drawing.Size(126, 25);
             this.btImportWorld.TabIndex = 37;
@@ -880,11 +663,142 @@
             this.rbWinterSkin.Visible = false;
             this.rbWinterSkin.CheckedChanged += new System.EventHandler(this.rbWinterSkin_CheckedChanged);
             // 
+            // richTextBox6
+            // 
+            this.richTextBox6.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox6.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox6.Location = new System.Drawing.Point(20, 358);
+            this.richTextBox6.Multiline = false;
+            this.richTextBox6.Name = "richTextBox6";
+            this.richTextBox6.ReadOnly = true;
+            this.richTextBox6.Size = new System.Drawing.Size(701, 22);
+            this.richTextBox6.TabIndex = 20;
+            this.richTextBox6.TabStop = false;
+            this.richTextBox6.Text = "Most BO3s in the demonstration worlds were made using schematics from:  http://ww" +
+    "w.minecraft-schematics.com/";
+            // 
+            // richTextBox2
+            // 
+            this.richTextBox2.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox2.Location = new System.Drawing.Point(20, 124);
+            this.richTextBox2.Multiline = false;
+            this.richTextBox2.Name = "richTextBox2";
+            this.richTextBox2.ReadOnly = true;
+            this.richTextBox2.Size = new System.Drawing.Size(701, 23);
+            this.richTextBox2.TabIndex = 16;
+            this.richTextBox2.TabStop = false;
+            this.richTextBox2.Text = "TerrainControl Wiki: https://github.com/MCTCP/TerrainControl/wiki";
+            // 
+            // richTextBox3
+            // 
+            this.richTextBox3.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox3.Location = new System.Drawing.Point(20, 147);
+            this.richTextBox3.Multiline = false;
+            this.richTextBox3.Name = "richTextBox3";
+            this.richTextBox3.ReadOnly = true;
+            this.richTextBox3.Size = new System.Drawing.Size(701, 23);
+            this.richTextBox3.TabIndex = 17;
+            this.richTextBox3.TabStop = false;
+            this.richTextBox3.Text = "TerrainControl forums: http://forum.mctcp.com/";
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox1.Location = new System.Drawing.Point(20, 101);
+            this.richTextBox1.Multiline = false;
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
+            this.richTextBox1.Size = new System.Drawing.Size(701, 23);
+            this.richTextBox1.TabIndex = 15;
+            this.richTextBox1.TabStop = false;
+            this.richTextBox1.Text = "TCEE tutorial: http://forum.mctcp.com/t/terraincontrol-editor-tcee-tutorials-thre" +
+    "ad/562";
+            // 
+            // richTextBox10
+            // 
+            this.richTextBox10.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox10.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox10.Location = new System.Drawing.Point(20, 55);
+            this.richTextBox10.Multiline = false;
+            this.richTextBox10.Name = "richTextBox10";
+            this.richTextBox10.ReadOnly = true;
+            this.richTextBox10.Size = new System.Drawing.Size(701, 23);
+            this.richTextBox10.TabIndex = 24;
+            this.richTextBox10.TabStop = false;
+            this.richTextBox10.Text = "OTG wiki: http://openterraingen.wikia.com/wiki/Open_Terrain_Generator_Wiki";
+            // 
+            // richTextBox11
+            // 
+            this.richTextBox11.BackColor = System.Drawing.Color.GhostWhite;
+            this.richTextBox11.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox11.Location = new System.Drawing.Point(20, 78);
+            this.richTextBox11.Multiline = false;
+            this.richTextBox11.Name = "richTextBox11";
+            this.richTextBox11.ReadOnly = true;
+            this.richTextBox11.Size = new System.Drawing.Size(701, 23);
+            this.richTextBox11.TabIndex = 25;
+            this.richTextBox11.TabStop = false;
+            this.richTextBox11.Text = "OTG reddit: https://www.reddit.com/r/openterraingen/";
+            // 
+            // btSelectSourceWorld
+            // 
+            this.btSelectSourceWorld.Location = new System.Drawing.Point(413, 28);
+            this.btSelectSourceWorld.Name = "btSelectSourceWorld";
+            this.btSelectSourceWorld.Size = new System.Drawing.Size(100, 23);
+            this.btSelectSourceWorld.TabIndex = 8;
+            this.btSelectSourceWorld.Text = "Select";
+            this.btSelectSourceWorld.UseVisualStyleBackColor = true;
+            this.btSelectSourceWorld.Click += new System.EventHandler(this.SelectSourceWorld_Click);
+            // 
+            // cbVersion
+            // 
+            this.cbVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbVersion.FormattingEnabled = true;
+            this.cbVersion.Location = new System.Drawing.Point(12, 28);
+            this.cbVersion.Name = "cbVersion";
+            this.cbVersion.Size = new System.Drawing.Size(191, 21);
+            this.cbVersion.TabIndex = 31;
+            // 
+            // cbWorld
+            // 
+            this.cbWorld.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbWorld.FormattingEnabled = true;
+            this.cbWorld.Location = new System.Drawing.Point(209, 28);
+            this.cbWorld.Name = "cbWorld";
+            this.cbWorld.Size = new System.Drawing.Size(198, 21);
+            this.cbWorld.TabIndex = 33;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.BackColor = System.Drawing.Color.GhostWhite;
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.cbWorld);
+            this.groupBox2.Controls.Add(this.cbVersion);
+            this.groupBox2.Controls.Add(this.btSelectSourceWorld);
+            this.groupBox2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox2.Location = new System.Drawing.Point(12, 12);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(524, 61);
+            this.groupBox2.TabIndex = 21;
+            this.groupBox2.TabStop = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(9, 8);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(144, 13);
+            this.label1.TabIndex = 34;
+            this.label1.Text = "TerrainControl / OTG version";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
+            this.BackColor = System.Drawing.Color.GhostWhite;
             this.BackgroundImage = global::TCEE.Properties.Resources.BGWinter;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1163, 718);
@@ -894,21 +808,15 @@
             this.Controls.Add(this.btCopyBO3s);
             this.Controls.Add(this.btnConvertSchematicToBO3);
             this.Controls.Add(this.cbDeleteRegion);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.btLoad);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btSave);
             this.Controls.Add(this.btGenerate);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.pictureBox1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "TerrainControl\'s Excellent Editor";
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.Text = "TerrainControl\'s Excellent Editor v1.0.10 2017";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -919,7 +827,8 @@
             this.tabPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -927,9 +836,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btSelectSourceWorld;
         private System.Windows.Forms.Button btGenerate;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -956,38 +863,34 @@
         private System.Windows.Forms.Button btEditGroup;
         private System.Windows.Forms.Button btGroupMoveDown;
         private System.Windows.Forms.Button btGroupMoveUp;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox cbVersion;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox cbDeleteRegion;
-        private System.Windows.Forms.ComboBox cbWorld;
         private System.Windows.Forms.Button btnConvertSchematicToBO3;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.RichTextBox richTextBox6;
         private System.Windows.Forms.RichTextBox richTextBox5;
         private System.Windows.Forms.RichTextBox richTextBox4;
-        private System.Windows.Forms.RichTextBox richTextBox3;
-        private System.Windows.Forms.RichTextBox richTextBox2;
-        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.RichTextBox richTextBox8;
         private System.Windows.Forms.RichTextBox richTextBox7;
         private System.Windows.Forms.RichTextBox richTextBox9;
         private System.Windows.Forms.Button btCopyBO3s;
         private System.Windows.Forms.Button btImportWorld;
-        private System.Windows.Forms.RichTextBox richTextBox11;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.RichTextBox richTextBox10;
         private System.Windows.Forms.Button btCloneGroup;
         private System.Windows.Forms.RadioButton rbSummerSkin;
         private System.Windows.Forms.RadioButton rbWinterSkin;
+        private System.Windows.Forms.RichTextBox richTextBox11;
+        private System.Windows.Forms.RichTextBox richTextBox10;
+        private System.Windows.Forms.RichTextBox richTextBox6;
+        private System.Windows.Forms.RichTextBox richTextBox3;
+        private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button btSelectSourceWorld;
+        private System.Windows.Forms.ComboBox cbVersion;
+        private System.Windows.Forms.ComboBox cbWorld;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label1;
 
     }
 }

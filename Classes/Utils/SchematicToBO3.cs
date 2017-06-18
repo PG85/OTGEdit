@@ -44,7 +44,7 @@ namespace TCEE.Utils
 
     public class SchematicToBO3
     {
-        public static void doSchematicToBO3(System.IO.FileInfo loadFile, System.IO.DirectoryInfo saveDir, bool exportForTC)
+        public static void doSchematicToBO3(System.IO.FileInfo loadFile, System.IO.DirectoryInfo saveDir, bool exportForTC, bool useBranches, int centerBlockId, bool removeAir)
         {
             // Most of the code for reading NBT files was ported from WorldEdit!
 
@@ -68,6 +68,7 @@ namespace TCEE.Utils
                 foreach(System.IO.FileInfo file in  schematicsDirectory.GetFiles())
                 {
             */
+
             if (loadFile.Name.EndsWith(".schematic"))
             {
                 string filePath = loadFile.Name;
@@ -147,7 +148,8 @@ namespace TCEE.Utils
                 for (int index = 0; index < blockId.Length; index++)
                 {
                     if ((index >> 1) >= addId.Length)
-                    { // No corresponding AddBlocks index
+                    {
+                        // No corresponding AddBlocks index
                         blocks[index] = (short) (blockId[index] & 0xFF);
                     } else {
                         if ((index & 1) == 0)
@@ -225,14 +227,93 @@ namespace TCEE.Utils
                 Dictionary<Coordinates, StringBuilder> blocksPerChunk = new Dictionary<Coordinates, StringBuilder>();
                 int tileEntityCount = 1;
 
+                int widthMin = width;
+                int heightMin = height;
+                int lengthMin = length;
+                int widthMax = int.MinValue;
+                int heightMax = int.MinValue;
+                int lengthMax = int.MinValue;
+
+                bool centerBlockFound = false;
+                int centerPointX = 0;
+                int centerPointY = 0;
+                int centerPointZ = 0;
+
                 for (int x = 0; x < width; ++x)
                 {
                     for (int y = 0; y < height; ++y)
                     {
                         for (int z = 0; z < length; ++z)
                         {
-                            Coordinates chunkCoordinates = new Coordinates((int)Math.Floor(x / 16d), 0, (int)Math.Floor(z / 16d));
+                            int index = y * width * length + z * width + x;
+                            short blockMaterial = blocks[index];
+
+                            if (centerBlockId != -1 && blockMaterial == centerBlockId)
+                            {
+                                centerPointX = x;
+                                centerPointY = y;
+                                centerPointZ = z;
+                                centerBlockFound = true;
+                            }
+
+                            if (!removeAir || blockMaterial != 0) // Ignore AIR(?)
+                            {
+                                if (x < widthMin)
+                                {
+                                    widthMin = x;
+                                }
+                                if (y < heightMin)
+                                {
+                                    heightMin = y;
+                                }
+                                if (z < lengthMin)
+                                {
+                                    lengthMin = z;
+                                }
+
+                                if (x > widthMax)
+                                {
+                                    widthMax = x;
+                                }
+                                if (y > heightMax)
+                                {
+                                    heightMax = y;
+                                }
+                                if (z > lengthMax)
+                                {
+                                    lengthMax = z;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                int bO3Width = (short)(widthMax - widthMin) + 1;
+                int bO3Height = (short)(heightMax - heightMin);
+                int bO3Length = (short)(lengthMax - lengthMin) + 1;
+
+                if (centerBlockId == -1 || !centerBlockFound)
+                {
+                    centerPointX = (int)Math.Floor(bO3Width / 2d);
+                    centerPointY = 0;
+                    centerPointZ = (int)Math.Floor(bO3Length / 2d);
+                }
+
+                for (int x = widthMin; x <= widthMax; ++x)
+                {
+                    for (int y = heightMin; y <= heightMax; ++y)
+                    {
+                        for (int z = lengthMin; z <= lengthMax; ++z)
+                        {
                             StringBuilder blocksInChunk = new StringBuilder();
+                            Coordinates chunkCoordinates = null;
+
+                            if (useBranches)
+                            {
+                                chunkCoordinates = new Coordinates((int)Math.Floor(x / 16d), 0, (int)Math.Floor(z / 16d));
+                            } else {
+                                chunkCoordinates = new Coordinates(0, 0, 0);
+                            }
 
                             if(blocksPerChunk.Keys.Any(a => a.X == chunkCoordinates.X && a.Z == chunkCoordinates.Z))
                             {
@@ -245,13 +326,13 @@ namespace TCEE.Utils
                             int index = y * width * length + z * width + x;
                             byte blockSubType = blockData[index];
                             short blockMaterial = blocks[index];
-                            if (blockMaterial != 0)
+                            if (!removeAir || blockMaterial != 0) // Ignore AIR(?)
                             {
                                 String tileEntityName = "";
                                 Tuple<Coordinates, String, List<NbtTag>> extraData = tileEntitiesMap.FirstOrDefault(a => a.Item1.Equals(new Coordinates(x,y,z)));
                                 if (extraData != null)
                                 {                                    
-                                    tileEntityName = tileEntityCount + "-" + extraData.Item2 + ".nbt";
+                                    tileEntityName = extraData.Item2 + ".nbt";
 
                                     System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(saveDir.FullName + "/" + fileName);
                                     if (!dir.Exists)
@@ -269,15 +350,25 @@ namespace TCEE.Utils
                                     {
                                         entityFile.RootTag.Add((NbtTag)nbtTag.Clone());
                                     }
-                                    entityFile.SaveToFile(dir.FullName + "/" + tileEntityName, NbtCompression.GZip);
+
+                                    if (useBranches)
+                                    {
+                                        entityFile.SaveToFile(dir.FullName + "/" + fileName + "_" + (x - (chunkCoordinates.X * 16) - 8) + "_" + y + "_" + (z - (chunkCoordinates.Z * 16) - 7) + "_" + tileEntityName, NbtCompression.GZip);
+                                    } else {
+                                        entityFile.SaveToFile(dir.FullName + "/" + fileName + "_" + (x - centerPointX) + "_" + (y - centerPointY) + "_" + (z - centerPointZ) + "_" + tileEntityName, NbtCompression.GZip);
+                                    }
                                     //NbtCompound schematicTag = myFile.RootTag;
 
                                     tileEntityCount += 1;
                                 }
 
-
                                 //blocksInChunk.Append("Block(" + (x - (chunkCoordinates.X * 16) - 8) + "," + y + "," + (z - (chunkCoordinates.Z * 16) - 7) + "," + blockMaterial + (blockSubType != 0 ? ":" + blockSubType : "") + ")\r\n");
-                                blocksInChunk.Append("Block(" + (x - (chunkCoordinates.X * 16) - 8) + "," + y + "," + (z - (chunkCoordinates.Z * 16) - 7) + "," + blockMaterial + (blockSubType != 0 ? ":" + blockSubType : "") + (tileEntityName.Length > 0 ? "," + tileEntityName : "") + ")\r\n");
+                                if(useBranches)
+                                {
+                                    blocksInChunk.Append("Block(" + (x - (chunkCoordinates.X * 16) - 8) + "," + y + "," + (z - (chunkCoordinates.Z * 16) - 7) + "," + blockMaterial + (blockSubType != 0 ? ":" + blockSubType : "") + (tileEntityName.Length > 0 ? "," + tileEntityName : "") + ")\r\n");
+                                } else {
+                                    blocksInChunk.Append("Block(" + (x - centerPointX) + "," + (y - centerPointY) + "," + (z - centerPointZ) + "," + blockMaterial + (blockSubType != 0 ? ":" + blockSubType : "") + (tileEntityName.Length > 0 ? "," + tileEntityName : "") + ")\r\n");
+                                }
                             }
 
                             //Coordinates pt = new Coordinates(x, y, z);
@@ -337,12 +428,11 @@ namespace TCEE.Utils
                         BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                         BO3String.Append("#######################################################################\r\n");
                         BO3String.Append("\r\n");
-                        if(exportForTC)
+                        if (!useBranches || exportForTC)
                         {
-                            BO3String.Append("# The descriptions in this file are true only for TerrainControl. They are not true for the Minecraft Worlds mod!\r\n");
-                            BO3String.Append("# Minecraft Worlds completely reimplemented BO3s, check the MCW documentation on the mc/mctcp forums for how to use BO3s with MCW\r\n");
-                            BO3String.Append("# or watch the video's on my YT channel at https://www.youtube.com/user/PeeGee85. You can check out the \"Editing and importing schematics & BO3s\" \r\n");
-                            BO3String.Append("# series of video's, in part 2 I explain BO3s. \r\n");
+                            BO3String.Append("# The descriptions in this file are accurate only for TerrainControl and OTG.\r\n");
+                            BO3String.Append("# For MCW and OTG+ these descriptions are only accurate if the BO3 is used as a CustomObject.\r\n");
+                            BO3String.Append("# MCW and OTG+ completely reimplemented CustomStructure, check the MCW/OTG+ documentation for more information.\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("# This is the config file of a custom object.\r\n");
                             BO3String.Append("# If you add this object correctly to your BiomeConfigs, it will spawn in the world.\r\n");                    
@@ -351,7 +441,7 @@ namespace TCEE.Utils
                             BO3String.Append("Author: Unknown\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("# A short description of this BO3 object\r\n");
-                            BO3String.Append("Description: This BO3 was converted from a schematic using the MineCraft Worlds Editor. Unfortunately the author and description information for the schematic could not be found. If you know who the author of the schematic is then please tell the author of this BO3!\r\n");
+                            BO3String.Append("Description: This BO3 was converted from a schematic using TCEE. Unfortunately the author and description information for the schematic could not be found. If you know who the author of the schematic is then please tell the author of this BO3!\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("# The BO3 version, don't change this! It can be used by external applications to do a version check.\r\n");
                             BO3String.Append("Version: 3\r\n");
@@ -396,6 +486,14 @@ namespace TCEE.Utils
                             BO3String.Append("# If you writer.write the BO3 name directly in the BiomeConfigs, this will be ignored.\r\n");
                             BO3String.Append("ExcludedBiomes: All\r\n");
                             BO3String.Append("\r\n");
+                            BO3String.Append("# To optimise this BO3 for faster loading times you can use Notepad++ to find/replace comments and abbreviate things.\r\n");
+                            BO3String.Append("# Notepad++ find/replace with regex:\r\n");
+                            BO3String.Append("# Find: ^[#;].* replace to nothing removes all lines starting with # \r\n");
+                            BO3String.Append("# Find: ^\\s*$ replace to nothing removes most empty lines \r\n");
+                            BO3String.Append("# Notepad++ find/replace without regex:\r\n");
+                            BO3String.Append("# *Warning: This will only work for OTG 1.10.2 v22 / OTG 1.11.2 v7 or higher. B( is not recognised by lower versions.\r\n");
+                            BO3String.Append("# Find: Block( replace to B(\r\n");
+                            BO3String.Append("\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                             BO3String.Append("# |                      Source block settings                      | #\r\n");
@@ -419,7 +517,7 @@ namespace TCEE.Utils
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("# All the blocks used in the BO3 are listed here. Possible blocks:\r\n");
-                            BO3String.Append("# Block(x,y,z,id[.data][,nbtfile.nbt)\r\n");
+                            BO3String.Append("# Block(x,y,z,id[.data][,nbtfile.nbt) or B(x,y,z,id[.data][,nbtfile.nbt)\r\n");
                             BO3String.Append("# RandomBlock(x,y,z,id[:data][,nbtfile.nbt],chance[,id[:data][,nbtfile.nbt],chance[,...]])\r\n");
                             BO3String.Append("# So RandomBlock(0,0,0,CHEST,chest.nbt,50,CHEST,anotherchest.nbt,100) will spawn a chest at\r\n");
                             BO3String.Append("# the BO3 origin, and give it a 50% chance to have the contents of chest.nbt, or, if that\r\n");
@@ -437,7 +535,6 @@ namespace TCEE.Utils
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# Forge only (this may have changed, check for updates).\r\n");
                             BO3String.Append("# Entity() spawns an entity instead of a block. The entity is spawned only once when the BO3 is spawned.\r\n");
                             BO3String.Append("# Entities are persistent by default so they don't de-spawn when no player is near, they are only unloaded.\r\n");
                             BO3String.Append("# Usage: Entity(x,y,z,mobName,groupSize,NameTagOrNBTFileName) or Entity(x,y,z,mobName,groupSize)\r\n");
@@ -468,33 +565,36 @@ namespace TCEE.Utils
                             BO3String.Append("#   BlockCheckNot(0,-1,0,WOOL:0)   Require that there is no white wool below the object\r\n");
                             BO3String.Append("#   LightCheck(0,0,0,0,1)          Require almost complete darkness just below the object\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("#######################################################################\r\n");
-                            BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
-                            BO3String.Append("# |                             Branches                            | #\r\n");
-                            BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
-                            BO3String.Append("#######################################################################\r\n");
-                            BO3String.Append("\r\n");
-                            BO3String.Append("# Branches are objects that will spawn when this object spawns when it is used in\r\n");
-                            BO3String.Append("# the CustomStructure resource. Branches can also have branches, making complex\r\n");
-                            BO3String.Append("# structures possible. See the wiki for more details.\r\n");
-                            BO3String.Append("\r\n");
-                            BO3String.Append("# Regular Branches spawn each branch with an independent chance of spawning.\r\n");
-                            BO3String.Append("# Branch(x,y,z,branchName,rotation,chance[,anotherBranchName,rotation,chance[,...]][IndividualChance])\r\n");
-                            BO3String.Append("# branchName - name of the object to spawn.\r\n");
-                            BO3String.Append("# rotation - NORTH, SOUTH, EAST or WEST.\r\n");
-                            BO3String.Append("# IndividualChance - The chance each branch has to spawn, assumed to be 100 when left blank\r\n");
-                            BO3String.Append("\r\n");
-                            BO3String.Append("# WeightedBranch(x,y,z,branchName,rotation,chance[,anotherBranchName,rotation,chance[,...]][MaxChanceOutOf])\r\n");
-                            BO3String.Append("# MaxChanceOutOf - The chance all branches have to spawn out of, assumed to be 100 when left blank\r\n");
-                            if (chunk.Key.X == 0 && chunk.Key.Z == 0 && firstPass)
+                            if(useBranches)
                             {
-                                BO3String.Append("Branch(0,0,0," + fileName + "C0R0,NORTH,100)\r\n");
+                                BO3String.Append("#######################################################################\r\n");
+                                BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
+                                BO3String.Append("# |                             Branches                            | #\r\n");
+                                BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
+                                BO3String.Append("#######################################################################\r\n");
+                                BO3String.Append("\r\n");
+                                BO3String.Append("# Branches are objects that will spawn when this object spawns when it is used in\r\n");
+                                BO3String.Append("# the CustomStructure resource. Branches can also have branches, making complex\r\n");
+                                BO3String.Append("# structures possible. See the wiki for more details.\r\n");
+                                BO3String.Append("\r\n");
+                                BO3String.Append("# Regular Branches spawn each branch with an independent chance of spawning.\r\n");
+                                BO3String.Append("# Branch(x,y,z,branchName,rotation,chance[,anotherBranchName,rotation,chance[,...]][IndividualChance])\r\n");
+                                BO3String.Append("# branchName - name of the object to spawn.\r\n");
+                                BO3String.Append("# rotation - NORTH, SOUTH, EAST or WEST.\r\n");
+                                BO3String.Append("# IndividualChance - The chance each branch has to spawn, assumed to be 100 when left blank\r\n");
+                                BO3String.Append("\r\n");
+                                BO3String.Append("# WeightedBranch(x,y,z,branchName,rotation,chance[,anotherBranchName,rotation,chance[,...]][MaxChanceOutOf])\r\n");
+                                BO3String.Append("# MaxChanceOutOf - The chance all branches have to spawn out of, assumed to be 100 when left blank\r\n");
+                                if (chunk.Key.X == 0 && chunk.Key.Z == 0 && firstPass)
+                                {
+                                    BO3String.Append("Branch(0,0,0," + fileName + "C0R0,NORTH,100)\r\n");
+                                }
                             }
                         } else {
-                            BO3String.Append("# This BO3 is made for use with the Minecraft Worlds mod\r\n");
-                            BO3String.Append("# Minecraft Worlds completely reimplemented BO3s, check the MCW documentation on the mc/mctcp forums for how to use BO3s with MCW\r\n");
-                            BO3String.Append("# or watch the video's on my YT channel at https://www.youtube.com/user/PeeGee85. You can check out the \"Editing and importing schematics & BO3s\" \r\n");
-                            BO3String.Append("# series of video's, in part 2 I explain BO3s. \r\n");
+                            BO3String.Append("# This BO3 is made for use with MCW and OTG+.\r\n");
+                            BO3String.Append("# The descriptions in this file are only accurate for MCW and OTG+.\r\n");
+                            BO3String.Append("# For TerrainControl and OTG these descriptions are only accurate if the BO3 is used as a CustomObject.\r\n");
+                            BO3String.Append("# MCW and OTG+ completely reimplemented CustomStructure, check the MCW/OTG+ documentation for more information.\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("# This is the config file of a custom object.\r\n");
                             BO3String.Append("# If you add this object correctly to your BiomeConfigs, it will spawn in the world.\r\n");
@@ -517,17 +617,17 @@ namespace TCEE.Utils
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# This settings is currently unavailable for MCW.\r\n");
+                            BO3String.Append("# This settings is currently unavailable for MCW/OTG+.\r\n");
                             BO3String.Append("Tree: false\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("# The rarity of the BO3 from 0 to 100. Each spawn attempt has rarity% chance to succeed when using the CustomObject(...) resource.\r\n");
-                            BO3String.Append("# Ignored by MCW for Tree(..), Sapling(..) and CustomStructure(..).\r\n");
+                            BO3String.Append("# Ignored by MCW/OTG+ for Tree(..), Sapling(..) and CustomStructure(..).\r\n");
                             BO3String.Append("Rarity: 100\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("# Minimum distance in chunks between structures with the same filename.\r\n");
                             BO3String.Append("Frequency: 0\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# This settings is currently unavailable for MCW, you can easily work around this though by creating a master bo3 without blocks that has the real starting BO3 as a branch.\r\n");
+                            BO3String.Append("# This settings is currently unavailable for MCW/OTG+, you can easily work around this though by creating a master bo3 without blocks that has the real starting BO3 as a branch.\r\n");
                             BO3String.Append("# You can then duplicate the master BO3 3 times and give each copy's branch a different rotation.\r\n");
                             BO3String.Append("RotateRandomly: false\r\n");
                             BO3String.Append("\r\n");
@@ -541,8 +641,16 @@ namespace TCEE.Utils
                             BO3String.Append("\r\n");
                             BO3String.Append("MaxHeight: 256\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# This settings is disabled for MCW.\r\n");
+                            BO3String.Append("# This settings is disabled for MCW/OTG+.\r\n");
                             BO3String.Append("ExcludedBiomes: All\r\n");
+                            BO3String.Append("\r\n");
+                            BO3String.Append("# To optimise this BO3 for faster loading times you can use Notepad++ to find/replace comments and abbreviate things.\r\n");
+                            BO3String.Append("# Notepad++ find/replace with regex:\r\n");
+                            BO3String.Append("# Find: ^[#;].* replace to nothing removes all lines starting with # \r\n");
+                            BO3String.Append("# Find: ^\\s*$ replace to nothing removes most empty lines \r\n");
+                            BO3String.Append("# Notepad++ find/replace without regex:\r\n");
+                            BO3String.Append("# *Warning: This will only work for OTG 1.10.2 v22 / OTG 1.11.2 v7 or higher. B( is not recognised by lower versions.\r\n");
+                            BO3String.Append("# Find: Block( replace to B(\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
@@ -550,13 +658,13 @@ namespace TCEE.Utils
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# This settings is disabled for MCW.\r\n");
+                            BO3String.Append("# This settings is disabled for MCW/OTG+.\r\n");
                             BO3String.Append("SourceBlocks: AIR\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# This settings is disabled for MCW.\r\n");
+                            BO3String.Append("# This settings is disabled for MCW/OTG+.\r\n");
                             BO3String.Append("MaxPercentageOutsideSourceBlock: 100\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# This settings is disabled for MCW.\r\n");
+                            BO3String.Append("# This settings is disabled for MCW/OTG+.\r\n");
                             BO3String.Append("OutsideSourceBlock: placeAnyway\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("# MineCraft Worlds mod settings #\r\n");
@@ -570,13 +678,13 @@ namespace TCEE.Utils
                                 BO3String.Append("#InheritBO3:\r\n");
                             }
                             BO3String.Append("\r\n");
-                            if (chunk.Key.X == 0 && chunk.Key.Z == 0 && firstPass)
-                            {
+                            //if (is16x16 && (chunk.Key.X == 0 && chunk.Key.Z == 0 && firstPass))
+                            //{
                                 BO3String.Append("# Defaults to true, if true and this is the root BO3 for this branching structure then this BO3's smoothing and height settings are used for all its children (branches).\r\n");
                                 BO3String.Append("#OverrideChildSettings: true\r\n");
-                            }
+                            //}
                             BO3String.Append("\r\n");
-                            BO3String.Append("# If this is set to true then this BO3 can spawn on top of or inside an existing BO3.\r\n");
+                            BO3String.Append("# If this is set to true then this BO3 can spawn as a branch on top of or inside an existing BO3/branch (only within the same customstructure).\r\n");
                             BO3String.Append("#CanOverride: false\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("# If this is set to true then this BO3 can only spawn underneath an existing BO3. Used to make sure that dungeons only appear underneath buildings\r\n");
@@ -664,7 +772,7 @@ namespace TCEE.Utils
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("# All the blocks used in the BO3 are listed here. Possible blocks:\r\n");
-                            BO3String.Append("# Block(x,y,z,id[.data][,nbtfile.nbt)\r\n");
+                            BO3String.Append("# Block(x,y,z,id[.data][,nbtfile.nbt) or B(x,y,z,id[.data][,nbtfile.nbt)\r\n");
                             BO3String.Append("# RandomBlock(x,y,z,id[:data][,nbtfile.nbt],chance[,id[:data][,nbtfile.nbt],chance[,...]])\r\n");
                             BO3String.Append("# So RandomBlock(0,0,0,CHEST,chest.nbt,50,CHEST,anotherchest.nbt,100) will spawn a chest at\r\n");
                             BO3String.Append("# the BO3 origin, and give it a 50% chance to have the contents of chest.nbt, or, if that\r\n");
@@ -685,6 +793,7 @@ namespace TCEE.Utils
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("\r\n");
+                            BO3String.Append("# Currently only available for MCW, this feature will be added to OTG+ a.s.a.p.");
                             BO3String.Append("# Use the ModData() tag to include data that other mods can use\r\n");
                             BO3String.Append("# ModData(x,y,z,ModName,DataText)\r\n");
                             BO3String.Append("# Example: ModData(x,y,z,MyCystomNPCMod,SpawnBobHere/WithAPotato/And50Health)\r\n");
@@ -732,6 +841,7 @@ namespace TCEE.Utils
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("\r\n");
+                            BO3String.Append("# Currently only available for MCW, this feature will be added to OTG+ a.s.a.p.");
                             BO3String.Append("# Spawner(x,y,z,EntityType,count,interval,chance,max,despawnTime,velocityX,velocityY,velocityZ,yaw,pitch) tag for BO3's,\r\n");
                             BO3String.Append("# works just like the Block() tag and is spawned when the BO3 is spawned. Spawners are invisible ingame but can be blocked\r\n");
                             BO3String.Append("# up with a solid or liquid block (depending on if the entity being spawned can spawn in those blocks) to prevent entities\r\n");
@@ -744,7 +854,7 @@ namespace TCEE.Utils
                             BO3String.Append("# The last 6 parameters are optional and are set to 0 by default (despawnTime,velocityX,velocityY,velocityZ,yaw,pitch), you\r\n");
                             BO3String.Append("# only need to add as many of those parameters as you need. So for instance all of these work: \"Spawner(0,0,0,Arrow,1,5,100,5)\"\r\n");
                             BO3String.Append("# \"Spawner(0,0,0,Arrow,1,5,100,5, 1,0,1)\" \"Spawner(0,0,0,Arrow,1,5,100,5,1,0,1,180,180)\"\r\n");
-                            BO3String.Append("# Use the /mcw entities console command (ops only) to see a list of available entityTypes.\r\n");
+                            BO3String.Append("# Use the /mcw entities or /otg entities console command (ops only) to see a list of available entityTypes.\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
@@ -752,8 +862,9 @@ namespace TCEE.Utils
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("\r\n");
+                            BO3String.Append("# Currently only available for MCW, this feature will be added to OTG+ a.s.a.p.");
                             BO3String.Append("# Continually spawns particles in the world at the specified coordinates, interval and velocity.\r\n");
-                            BO3String.Append("# For a list of particles use /mcw particles.\r\n");
+                            BO3String.Append("# For a list of particles use /mcw particles or /otg particles.\r\n");
                             BO3String.Append("# When no velocity is supplied a small random velocity is used.\r\n");
                             BO3String.Append("# Particles will disappear if a solid block is placed on them for at least one second.\r\n");
                             BO3String.Append("# Usage1: Particle(x, y , z, particleName, interval\r\n");
@@ -765,7 +876,7 @@ namespace TCEE.Utils
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# This settings is disabled for MCW.\r\n");
+                            BO3String.Append("# This settings is disabled for MCW/OTG+.\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
@@ -773,7 +884,7 @@ namespace TCEE.Utils
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("\r\n");
-                            BO3String.Append("# Check the mctcp forums, the mc forums and PeeGee85 YT channel for.\r\n");
+                            BO3String.Append("# Check the otg docs, mctcp forums, the mc forums and PeeGee85 YT channel for.\r\n");
                             BO3String.Append("# Documentation and tutorials for the branching features.\r\n");
                             BO3String.Append("# Branch(x,y,z,isBranchEnding,branchName,rotation,chance,branchLength)\r\n");
                             BO3String.Append("# branchName - filename of the object to spawn (without extension).\r\n");
@@ -808,7 +919,7 @@ namespace TCEE.Utils
                             }
                         }
 
-                        if (chunk.Key.X == 0 && chunk.Key.Z == 0 && firstPass)
+                        if (!useBranches || (chunk.Key.X == 0 && chunk.Key.Z == 0 && firstPass))
                         {
                             using (System.IO.StreamWriter outputFile = new System.IO.StreamWriter(saveDir.FullName + "/" + fileName + ".BO3"))
                             {
@@ -839,7 +950,7 @@ namespace TCEE.Utils
                         }
                     }
                 }
-                //System.Windows.Forms.MessageBox.Show("Schematic was converted to BO3 and saved at " + saveDir.FullName);
+                //PopupForm.CustomMessageBox("Schematic was converted to BO3 and saved at " + saveDir.FullName);
 
                 /*
                 // Accessing tags (long/strongly-typed style):
