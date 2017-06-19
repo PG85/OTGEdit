@@ -326,6 +326,39 @@ namespace TCEE.Utils
                             int index = y * width * length + z * width + x;
                             byte blockSubType = blockData[index];
                             short blockMaterial = blocks[index];
+
+                            if (blockMaterial == 18)
+                            {
+                                if (blockSubType == 4 || blockSubType == 8 || blockSubType == 12)
+                                {
+                                    blockSubType = 0;
+                                }
+                                if (blockSubType == 5 || blockSubType == 9 || blockSubType == 13)
+                                {
+                                    blockSubType = 1;
+                                }
+                                if (blockSubType == 6 || blockSubType == 10 || blockSubType == 14)
+                                {
+                                    blockSubType = 2;
+                                }
+                                if (blockSubType == 7 || blockSubType == 11 || blockSubType == 15)
+                                {
+                                    blockSubType = 3;
+                                }
+                            }
+
+                            if (blockMaterial == 161)
+                            {
+                                if (blockSubType == 4 || blockSubType == 8 || blockSubType == 12)
+                                {
+                                    blockSubType = 0;
+                                }
+                                if (blockSubType == 5 || blockSubType == 9 || blockSubType == 13)
+                                {
+                                    blockSubType = 1;
+                                }
+                            }
+
                             if (!removeAir || blockMaterial != 0) // Ignore AIR(?)
                             {
                                 String tileEntityName = "";
@@ -491,7 +524,7 @@ namespace TCEE.Utils
                             BO3String.Append("# Find: ^[#;].* replace to nothing removes all lines starting with # \r\n");
                             BO3String.Append("# Find: ^\\s*$ replace to nothing removes most empty lines \r\n");
                             BO3String.Append("# Notepad++ find/replace without regex:\r\n");
-                            BO3String.Append("# *Warning: This will only work for OTG 1.10.2 v22 / OTG 1.11.2 v7 or higher. B( is not recognised by lower versions.\r\n");
+                            BO3String.Append("# *Warning: This will only work for OTG 1.10.2 v21 / OTG 1.11.2 v6 or higher. B( is not recognised by lower versions.\r\n");
                             BO3String.Append("# Find: Block( replace to B(\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("#######################################################################\r\n");
@@ -649,7 +682,7 @@ namespace TCEE.Utils
                             BO3String.Append("# Find: ^[#;].* replace to nothing removes all lines starting with # \r\n");
                             BO3String.Append("# Find: ^\\s*$ replace to nothing removes most empty lines \r\n");
                             BO3String.Append("# Notepad++ find/replace without regex:\r\n");
-                            BO3String.Append("# *Warning: This will only work for OTG 1.10.2 v22 / OTG 1.11.2 v7 or higher. B( is not recognised by lower versions.\r\n");
+                            BO3String.Append("# *Warning: This will only work for OTG 1.10.2 v21 / OTG 1.11.2 v6 or higher. B( is not recognised by lower versions.\r\n");
                             BO3String.Append("# Find: Block( replace to B(\r\n");
                             BO3String.Append("\r\n");
                             BO3String.Append("#######################################################################\r\n");
