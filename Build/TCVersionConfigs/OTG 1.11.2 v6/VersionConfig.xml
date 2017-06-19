@@ -364,6 +364,13 @@
         <TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />        
+            <Name>WoodLandMansionsEnabled</Name>
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>WoodLandMansionsEnabled:</ScriptHandle>
+        </TCProperty>
+        <TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
             <Name>OceanMonumentsEnabled</Name>
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>OceanMonumentsEnabled:</ScriptHandle>
@@ -382,6 +389,13 @@
             <PropertyType>String</PropertyType>
             <ScriptHandle>VillageType:</ScriptHandle>
         </TCProperty>
+        <TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>MineshaftType</Name>            
+            <PropertyType>String</PropertyType>
+            <ScriptHandle>MineshaftType:</ScriptHandle>
+        </TCProperty>		
         <TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />        
@@ -489,7 +503,7 @@
 				<string>redstone_ore</string>
 				<string>emerald_ore</string>
 				<string>quartz_ore</string>
-			</UniqueParameterValues>			
+			</UniqueParameterValues>
         </ResourceQueueItem>
         <ResourceQueueItem>                            
             <HasUniqueParameter>true</HasUniqueParameter>
@@ -616,7 +630,7 @@
             <UniqueParameterIndex>0</UniqueParameterIndex>
         </ResourceQueueItem>                
     </ResourceQueueOptions>    
-    <SettingsTypes>
+	<SettingsTypes>
         <SettingsType>
             <BiomesDirectory>WorldBiomes</BiomesDirectory>            
             <ColorType>#</ColorType>
@@ -629,8 +643,22 @@
             <FileExtension>BiomeConfig.ini</FileExtension>
             <Type>Forge</Type>
         </SettingsType>
-    </SettingsTypes>       
+    </SettingsTypes>
     <WorldConfig>
+		<TCProperty>
+			<Group i:nil="true" />
+			<LabelText i:nil="true" />
+			<Name>Author</Name>
+			<PropertyType>String</PropertyType>
+			<ScriptHandle>Author:</ScriptHandle>
+		</TCProperty>
+		<TCProperty>
+			<Group i:nil="true" />
+			<LabelText i:nil="true" />
+			<Name>Description</Name>
+			<PropertyType>String</PropertyType>
+			<ScriptHandle>Description:</ScriptHandle>
+		</TCProperty>
 		<TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />        
@@ -819,21 +847,21 @@
             <Name>WorldHeightScaleBits</Name>
             <PropertyType>Float</PropertyType>
             <ScriptHandle>WorldHeightScaleBits:</ScriptHandle>
-        </TCProperty>		
+        </TCProperty>
         <TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />        
             <Name>WorldHeightCapBits</Name>
             <PropertyType>Float</PropertyType>
             <ScriptHandle>WorldHeightCapBits:</ScriptHandle>
-        </TCProperty>		
+        </TCProperty>
         <TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />        
             <Name>FractureHorizontal</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>FractureHorizontal:</ScriptHandle>
-        </TCProperty>		
+        </TCProperty>
 		<TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />        
@@ -847,42 +875,42 @@
             <Name>RemoveSurfaceStone</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>RemoveSurfaceStone:</ScriptHandle>
-        </TCProperty>		
+        </TCProperty>
         <TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />        
             <Name>DisableBedrock</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DisableBedrock:</ScriptHandle>
-        </TCProperty>		
+        </TCProperty>
         <TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />        
             <Name>CeilingBedrock</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>CeilingBedrock:</ScriptHandle>
-        </TCProperty>		
+        </TCProperty>
         <TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />        
             <Name>FlatBedrock</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>FlatBedrock:</ScriptHandle>
-        </TCProperty> 		
+        </TCProperty>
         <TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />
             <Name>BedrockobBlock</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>BedrockobBlock:</ScriptHandle>
-        </TCProperty> 			
+        </TCProperty>
         <TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />        
             <Name>PopulationBoundsCheck</Name>
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>PopulationBoundsCheck:</ScriptHandle>
-        </TCProperty>		
+        </TCProperty>
         <TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />        
@@ -1015,6 +1043,13 @@
             <Name>MaximumDistanceBetweenRareBuildings</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>MaximumDistanceBetweenRareBuildings:</ScriptHandle>
+        </TCProperty>
+        <TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>WoodLandMansionsEnabled</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>WoodLandMansionsEnabled:</ScriptHandle>
         </TCProperty>
         <TCProperty>
             <Group i:nil="true" />
@@ -1222,122 +1257,17 @@
 		<TCProperty>
 			<Group i:nil="true" />
 			<LabelText i:nil="true" />
-			<Name>Author</Name>
-			<PropertyType>String</PropertyType>
-			<ScriptHandle>Author:</ScriptHandle>
-		</TCProperty>
-		<TCProperty>
-			<Group i:nil="true" />
-			<LabelText i:nil="true" />
-			<Name>Description</Name>
-			<PropertyType>String</PropertyType>
-			<ScriptHandle>Description:</ScriptHandle>
-		</TCProperty>
-		<TCProperty>
-			<Group i:nil="true" />
-			<LabelText i:nil="true" />
 			<Name>WorldSeed</Name>
 			<PropertyType>String</PropertyType>
 			<ScriptHandle>WorldSeed:</ScriptHandle>
 		</TCProperty>
-		<!-- MCW Stuff
 		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>ReplaceBlocksList</Name>            
-            <PropertyType>String</PropertyType>
-            <ScriptHandle>ReplaceBlocksList:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>ImprovedMobSpawning</Name>            
-            <PropertyType>Bool</PropertyType>
-            <ScriptHandle>ImprovedMobSpawning:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MaxMonsters</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MaxMonsters:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MaxCreatures</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MaxCreatures:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MaxAmbientCreatures</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MaxAmbientCreatures:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MaxWaterCreatures</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MaxWaterCreatures:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MobCoolDownInSecs</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MobCoolDownInSecs:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>		
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>SpawnDistMinInBlocks</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>SpawnDistMinInBlocks:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>SpawnDistMaxInBlocks</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>SpawnDistMaxInBlocks:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MinDistBetweenMonsters</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MinDistBetweenMonsters:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>		
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MinDistBetweenCreatures</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MinDistBetweenCreatures:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>				
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>DespawnRange</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>DespawnRange:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		-->	
+			<Group i:nil="true" />
+			<LabelText i:nil="true" />
+			<Name>BO3AtSpawn</Name>
+			<PropertyType>String</PropertyType>
+			<ScriptHandle>BO3AtSpawn:</ScriptHandle>
+		</TCProperty>
 		<TCProperty>
             <Group i:nil="true" />
             <LabelText i:nil="true" />        
@@ -1351,6 +1281,321 @@
             <Name>WorldBorderRadius</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>WorldBorderRadius:</ScriptHandle>
-        </TCProperty>		
-    </WorldConfig> 
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>Dimensions</Name>            
+            <PropertyType>String</PropertyType>
+            <ScriptHandle>Dimensions:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DimensionBelow</Name>            
+            <PropertyType>String</PropertyType>
+            <ScriptHandle>DimensionBelow:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DimensionAbove</Name>            
+            <PropertyType>String</PropertyType>
+            <ScriptHandle>DimensionAbove:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DimensionPortalMaterials</Name>            
+            <PropertyType>String</PropertyType>
+            <ScriptHandle>DimensionPortalMaterials:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>TeleportToSpawnOnly</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>TeleportToSpawnOnly:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>Cartographer</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>Cartographer:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>CommandBlockOutput</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>CommandBlockOutput:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DisableElytraMovementCheck</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>DisableElytraMovementCheck:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DoDaylightCycle</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>DoDaylightCycle:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DoEntityDrops</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>DoEntityDrops:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DoFireTick</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>DoFireTick:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DoMobLoot</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>DoMobLoot:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DoMobSpawning</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>DoMobSpawning:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DoTileDrops</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>DoTileDrops:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DoWeatherCycle</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>DoWeatherCycle:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>KeepInventory</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>KeepInventory:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>LogAdminCommands</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>LogAdminCommands:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>MaxEntityCramming</Name>            
+            <PropertyType>Float</PropertyType>
+            <ScriptHandle>MaxEntityCramming:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>MobGriefing</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>MobGriefing:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>NaturalRegeneration</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>NaturalRegeneration:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>RandomTickSpeed</Name>            
+            <PropertyType>Float</PropertyType>
+            <ScriptHandle>RandomTickSpeed:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>ReducedDebugInfo</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>ReducedDebugInfo:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>SendCommandFeedback</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>SendCommandFeedback:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>ShowDeathMessages</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>ShowDeathMessages:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>SpawnRadius</Name>            
+            <PropertyType>Float</PropertyType>
+            <ScriptHandle>SpawnRadius:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>SpectatorsGenerateChunks</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>SpectatorsGenerateChunks:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>WelcomeMessage</Name>            
+            <PropertyType>String</PropertyType>
+            <ScriptHandle>WelcomeMessage:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DepartMessage</Name>            
+            <PropertyType>String</PropertyType>
+            <ScriptHandle>DepartMessage:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>HasSkyLight</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>HasSkyLight:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>IsSurfaceWorld</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>IsSurfaceWorld:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>CanRespawnHere</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>CanRespawnHere:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DoesWaterVaporize</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>DoesWaterVaporize:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>DoesXZShowFog</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>DoesXZShowFog:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>UseCustomFogColor</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>UseCustomFogColor:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>FogColorRed</Name>            
+            <PropertyType>Float</PropertyType>
+            <ScriptHandle>FogColorRed:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>FogColorGreen</Name>            
+            <PropertyType>Float</PropertyType>
+            <ScriptHandle>FogColorGreen:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>FogColorBlue</Name>            
+            <PropertyType>Float</PropertyType>
+            <ScriptHandle>FogColorBlue:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>IsSkyColored</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>IsSkyColored:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>CloudHeight</Name>            
+            <PropertyType>Float</PropertyType>
+            <ScriptHandle>CloudHeight:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>CanDoLightning</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>CanDoLightning:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>CanDoRainSnowIce</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>CanDoRainSnowIce:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>IsNightWorld</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>IsNightWorld:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>VoidFogYFactor</Name>            
+            <PropertyType>Float</PropertyType>
+            <ScriptHandle>VoidFogYFactor:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>ShouldMapSpin</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>ShouldMapSpin:</ScriptHandle>
+        </TCProperty>
+		<TCProperty>
+            <Group i:nil="true" />
+            <LabelText i:nil="true" />        
+            <Name>CanDropChunk</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>CanDropChunk:</ScriptHandle>
+        </TCProperty>
+    </WorldConfig>
 </VersionConfig>
