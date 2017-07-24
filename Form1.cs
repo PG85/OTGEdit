@@ -7,14 +7,15 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Runtime.Serialization;
-using TCEE.XML;
-using TCEE.Utils;
+using OTGE.XML;
+using OTGE.Utils;
 
-namespace TCEE
+using System.Runtime.InteropServices;
+
+namespace OTGE
 {
     public partial class Form1 : Form
     {
-        DirectoryInfo VersionDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/");
         string WorldSaveDir = "";
 
         SaveFileDialog sfd;
@@ -23,6 +24,7 @@ namespace TCEE
         FolderBrowserDialog copyBO3fbd;
         FolderBrowserDialog fbdDestinationWorldDir = new FolderBrowserDialog();
         OpenFileDialog convertBO3ofd;
+        ColorDialog colorDlg = new ColorDialog() { AnyColor = true, SolidColorOnly = false };
 
         List<ListBox> BiomeListInputs = new List<ListBox>();
         Dictionary<object, TCProperty> ResourceQueueInputs = new Dictionary<object, TCProperty>();
@@ -40,64 +42,6 @@ namespace TCEE
 
         #region Startup
 
-            void Form1_DragEnter(object sender, DragEventArgs e)
-            {
-                if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
-            }
-
-            void Form1_DragDrop(object sender, DragEventArgs e)
-            {
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                // If the biomes tab has been selected
-                if (tabControl1.SelectedIndex == 1 && lbGroups.SelectedIndex > -1) 
-                {
-                    bool bFound = false;
-
-                    foreach (string file in files)
-                    {
-                        if (file.ToLower().Contains(".bo3") || file.ToLower().Contains(".schematic"))
-                        {
-                            bFound = true;
-                        }
-                    }
-
-                    if(bFound)
-                    {
-                        string propertyValue = "100";
-                        if (PopUpForm.InputBox("Add BO3", "Rarity", ref propertyValue, true) == DialogResult.OK)
-                        {
-                            if (propertyValue != null && !String.IsNullOrEmpty(propertyValue.Trim()))
-                            {
-                                double rarity = -1;
-                                bool isDouble = double.TryParse(propertyValue, out rarity);
-
-                                if (isDouble && rarity >= 0 && rarity <= 100)
-                                {
-                                    TCProperty property = Session.BiomeSettingsInputs.First(a => a.Key.Name == "ResourceQueue").Key;
-                                    ListBox box = (ListBox)Session.BiomeSettingsInputs.First(a => a.Key.Name == "ResourceQueue").Value.Item1;
-                                    foreach (string file in files)
-                                    {
-                                        string BO3Name = file.Substring(file.LastIndexOf("\\") + 1).Replace(".BO3", "").Replace(".bo3", "").Replace(".schematic", "").Replace("(", "").Replace(")", "");
-                                        bFound = false;
-                                        foreach (string item in box.Items)
-                                        {
-                                            if (item.Trim().ToLower().StartsWith("customstructure(" + BO3Name.Trim().ToLower()))
-                                            {
-                                                bFound = true;
-                                            }
-                                        }
-                                        if (!bFound)
-                                        {
-                                            AddToResourceQueue(property, "CustomStructure(" + BO3Name + "," + rarity + ")");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
             public Form1()
             {
                 InitializeComponent();
@@ -105,14 +49,19 @@ namespace TCEE
                 // TODO: Pass these as method parameters instead of using static fields.
                 Session.Form1 = this;
                 Session.tabControl1 = tabControl1;
+                Session.panel2 = panel2;
+                Session.panel3 = panel3;
                 Session.btSave = btSave;
                 Session.btLoad = btLoad;
                 Session.btGenerate = btGenerate;
                 Session.rbSummerSkin = rbSummerSkin;
                 Session.rbWinterSkin = rbWinterSkin;
+                Session.rbNoSkin = rbNoSkin;
                 Session.lbGroups = lbGroups;
                 Session.btCopyBO3s = btCopyBO3s;
                 Session.cbDeleteRegion = cbDeleteRegion;
+                Session.cbDeleteRegion.Click += cbDeleteRegion_Click;
+                Session.Init();
 
                 this.richTextBox1.LinkClicked += richTextBox_LinkClicked;
                 this.richTextBox2.LinkClicked += richTextBox_LinkClicked;
@@ -130,8 +79,15 @@ namespace TCEE
                 this.DragEnter += new DragEventHandler(Form1_DragEnter);
                 this.DragDrop += new DragEventHandler(Form1_DragDrop);
 
-                this.Width = 565;
-                this.Height = 152;
+                tbSearchWorldConfig.MouseWheel += tbSearchWorldConfig_MouseWheel;
+                tbSearchBiomeConfig.MouseWheel += tbSearchBiomeConfig_MouseWheel;
+                panel3.MouseWheel += lbBiomesTab_MouseWheel;
+                lbGroups.MouseWheel += lbBiomesTab_MouseWheel;
+                lbGroup.MouseWheel += lbBiomesTab_MouseWheel;
+                lbBiomes.MouseWheel += lbBiomesTab_MouseWheel;
+
+                this.Width = Session.ClosedWidth;
+                this.Height = Session.ClosedHeight;
 
                 btSave.Enabled = false;
                 btLoad.Enabled = false;
@@ -139,7 +95,7 @@ namespace TCEE
                 cbVersion.SelectedIndexChanged += new EventHandler(delegate(object s, EventArgs args)
                 {
                     cbWorld.Items.Clear();
-                    DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/" + cbVersion.SelectedItem + "/Worlds/");
+                    DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\");
                     if (versionDir3.Exists)
                     {
                         foreach (DirectoryInfo dir2 in versionDir3.GetDirectories())
@@ -151,12 +107,11 @@ namespace TCEE
                             cbWorld.SelectedIndex = 0;
                         }
                     }
-
                 });
 
-                if (VersionDir.Exists)
+                if (Session.VersionDir.Exists)
                 {
-                    foreach (DirectoryInfo dir1 in VersionDir.GetDirectories())
+                    foreach (DirectoryInfo dir1 in Session.VersionDir.GetDirectories())
                     {
                         cbVersion.Items.Add(dir1.Name);
                     }
@@ -165,13 +120,15 @@ namespace TCEE
                         cbVersion.SelectedIndex = 0;
                     }
                 }
-                DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "/Saves/");
+                DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\Saves\\");
                 if (!dir.Exists)
                 {
                     dir.Create();
+                    dir.Refresh();
                 }
+
                 sfd = new SaveFileDialog() { DefaultExt = "xml", InitialDirectory = dir.FullName };
-                sfd.Title = "Select a TCEE save file";
+                sfd.Title = "Select an OTGE save file";
                 ofd = new OpenFileDialog() { DefaultExt = "xml", InitialDirectory = dir.FullName };
                 ofd.Title = "Select a save location";
 
@@ -182,11 +139,18 @@ namespace TCEE
                 convertBO3ofd.Multiselect = true;
 
                 copyBO3fbd = new FolderBrowserDialog();
-                copyBO3fbd.Description = "Select a /GlobalObjects or /WorldObjects directory (create if needed).";                
+                copyBO3fbd.Description = "Select a /GlobalObjects or /WorldObjects directory (create if needed).";
             }
 
             void SelectSourceWorld_Click(object sender, EventArgs e)
             {
+                Session.ShowProgessBox();
+
+                tlpBiomeSettingsContainer.Hide();
+                tlpWorldSettingsContainer.Hide();
+
+                Session.Form1.SuspendLayout();
+
                 Session.BiomeNames.Clear();
                 BiomeListInputs.Clear();
                 Session.DestinationConfigsDir = "";
@@ -194,10 +158,10 @@ namespace TCEE
                 Session.SourceConfigsDir = "";
                 Session.ToolTip1.RemoveAll();
                 ResourceQueueInputs.Clear();
-                tlpWorldSettings.Controls.Clear();
-                tlpWorldSettings.RowStyles.Clear();
-                tlpBiomeSettings.Controls.Clear();
-                tlpBiomeSettings.RowStyles.Clear();
+                tlpWorldSettings1.Controls.Clear();
+                tlpWorldSettings1.RowStyles.Clear();
+                tlpBiomeSettings1.Controls.Clear();
+                tlpBiomeSettings1.RowStyles.Clear();
 
                 Session.WorldConfigDefaultValues = null;
                 Session.WorldConfig1 = null;
@@ -211,11 +175,11 @@ namespace TCEE
                 lbGroup.Items.Clear();
                 lbBiomes.Items.Clear();
 
-                DirectoryInfo versionDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/");
+                DirectoryInfo versionDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\");
                 if (cbVersion.Items.Count > 0 && cbVersion.SelectedItem != null && versionDir.Exists)
                 {
                     var serializer = new System.Xml.Serialization.XmlSerializer(typeof(VersionConfig));
-                    using (var reader = new XmlTextReader(Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/" + cbVersion.SelectedItem + "/VersionConfig.xml"))
+                    using (var reader = new XmlTextReader(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\VersionConfig.xml"))
                     {
                         Session.VersionConfig = (VersionConfig)serializer.Deserialize(reader);
                     }
@@ -228,11 +192,11 @@ namespace TCEE
                         PopUpForm.CustomMessageBox("Y u do dis? :(");
                     }
 
-                    Session.SourceConfigsDir = Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/" + cbVersion.SelectedItem + "/Worlds/" + cbWorld.SelectedItem + "/";
+                    Session.SourceConfigsDir = Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + cbWorld.SelectedItem + "\\";
 
-                    if (!String.IsNullOrEmpty(Session.SourceConfigsDir) && System.IO.Directory.Exists(Session.SourceConfigsDir + "/" + "WorldBiomes" + "/"))
+                    if (!String.IsNullOrEmpty(Session.SourceConfigsDir) && System.IO.Directory.Exists(Session.SourceConfigsDir + "\\" + "WorldBiomes" + "\\"))
                     {
-                        System.IO.DirectoryInfo defaultWorldDirectory = new System.IO.DirectoryInfo(Session.SourceConfigsDir + "/" + "WorldBiomes" + "/");
+                        System.IO.DirectoryInfo defaultWorldDirectory = new System.IO.DirectoryInfo(Session.SourceConfigsDir + "\\" + "WorldBiomes" + "\\");
                         foreach (System.IO.FileInfo file in defaultWorldDirectory.GetFiles())
                         {
                             if (file.Name.EndsWith(".bc"))
@@ -256,9 +220,11 @@ namespace TCEE
                         PopUpForm.CustomMessageBox("WorldConfig.ini could not be loaded. Please make sure that WorldConfig.ini is present in the TCVersionConfig directory for the selected version.", "Incompatible WorldConfig.ini");
                         UnloadUI();
                     } else {
-
                         LoadBiomesList();
-                        LoadDefaultGroups();
+                        if (cbWorld.SelectedItem != null && cbWorld.SelectedItem.Equals("Default"))
+                        {
+                            LoadDefaultGroups();
+                        }
                         if (lbBiomes.Items.Count > 0)
                         {
                             lbBiomes.SelectedIndex = 0;
@@ -271,7 +237,42 @@ namespace TCEE
                         }
                         btSetToDefault.Text = "Set to defaults";
                     }
+
+                    Session.tabControl1.Visible = true;
+                    Session.btSave.Enabled = true;
+                    Session.btLoad.Enabled = true;
+                    Session.btGenerate.Visible = true;
+                    Session.btCopyBO3s.Visible = true;
+                    Session.cbDeleteRegion.Visible = true;
+
+                    Session.rbSummerSkin.Visible = true;
+                    Session.rbWinterSkin.Visible = true;
+                    Session.rbNoSkin.Visible = true;
+
+                    //label4.Visible = true;
+                    //label5.Visible = true;
+
+                    Session.Form1.AutoSize = false;
+                    Session.Form1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowOnly;
+
+                    if (Session.Form1.Width < Session.OpenedWidth)
+                    {
+                        Session.Form1.Width = Session.OpenedWidth;
+                    }
+                    if (Session.Form1.Height < Session.OpenedHeight)
+                    {
+                        Session.Form1.Height = Session.OpenedHeight;
+                    }
+
+                    btClickBackGround(null, null);
                 }
+
+                Session.Form1.ResumeLayout();
+
+                tlpBiomeSettingsContainer.Show();
+                tlpWorldSettingsContainer.Show();
+
+                Session.HideProgessBox();
             }
 
             public void UnloadUI()
@@ -281,36 +282,31 @@ namespace TCEE
                 btCopyBO3s.Visible = false;
                 rbSummerSkin.Visible = false;
                 rbWinterSkin.Visible = false;
+                rbNoSkin.Visible = false;
                 cbDeleteRegion.Visible = false;
                 btSave.Enabled = false;
                 btLoad.Enabled = false;
-                tlpBiomeSettings.Visible = false;
-                btBiomeSettingsResetToDefaults.Visible = false;
-
+                tlpBiomeSettings1.Visible = false;
                 label3.Visible = false;
-
-                rbSummerSkin.Visible = false;
-                rbWinterSkin.Visible = false;
 
                 AutoSize = false;
 
-                Width = 1179;
-                Height = 202;
+                Width = Session.ClosedWidth;
+                Height = Session.ClosedHeight;
             }
 
             public void LoadUI()
             {
-                Session.ToolTip1 = new ToolTip();
-                Session.ToolTip1.AutoPopDelay = 32000;
-                Session.ToolTip1.InitialDelay = 500;
-                Session.ToolTip1.ReshowDelay = 0;
-                Session.ToolTip1.ShowAlways = true;
+                this.Resize += Form1_Resize;
+                this.ResizeEnd += Form1_ResizeEnd;
+
+                Session.ToolTip1.RemoveAll();
 
                 Session.ToolTip1.SetToolTip(lblGroups, 
                     "Create biome groups containing one or more biome(s) and configure settings for each group.\r\n" +
-                    "If a biome is listed in multiple groups then the order of the groups determines the eventual value.\r\n" +
+                    "If a biome is listed in multiple groups then the order of the groups determines the final value.\r\n" +
                     "For instance you can set a value in the first group and override it in the second.\r\n" +
-                    "Properties that accept a list of biomes or resources as a value can even be merged\r\n" +
+                    "Settings that accept a list of biomes or resources as a value can even be merged\r\n" +
                     "so you can add gold ore in the first group and diamond ore in the second."
                 );
 
@@ -319,12 +315,11 @@ namespace TCEE
                 btCopyBO3s.Visible = false;
                 rbSummerSkin.Visible = false;
                 rbWinterSkin.Visible = false;
+                rbNoSkin.Visible = false;
                 cbDeleteRegion.Visible = false;
                 btSave.Enabled = false;
                 btLoad.Enabled = false;
-                tlpBiomeSettings.Visible = false;
-                btBiomeSettingsResetToDefaults.Visible = false;
-
+                tlpBiomeSettings1.Visible = false;
                 label3.Visible = false;
 
                 string uniqueResourceQueueItems = "";
@@ -347,550 +342,770 @@ namespace TCEE
                     }
                 }
 
-                int i = 0;
+                Dictionary<String, List<TCProperty>> settingsByGroup = new Dictionary<string,List<TCProperty>>();
+
+                // Worlds
+
                 foreach (TCProperty property in Session.VersionConfig.WorldConfig)
                 {
-                    int row = i == 0 ? 0 : Convert.ToInt32(Math.Floor((float)i / 2));
-                    int column1 = i % 2 == 0 ? 0 : 4;
-                    Label txPropertyLabel = new Label();
-                    txPropertyLabel.Text = property.LabelText != null && property.LabelText.Length > 0 ? property.LabelText : property.Name;
-                    txPropertyLabel.AutoSize = true;
-                    txPropertyLabel.Margin = new Padding(0, 5, 0, 0);
-                    tlpWorldSettings.Controls.Add(txPropertyLabel, column1, row);
-
-                    int column2 = i % 2 == 0 ? 1 : 5;
-                    CheckBox cbOverride = new CheckBox();
-                    cbOverride.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                    cbOverride.TabStop = false;
-                    Session.ToolTip1.SetToolTip(cbOverride, "Apply this value");
-                    tlpWorldSettings.Controls.Add(cbOverride, column2, row);
-                    cbOverride.CheckedChanged += PropertyInputOverrideCheckChangedWorld;
-
-                    int column4 = i % 2 == 0 ? 3 : 7;
-                    Button bSetDefaults = new Button();
-                    bSetDefaults.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                    bSetDefaults.BackColor = Color.FromKnownColor(KnownColor.Control);
-                    bSetDefaults.Text = "C";
-                    bSetDefaults.Width = 23;
-                    bSetDefaults.Height = 23;
-                    bSetDefaults.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
-                    bSetDefaults.Click += bSetDefaultsWorldProperty;
-                    bSetDefaults.TabStop = false;
-                    tlpWorldSettings.Controls.Add(bSetDefaults, column4, row);
-
-                    int column3 = i % 2 == 0 ? 2 : 6;
-                    switch (property.PropertyType)
+                    if (settingsByGroup.ContainsKey(property.Group))
                     {
-                        case "ResourceQueue":
-                            Panel pnl = new Panel();
-                            pnl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-
-                            ListBox lbPropertyInput = new ListBox();
-                            lbPropertyInput.Sorted = true;
-                            lbPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                            lbPropertyInput.Dock = DockStyle.Fill;
-                            lbPropertyInput.AutoSize = true;
-                            lbPropertyInput.SelectionMode = SelectionMode.MultiExtended;
-                            lbPropertyInput.KeyDown += lbPropertyInput_KeyDown_World;
-                            pnl.Controls.Add(lbPropertyInput);
-
-                            Panel pnl2 = new Panel();
-                            pnl2.Dock = DockStyle.Bottom;
-                            pnl2.AutoSize = true;
-
-                            Panel pnl3 = new Panel();
-                            pnl3.Dock = DockStyle.Bottom;
-                            pnl3.AutoSize = true;
-                            pnl3.Resize += new EventHandler(delegate(object s, EventArgs args)
-                            {
-                                int left = 0;
-                                foreach (Control ctl in ((Panel)s).Controls)
-                                {
-                                    ctl.Width = (((Panel)s).Width - 10) / 3;
-                                    ctl.Left = left;
-                                    left += ((((Panel)s).Width - 10) / 3) + 5;
-                                }                        
-                            });
-
-                            Button btAddResourceQueueItem = new Button();
-                            btAddResourceQueueItem.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                            btAddResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
-                            btAddResourceQueueItem.Width = 45;
-                            btAddResourceQueueItem.Text = "Add";
-                            btAddResourceQueueItem.Click += btAddResourceQueueItemWorld_Click;
-                            ResourceQueueInputs.Add(btAddResourceQueueItem, property);
-                            pnl3.Controls.Add(btAddResourceQueueItem);
-
-                            Button btEditResourceQueueItem = new Button();
-                            btEditResourceQueueItem.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                            btEditResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
-                            btEditResourceQueueItem.Left = 50;
-                            btEditResourceQueueItem.Width = 48;
-                            btEditResourceQueueItem.Text = "Edit";
-                            btEditResourceQueueItem.Click += btEditResourceQueueItemWorld_Click;
-                            ResourceQueueInputs.Add(btEditResourceQueueItem, property);
-                            pnl3.Controls.Add(btEditResourceQueueItem);
-
-                            Button btDeleteResourceQueueItem = new Button();
-                            btDeleteResourceQueueItem.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                            btDeleteResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
-                            btDeleteResourceQueueItem.Left = 103;
-                            btDeleteResourceQueueItem.Width = 50;
-                            btDeleteResourceQueueItem.Text = "Delete";
-                            btDeleteResourceQueueItem.Click += btDeleteResourceQueueItemWorld_Click;
-                            ResourceQueueInputs.Add(btDeleteResourceQueueItem, property);
-                            pnl3.Controls.Add(btDeleteResourceQueueItem);
-
-                            pnl2.Controls.Add(pnl3);
-
-                            Panel pCheckBoxes = new Panel();
-                            pCheckBoxes.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                            pCheckBoxes.Dock = DockStyle.Bottom;
-                            pCheckBoxes.AutoSize = true;
-
-                            RadioButton btOverrideAll = new RadioButton();
-                            btOverrideAll.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                            btOverrideAll.Dock = DockStyle.Top;
-                            btOverrideAll.Text = "Override defaults";
-                            btOverrideAll.Checked = true;
-                            btOverrideAll.Enabled = false;
-                            btOverrideAll.Visible = false;
-                            btOverrideAll.Name = "Override";
-                            btOverrideAll.CheckedChanged += btOverrideAllWorld_CheckedChanged;
-                            pCheckBoxes.Controls.Add(btOverrideAll);
-                            Session.ToolTip1.SetToolTip(btOverrideAll, "Removes all default values and replaces them with selected values.");
-
-                            RadioButton btMergeWithDefaults = new RadioButton();
-                            btMergeWithDefaults.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                            btMergeWithDefaults.Dock = DockStyle.Top;
-                            btMergeWithDefaults.Text = "Merge with defaults";
-                            btMergeWithDefaults.Enabled = false;
-                            btMergeWithDefaults.Visible = false;
-                            btMergeWithDefaults.Name = "Merge";
-                            btMergeWithDefaults.CheckedChanged += btOverrideAllWorld_CheckedChanged;
-                            pCheckBoxes.Controls.Add(btMergeWithDefaults);
-                            Session.ToolTip1.SetToolTip(btMergeWithDefaults, "Instead of overriding previously defined values this setting makes the resourcequeue add its values to the default values\r\nand the values defined in biome groups that are higher in the biome groups list.\r\n\r\nSome property and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE settings. Unique properties are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nProperty name and * must be unique.\r\n\r\nProperties that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique properties, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\n\r\nUpdate: It is now allowed to add multiple resources of the same type to this list even if they are configured\r\nas \"must be unique\", a popup will ask if you want to override or keep the existing items. This does not\r\naffect the merging behaviours between biome groups / default values.");
-
-                            CheckBox btIgnoreParentMerge = new CheckBox();
-                            btIgnoreParentMerge.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                            btIgnoreParentMerge.Dock = DockStyle.Top;
-                            btIgnoreParentMerge.Text = "Override parent values";
-                            btIgnoreParentMerge.Name = "OverrideParent";
-                            btIgnoreParentMerge.Enabled = false;
-                            btIgnoreParentMerge.Visible = false;
-                            btIgnoreParentMerge.CheckedChanged += btOverrideParentValuesWorld_CheckedChanged;
-                            pCheckBoxes.Controls.Add(btIgnoreParentMerge);
-                            Session.ToolTip1.SetToolTip(btIgnoreParentMerge, "Ignore any values defined in a group listed higher in the Groups menu than the current group.\r\n\r\n If this is disabled then multiple groups can add values to the same property.\r\n For instance Group 1 can add gold ore and Group 2 can add diamond ore to ResourceQueue.\r\n\r\nIf this is enabled then only the current group will add its values.\r\nFor instance if this option is enabled in Group 2 then if Group 1 adds gold ore and Group 2 adds diamond ore only the diamond ore is added.");
-
-                            pnl2.Controls.Add(pCheckBoxes);
-                            pnl.Controls.Add(pnl2);
-                            tlpWorldSettings.Controls.Add(pnl, column3, row);
-
-                            if (tlpWorldSettings.RowStyles.Count - 1 < row)
-                            {
-                                tlpWorldSettings.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                            }
-                            tlpWorldSettings.RowStyles[tlpWorldSettings.RowStyles.Count - 1].SizeType = SizeType.Absolute;
-                            tlpWorldSettings.RowStyles[tlpWorldSettings.RowStyles.Count - 1].Height = 120;
-
-                            Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(lbPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes));
-                        break;
-                        case "String":
-                        case "Float":
-                            TextBox txPropertyInput = new TextBox();
-                            txPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                            tlpWorldSettings.Controls.Add(txPropertyInput, column3, row);
-                            txPropertyInput.TextChanged += PropertyInputChangedWorld;
-                            txPropertyInput.LostFocus += PropertyInputLostFocusWorld;
-                            Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
-                            break;
-                        case "Color":
-                            Panel colorPickerPanel = new Panel();
-                            colorPickerPanel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                            colorPickerPanel.Height = 24;
-
-                            ListBox lbPropertyInput2 = new ListBox();
-                            lbPropertyInput2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                            lbPropertyInput2.Width = 20;
-                            lbPropertyInput2.Height = 24;
-                            lbPropertyInput2.BackColor = Color.White;
-                            lbPropertyInput2.Margin = new Padding(3, 0, 0, 0);
-                            lbPropertyInput2.TabStop = false;
-                            colorPickerPanel.Controls.Add(lbPropertyInput2);
-                            lbPropertyInput2.Click += PropertyInputColorChangedWorld;
-
-                            TextBox txPropertyInput2 = new TextBox();
-                            txPropertyInput2.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                            colorPickerPanel.Controls.Add(txPropertyInput2);
-                            txPropertyInput2.TextChanged += PropertyInputColorChangedWorld;
-                            txPropertyInput2.LostFocus += PropertyInputLostFocusWorld;
-                            txPropertyInput2.Left = 26;                     
-                            tlpWorldSettings.Controls.Add(colorPickerPanel, column3, row);
-
-                            Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, lbPropertyInput2, null));
-                            break;
-                        case "BiomesList":
-                            Panel pnl4 = new Panel();
-                            pnl4.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-
-                            ListBox lbPropertyInput3 = new ListBox();
-                            lbPropertyInput3.Sorted = true;
-                            lbPropertyInput3.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                            lbPropertyInput3.Dock = DockStyle.Fill;
-                            lbPropertyInput3.AutoSize = true;
-                            lbPropertyInput3.SelectionMode = SelectionMode.MultiExtended;
-                            lbPropertyInput3.SelectedIndexChanged += lbPropertyInputWorld_SelectedIndexChanged;
-                            pnl4.Controls.Add(lbPropertyInput3);
-
-                            Panel pnl5 = new Panel();
-                            pnl5.Dock = DockStyle.Bottom;
-                            pnl5.AutoSize = true;
-
-                            Panel pCheckBoxes2 = new Panel();
-                            pCheckBoxes2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                            pCheckBoxes2.Dock = DockStyle.Bottom;
-                            pCheckBoxes2.AutoSize = true;
-
-                            RadioButton btOverrideAll2 = new RadioButton();
-                            btOverrideAll2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                            btOverrideAll2.Dock = DockStyle.Top;
-                            btOverrideAll2.Text = "Override defaults";
-                            btOverrideAll2.Checked = true;
-                            btOverrideAll2.Enabled = false;
-                            btOverrideAll2.Visible = false;
-                            btOverrideAll2.Name = "Override";
-                            btOverrideAll2.CheckedChanged += btOverrideAllWorld_CheckedChanged;
-                            pCheckBoxes2.Controls.Add(btOverrideAll2);
-                            Session.ToolTip1.SetToolTip(btOverrideAll2, "Removes all default values and replaces them with selected values.");
-
-                            RadioButton btMergeWithDefaults2 = new RadioButton();
-                            btMergeWithDefaults2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                            btMergeWithDefaults2.Dock = DockStyle.Top;
-                            btMergeWithDefaults2.Text = "Merge with defaults";
-                            btMergeWithDefaults2.Enabled = false;
-                            btMergeWithDefaults2.Visible = false;
-                            btMergeWithDefaults2.Name = "Merge";
-                            btMergeWithDefaults2.CheckedChanged += btOverrideAllWorld_CheckedChanged;
-                            pCheckBoxes2.Controls.Add(btMergeWithDefaults2);
-                            Session.ToolTip1.SetToolTip(btMergeWithDefaults2, "Instead of overriding previously defined values this setting makes the resourcequeue add its values to the default values\r\nand the values defined in biome groups that are higher in the biome groups list.\r\n\r\nSome property and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE settings. Unique properties are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nProperty name and * must be unique.\r\n\r\nProperties that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique properties, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\n\r\nUpdate: It is now allowed to add multiple resources of the same type to this list even if they are configured\r\nas \"must be unique\", a popup will ask if you want to override or keep the existing items. This does not\r\naffect the merging behaviours between biome groups / default values.");
-
-                            CheckBox btIgnoreParentMerge2 = new CheckBox();
-                            btIgnoreParentMerge2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                            btIgnoreParentMerge2.Dock = DockStyle.Top;
-                            btIgnoreParentMerge2.Text = "Override parent values";
-                            btIgnoreParentMerge2.Name = "OverrideParent";
-                            btIgnoreParentMerge2.Enabled = false;
-                            btIgnoreParentMerge2.Visible = false;
-                            btIgnoreParentMerge2.CheckedChanged += btOverrideParentValuesWorld_CheckedChanged;
-                            pCheckBoxes2.Controls.Add(btIgnoreParentMerge2);
-                            Session.ToolTip1.SetToolTip(btIgnoreParentMerge2, "Ignore any values defined in a group listed higher in the Groups menu than the current group.\r\n\r\n If this is disabled then multiple groups can add values to the same property.\r\n For instance Group 1 can add gold ore and Group 2 can add diamond ore to ResourceQueue.\r\n\r\nIf this is enabled then only the current group will add its values.\r\nFor instance if this option is enabled in Group 2 then if Group 1 adds gold ore and Group 2 adds diamond ore only the diamond ore is added.");
-
-                            pnl5.Controls.Add(pCheckBoxes2);
-                            pnl4.Controls.Add(pnl5);
-                            tlpWorldSettings.Controls.Add(pnl4, column3, row);
-
-                            if (tlpWorldSettings.RowStyles.Count - 1 < row)
-                            {
-                                tlpWorldSettings.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                            }
-                            tlpWorldSettings.RowStyles[tlpWorldSettings.RowStyles.Count - 1].SizeType = SizeType.Absolute;
-                            tlpWorldSettings.RowStyles[tlpWorldSettings.RowStyles.Count - 1].Height = 120;
-
-                            Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(lbPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes2));
-                            BiomeListInputs.Add(lbPropertyInput3);
-
-                            break;
-                        case "Bool":
-                            ComboBox cbPropertyInput = new ComboBox();
-                            cbPropertyInput.Items.Add("");
-                            cbPropertyInput.Items.Add("true");
-                            cbPropertyInput.Items.Add("false");
-                            cbPropertyInput.SelectedIndex = 0;
-                            cbPropertyInput.DropDownStyle = ComboBoxStyle.DropDownList;
-                            cbPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                            tlpWorldSettings.Controls.Add(cbPropertyInput, column3, row);
-                            cbPropertyInput.SelectedIndexChanged += PropertyInputChangedWorld;
-                            //cbPropertyInput.LostFocus += PropertyInputLostFocusWorld;
-                            Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(cbPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
-                            break;
+                        settingsByGroup[property.Group].Add(property);
+                    } else {
+                        settingsByGroup[property.Group] = new List<TCProperty>() { property };
                     }
-                    if (tlpWorldSettings.RowStyles.Count - 1 < row)
-                    {
-                        tlpWorldSettings.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                    }
-
-                    Session.ToolTip1.SetToolTip(bSetDefaults, "Clear");
-
-                    i += 1;
                 }
 
-                i = 0;
-                foreach (TCProperty property in Session.VersionConfig.BiomeConfig)
+                this.SuspendLayout();
+
+                panel2.SuspendLayout();
+                panel3.SuspendLayout();
+
+                tlpWorldSettingsContainer.SuspendLayout();
+                tlpWorldSettings1.SuspendLayout();
+
+                tlpBiomeSettingsContainer.SuspendLayout();
+                tlpBiomeSettings1.SuspendLayout();
+
+                tlpWorldSettings1.Controls.Clear();
+                tlpWorldSettings1.RowStyles.Clear();
+
+                tlpBiomeSettings1.Controls.Clear();
+                tlpBiomeSettings1.RowStyles.Clear();
+
+                string lastGroupTitle = null;
+                int row = 0;
+
+                foreach (KeyValuePair<String, List<TCProperty>> settingsGroup in settingsByGroup)
                 {
-                    int row = i == 0 ? 0 : Convert.ToInt32(Math.Floor((float)i / 2));
-                    int column1 = i % 2 == 0 ? 0 : 4;
-                    Label txPropertyLabel = new Label();
-                    txPropertyLabel.Text = property.LabelText != null && property.LabelText.Length > 0 ? property.LabelText : property.Name;
-                    txPropertyLabel.AutoSize = true;
-                    txPropertyLabel.Margin = new Padding(0, 5, 0, 0);
-                    tlpBiomeSettings.Controls.Add(txPropertyLabel, column1, row);
-
-                    int column2 = i % 2 == 0 ? 1 : 5;
-                    CheckBox cbOverride = new CheckBox();
-                    cbOverride.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                    cbOverride.TabStop = false;
-                    Session.ToolTip1.SetToolTip(cbOverride, "Apply this value");
-                    tlpBiomeSettings.Controls.Add(cbOverride, column2, row);
-                    cbOverride.CheckedChanged += PropertyInputOverrideCheckChangedBiome;
-
-                    int column4 = i % 2 == 0 ? 3 : 7;
-                    Button bSetDefaults = new Button();
-                    bSetDefaults.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                    bSetDefaults.Text = "C";
-                    bSetDefaults.BackColor = Color.FromKnownColor(KnownColor.Control);
-                    bSetDefaults.Width = 23;
-                    bSetDefaults.Height = 23;
-                    bSetDefaults.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
-                    bSetDefaults.Click += bSetDefaultsBiomesProperty;
-                    bSetDefaults.TabStop = false;
-                    tlpBiomeSettings.Controls.Add(bSetDefaults, column4, row);
-
-                    int column3 = i % 2 == 0 ? 2 : 6;
-                    if (property.PropertyType == "ResourceQueue")
+                    if (!String.IsNullOrEmpty(settingsGroup.Key) && (lastGroupTitle == null || !lastGroupTitle.Equals(settingsGroup.Key)))
                     {
-                        Panel pnl = new Panel();
-                        pnl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+                        lastGroupTitle = settingsGroup.Key;
 
-                        ListBox lbPropertyInput = new ListBox();
-                        lbPropertyInput.Sorted = true;
-                        lbPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                        lbPropertyInput.Dock = DockStyle.Fill;
-                        lbPropertyInput.AutoSize = true;
-                        lbPropertyInput.SelectionMode = SelectionMode.MultiExtended;
-                        lbPropertyInput.KeyDown += lbPropertyInput_KeyDown;
-                        pnl.Controls.Add(lbPropertyInput);
+                        Label txPropertyLabel1 = new Label();
+                        txPropertyLabel1.Text = settingsGroup.Key;
+                        txPropertyLabel1.Font = new System.Drawing.Font(txPropertyLabel1.Font, FontStyle.Bold);
+                        txPropertyLabel1.AutoSize = true;
+                        txPropertyLabel1.Margin = new Padding(0, row == 0 ? 10 : 35, 0, 15);
+                        txPropertyLabel1.Click += new System.EventHandler(this.btClickBackGround);
+                        tlpWorldSettings1.Controls.Add(txPropertyLabel1, 0, row);
 
-                        Panel pnl2 = new Panel();
-                        pnl2.Dock = DockStyle.Bottom;
-                        pnl2.AutoSize = true;
+                        row++;
 
-                        Panel pnl3 = new Panel();
-                        pnl3.Dock = DockStyle.Bottom;
-                        pnl3.AutoSize = true;
-                        pnl3.Resize += new EventHandler(delegate(object s, EventArgs args)
-                        {
-                            int left = 0;
-                            foreach (Control ctl in ((Panel)s).Controls)
-                            {
-                                ctl.Width = (((Panel)s).Width - 10) / 3;
-                                ctl.Left = left;
-                                left += ((((Panel)s).Width - 10) / 3) + 5;
-                            }                        
-                        });
+                        tlpWorldSettings1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                    }
 
-                        Button btAddResourceQueueItem = new Button();
-                        btAddResourceQueueItem.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                        btAddResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
-                        btAddResourceQueueItem.Width = 45;
-                        btAddResourceQueueItem.Text = "Add";
-                        btAddResourceQueueItem.Click += btAddResourceQueueItem_Click;
-                        ResourceQueueInputs.Add(btAddResourceQueueItem, property);
-                        pnl3.Controls.Add(btAddResourceQueueItem);
+                    foreach (TCProperty property in settingsGroup.Value)
+                    {
+                        Label txPropertyLabel = new Label();
+                        txPropertyLabel.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
+                        txPropertyLabel.Text = property.LabelText != null && property.LabelText.Length > 0 ? property.LabelText : property.Name;
+                        txPropertyLabel.AutoSize = true;
+                        txPropertyLabel.TabStop = false;
+                        txPropertyLabel.Margin = new Padding(0, 5, 0, 0);
+                        txPropertyLabel.Click += new System.EventHandler(this.btClickBackGround);
+                        tlpWorldSettings1.Controls.Add(txPropertyLabel, 0, row);
 
-                        Button btEditResourceQueueItem = new Button();
-                        btEditResourceQueueItem.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                        btEditResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
-                        btEditResourceQueueItem.Left = 50;
-                        btEditResourceQueueItem.Width = 48;
-                        btEditResourceQueueItem.Text = "Edit";
-                        btEditResourceQueueItem.Click += btEditResourceQueueItem_Click;
-                        ResourceQueueInputs.Add(btEditResourceQueueItem, property);
-                        pnl3.Controls.Add(btEditResourceQueueItem);
+                        CheckBox cbOverride = new CheckBox();
+                        cbOverride.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                        cbOverride.TabStop = false;
+                        cbOverride.AutoSize = true;
+                        cbOverride.Padding = new Padding(cbOverride.Padding.Left, cbOverride.Padding.Top + 4, cbOverride.Padding.Right, cbOverride.Padding.Bottom);
+                        Session.ToolTip1.SetToolTip(cbOverride, "Apply this value");
+                        tlpWorldSettings1.Controls.Add(cbOverride, 1, row);
+                        cbOverride.CheckedChanged += PropertyInputOverrideCheckChangedWorld;
 
-                        Button btDeleteResourceQueueItem = new Button();
-                        btDeleteResourceQueueItem.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                        btDeleteResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
-                        btDeleteResourceQueueItem.Left = 103;
-                        btDeleteResourceQueueItem.Width = 50;
-                        btDeleteResourceQueueItem.Text = "Delete";
-                        btDeleteResourceQueueItem.Click += btDeleteResourceQueueItem_Click;
-                        ResourceQueueInputs.Add(btDeleteResourceQueueItem, property);
-                        pnl3.Controls.Add(btDeleteResourceQueueItem);
+                        Button bSetDefaults = new Button();
+                        bSetDefaults.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                        bSetDefaults.BackColor = Color.FromKnownColor(KnownColor.Control);
+                        bSetDefaults.Text = "C";
+                        bSetDefaults.Width = 23;
+                        bSetDefaults.Height = 23;
+                        bSetDefaults.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
+                        bSetDefaults.Click += bSetDefaultsWorldProperty;
+                        bSetDefaults.TabStop = false;
+                        tlpWorldSettings1.Controls.Add(bSetDefaults, 3, row);
 
-                        pnl2.Controls.Add(pnl3);
-
-                        Panel pCheckBoxes = new Panel();
-                        pCheckBoxes.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                        pCheckBoxes.Dock = DockStyle.Bottom;
-                        pCheckBoxes.AutoSize = true;
-
-                        RadioButton btOverrideAll = new RadioButton();
-                        btOverrideAll.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                        btOverrideAll.Dock = DockStyle.Top;
-                        btOverrideAll.Text = "Override defaults";
-                        btOverrideAll.Name = "Override";
-                        btOverrideAll.CheckedChanged += btOverrideAllBiome_CheckedChanged;
-                        pCheckBoxes.Controls.Add(btOverrideAll);
-                        Session.ToolTip1.SetToolTip(btOverrideAll, "Removes all default values and replaces them with selected values.");
-
-                        RadioButton btMergeWithDefaults = new RadioButton();
-                        btMergeWithDefaults.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                        btMergeWithDefaults.Dock = DockStyle.Top;
-                        btMergeWithDefaults.Text = "Merge with defaults";
-                        btMergeWithDefaults.Checked = true;
-                        btMergeWithDefaults.Name = "Merge";
-                        btMergeWithDefaults.CheckedChanged += btOverrideAllBiome_CheckedChanged;
-                        pCheckBoxes.Controls.Add(btMergeWithDefaults);
-                        Session.ToolTip1.SetToolTip(btMergeWithDefaults, "Instead of overriding previously defined values this setting makes the resourcequeue add its values to the default values\r\nand the values defined in biome groups that are higher in the biome groups list.\r\n\r\nSome property and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE settings. Unique properties are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nProperty name and * must be unique.\r\n\r\nProperties that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique properties, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\n\r\nUpdate: It is now allowed to add multiple resources of the same type to this list even if they are configured\r\nas \"must be unique\", a popup will ask if you want to override or keep the existing items. This does not\r\naffect the merging behaviours between biome groups / default values.");
-
-                        CheckBox btIgnoreParentMerge = new CheckBox();
-                        btIgnoreParentMerge.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                        btIgnoreParentMerge.Dock = DockStyle.Top;
-                        btIgnoreParentMerge.Text = "Override parent values";
-                        btIgnoreParentMerge.Name = "OverrideParent";
-                        btIgnoreParentMerge.CheckedChanged += btOverrideParentValuesBiome_CheckedChanged;
-                        pCheckBoxes.Controls.Add(btIgnoreParentMerge);
-                        Session.ToolTip1.SetToolTip(btIgnoreParentMerge, "Ignore any values defined in a group listed higher in the Groups menu than the current group.\r\n\r\n If this is disabled then multiple groups can add values to the same property.\r\n For instance Group 1 can add gold ore and Group 2 can add diamond ore.\r\n\r\nIf this is enabled then only the current group will add its values.\r\nFor instance if this option is enabled in Group 2 then if Group 1 adds gold ore and Group 2 adds diamond ore only the diamond ore is added.");
-                    
-                        pnl2.Controls.Add(pCheckBoxes);
-
-                        pnl.Controls.Add(pnl2);
-                        tlpBiomeSettings.Controls.Add(pnl, column3, row);
-
-                        if (tlpBiomeSettings.RowStyles.Count - 1 < row)
-                        {
-                            tlpBiomeSettings.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                        }
-                        tlpBiomeSettings.RowStyles[tlpBiomeSettings.RowStyles.Count - 1].SizeType = SizeType.Absolute;
-                        tlpBiomeSettings.RowStyles[tlpBiomeSettings.RowStyles.Count - 1].Height = 200;
-                        Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(lbPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes));
-                    } else {
                         switch (property.PropertyType)
                         {
-                            case "String":
-                            case "Float":
-                                TextBox txPropertyInput = new TextBox();
-                                txPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                                tlpBiomeSettings.Controls.Add(txPropertyInput, column3, row);
-                                txPropertyInput.TextChanged += PropertyInputChangedBiome;
-                                txPropertyInput.LostFocus += PropertyInputLostFocusBiome;
-                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
-                                break;
-                            case "Color":
-                                Panel colorPickerPanel = new Panel();
-                                colorPickerPanel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                                colorPickerPanel.Height = 24;
+                            case "ResourceQueue":
+
+                                Panel pnl = new Panel();
+                                pnl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                pnl.AutoSize = false;
+                                pnl.Width = 160;
 
                                 ListBox lbPropertyInput = new ListBox();
-                                lbPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                                lbPropertyInput.Width = 20;
-                                lbPropertyInput.Height = 24;
-                                lbPropertyInput.BackColor = Color.White;
-                                lbPropertyInput.Margin = new Padding(3, 0, 0, 0);
-                                lbPropertyInput.TabStop = false;
-                                colorPickerPanel.Controls.Add(lbPropertyInput);
-                                lbPropertyInput.Click += PropertyInputColorChangedBiome;
-                                lbPropertyInput.LostFocus += PropertyInputLostFocusBiome;
+                                lbPropertyInput.Sorted = true;
+                                lbPropertyInput.Width = pnl.Width;
+                                lbPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                lbPropertyInput.SelectionMode = SelectionMode.MultiExtended;
+                                lbPropertyInput.KeyDown += lbPropertyInput_KeyDown_World;
+                                lbPropertyInput.Height = 140;
+                                lbPropertyInput.MouseWheel += lbWorldTabSetting_MouseWheel;
+                                lbPropertyInput.MouseHover += lbPropertyInput_MouseHover;
+                                pnl.Controls.Add(lbPropertyInput);
 
-                                TextBox txPropertyInput2 = new TextBox();
-                                txPropertyInput2.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                                colorPickerPanel.Controls.Add(txPropertyInput2);
-                                txPropertyInput2.TextChanged += PropertyInputColorChangedBiome;
-                                txPropertyInput2.LostFocus += PropertyInputLostFocusBiome;
-                                txPropertyInput2.Left = 26;
+                                Panel pnl3 = new Panel();
+                                pnl3.Top = 140;
+                                pnl3.Width = 160;
+                                pnl3.Height = 25;
+                                pnl3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+                                pnl3.Resize += new EventHandler(delegate(object s, EventArgs args)
+                                {
+                                    int left = 0;
+                                    foreach (Control ctl in ((Panel)s).Controls)
+                                    {
+                                        ctl.Width = (((Panel)s).Width - 10) / 3;
+                                        ctl.Left = left;
+                                        left += ((((Panel)s).Width - 10) / 3) + 5;
+                                    }                        
+                                });
 
-                                tlpBiomeSettings.Controls.Add(colorPickerPanel, column3, row);
+                                Button btAddResourceQueueItem = new Button();
+                                btAddResourceQueueItem.Width = 50;
+                                btAddResourceQueueItem.Anchor = AnchorStyles.Top;
+                                btAddResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
+                                btAddResourceQueueItem.Text = "Add";
+                                btAddResourceQueueItem.Click += btAddResourceQueueItemWorld_Click;
+                                btAddResourceQueueItem.TabStop = false;
+                                ResourceQueueInputs.Add(btAddResourceQueueItem, property);
+                                pnl3.Controls.Add(btAddResourceQueueItem);
 
-                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, lbPropertyInput, null));
-                                break;
-                            case "BiomesList":
-                                Panel pnl = new Panel();
-                                pnl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+                                Button btEditResourceQueueItem = new Button();
+                                btEditResourceQueueItem.Left = 55;
+                                btEditResourceQueueItem.Width = 50;
+                                btEditResourceQueueItem.Anchor = AnchorStyles.Top;
+                                btEditResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
+                                btEditResourceQueueItem.Text = "Edit";
+                                btEditResourceQueueItem.Click += btEditResourceQueueItemWorld_Click;
+                                btEditResourceQueueItem.TabStop = false;
+                                ResourceQueueInputs.Add(btEditResourceQueueItem, property);
+                                pnl3.Controls.Add(btEditResourceQueueItem);
 
-                                ListBox lbPropertyInput2 = new ListBox();
-                                lbPropertyInput2.Sorted = true;
-                                lbPropertyInput2.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                                lbPropertyInput2.Dock = DockStyle.Fill;
-                                lbPropertyInput2.AutoSize = true;
-                                lbPropertyInput2.SelectionMode = SelectionMode.MultiExtended;
-                                lbPropertyInput2.SelectedIndexChanged += lbPropertyInputBiome_SelectedIndexChanged;
-                                pnl.Controls.Add(lbPropertyInput2);
-
-                                Panel pnl2 = new Panel();
-                                pnl2.Dock = DockStyle.Bottom;
-                                pnl2.AutoSize = true;
-
+                                Button btDeleteResourceQueueItem = new Button();
+                                btDeleteResourceQueueItem.Left = 110;
+                                btDeleteResourceQueueItem.Width = 50;
+                                btDeleteResourceQueueItem.Anchor = AnchorStyles.Top;
+                                btDeleteResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);                               
+                                btDeleteResourceQueueItem.Text = "Delete";
+                                btDeleteResourceQueueItem.Click += btDeleteResourceQueueItemWorld_Click;
+                                btDeleteResourceQueueItem.TabStop = false;
+                                ResourceQueueInputs.Add(btDeleteResourceQueueItem, property);
+                                pnl3.Controls.Add(btDeleteResourceQueueItem);
+                           
                                 Panel pCheckBoxes = new Panel();
-                                pCheckBoxes.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                                pCheckBoxes.Dock = DockStyle.Bottom;
-                                pCheckBoxes.AutoSize = true;
-
-                                RadioButton btOverrideAll = new RadioButton();
-                                btOverrideAll.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                                btOverrideAll.Dock = DockStyle.Top;
-                                btOverrideAll.Text = "Override defaults";
-                                btOverrideAll.Name = "Override";
-                                btOverrideAll.CheckedChanged += btOverrideAllBiome_CheckedChanged;
-                                pCheckBoxes.Controls.Add(btOverrideAll);
-                                Session.ToolTip1.SetToolTip(btOverrideAll, "Removes all default values and replaces them with selected values.");
-
-                                RadioButton btMergeWithDefaults = new RadioButton();
-                                btMergeWithDefaults.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                                btMergeWithDefaults.Dock = DockStyle.Top;
-                                btMergeWithDefaults.Text = "Merge with defaults";
-                                btMergeWithDefaults.Name = "Merge";
-                                btMergeWithDefaults.Checked = true;
-                                btMergeWithDefaults.CheckedChanged += btOverrideAllBiome_CheckedChanged;
-                                pCheckBoxes.Controls.Add(btMergeWithDefaults);
-                                Session.ToolTip1.SetToolTip(btMergeWithDefaults, "Instead of overriding previously defined values this setting makes the resourcequeue add its values to the default values\r\nand the values defined in biome groups that are higher in the biome groups list.\r\n\r\nSome property and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE settings. Unique properties are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nProperty name and * must be unique.\r\n\r\nProperties that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique properties, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\n\r\nUpdate: It is now allowed to add multiple resources of the same type to this list even if they are configured\r\nas \"must be unique\", a popup will ask if you want to override or keep the existing items. This does not\r\naffect the merging behaviours between biome groups / default values.");
+                                pCheckBoxes.Top = 172;
+                                pCheckBoxes.Width = 160;
+                                pCheckBoxes.Height = 70;
+                                pCheckBoxes.Visible = false;
+                                pCheckBoxes.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
 
                                 CheckBox btIgnoreParentMerge = new CheckBox();
                                 btIgnoreParentMerge.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                                btIgnoreParentMerge.Dock = DockStyle.Top;
+                                btIgnoreParentMerge.AutoSize = true;
+                                btIgnoreParentMerge.Text = "Override parent values";
+                                btIgnoreParentMerge.Name = "OverrideParent";
+                                btIgnoreParentMerge.Enabled = false;
+                                btIgnoreParentMerge.Visible = false;
+                                btIgnoreParentMerge.CheckedChanged += btOverrideParentValuesWorld_CheckedChanged;
+                                pCheckBoxes.Controls.Add(btIgnoreParentMerge);
+                                Session.ToolTip1.SetToolTip(btIgnoreParentMerge, "Ignore any resources defined in a group listed higher in the Groups menu than the current group.\r\n\r\n If this is disabled then multiple groups can add resources to the same setting.\r\n For instance Group 1 can add gold ore and Group 2 can add diamond ore to ResourceQueue.\r\n\r\nIf this is enabled then only the current group will add its values.\r\nFor instance if this option is enabled in Group 2 then if Group 1 adds gold ore and Group 2 adds diamond ore only the diamond ore is added.");
+
+                                RadioButton btMergeWithDefaults = new RadioButton();
+                                btMergeWithDefaults.Top = 25;
+                                btMergeWithDefaults.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btMergeWithDefaults.AutoSize = true;
+                                btMergeWithDefaults.Text = "Merge with defaults";
+                                btMergeWithDefaults.Enabled = false;
+                                btMergeWithDefaults.Visible = false;
+                                btMergeWithDefaults.Name = "Merge";
+                                btMergeWithDefaults.CheckedChanged += btOverrideAllWorld_CheckedChanged;
+                                pCheckBoxes.Controls.Add(btMergeWithDefaults);
+                                Session.ToolTip1.SetToolTip(btMergeWithDefaults, "Adds the selected resources to the default resources.\r\n\r\nSome resource and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE resources. Unique resources are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nResource name and * must be unique.\r\n\r\nResources that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique resources, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\n\r\nUpdate: Unique resources can now be added multiple times, duplicates are allowed but only within a single list.\r\nWhen merging resource lists with other biome groups and default values merging behaviours are applied and\r\nduplicates between lists are removed.");
+
+                                RadioButton btOverrideAll = new RadioButton();
+                                btOverrideAll.Top = 50;
+                                btOverrideAll.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btOverrideAll.AutoSize = true;
+                                btOverrideAll.Text = "Override defaults";
+                                btOverrideAll.Checked = true;
+                                btOverrideAll.Enabled = false;
+                                btOverrideAll.Visible = false;
+                                btOverrideAll.Name = "Override";
+                                btOverrideAll.CheckedChanged += btOverrideAllWorld_CheckedChanged;
+                                pCheckBoxes.Controls.Add(btOverrideAll);
+                                Session.ToolTip1.SetToolTip(btOverrideAll, "Removes all default resources and replaces them with selected resources.");
+
+                                pCheckBoxes.AutoSize = true;
+                                pCheckBoxes.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+
+                                pnl.Controls.Add(pnl3);
+                                pnl.Controls.Add(pCheckBoxes);
+
+                                pnl.AutoSize = true;
+
+                                tlpWorldSettings1.Controls.Add(pnl, 2, row);
+                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(lbPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes));
+
+                                break;
+                            case "String":
+                                if(property.AllowedValues != null && property.AllowedValues.Count > 0)
+                                {
+                                    ComboBox txPropertyInput = new ComboBox();
+                                    txPropertyInput.DropDownStyle = ComboBoxStyle.DropDownList;
+                                    txPropertyInput.Items.Add("");
+                                    foreach(string allowedValue in property.AllowedValues)
+                                    {
+                                        txPropertyInput.Items.Add(allowedValue);
+                                    }
+                                    txPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                    txPropertyInput.SelectedIndexChanged += PropertyInputChangedWorld;
+                                    txPropertyInput.LostFocus += PropertyInputLostFocusWorld;
+                                    txPropertyInput.MouseHover += lbPropertyInput_MouseHover;
+                                    txPropertyInput.MouseWheel += lbWorldTabSetting_MouseWheel;
+
+                                    tlpWorldSettings1.Controls.Add(txPropertyInput, 2, row);
+                                    Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                } else {
+                                    TextBox txPropertyInput = new TextBox();                                
+                                    txPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                    txPropertyInput.TextChanged += PropertyInputChangedWorld;
+                                    txPropertyInput.LostFocus += PropertyInputLostFocusWorld;
+                                    txPropertyInput.MouseHover += lbPropertyInput_MouseHover;
+
+                                    tlpWorldSettings1.Controls.Add(txPropertyInput, 2, row);
+                                    Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                }
+                                break;
+                            case "BigString":
+                                RichTextBox txPropertyInput2 = new RichTextBox();
+                                txPropertyInput2.Multiline = true;
+                                txPropertyInput2.Height = 58;
+                                txPropertyInput2.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                txPropertyInput2.TextChanged += PropertyInputChangedWorld;
+                                txPropertyInput2.LostFocus += PropertyInputLostFocusWorld;
+                                txPropertyInput2.MouseHover += lbPropertyInput_MouseHover;
+                                txPropertyInput2.MouseWheel += lbWorldTabSetting_MouseWheel;
+
+                                tlpWorldSettings1.Controls.Add(txPropertyInput2, 2, row);
+                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                break;
+                            case "Float":
+                            case "Int":
+                                NumericUpDownExt txPropertyInput3 = new NumericUpDownExt(property.PropertyType == "Float");
+                                txPropertyInput3.Minimum = Convert.ToInt32(Math.Ceiling(property.MinValue));
+                                txPropertyInput3.Maximum = Convert.ToInt32(Math.Floor(property.MaxValue));
+                                txPropertyInput3.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                txPropertyInput3.TextChanged += PropertyInputChangedWorld;
+                                txPropertyInput3.LostFocus += PropertyInputLostFocusWorld;
+                                // This is needed to make the table cell/column/row resize correctly
+                                // This doesn't actually seem to affect the textbox's height/width.
+                                // TODO: Is this still needed, using a hack on window resize now?
+                                txPropertyInput3.AutoSize = false;
+                                txPropertyInput3.Width = 0;
+                                txPropertyInput3.Height = 0;
+
+                                tlpWorldSettings1.Controls.Add(txPropertyInput3, 2, row);
+                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                break;
+                            case "Color":
+                                Panel colorPickerPanel = new Panel();
+                                colorPickerPanel.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                colorPickerPanel.AutoSize = false;
+                                colorPickerPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+                                colorPickerPanel.Width = 0;
+                                colorPickerPanel.Height = 0;
+
+                                ListBox lbPropertyInput2 = new ListBox();
+                                lbPropertyInput2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                lbPropertyInput2.IntegralHeight = false;
+                                lbPropertyInput2.Width = 20;
+                                lbPropertyInput2.Height = 20;
+                                lbPropertyInput2.BackColor = Color.White;
+                                lbPropertyInput2.Margin = new Padding(3, 0, 0, 0);
+                                lbPropertyInput2.TabStop = false;
+                                lbPropertyInput2.Click += PropertyInputColorChangedWorld;
+                                colorPickerPanel.Controls.Add(lbPropertyInput2);
+
+                                TextBox txPropertyInput4 = new TextBox();
+                                txPropertyInput4.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                txPropertyInput4.TextChanged += PropertyInputColorChangedWorld;
+                                txPropertyInput4.LostFocus += PropertyInputLostFocusWorld;
+                                txPropertyInput4.Left = 26;
+                                colorPickerPanel.Controls.Add(txPropertyInput4);
+
+                                colorPickerPanel.AutoSize = true;
+
+                                tlpWorldSettings1.Controls.Add(colorPickerPanel, 2, row);
+                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput4, cbOverride, bSetDefaults, txPropertyLabel, lbPropertyInput2, null));
+                                break;
+                            case "BiomesList":
+
+                                Panel pnl4 = new Panel();
+                                pnl4.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                pnl4.AutoSize = false;
+                                pnl4.Width = 160;
+
+                                ListBox lbPropertyInput3 = new ListBox();
+                                lbPropertyInput3.KeyDown += lbPropertyInput_KeyDown_World;
+                                lbPropertyInput3.Sorted = true;
+                                lbPropertyInput3.Width = pnl4.Width;
+                                lbPropertyInput3.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                lbPropertyInput3.SelectionMode = SelectionMode.MultiExtended;
+                                lbPropertyInput3.SelectedIndexChanged += lbPropertyInputWorld_SelectedIndexChanged;
+                                lbPropertyInput3.Height = 140;
+                                lbPropertyInput3.MouseWheel += lbWorldTabSetting_MouseWheel;
+                                lbPropertyInput3.MouseHover += lbPropertyInput_MouseHover;
+                                pnl4.Controls.Add(lbPropertyInput3);
+                           
+                                Panel pCheckBoxes2 = new Panel();
+                                pCheckBoxes2.Top = 144;
+                                pCheckBoxes2.Width = 160;
+                                pCheckBoxes2.Height = 70;
+                                pCheckBoxes2.Visible = false;
+                                pCheckBoxes2.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
+
+                                CheckBox btIgnoreParentMerge2 = new CheckBox();
+                                btIgnoreParentMerge2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btIgnoreParentMerge2.AutoSize = true;
+                                btIgnoreParentMerge2.Text = "Override parent values";
+                                btIgnoreParentMerge2.Name = "OverrideParent";
+                                btIgnoreParentMerge2.Enabled = false;
+                                btIgnoreParentMerge2.Visible = false;
+                                btIgnoreParentMerge2.CheckedChanged += btOverrideParentValuesWorld_CheckedChanged;
+                                pCheckBoxes2.Controls.Add(btIgnoreParentMerge2);
+                                Session.ToolTip1.SetToolTip(btIgnoreParentMerge2, "Ignore any biomes defined in a group listed higher in the Groups menu than the current group.\r\n\r\n If this is disabled then multiple groups can add biomes to the same setting.\r\n For instance Group 1 can add biome A and Group 2 can add biome B.\r\n\r\nIf this is enabled then only the current group will add its biomes.\r\nFor instance if this option is enabled in Group 2 then if Group 1 adds biome A and Group 2 adds biome B only biome B is added.");
+
+                                RadioButton btMergeWithDefaults2 = new RadioButton();
+                                btMergeWithDefaults2.Top = 25;
+                                btMergeWithDefaults2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btMergeWithDefaults2.AutoSize = true;
+                                btMergeWithDefaults2.Text = "Merge with defaults";
+                                btMergeWithDefaults2.Enabled = false;
+                                btMergeWithDefaults2.Visible = false;
+                                btMergeWithDefaults2.Name = "Merge";
+                                btMergeWithDefaults2.CheckedChanged += btOverrideAllWorld_CheckedChanged;
+                                pCheckBoxes2.Controls.Add(btMergeWithDefaults2);
+                                Session.ToolTip1.SetToolTip(btMergeWithDefaults2, "Adds the selected biomes to the default biomes.");
+
+                                RadioButton btOverrideAll2 = new RadioButton();
+                                btOverrideAll2.Top = 50;
+                                btOverrideAll2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btOverrideAll2.AutoSize = true;
+                                btOverrideAll2.Text = "Override defaults";
+                                btOverrideAll2.Checked = true;
+                                btOverrideAll2.Enabled = false;
+                                btOverrideAll2.Visible = false;
+                                btOverrideAll2.Name = "Override";
+                                btOverrideAll2.CheckedChanged += btOverrideAllWorld_CheckedChanged;
+                                pCheckBoxes2.Controls.Add(btOverrideAll2);
+                                Session.ToolTip1.SetToolTip(btOverrideAll2, "Removes all default biomes and replaces them with selected biomes.");
+
+                                pCheckBoxes2.AutoSize = true;
+                                pCheckBoxes2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+
+                                pnl4.Controls.Add(pCheckBoxes2);
+                                pnl4.AutoSize = true;
+
+                                tlpWorldSettings1.Controls.Add(pnl4, 2, row);
+                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(lbPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes2));
+                                BiomeListInputs.Add(lbPropertyInput3);
+
+                                break;
+                            case "Bool":
+                                Button btnTrueFalse = new Button();
+                                btnTrueFalse.Text = "";
+                                btnTrueFalse.BackColor = Color.FromKnownColor(KnownColor.Control);
+                                btnTrueFalse.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btnTrueFalse.ForeColor = Color.Empty;
+                                btnTrueFalse.Click += btnTrueFalseWorld_Click;
+
+                                tlpWorldSettings1.Controls.Add(btnTrueFalse, 2, row);
+                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(btnTrueFalse, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+
+                                break;
+                        }
+
+                        Session.ToolTip1.SetToolTip(bSetDefaults, "Clear");
+
+                        row++;
+                    }
+                }
+
+                // Biomes
+
+                settingsByGroup = new Dictionary<string, List<TCProperty>>();
+
+                foreach (TCProperty property in Session.VersionConfig.BiomeConfig)
+                {
+                    if (settingsByGroup.ContainsKey(property.Group))
+                    {
+                        settingsByGroup[property.Group].Add(property);
+                    } else {
+                        settingsByGroup[property.Group] = new List<TCProperty>() { property };
+                    }
+                }
+
+                lastGroupTitle = null;
+                row = 0;
+
+                foreach (KeyValuePair<String, List<TCProperty>> settingsGroup in settingsByGroup)
+                {
+                    if (!String.IsNullOrEmpty(settingsGroup.Key) && (lastGroupTitle == null || !lastGroupTitle.Equals(settingsGroup.Key)))
+                    {
+                        lastGroupTitle = settingsGroup.Key;
+
+                        Label txPropertyLabel1 = new Label();
+                        txPropertyLabel1.Text = settingsGroup.Key;
+                        txPropertyLabel1.Font = new System.Drawing.Font(txPropertyLabel1.Font, FontStyle.Bold);
+                        txPropertyLabel1.AutoSize = true;
+                        txPropertyLabel1.Margin = new Padding(0, row == 0 ? 10 : 35, 0, 15);
+                        txPropertyLabel1.Click += new System.EventHandler(this.btClickBackGround);
+                        tlpBiomeSettings1.Controls.Add(txPropertyLabel1, 0, row);
+
+                        row++;
+
+                        tlpBiomeSettings1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                    }
+
+                    foreach (TCProperty property in settingsGroup.Value)
+                    {
+                        Label txPropertyLabel = new Label();
+                        txPropertyLabel.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
+                        txPropertyLabel.Text = property.LabelText != null && property.LabelText.Length > 0 ? property.LabelText : property.Name;
+                        txPropertyLabel.AutoSize = true;
+                        txPropertyLabel.TabStop = false;
+                        txPropertyLabel.Margin = new Padding(0, 5, 0, 0);
+                        txPropertyLabel.Click += new System.EventHandler(this.btClickBackGround);
+                        tlpBiomeSettings1.Controls.Add(txPropertyLabel, 0, row);
+
+                        CheckBox cbOverride = new CheckBox();
+                        cbOverride.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                        cbOverride.TabStop = false;
+                        cbOverride.AutoSize = true;
+                        cbOverride.Padding = new Padding(cbOverride.Padding.Left, cbOverride.Padding.Top + 4, cbOverride.Padding.Right, cbOverride.Padding.Bottom);
+                        Session.ToolTip1.SetToolTip(cbOverride, "Apply this value");
+                        tlpBiomeSettings1.Controls.Add(cbOverride, 1, row);
+                        cbOverride.CheckedChanged += PropertyInputOverrideCheckChangedBiome;
+
+                        Button bSetDefaults = new Button();
+                        bSetDefaults.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                        bSetDefaults.BackColor = Color.FromKnownColor(KnownColor.Control);
+                        bSetDefaults.Text = "C";
+                        bSetDefaults.Width = 23;
+                        bSetDefaults.Height = 23;
+                        bSetDefaults.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
+                        bSetDefaults.Click += bSetDefaultsBiomeProperty;
+                        bSetDefaults.TabStop = false;
+                        tlpBiomeSettings1.Controls.Add(bSetDefaults, 3, row);
+
+                        switch (property.PropertyType)
+                        {
+                            case "ResourceQueue":
+
+                                Panel pnl = new Panel();
+                                pnl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                pnl.AutoSize = false;
+                                pnl.Width = 160;
+
+                                ListBox lbPropertyInput = new ListBox();
+                                lbPropertyInput.Sorted = true;
+                                lbPropertyInput.Width = pnl.Width;
+                                lbPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                lbPropertyInput.SelectionMode = SelectionMode.MultiExtended;
+                                lbPropertyInput.KeyDown += lbPropertyInput_KeyDown;
+                                lbPropertyInput.Height = 140;
+                                lbPropertyInput.MouseWheel += lbBiomesTabSetting_MouseWheel;
+                                lbPropertyInput.MouseHover += lbPropertyInput_MouseHover;
+                                pnl.Controls.Add(lbPropertyInput);
+
+                                Panel pnl3 = new Panel();
+                                pnl3.Top = 140;
+                                pnl3.Width = 160;
+                                pnl3.Height = 25;
+                                pnl3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+                                pnl3.Resize += new EventHandler(delegate(object s, EventArgs args)
+                                {
+                                    int left = 0;
+                                    foreach (Control ctl in ((Panel)s).Controls)
+                                    {
+                                        ctl.Width = (((Panel)s).Width - 10) / 3;
+                                        ctl.Left = left;
+                                        left += ((((Panel)s).Width - 10) / 3) + 5;
+                                    }                        
+                                });
+
+                                Button btAddResourceQueueItem = new Button();
+                                btAddResourceQueueItem.Width = 50;
+                                btAddResourceQueueItem.Anchor = AnchorStyles.Top;
+                                btAddResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
+                                btAddResourceQueueItem.Text = "Add";
+                                btAddResourceQueueItem.Click += btAddResourceQueueItem_Click;
+                                btAddResourceQueueItem.TabStop = false;
+                                ResourceQueueInputs.Add(btAddResourceQueueItem, property);
+                                pnl3.Controls.Add(btAddResourceQueueItem);
+
+                                Button btEditResourceQueueItem = new Button();
+                                btEditResourceQueueItem.Left = 55;
+                                btEditResourceQueueItem.Width = 50;
+                                btEditResourceQueueItem.Anchor = AnchorStyles.Top;
+                                btEditResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
+                                btEditResourceQueueItem.Text = "Edit";
+                                btEditResourceQueueItem.Click += btEditResourceQueueItem_Click;
+                                btEditResourceQueueItem.TabStop = false;
+                                ResourceQueueInputs.Add(btEditResourceQueueItem, property);
+                                pnl3.Controls.Add(btEditResourceQueueItem);
+
+                                Button btDeleteResourceQueueItem = new Button();
+                                btDeleteResourceQueueItem.Left = 110;
+                                btDeleteResourceQueueItem.Width = 50;
+                                btDeleteResourceQueueItem.Anchor = AnchorStyles.Top;
+                                btDeleteResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);                               
+                                btDeleteResourceQueueItem.Text = "Delete";
+                                btDeleteResourceQueueItem.Click += btDeleteResourceQueueItem_Click;
+                                btDeleteResourceQueueItem.TabStop = false;
+                                ResourceQueueInputs.Add(btDeleteResourceQueueItem, property);
+                                pnl3.Controls.Add(btDeleteResourceQueueItem);
+                           
+                                Panel pCheckBoxes = new Panel();
+                                pCheckBoxes.Top = 172;
+                                pCheckBoxes.Width = 160;
+                                pCheckBoxes.Height = 70;
+                                pCheckBoxes.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
+
+                                CheckBox btIgnoreParentMerge = new CheckBox();
+                                btIgnoreParentMerge.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btIgnoreParentMerge.AutoSize = true;
                                 btIgnoreParentMerge.Text = "Override parent values";
                                 btIgnoreParentMerge.Name = "OverrideParent";
                                 btIgnoreParentMerge.CheckedChanged += btOverrideParentValuesBiome_CheckedChanged;
                                 pCheckBoxes.Controls.Add(btIgnoreParentMerge);
-                                Session.ToolTip1.SetToolTip(btIgnoreParentMerge, "Ignore any values defined in a group listed higher in the Groups menu than the current group.\r\n\r\n If this is disabled then multiple groups can add values to the same property.\r\n For instance Group 1 can add gold ore and Group 2 can add diamond ore.\r\n\r\nIf this is enabled then only the current group will add its values.\r\nFor instance if this option is enabled in Group 2 then if Group 1 adds gold ore and Group 2 adds diamond ore only the diamond ore is added.");
+                                Session.ToolTip1.SetToolTip(btIgnoreParentMerge, "Ignore any resources defined in a group listed higher in the Groups menu than the current group.\r\n\r\n If this is disabled then multiple groups can add resources to the same setting.\r\n For instance Group 1 can add gold ore and Group 2 can add diamond ore to ResourceQueue.\r\n\r\nIf this is enabled then only the current group will add its values.\r\nFor instance if this option is enabled in Group 2 then if Group 1 adds gold ore and Group 2 adds diamond ore only the diamond ore is added.");
 
-                                pnl2.Controls.Add(pCheckBoxes);
-                                pnl.Controls.Add(pnl2);
-                                tlpBiomeSettings.Controls.Add(pnl, column3, row);
+                                RadioButton btMergeWithDefaults = new RadioButton();
+                                btMergeWithDefaults.Top = 25;
+                                btMergeWithDefaults.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btMergeWithDefaults.AutoSize = true;
+                                btMergeWithDefaults.Text = "Merge with defaults";
+                                btMergeWithDefaults.Name = "Merge";
+                                btMergeWithDefaults.CheckedChanged += btOverrideAllBiome_CheckedChanged;
+                                pCheckBoxes.Controls.Add(btMergeWithDefaults);
+                                Session.ToolTip1.SetToolTip(btMergeWithDefaults, "Adds the selected resources to the default resources.\r\n\r\nSome resource and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE resources. Unique resources are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nResource name and * must be unique.\r\n\r\nResources that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique resources, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\n\r\nUpdate: Unique resources can now be added multiple times, duplicates are allowed but only within a single list.\r\nWhen merging resource lists with other biome groups and default values merging behaviours are applied and\r\nduplicates between lists are removed.");
 
-                                if (tlpBiomeSettings.RowStyles.Count - 1 < row)
+                                RadioButton btOverrideAll = new RadioButton();
+                                btOverrideAll.Top = 50;
+                                btOverrideAll.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btOverrideAll.AutoSize = true;
+                                btOverrideAll.Text = "Override defaults";
+                                btOverrideAll.Checked = true;
+                                btOverrideAll.Name = "Override";
+                                btOverrideAll.CheckedChanged += btOverrideAllBiome_CheckedChanged;
+                                pCheckBoxes.Controls.Add(btOverrideAll);
+                                Session.ToolTip1.SetToolTip(btOverrideAll, "Removes all default resources and replaces them with selected resources.");
+
+                                pCheckBoxes.AutoSize = true;
+                                pCheckBoxes.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+
+                                pnl.Controls.Add(pnl3);
+                                pnl.Controls.Add(pCheckBoxes);
+
+                                pnl.AutoSize = true;
+
+                                tlpBiomeSettings1.Controls.Add(pnl, 2, row);
+                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(lbPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes));
+
+                                break;
+                            case "String":
+                                if(property.AllowedValues != null && property.AllowedValues.Count > 0)
                                 {
-                                    tlpBiomeSettings.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                                }
-                                tlpBiomeSettings.RowStyles[tlpBiomeSettings.RowStyles.Count - 1].SizeType = SizeType.Absolute;
-                                tlpBiomeSettings.RowStyles[tlpBiomeSettings.RowStyles.Count - 1].Height = 180;
+                                    ComboBox txPropertyInput = new ComboBox();
+                                    txPropertyInput.DropDownStyle = ComboBoxStyle.DropDownList;
+                                    txPropertyInput.Items.Add("");
+                                    foreach(string allowedValue in property.AllowedValues)
+                                    {
+                                        txPropertyInput.Items.Add(allowedValue);
+                                    }
+                                    txPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                    txPropertyInput.SelectedIndexChanged += PropertyInputChangedBiome;
+                                    txPropertyInput.LostFocus += PropertyInputLostFocusBiome;
+                                    txPropertyInput.MouseHover += lbPropertyInput_MouseHover;
+                                    txPropertyInput.MouseWheel += lbBiomesTabSetting_MouseWheel;
 
-                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(lbPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes));
-                                BiomeListInputs.Add(lbPropertyInput2);
+                                    tlpBiomeSettings1.Controls.Add(txPropertyInput, 2, row);
+                                    Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                } else {
+                                    TextBox txPropertyInput = new TextBox();                                
+                                    txPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;                                
+                                    txPropertyInput.TextChanged += PropertyInputChangedBiome;
+                                    txPropertyInput.LostFocus += PropertyInputLostFocusBiome;
+                                    txPropertyInput.MouseHover += lbPropertyInput_MouseHover;
+
+                                    tlpBiomeSettings1.Controls.Add(txPropertyInput, 2, row);
+                                    Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                }
+                                break;
+                            case "BigString":
+                                RichTextBox txPropertyInput2 = new RichTextBox();
+                                txPropertyInput2.Height = 58;
+                                txPropertyInput2.Multiline = true;
+                                txPropertyInput2.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;                                
+                                txPropertyInput2.TextChanged += PropertyInputChangedBiome;
+                                txPropertyInput2.LostFocus += PropertyInputLostFocusBiome;
+                                txPropertyInput2.MouseHover += lbPropertyInput_MouseHover;
+                                txPropertyInput2.MouseWheel += lbBiomesTabSetting_MouseWheel;
+
+                                tlpBiomeSettings1.Controls.Add(txPropertyInput2, 2, row);
+                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, null, null));                                
+                                break;
+                            case "Float":
+                            case "Int":
+                                NumericUpDownExt txPropertyInput3 = new NumericUpDownExt(property.PropertyType == "Float");
+                                txPropertyInput3.Minimum = Convert.ToInt32(Math.Ceiling(property.MinValue));
+                                txPropertyInput3.Maximum = Convert.ToInt32(Math.Floor(property.MaxValue));
+                                txPropertyInput3.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                txPropertyInput3.TextChanged += PropertyInputChangedBiome;
+                                txPropertyInput3.LostFocus += PropertyInputLostFocusBiome;
+                                // This is needed to make the table cell/column/row resize correctly
+                                // This doesn't actually seem to affect the textbox's height/width.
+                                // TODO: Is this still needed, using a hack on window resize now?
+                                txPropertyInput3.AutoSize = false;
+                                txPropertyInput3.Width = 0;
+                                txPropertyInput3.Height = 0;
+
+                                tlpBiomeSettings1.Controls.Add(txPropertyInput3, 2, row);
+                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, null));                                
+                                break;
+                            case "Color":
+                                Panel colorPickerPanel = new Panel();
+                                colorPickerPanel.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                colorPickerPanel.AutoSize = false;
+                                colorPickerPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+                                colorPickerPanel.Width = 0;
+                                colorPickerPanel.Height = 0;
+
+                                ListBox lbPropertyInput2 = new ListBox();
+                                lbPropertyInput2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                lbPropertyInput2.IntegralHeight = false;
+                                lbPropertyInput2.Width = 20;
+                                lbPropertyInput2.Height = 20;
+                                lbPropertyInput2.BackColor = Color.White;
+                                lbPropertyInput2.Margin = new Padding(3, 0, 0, 0);
+                                lbPropertyInput2.TabStop = false;
+                                lbPropertyInput2.Click += PropertyInputColorChangedBiome;
+                                colorPickerPanel.Controls.Add(lbPropertyInput2);
+
+                                TextBox txPropertyInput4 = new TextBox();
+                                txPropertyInput4.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                txPropertyInput4.TextChanged += PropertyInputColorChangedBiome;
+                                txPropertyInput4.LostFocus += PropertyInputLostFocusBiome;
+                                txPropertyInput4.Left = 26;
+                                colorPickerPanel.Controls.Add(txPropertyInput4);
+
+                                colorPickerPanel.AutoSize = true;
+
+                                tlpBiomeSettings1.Controls.Add(colorPickerPanel, 2, row);
+                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput4, cbOverride, bSetDefaults, txPropertyLabel, lbPropertyInput2, null));
+                                break;
+                            case "BiomesList":
+
+                                Panel pnl4 = new Panel();
+                                pnl4.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                pnl4.AutoSize = false;
+                                pnl4.Width = 160;
+
+                                ListBox lbPropertyInput3 = new ListBox();
+                                lbPropertyInput3.KeyDown += lbPropertyInput_KeyDown;
+                                lbPropertyInput3.Sorted = true;
+                                lbPropertyInput3.Width = pnl4.Width;
+                                lbPropertyInput3.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                lbPropertyInput3.SelectionMode = SelectionMode.MultiExtended;
+                                lbPropertyInput3.SelectedIndexChanged += lbPropertyInputBiome_SelectedIndexChanged;
+                                lbPropertyInput3.Height = 140;
+                                lbPropertyInput3.MouseWheel += lbBiomesTabSetting_MouseWheel;
+                                lbPropertyInput3.MouseHover += lbPropertyInput_MouseHover;
+                                pnl4.Controls.Add(lbPropertyInput3);
+                           
+                                Panel pCheckBoxes2 = new Panel();
+                                pCheckBoxes2.Top = 144;
+                                pCheckBoxes2.Width = 160;
+                                pCheckBoxes2.Height = 70;
+                                pCheckBoxes2.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
+
+                                CheckBox btIgnoreParentMerge2 = new CheckBox();
+                                btIgnoreParentMerge2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btIgnoreParentMerge2.AutoSize = true;
+                                btIgnoreParentMerge2.Text = "Override parent values";
+                                btIgnoreParentMerge2.Name = "OverrideParent";
+                                btIgnoreParentMerge2.CheckedChanged += btOverrideParentValuesBiome_CheckedChanged;
+                                pCheckBoxes2.Controls.Add(btIgnoreParentMerge2);
+                                Session.ToolTip1.SetToolTip(btIgnoreParentMerge2, "Ignore any biomes defined in a group listed higher in the Groups menu than the current group.\r\n\r\n If this is disabled then multiple groups can add biomes to the same setting.\r\n For instance Group 1 can add biome A and Group 2 can add biome B.\r\n\r\nIf this is enabled then only the current group will add its biomes.\r\nFor instance if this option is enabled in Group 2 then if Group 1 adds biome A and Group 2 adds biome B only biome B is added.");
+
+                                RadioButton btMergeWithDefaults2 = new RadioButton();
+                                btMergeWithDefaults2.Top = 25;
+                                btMergeWithDefaults2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btMergeWithDefaults2.AutoSize = true;
+                                btMergeWithDefaults2.Text = "Merge with defaults";
+                                btMergeWithDefaults2.Name = "Merge";
+                                btMergeWithDefaults2.CheckedChanged += btOverrideAllBiome_CheckedChanged;
+                                pCheckBoxes2.Controls.Add(btMergeWithDefaults2);
+                                Session.ToolTip1.SetToolTip(btMergeWithDefaults2, "Adds the selected biomes to the default biomes.");
+
+                                RadioButton btOverrideAll2 = new RadioButton();
+                                btOverrideAll2.Top = 50;
+                                btOverrideAll2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btOverrideAll2.AutoSize = true;
+                                btOverrideAll2.Text = "Override defaults";
+                                btOverrideAll2.Checked = true;
+                                btOverrideAll2.Name = "Override";
+                                btOverrideAll2.CheckedChanged += btOverrideAllBiome_CheckedChanged;
+                                pCheckBoxes2.Controls.Add(btOverrideAll2);
+                                Session.ToolTip1.SetToolTip(btOverrideAll2, "Removes all default biomes and replaces them with selected biomes.");
+
+                                pCheckBoxes2.AutoSize = true;
+                                pCheckBoxes2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+
+                                pnl4.Controls.Add(pCheckBoxes2);
+
+                                pnl4.AutoSize = true;
+
+                                tlpBiomeSettings1.Controls.Add(pnl4, 2, row);
+                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(lbPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes2));
+                                BiomeListInputs.Add(lbPropertyInput3);
+
                                 break;
                             case "Bool":
-                                ComboBox cbPropertyInput = new ComboBox();
-                                cbPropertyInput.Items.Add("");
-                                cbPropertyInput.Items.Add("true");
-                                cbPropertyInput.Items.Add("false");
-                                cbPropertyInput.SelectedIndex = 0;
-                                cbPropertyInput.DropDownStyle = ComboBoxStyle.DropDownList;
-                                cbPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                                tlpBiomeSettings.Controls.Add(cbPropertyInput, column3, row);
-                                cbPropertyInput.SelectedIndexChanged += PropertyInputChangedBiome;
-                                //cbPropertyInput.LostFocus += PropertyInputLostFocusBiome;
-                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(cbPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                Button btnTrueFalse = new Button();
+                                btnTrueFalse.Text = "";
+                                btnTrueFalse.BackColor = Color.FromKnownColor(KnownColor.Control);
+                                btnTrueFalse.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                                btnTrueFalse.ForeColor = Color.Empty;
+                                btnTrueFalse.Click += btnTrueFalseBiome_Click;
+
+                                tlpBiomeSettings1.Controls.Add(btnTrueFalse, 2, row);
+                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(btnTrueFalse, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+
                                 break;
                         }
-                    }
-                    if (tlpBiomeSettings.RowStyles.Count - 1 < row)
-                    {
-                        tlpBiomeSettings.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                    }
 
-                    Session.ToolTip1.SetToolTip(bSetDefaults, "Clear");
+                        Session.ToolTip1.SetToolTip(bSetDefaults, "Clear");
 
-                    i += 1;
+                        row++;
+                    }
                 }
+
+                tlpWorldSettings1.ResumeLayout();
+
+                tlpWorldSettingsContainer.ResumeLayout();
+
+                tlpBiomeSettings1.ResumeLayout();
+
+                tlpBiomeSettingsContainer.ResumeLayout();
+
+                panel3.ResumeLayout();
+                panel2.ResumeLayout();
+
+                this.ResumeLayout();
             }
 
         #endregion
@@ -906,6 +1121,8 @@ namespace TCEE
 
                     Session.WorldConfig1.SetProperty(property, Session.WorldConfig1.GetPropertyValueAsString(property), Session.WorldConfig1.GetPropertyMerge(property), ((CheckBox)sender).Checked);
                 }
+
+                this.panel2.Focus();
             }
 
             private void btOverrideAllWorld_CheckedChanged(object sender, EventArgs e)
@@ -952,6 +1169,8 @@ namespace TCEE
                         }
                     }
                 }
+
+                this.panel2.Focus();
             }
 
             private void lbPropertyInputWorld_SelectedIndexChanged(object sender, EventArgs e)
@@ -981,7 +1200,9 @@ namespace TCEE
                     Session.WorldConfig1.SetProperty(property, sBiomeNames, merge, ((CheckBox)kvp.Value.Item6.Controls.Find("OverrideParent", true)[0]).Checked);
 
                     bool bIsDefault = true;
-                    bIsDefault = Utils.TCSettingsUtils.CompareBiomeLists(Session.WorldConfigDefaultValues.GetPropertyValueAsString(property), Session.WorldConfig1.GetPropertyValueAsString(property));
+                    string defaultValue = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
+                    string newValue = Session.WorldConfig1.GetPropertyValueAsString(property);
+                    bIsDefault = Utils.TCSettingsUtils.CompareBiomeLists(defaultValue, newValue);
 
                     if (!bIsDefault)
                     {
@@ -998,18 +1219,11 @@ namespace TCEE
                 {                
                     if(sender is ListBox)
                     {
-                        ColorDialog colorDlg = new ColorDialog();
-                        colorDlg.AllowFullOpen = false;
-                        colorDlg.AnyColor = true;
-                        colorDlg.SolidColorOnly = false;
-
                         if (colorDlg.ShowDialog() == DialogResult.OK)
                         {
                             KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item5 == sender);
                             TCProperty property = kvp.Key;
                             kvp.Value.Item5.BackColor = colorDlg.Color;
-                            Session.IgnorePropertyInputChangedWorld = true;
-                            Session.IgnoreOverrideCheckChangedWorld = true;
                             if (Session.SettingsType.ColorType == "0x")
                             {
                                 kvp.Value.Item1.Text = "0x" + colorDlg.Color.R.ToString("X2") + colorDlg.Color.G.ToString("X2") + colorDlg.Color.B.ToString("X2");
@@ -1020,15 +1234,14 @@ namespace TCEE
                             }
                             Session.WorldConfig1.SetProperty(property, kvp.Value.Item1.Text, false, false);
 
-                            if (Session.WorldConfigDefaultValues == null || kvp.Value.Item1.Text != Session.WorldConfigDefaultValues.GetPropertyValueAsString(property))
+                            if (Session.WorldConfigDefaultValues == null || ColorTranslator.FromHtml(kvp.Value.Item1.Text).ToArgb() != ColorTranslator.FromHtml(Session.WorldConfigDefaultValues.GetPropertyValueAsString(property)).ToArgb())
                             {
                                 kvp.Value.Item2.Checked = true;
                             } else {
                                 kvp.Value.Item2.Checked = false;
                             }
-                            Session.IgnorePropertyInputChangedWorld = false;
-                            Session.IgnoreOverrideCheckChangedWorld = false;
                         }
+                        this.panel2.Focus();
                     }
                     else if(sender is TextBox)
                     {
@@ -1036,9 +1249,9 @@ namespace TCEE
                         TCProperty property = kvp.Key;
                         try
                         {
-                            if (kvp.Value.Item1.Text.Length == 8 || (kvp.Value.Item1.Text.Length == 7 && kvp.Value.Item1.Text.StartsWith("#")))
+                            if ((kvp.Value.Item1.Text.StartsWith("0x") && kvp.Value.Item1.Text.Length == 8) || (kvp.Value.Item1.Text.StartsWith("#") && kvp.Value.Item1.Text.Length == 7))
                             {
-                                Session.WorldSettingsInputs[property].Item5.BackColor = System.Drawing.ColorTranslator.FromHtml(kvp.Value.Item1.Text);
+                                Session.WorldSettingsInputs[property].Item5.BackColor = ColorTranslator.FromHtml(kvp.Value.Item1.Text);
                                 if (Session.SettingsType.ColorType == "0x")
                                 {
                                     kvp.Value.Item1.Text = "0x" + Session.WorldSettingsInputs[property].Item5.BackColor.R.ToString("X2") + Session.WorldSettingsInputs[property].Item5.BackColor.G.ToString("X2") + Session.WorldSettingsInputs[property].Item5.BackColor.B.ToString("X2");
@@ -1049,7 +1262,7 @@ namespace TCEE
                                 }
                                 Session.WorldConfig1.SetProperty(property, kvp.Value.Item1.Text, false, false);
 
-                                if (Session.WorldConfigDefaultValues == null || kvp.Value.Item1.Text != Session.WorldConfigDefaultValues.GetPropertyValueAsString(property))
+                                if (Session.WorldConfigDefaultValues == null || ColorTranslator.FromHtml(kvp.Value.Item1.Text).ToArgb() != ColorTranslator.FromHtml(Session.WorldConfigDefaultValues.GetPropertyValueAsString(property)).ToArgb())
                                 {
                                     kvp.Value.Item2.Checked = true;
                                 } else {
@@ -1069,6 +1282,83 @@ namespace TCEE
                 }
             }
 
+            void btnTrueFalseWorld_Click(object sender, EventArgs e)
+            {
+                Button btnSender = (Button)sender;
+
+                if(btnSender.Text.Equals(""))
+                {
+                    btnSender.Text = "true";
+                    btnSender.ForeColor = Color.Green;
+                }
+                else if (btnSender.Text.Equals("true"))
+                {
+                    btnSender.Text = "false";
+                    btnSender.ForeColor = Color.Red;
+                }
+                else if (btnSender.Text.Equals("false"))
+                {
+                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item1 == sender);
+                    TCProperty property = kvp.Key;
+                    string value = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
+                    if (value != null && value.Equals("false"))
+                    {
+                        btnSender.Text = "true";
+                        btnSender.ForeColor = Color.Green;
+                    } else {
+                        btnSender.Text = "";
+                        btnSender.ForeColor = Color.Empty;
+                    }
+                }
+
+                PropertyInputChangedWorld(sender, e);
+
+                this.panel2.Focus();
+            }
+
+            void btnTrueFalseBiome_Click(object sender, EventArgs e)
+            {
+                Button btnSender = (Button)sender;
+
+                if (btnSender.Text.Equals(""))
+                {
+                    btnSender.Text = "true";
+                    btnSender.ForeColor = Color.Green;
+                }
+                else if (btnSender.Text.Equals("true"))
+                {
+                    btnSender.Text = "false";
+                    btnSender.ForeColor = Color.Red;
+                }
+                else if (btnSender.Text.Equals("false"))
+                {
+                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item1 == sender);
+                    TCProperty property = kvp.Key;
+
+                    Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+
+                    BiomeConfig biomeDefaultConfig = null;
+                    if (g.showDefaults)
+                    {
+                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                    }
+
+                    string value = biomeDefaultConfig != null ? biomeDefaultConfig.GetPropertyValueAsString(property) : null;
+                    if (biomeDefaultConfig != null && value != null && value.Equals("false"))
+                    {
+                        btnSender.Text = "true";
+                        btnSender.ForeColor = Color.Green;
+                    } else {
+                        btnSender.Text = "";
+                        btnSender.ForeColor = Color.Empty;
+                    }
+                }
+
+                PropertyInputChangedBiome(sender, e);
+
+                this.panel3.Focus();
+            }
+
             void PropertyInputChangedWorld(object sender, EventArgs e)
             {
                 if (!Session.IgnorePropertyInputChangedWorld)
@@ -1079,15 +1369,37 @@ namespace TCEE
                     TCProperty property = kvp.Key;
 
                     float result;
+                    int result2;
                     if (
                         property.PropertyType == "String" ||
+                        property.PropertyType == "BigString" ||
                         property.PropertyType == "Bool" ||
-                        (property.PropertyType == "Float" && float.TryParse(tb.Text, out result))
+                        (
+                            (property.PropertyType == "Float" && float.TryParse(tb.Text, out result)) ||
+                            (property.PropertyType == "Int" && int.TryParse(tb.Text, out result2))
+                        )
                     )
                     {
                         Session.WorldConfig1.SetProperty(property, tb.Text, kvp.Value.Item6 != null && ((RadioButton)kvp.Value.Item6.Controls.Find("Merge", true)[0]).Checked, kvp.Value.Item6 != null && ((CheckBox)kvp.Value.Item6.Controls.Find("OverrideParent", true)[0]).Checked);
 
-                        if (!(property.PropertyType == "Bool" && String.IsNullOrEmpty(tb.Text)) && (Session.WorldConfigDefaultValues == null || (property.PropertyType != "Bool" && tb.Text != Session.WorldConfigDefaultValues.GetPropertyValueAsString(property)) || (property.PropertyType == "Bool" && !String.IsNullOrEmpty(tb.Text) && tb.Text != Session.WorldConfigDefaultValues.GetPropertyValueAsString(property))))
+                        if (
+                            !(
+                                property.PropertyType == "Bool" && 
+                                String.IsNullOrEmpty(tb.Text)
+                            ) && 
+                            (                                
+                                Session.WorldConfigDefaultValues == null || 
+                                (
+                                    property.PropertyType != "Bool" && 
+                                    tb.Text != Session.WorldConfigDefaultValues.GetPropertyValueAsString(property)
+                                ) || 
+                                (
+                                    property.PropertyType == "Bool" && 
+                                    !String.IsNullOrEmpty(tb.Text) && 
+                                    tb.Text != Session.WorldConfigDefaultValues.GetPropertyValueAsString(property)
+                                )
+                            )
+                        )
                         {
                             cb.Checked = true;
                         } else {
@@ -1096,6 +1408,16 @@ namespace TCEE
                                 Session.IgnoreOverrideCheckChangedWorld = true;
                                 Session.IgnorePropertyInputChangedWorld = true;
                                 tb.Text = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
+                                if (tb.Text.Equals("true"))
+                                {
+                                    tb.ForeColor = Color.Green;
+                                }
+                                else if (tb.Text.Equals("true"))
+                                {
+                                    tb.ForeColor = Color.Red;
+                                } else {
+                                    tb.ForeColor = Color.Empty;
+                                }
                                 Session.IgnorePropertyInputChangedWorld = false;
                                 Session.IgnoreOverrideCheckChangedWorld = false;
                             }
@@ -1119,7 +1441,7 @@ namespace TCEE
                     Session.IgnorePropertyInputChangedWorld = true;
                     Session.IgnoreOverrideCheckChangedWorld = true;
                     bool bSetToDefaults = false;
-                    if (((TextBox)sender).Text.Length == 8 || (((TextBox)sender).Text.Length == 7 && ((TextBox)sender).Text.StartsWith("#")))
+                    if ((((TextBox)sender).Text.StartsWith("0x") && ((TextBox)sender).Text.Length == 8) || (((TextBox)sender).Text.StartsWith("#") && ((TextBox)sender).Text.Length == 7))
                     {
                         try
                         {
@@ -1135,7 +1457,7 @@ namespace TCEE
                             }
                             Session.WorldSettingsInputs[property].Item1.Text = value;
                             Session.WorldConfig1.SetProperty(property, value, false, false);
-                            if (Session.WorldConfigDefaultValues == null || value.ToUpper() != Session.WorldConfigDefaultValues.GetPropertyValueAsString(property).ToUpper())
+                            if (Session.WorldConfigDefaultValues == null || ColorTranslator.FromHtml(value.ToUpper()).ToArgb() != ColorTranslator.FromHtml(Session.WorldConfigDefaultValues.GetPropertyValueAsString(property).ToUpper()).ToArgb())
                             {
                                 Session.WorldSettingsInputs[property].Item2.Checked = true;
                             } else {
@@ -1153,7 +1475,7 @@ namespace TCEE
                     {
                         string defaultValue = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
                         Session.WorldConfig1.SetProperty(property, null, false, false);
-                        if (defaultValue != null && (defaultValue.Length == 8 || (defaultValue.Length == 7 && defaultValue.StartsWith("#"))))
+                        if (defaultValue != null && ((defaultValue.StartsWith("0x") && defaultValue.Length == 8) || (defaultValue.StartsWith("#") && defaultValue.Length == 7)))
                         {
                             try
                             {
@@ -1184,23 +1506,36 @@ namespace TCEE
                     Session.IgnorePropertyInputChangedWorld = false;
                     Session.IgnoreOverrideCheckChangedWorld = false;
                 }
-                else if (property.PropertyType == "Float")
+                else if (property.PropertyType == "Float" || property.PropertyType == "Int")
                 {
                     float result = 0;
-                    if (!float.TryParse(((TextBox)sender).Text, out result))
+                    int result2 = 0;
+                    if (
+                        (
+                            property.PropertyType == "Float" &&
+                            !float.TryParse(((TextBox)sender).Text, out result)
+                        ) ||
+                        (
+                            property.PropertyType == "Int" &&
+                            !int.TryParse(((TextBox)sender).Text, out result2)
+                        )
+                    )
                     {
                         if (Session.WorldConfigDefaultValues != null)
                         {
-                            ((TextBox)sender).Text = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
+                            string newText = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
+                            int numberOfDecimals = property.PropertyType == "Int" ? 0 : newText.IndexOf(".") > 0 ? newText.Length - (newText.IndexOf(".") + 1) : 0;
+                            ((NumericUpDownExt)sender).DecimalPlaces = numberOfDecimals;
+                            ((TextBox)sender).Text = newText;
                         }
                         Session.WorldSettingsInputs[property].Item2.Checked = false;
                     }
                 }
-                else if (String.IsNullOrWhiteSpace(((TextBox)sender).Text) && property.PropertyType != "String")
+                else if (String.IsNullOrWhiteSpace(((Control)sender).Text) && property.PropertyType != "String" && property.PropertyType != "BigString")
                 {
                     if (Session.WorldConfigDefaultValues != null)
                     {
-                        ((TextBox)sender).Text = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
+                        ((Control)sender).Text = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
                     }
                     Session.WorldSettingsInputs[property].Item2.Checked = false;
                 }
@@ -1220,21 +1555,29 @@ namespace TCEE
                         CheckBox cb = kvp.Value.Item2;
 
                         float result;
+                        int result2;
                         if (
                             property.PropertyType == "String" ||
+                            property.PropertyType == "BigString" ||
                             property.PropertyType == "Bool" ||
-                            (property.PropertyType == "Float" && float.TryParse(tb.Text, out result))
+                            (
+                                (property.PropertyType == "Float" && float.TryParse(tb.Text, out result)) ||
+                                (property.PropertyType == "Int" && int.TryParse(tb.Text, out result2))
+                            )
                         )
                         {
                             Session.WorldConfig1.SetProperty(property, tb.Text, kvp.Value.Item6 != null && ((RadioButton)kvp.Value.Item6.Controls.Find("Merge", true)[0]).Checked, kvp.Value.Item6 != null && ((CheckBox)kvp.Value.Item6.Controls.Find("OverrideParent", true)[0]).Checked);
                         }
-                        else if (property.PropertyType == "Float")
+                        else if (property.PropertyType == "Float" || property.PropertyType == "Int")
                         {
                             Session.IgnoreOverrideCheckChangedWorld = true;
                             Session.IgnorePropertyInputChangedWorld = true;
                             if (Session.WorldConfigDefaultValues != null && Session.WorldConfigDefaultValues.GetPropertyValueAsString(property) != null)
                             {
-                                tb.Text = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
+                                string newText = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
+                                int numberOfDecimals = property.PropertyType == "Int" ? 0 : newText.IndexOf(".") > 0 ? newText.Length - (newText.IndexOf(".") + 1) : 0;
+                                ((NumericUpDownExt)tb).DecimalPlaces = numberOfDecimals;
+                                tb.Text = newText;
                             } else {
                                 tb.Text = "";
                             }
@@ -1247,28 +1590,9 @@ namespace TCEE
                         {
                             try
                             {
-                                if (kvp.Value.Item1.Text.Length == 8 || (kvp.Value.Item1.Text.Length == 7 && kvp.Value.Item1.Text.StartsWith("#")))
+                                if ((kvp.Value.Item1.Text.StartsWith("0x") && kvp.Value.Item1.Text.Length == 8) || (kvp.Value.Item1.Text.StartsWith("#") && kvp.Value.Item1.Text.Length == 7))
                                 {
-                                    if ((Session.SettingsType.ColorType == "0x" && kvp.Value.Item1.Text.StartsWith("0x")) || (Session.SettingsType.ColorType == "#" && kvp.Value.Item1.Text.StartsWith("#")))
-                                    {
-                                        Color derp = System.Drawing.ColorTranslator.FromHtml(Session.WorldConfigDefaultValues.GetPropertyValueAsString(property));
-                                        Session.WorldConfig1.SetProperty(property, kvp.Value.Item1.Text, kvp.Value.Item6 != null && ((RadioButton)kvp.Value.Item6.Controls.Find("Merge", true)[0]).Checked, kvp.Value.Item6 != null && ((CheckBox)kvp.Value.Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                                    } else {
-                                        Session.IgnoreOverrideCheckChangedWorld = true;
-                                        Session.IgnorePropertyInputChangedWorld = true;
-                                        if (Session.WorldConfigDefaultValues != null && !String.IsNullOrEmpty(Session.WorldConfigDefaultValues.GetPropertyValueAsString(property)))
-                                        {
-                                            tb.Text = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
-                                            Session.WorldSettingsInputs[property].Item5.BackColor = System.Drawing.ColorTranslator.FromHtml(Session.WorldConfigDefaultValues.GetPropertyValueAsString(property));
-                                        } else {
-                                            tb.Text = "";
-                                            Session.WorldSettingsInputs[property].Item5.BackColor = Color.White;
-                                        }
-                                        cb.Checked = false;
-                                        Session.WorldConfig1.SetProperty(property, null, false, false);
-                                        Session.IgnoreOverrideCheckChangedWorld = false;
-                                        Session.IgnorePropertyInputChangedWorld = false;
-                                    }
+                                    Session.WorldConfig1.SetProperty(property, kvp.Value.Item1.Text, kvp.Value.Item6 != null && ((RadioButton)kvp.Value.Item6.Controls.Find("Merge", true)[0]).Checked, kvp.Value.Item6 != null && ((CheckBox)kvp.Value.Item6.Controls.Find("OverrideParent", true)[0]).Checked);
                                 } else {
                                     Session.IgnoreOverrideCheckChangedWorld = true;
                                     Session.IgnorePropertyInputChangedWorld = true;
@@ -1363,17 +1687,20 @@ namespace TCEE
                         case "Bool":
                             if (propertyValue != null && propertyValue.ToLower() == "true")
                             {
-                                ((ComboBox)kvp.Value.Item1).SelectedIndex = 1;
+                                ((Button)kvp.Value.Item1).Text = "true";
+                                ((Button)kvp.Value.Item1).ForeColor = Color.Green;
                             }
                             else if (propertyValue != null && propertyValue.ToLower() == "false")
                             {
-                                ((ComboBox)kvp.Value.Item1).SelectedIndex = 2;
+                                ((Button)kvp.Value.Item1).Text = "false";
+                                ((Button)kvp.Value.Item1).ForeColor = Color.Red;
                             } else {
-                                ((ComboBox)kvp.Value.Item1).SelectedIndex = 0;
+                                ((Button)kvp.Value.Item1).Text = "";
+                                ((Button)kvp.Value.Item1).ForeColor = Color.Empty;
                             }
                         break;
                         case "Color":
-                        if (propertyValue != null && ((Session.SettingsType.ColorType == "0x" && propertyValue.Length == 8) || (propertyValue != null && Session.SettingsType.ColorType == "#" && propertyValue.Length == 7 && propertyValue.StartsWith("#"))))
+                        if (propertyValue != null && ((propertyValue.StartsWith("0x") && propertyValue.Length == 8) || (propertyValue.StartsWith("#") && propertyValue.Length == 7)))
                             {
                                 try
                                 {
@@ -1391,9 +1718,14 @@ namespace TCEE
                             }
                         break;
                         case "Float":
-                            kvp.Value.Item1.Text = propertyValue;
+                        case "Int":
+                            string newText = propertyValue;
+                            int numberOfDecimals = kvp.Key.PropertyType == "Int" ? 0 : newText.IndexOf(".") > 0 ? newText.Length - (newText.IndexOf(".") + 1) : 0;
+                            ((NumericUpDownExt)kvp.Value.Item1).DecimalPlaces = numberOfDecimals;
+                            kvp.Value.Item1.Text = newText;
                         break;
                         case "String":
+                        case "BigString":
                             kvp.Value.Item1.Text = propertyValue;
                         break;
                         case "ResourceQueue":
@@ -1428,16 +1760,19 @@ namespace TCEE
                             ((RadioButton)kvp.Value.Item6.Controls.Find("Merge", true)[0]).Checked = false;
                         break;
                         case "Bool":
-                            ((ComboBox)kvp.Value.Item1).SelectedIndex = 0;
+                            ((Button)kvp.Value.Item1).Text = "";
+                            ((Button)kvp.Value.Item1).ForeColor = Color.Empty;
                         break;
                         case "Color":
                             kvp.Value.Item5.BackColor = Color.White;
                             kvp.Value.Item1.Text = "";
                         break;
                         case "Float":
+                        case "Int":
                             kvp.Value.Item1.Text = "";
                         break;
                         case "String":
+                        case "BigString":
                             kvp.Value.Item1.Text = "";
                         break;
                         case "ResourceQueue":
@@ -1640,7 +1975,7 @@ namespace TCEE
                             {
                                 sPropertyNames += a + "\r\n";
                             }
-                            PopUpForm.CustomMessageBox("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
+                            PopUpForm.CustomMessageBox("Cannot add item. Setting name was not recognized. Legal setting names are: \r\n" + sPropertyNames, "Error: Illegal input");
                         }
                     }
                 } else {
@@ -1650,7 +1985,7 @@ namespace TCEE
                     }
                     else if (selectedOption == null)
                     {
-                        PopUpForm.CustomMessageBox("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
+                        PopUpForm.CustomMessageBox("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is SettingName(Parameters)", "Error: Illegal input");
                     }
                 }
                 if (bAllowed)
@@ -1717,76 +2052,54 @@ namespace TCEE
 
                 TCProperty property = ResourceQueueInputs[sender];
                 ListBox lb = ((ListBox)Session.WorldSettingsInputs[property].Item1);
-                string originalPropertyValue = (string)lb.SelectedItem.ToString();
-                string propertyValue = (string)lb.SelectedItem.ToString();
-
-                if (PopUpForm.InputBox("Edit item", "", ref propertyValue, true) == DialogResult.OK && !propertyValue.Equals(originalPropertyValue))
+                if (lb.SelectedItem != null)
                 {
-                    if (propertyValue != null && !String.IsNullOrEmpty(propertyValue.Trim()))
+                    string originalPropertyValue = (string)lb.SelectedItem.ToString();
+                    string propertyValue = (string)lb.SelectedItem.ToString();
+
+                    if (PopUpForm.InputBox("Edit item", "", ref propertyValue, true) == DialogResult.OK && !propertyValue.Equals(originalPropertyValue))
                     {
-                        List<string> newPropertyValue = new List<string>();
-                        bool bFound1 = false;
-                        foreach (string item in lb.Items)
+                        if (propertyValue != null && !String.IsNullOrEmpty(propertyValue.Trim()))
                         {
-                            if (!item.Equals(originalPropertyValue) || bFound1)
+                            List<string> newPropertyValue = new List<string>();
+                            bool bFound1 = false;
+                            foreach (string item in lb.Items)
                             {
-                                newPropertyValue.Add(item.Trim());
-                            } else {
-                                bFound1 = true;
-                            }
-                        }
-
-                        bool bAllowed = false;
-                        bool bOverrideExisting = false;
-                        ResourceQueueItem selectedOption = null;
-                        foreach (ResourceQueueItem option in Session.VersionConfig.ResourceQueueOptions)
-                        {
-                            if (propertyValue.StartsWith(option.Name))
-                            {
-                                selectedOption = option;
-                                break;
-                            }
-                        }
-
-                        if (newPropertyValue != null && selectedOption != null)
-                        {
-                            DialogResult permissionGiven = DialogResult.Abort;
-                            bool bFound = false;
-                            if ((!selectedOption.HasUniqueParameter && newPropertyValue.Any(a => a.StartsWith(selectedOption.Name)) || (selectedOption.HasUniqueParameter && newPropertyValue.Any(a => (string)a == (string)propertyValue))))
-                            {
-                                if (selectedOption.HasUniqueParameter && !newPropertyValue.Any(a => (string)a == (string)propertyValue))
+                                if (!item.Equals(originalPropertyValue) || bFound1)
                                 {
-                                    if (addingMultipleResourcesXToAll == DialogResult.Abort)
-                                    {
-                                        string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                        //addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
-                                        addingMultipleResourcesXToAll = System.Windows.Forms.DialogResult.Yes;
-                                    }
-                                    permissionGiven = addingMultipleResourcesXToAll;
-                                    if (permissionGiven == DialogResult.No)
-                                    {
-                                        bOverrideExisting = true;
-                                    }
-                                    if (permissionGiven == DialogResult.Cancel)
-                                    {
-                                        return;
-                                    }
+                                    newPropertyValue.Add(item.Trim());
                                 } else {
-                                    if (newPropertyValue.Any(a => (string)a == (string)propertyValue))
+                                    bFound1 = true;
+                                }
+                            }
+
+                            bool bAllowed = false;
+                            bool bOverrideExisting = false;
+                            ResourceQueueItem selectedOption = null;
+                            foreach (ResourceQueueItem option in Session.VersionConfig.ResourceQueueOptions)
+                            {
+                                if (propertyValue.StartsWith(option.Name))
+                                {
+                                    selectedOption = option;
+                                    break;
+                                }
+                            }
+
+                            if (newPropertyValue != null && selectedOption != null)
+                            {
+                                DialogResult permissionGiven = DialogResult.Abort;
+                                bool bFound = false;
+                                if ((!selectedOption.HasUniqueParameter && newPropertyValue.Any(a => a.StartsWith(selectedOption.Name)) || (selectedOption.HasUniqueParameter && newPropertyValue.Any(a => (string)a == (string)propertyValue))))
+                                {
+                                    if (selectedOption.HasUniqueParameter && !newPropertyValue.Any(a => (string)a == (string)propertyValue))
                                     {
-                                        if (addingMultipleResourcesXToAll2 == DialogResult.Abort)
+                                        if (addingMultipleResourcesXToAll == DialogResult.Abort)
                                         {
-                                            //addingMultipleResourcesXToAll2 = PopUpForm.CustomYesNoBox("Add exact duplicate?", "Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Yes", "No");
-                                            addingMultipleResourcesXToAll2 = System.Windows.Forms.DialogResult.Yes;
+                                            string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                            //addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                            addingMultipleResourcesXToAll = System.Windows.Forms.DialogResult.Yes;
                                         }
-                                        permissionGiven = addingMultipleResourcesXToAll2;
-                                    } else {
-                                        if (addingMultipleResourcesXToAll3 == DialogResult.Abort)
-                                        {
-                                            //addingMultipleResourcesXToAll3 = PopUpForm.CustomYesNoBox("Keep same resource with different parameters?", "One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
-                                            addingMultipleResourcesXToAll3 = System.Windows.Forms.DialogResult.Yes;
-                                        }
-                                        permissionGiven = addingMultipleResourcesXToAll3;
+                                        permissionGiven = addingMultipleResourcesXToAll;
                                         if (permissionGiven == DialogResult.No)
                                         {
                                             bOverrideExisting = true;
@@ -1795,117 +2108,142 @@ namespace TCEE
                                         {
                                             return;
                                         }
-                                    }
-                                }
-                                if (permissionGiven == DialogResult.Yes)
-                                {
-                                    bAllowed = true;
-                                }
-                                bFound = true;
-                            }
-                            if (!bFound || bOverrideExisting)
-                            {
-                                if (propertyValue.Contains('(') && propertyValue.Contains(')'))
-                                {
-                                    if (selectedOption.IsUnique)
-                                    {
-                                        List<string> possibleDuplicates = new List<string>();
-                                        foreach (string value2 in newPropertyValue)
+                                    } else {
+                                        if (newPropertyValue.Any(a => (string)a == (string)propertyValue))
                                         {
-                                            if (value2.StartsWith(selectedOption.Name))
+                                            if (addingMultipleResourcesXToAll2 == DialogResult.Abort)
                                             {
-                                                if (!selectedOption.HasUniqueParameter && bOverrideExisting) // Is duplicate tag, but not necessarily same params
-                                                {
-                                                    //Delete old add new
-                                                    DeleteResourceQueueItemWorld(property, value2);
-                                                } else {
-                                                    possibleDuplicates.Add(value2);
-                                                }
+                                                //addingMultipleResourcesXToAll2 = PopUpForm.CustomYesNoBox("Add exact duplicate?", "Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Yes", "No");
+                                                addingMultipleResourcesXToAll2 = System.Windows.Forms.DialogResult.Yes;
+                                            }
+                                            permissionGiven = addingMultipleResourcesXToAll2;
+                                        } else {
+                                            if (addingMultipleResourcesXToAll3 == DialogResult.Abort)
+                                            {
+                                                //addingMultipleResourcesXToAll3 = PopUpForm.CustomYesNoBox("Keep same resource with different parameters?", "One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                                addingMultipleResourcesXToAll3 = System.Windows.Forms.DialogResult.Yes;
+                                            }
+                                            permissionGiven = addingMultipleResourcesXToAll3;
+                                            if (permissionGiven == DialogResult.No)
+                                            {
+                                                bOverrideExisting = true;
+                                            }
+                                            if (permissionGiven == DialogResult.Cancel)
+                                            {
+                                                return;
                                             }
                                         }
-                                        if (possibleDuplicates.Any())
+                                    }
+                                    if (permissionGiven == DialogResult.Yes)
+                                    {
+                                        bAllowed = true;
+                                    }
+                                    bFound = true;
+                                }
+                                if (!bFound || bOverrideExisting)
+                                {
+                                    if (propertyValue.Contains('(') && propertyValue.Contains(')'))
+                                    {
+                                        if (selectedOption.IsUnique)
                                         {
-                                            string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                            foreach (string existingValue in possibleDuplicates)
+                                            List<string> possibleDuplicates = new List<string>();
+                                            foreach (string value2 in newPropertyValue)
                                             {
-                                                string[] existingParameters = existingValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                if (existingParameters.Length > selectedOption.UniqueParameterIndex && newParameters.Length > selectedOption.UniqueParameterIndex)
+                                                if (value2.StartsWith(selectedOption.Name))
                                                 {
-                                                    bool bFound4 = false;
-                                                    if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
+                                                    if (!selectedOption.HasUniqueParameter && bOverrideExisting) // Is duplicate tag, but not necessarily same params
                                                     {
-                                                        if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(newParameters[selectedOption.UniqueParameterIndex].ToLower().Trim())))
+                                                        //Delete old add new
+                                                        DeleteResourceQueueItemWorld(property, value2);
+                                                    } else {
+                                                        possibleDuplicates.Add(value2);
+                                                    }
+                                                }
+                                            }
+                                            if (possibleDuplicates.Any())
+                                            {
+                                                string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                                foreach (string existingValue in possibleDuplicates)
+                                                {
+                                                    string[] existingParameters = existingValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                                    if (existingParameters.Length > selectedOption.UniqueParameterIndex && newParameters.Length > selectedOption.UniqueParameterIndex)
+                                                    {
+                                                        bool bFound4 = false;
+                                                        if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
                                                         {
+                                                            if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(newParameters[selectedOption.UniqueParameterIndex].ToLower().Trim())))
+                                                            {
+                                                                if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
+                                                                {
+                                                                    bFound4 = true;
+                                                                }
+                                                            }
+                                                        } else {
                                                             if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
                                                             {
                                                                 bFound4 = true;
                                                             }
                                                         }
-                                                    } else {
-                                                        if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
+                                                        if (bFound4)
                                                         {
-                                                            bFound4 = true;
-                                                        }
-                                                    }
-                                                    if (bFound4)
-                                                    {
-                                                        //Delete old add new
-                                                        if (permissionGiven == DialogResult.Abort)
-                                                        {
-                                                            if (addingMultipleResourcesXToAll == DialogResult.Abort)
+                                                            //Delete old add new
+                                                            if (permissionGiven == DialogResult.Abort)
                                                             {
-                                                                //addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
-                                                                addingMultipleResourcesXToAll = System.Windows.Forms.DialogResult.Yes;
+                                                                if (addingMultipleResourcesXToAll == DialogResult.Abort)
+                                                                {
+                                                                    //addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                                                    addingMultipleResourcesXToAll = System.Windows.Forms.DialogResult.Yes;
+                                                                }
+                                                                permissionGiven = addingMultipleResourcesXToAll;
                                                             }
-                                                            permissionGiven = addingMultipleResourcesXToAll;
-                                                        }
-                                                        if (permissionGiven == DialogResult.No)
-                                                        {
-                                                            DeleteResourceQueueItemWorld(property, existingValue);
-                                                        }
-                                                        if (permissionGiven == DialogResult.Cancel)
-                                                        {
-                                                            return;
+                                                            if (permissionGiven == DialogResult.No)
+                                                            {
+                                                                DeleteResourceQueueItemWorld(property, existingValue);
+                                                            }
+                                                            if (permissionGiven == DialogResult.Cancel)
+                                                            {
+                                                                return;
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
-                                            if (newParameters.Length > selectedOption.UniqueParameterIndex)
-                                            {
-                                                bAllowed = true;
+                                                if (newParameters.Length > selectedOption.UniqueParameterIndex)
+                                                {
+                                                    bAllowed = true;
+                                                } else {
+                                                    PopUpForm.CustomMessageBox("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
+                                                }
                                             } else {
-                                                PopUpForm.CustomMessageBox("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
+                                                bAllowed = true;
                                             }
                                         } else {
                                             bAllowed = true;
                                         }
                                     } else {
-                                        bAllowed = true;
+                                        string[] propertyNames = Session.VersionConfig.ResourceQueueOptions.Select(a => a.Name).ToArray();
+                                        string sPropertyNames = "";
+                                        foreach (string a in propertyNames)
+                                        {
+                                            sPropertyNames += a + "\r\n";
+                                        }
+                                        PopUpForm.CustomMessageBox("Cannot add item. Setting name was not recognized. Legal setting names are: \r\n" + sPropertyNames, "Error: Illegal input");
                                     }
-                                } else {
-                                    string[] propertyNames = Session.VersionConfig.ResourceQueueOptions.Select(a => a.Name).ToArray();
-                                    string sPropertyNames = "";
-                                    foreach (string a in propertyNames)
-                                    {
-                                        sPropertyNames += a + "\r\n";
-                                    }
-                                    PopUpForm.CustomMessageBox("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
+                                }
+                            } else {
+                                if (newPropertyValue == null)
+                                {
+                                    bAllowed = true;
+                                }
+                                else if (selectedOption == null)
+                                {
+                                    PopUpForm.CustomMessageBox("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is SettingName(Parameters)", "Error: Illegal input");
                                 }
                             }
-                        } else {
-                            if (newPropertyValue == null)
+                            if (bAllowed)
                             {
-                                bAllowed = true;
+                                DeleteResourceQueueItemWorld(property, originalPropertyValue);
+                                AddResourceToWorld(property, propertyValue);
                             }
-                            else if (selectedOption == null)
-                            {
-                                PopUpForm.CustomMessageBox("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
-                            }
-                        }
-                        if (bAllowed)
-                        {
-                            DeleteResourceQueueItemWorld(property, originalPropertyValue);
-                            AddResourceToWorld(property, propertyValue);
                         }
                     }
                 }
@@ -2021,17 +2359,20 @@ namespace TCEE
                             case "Bool":
                                 if (propertyValue != null && propertyValue.ToLower() == "true")
                                 {
-                                    ((ComboBox)boxes.Item1).SelectedIndex = 1;
+                                    ((Button)boxes.Item1).Text = "true";
+                                    ((Button)boxes.Item1).ForeColor = Color.Green;
                                 }
                                 else if (propertyValue != null && propertyValue.ToLower() == "false")
                                 {
-                                    ((ComboBox)boxes.Item1).SelectedIndex = 2;
+                                    ((Button)boxes.Item1).Text = "false";
+                                    ((Button)boxes.Item1).ForeColor = Color.Red;
                                 } else {
-                                    ((ComboBox)boxes.Item1).SelectedIndex = 0;
+                                    ((Button)boxes.Item1).Text = "";
+                                    ((Button)boxes.Item1).ForeColor = Color.Empty;
                                 }
                                 break;
                             case "Color":
-                                if ((propertyValue != null && Session.SettingsType.ColorType == "0x" && propertyValue.Length == 8) || (propertyValue != null && Session.SettingsType.ColorType == "#" && propertyValue.Length == 7 && propertyValue.StartsWith("#")))
+                                if (propertyValue != null && ((propertyValue.StartsWith("0x") && propertyValue.Length == 8) || (propertyValue.StartsWith("#") && propertyValue.Length == 7)))
                                 {
                                     boxes.Item5.BackColor = System.Drawing.ColorTranslator.FromHtml(propertyValue);
                                     boxes.Item1.Text = propertyValue;
@@ -2041,9 +2382,14 @@ namespace TCEE
                                 }
                                 break;
                             case "Float":
-                                boxes.Item1.Text = propertyValue;
+                            case "Int":
+                                string newText = propertyValue;
+                                int numberOfDecimals = property.PropertyType == "Int" ? 0 : newText.IndexOf(".") > 0 ? newText.Length - (newText.IndexOf(".") + 1) : 0;
+                                ((NumericUpDownExt)boxes.Item1).DecimalPlaces = numberOfDecimals;
+                                boxes.Item1.Text = newText;
                                 break;
                             case "String":
+                            case "BigString":
                                 boxes.Item1.Text = propertyValue;
                                 break;
                             case "ResourceQueue":
@@ -2088,16 +2434,19 @@ namespace TCEE
                                 ((RadioButton)boxes.Item6.Controls.Find("Merge", true)[0]).Checked = false;
                                 break;
                             case "Bool":
-                                ((ComboBox)boxes.Item1).SelectedIndex = 0;
+                                ((Button)boxes.Item1).Text = "";
+                                ((Button)boxes.Item1).ForeColor = Color.Empty;
                                 break;
                             case "Color":
                                 boxes.Item5.BackColor = Color.White;
                                 boxes.Item1.Text = "";
                                 break;
                             case "Float":
+                            case "Int":
                                 boxes.Item1.Text = "";
                                 break;
                             case "String":
+                            case "BigString":
                                 boxes.Item1.Text = "";
                                 break;
                             case "ResourceQueue":
@@ -2115,7 +2464,207 @@ namespace TCEE
                         Session.IgnoreOverrideCheckChangedWorld = false;
                     }
                 }
+
+                this.panel2.Focus();
             }
+
+            Control lastWorldSetting = null;
+            private void tbSearchWorldConfig_TextChanged(object sender, EventArgs e)
+            {
+                lastWorldSetting = null;
+
+                bool textIsNullOrEmpty = String.IsNullOrWhiteSpace(this.tbSearchWorldConfig.Text);
+
+                Control worldSetting = null;
+
+                foreach (Control ctl in this.tlpWorldSettings1.Controls)
+                {
+                    if(ctl is Label)
+                    {
+                        if (
+                            !textIsNullOrEmpty && 
+                            ctl.Text.ToLower().Trim().Contains(this.tbSearchWorldConfig.Text.ToLower().Trim())
+                        )
+                        {
+                            if (worldSetting == null)
+                            {
+                                worldSetting = ctl;
+                                ctl.BackColor = Color.DodgerBlue;
+                                ctl.ForeColor = Color.White;
+                            } else {
+                                ctl.BackColor = Color.LightBlue;
+                                ctl.ForeColor = Color.Black;
+                            }                    
+                        } else {
+                            ctl.BackColor = Color.Empty;
+                            ctl.ForeColor = Color.Black;
+                        }
+                    }
+                }
+
+                if (worldSetting != null && !textIsNullOrEmpty)
+                {
+                    lastWorldSetting = worldSetting;
+                    this.panel2.ScrollControlIntoView(worldSetting);
+                }
+            }
+
+            void tbSearchWorldConfig_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+            {
+                this.panel2.Focus();
+            }
+
+            private void btSearchWorldConfigPrev_Click(object sender, EventArgs e)
+            {
+                if (lastWorldSetting != null)
+                {
+                    bool textIsNullOrEmpty = String.IsNullOrWhiteSpace(this.tbSearchWorldConfig.Text);
+                    Control previousSetting = null;
+                    bool lastWorldSettingFound = false;
+                    bool newWorldSettingFound = false;
+
+                    foreach (Control ctl in this.tlpWorldSettings1.Controls)
+                    {
+                        if (ctl is Label)
+                        {
+                            if (ctl == lastWorldSetting)
+                            {
+                                lastWorldSettingFound = true;
+                                if (previousSetting != null)
+                                {
+                                    newWorldSettingFound = true;
+                                }
+                            } else {
+                                if (ctl.Text.ToLower().Trim().Contains(this.tbSearchWorldConfig.Text.ToLower().Trim()))
+                                {
+                                    if (!lastWorldSettingFound || !newWorldSettingFound)
+                                    {
+                                        previousSetting = ctl;
+                                        previousSetting.BackColor = Color.LightBlue;
+                                        previousSetting.ForeColor = Color.Black;
+                                    }
+                                } else {
+                                    ctl.BackColor = Color.Empty;
+                                    ctl.ForeColor = Color.Black;
+                                }
+                            }
+                        }
+                    }
+
+                    if (previousSetting != null)
+                    {
+                        if (lastWorldSetting != previousSetting)
+                        {
+                            lastWorldSetting.BackColor = Color.LightBlue;
+                            lastWorldSetting.ForeColor = Color.Black;
+
+                            lastWorldSetting = previousSetting;
+
+                            previousSetting.BackColor = Color.DodgerBlue;
+                            previousSetting.ForeColor = Color.White;
+                        }
+
+                        this.panel2.ScrollControlIntoView(previousSetting);
+                    }
+                }
+
+                this.panel2.Focus();
+            }
+
+            private void btSearchWorldConfigNext_Click(object sender, EventArgs e)
+            {
+                if (lastWorldSetting != null)
+                {
+                    bool textIsNullOrEmpty = String.IsNullOrWhiteSpace(this.tbSearchWorldConfig.Text);
+                    Control worldSetting = null;
+                    Control firstWorldSetting = null;
+                    bool lastWorldSettingFound = false;
+
+                    foreach (Control ctl in this.tlpWorldSettings1.Controls)
+                    {
+                        if(ctl is Label)
+                        {
+                            if (ctl == lastWorldSetting)
+                            {
+                                lastWorldSettingFound = true;
+                            }
+
+                            if(
+                                firstWorldSetting == null &&
+                                ctl.Text.ToLower().Trim().Contains(this.tbSearchWorldConfig.Text.ToLower().Trim())
+                            )
+                            {
+                                firstWorldSetting = ctl;
+                            }
+
+                            if (
+                                !textIsNullOrEmpty &&
+                                ctl != lastWorldSetting && 
+                                ctl.Text.ToLower().Trim().Contains(this.tbSearchWorldConfig.Text.ToLower().Trim())
+                            )
+                            {
+                                if (worldSetting == null && lastWorldSettingFound)
+                                {
+                                    worldSetting = ctl;
+                                    ctl.BackColor = Color.DodgerBlue;
+                                    ctl.ForeColor = Color.White;
+                                } else {
+                                    ctl.BackColor = Color.LightBlue;
+                                    ctl.ForeColor = Color.Black;
+                                }                    
+                            } else {
+                                ctl.BackColor = Color.Empty;
+                                ctl.ForeColor = Color.Black;
+                            }
+                        }
+                    }
+
+                    if (worldSetting == null)
+                    {
+                        worldSetting = firstWorldSetting;
+                        if (worldSetting != null)
+                        {
+                            worldSetting.BackColor = Color.DodgerBlue;
+                            worldSetting.ForeColor = Color.White;
+                        }
+                    }
+
+                    if (worldSetting != null)
+                    {
+                        if (worldSetting != lastWorldSetting)
+                        {
+                            lastWorldSetting.BackColor = Color.LightBlue;
+                            lastWorldSetting.ForeColor = Color.Black;
+                            lastWorldSetting = worldSetting;
+                        }
+
+                        this.panel2.ScrollControlIntoView(worldSetting);
+                    }
+                }
+
+                this.panel2.Focus();
+            }
+
+            void lbWorldTabSetting_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+            {
+                bool senderIsMouseTarget = true;
+
+                if (!((Control)sender).ClientRectangle.Contains(((Control)sender).PointToClient(Control.MousePosition)))
+                {
+                    senderIsMouseTarget = false;
+                    this.panel2.Focus();
+                }
+
+                if (!senderIsMouseTarget)
+                {
+                    HandledMouseEventArgs args = e as HandledMouseEventArgs;
+                    if (args != null)
+                    {
+                        args.Handled = true;
+                    }
+                }
+            }
+
 
         #endregion
 
@@ -2123,20 +2672,38 @@ namespace TCEE
 
             void LoadBiomesList()
             {
-                if (!String.IsNullOrEmpty(Session.SourceConfigsDir) && System.IO.Directory.Exists(Session.SourceConfigsDir + "/" + "WorldBiomes" + "/"))
+                if (!String.IsNullOrEmpty(Session.SourceConfigsDir) && System.IO.Directory.Exists(Session.SourceConfigsDir + "\\" + "WorldBiomes" + "\\"))
                 {
-                    System.IO.DirectoryInfo defaultWorldDirectory = new System.IO.DirectoryInfo(Session.SourceConfigsDir + "/" + "WorldBiomes" + "/");
+                    System.IO.DirectoryInfo defaultWorldDirectory = new System.IO.DirectoryInfo(Session.SourceConfigsDir + "\\" + "WorldBiomes" + "\\");
                     lbBiomes.Items.Clear();
                     BiomeConfigsDefaultValues.Clear();
+
+                    string txtErrorsWrongValue = "";
+                    string txtErrorsNoSetting = "";
 
                     foreach (System.IO.FileInfo file in defaultWorldDirectory.GetFiles())
                     {
                         if (file.Name.EndsWith(".bc"))
                         {
                             lbBiomes.Items.Add(file.Name.Replace(".bc", ""));
-                            BiomeConfig bDefaultConfig = Biomes.LoadBiomeConfigFromFile(file, Session.VersionConfig, true);
-                            BiomeConfigsDefaultValues.Add(bDefaultConfig);
+                            BiomeConfig bDefaultConfig = Biomes.LoadBiomeConfigFromFile(file, Session.VersionConfig, true, ref txtErrorsWrongValue, ref txtErrorsNoSetting);
+                            if (bDefaultConfig == null)
+                            {
+                                UnloadUI();
+                                return;
+                            } else {
+                                BiomeConfigsDefaultValues.Add(bDefaultConfig);
+                            }
                         }
+                    }
+
+                    if (txtErrorsWrongValue.Length > 0)
+                    {
+                        PopUpForm.CustomMessageBox(txtErrorsWrongValue + "\r\n\r\nThe biome config files for this world contain errors, they were probably not generated with the selected version of TC/MCW/OTG/OTG+ and require manual updating.", "Version warnings");
+                    }
+                    if (txtErrorsNoSetting.Length > 0)
+                    {
+                        PopUpForm.CustomMessageBox(txtErrorsNoSetting + "\r\n\r\nThe biome config files for this world contain errors, they were probably not generated with the selected version of TC/MCW/OTG/OTG+ and require manual updating.", "Version warnings");
                     }
                 }
             }
@@ -2145,7 +2712,6 @@ namespace TCEE
             {
                 if (BiomeConfigsDefaultValues.Any())
                 {
-                    lbGroups.Items.Add("Land");
                     Group overworldLand = new Group("Land", Session.VersionConfig);
                     foreach (BiomeConfig biomeConfig in BiomeConfigsDefaultValues)
                     {
@@ -2154,9 +2720,12 @@ namespace TCEE
                             overworldLand.Biomes.Add(biomeConfig.BiomeName);
                         }
                     }
-                    Session.BiomeGroups.Add(overworldLand);
-
-                    lbGroups.Items.Add("Oceans");
+                    if (overworldLand.Biomes.Any())
+                    {
+                        lbGroups.Items.Add("Land");
+                        Session.BiomeGroups.Add(overworldLand);
+                    }
+                    
                     Group overworldOceans = new Group("Oceans", Session.VersionConfig);
                     foreach (BiomeConfig biomeConfig in BiomeConfigsDefaultValues)
                     {
@@ -2165,9 +2734,12 @@ namespace TCEE
                             overworldOceans.Biomes.Add(biomeConfig.BiomeName);
                         }
                     }
-                    Session.BiomeGroups.Add(overworldOceans);
+                    if (overworldOceans.Biomes.Any())
+                    {
+                        lbGroups.Items.Add("Oceans");
+                        Session.BiomeGroups.Add(overworldOceans);
+                    }
 
-                    lbGroups.Items.Add("Sky");
                     Group overworldSky = new Group("Sky", Session.VersionConfig);
                     foreach (BiomeConfig biomeConfig in BiomeConfigsDefaultValues)
                     {
@@ -2176,9 +2748,12 @@ namespace TCEE
                             overworldSky.Biomes.Add(biomeConfig.BiomeName);
                         }
                     }
-                    Session.BiomeGroups.Add(overworldSky);
-
-                    lbGroups.Items.Add("Nether");
+                    if (overworldSky.Biomes.Any())
+                    {
+                        lbGroups.Items.Add("Sky");
+                        Session.BiomeGroups.Add(overworldSky);
+                    }
+                    
                     Group hell = new Group("Nether", Session.VersionConfig);
                     foreach (BiomeConfig biomeConfig in BiomeConfigsDefaultValues)
                     {
@@ -2187,7 +2762,11 @@ namespace TCEE
                             hell.Biomes.Add(biomeConfig.BiomeName);
                         }
                     }
-                    Session.BiomeGroups.Add(hell);
+                    if (hell.Biomes.Any())
+                    {
+                        lbGroups.Items.Add("Nether");
+                        Session.BiomeGroups.Add(hell);
+                    }
                 }
             }
 
@@ -2203,6 +2782,8 @@ namespace TCEE
 
                     biomeConfig.SetProperty(property, biomeConfig.GetPropertyValueAsString(property), biomeConfig.GetPropertyMerge(property), ((CheckBox)sender).Checked);
                 }
+
+                this.panel3.Focus();
             }
 
             private void btOverrideAllBiome_CheckedChanged(object sender, EventArgs e)
@@ -2257,6 +2838,8 @@ namespace TCEE
                         }
                     }
                 }
+
+                this.panel3.Focus();
             }
 
             private void lbPropertyInputBiome_SelectedIndexChanged(object sender, EventArgs e)
@@ -2321,19 +2904,12 @@ namespace TCEE
                     }
 
                     if (sender is ListBox)
-                    {
-                        ColorDialog colorDlg = new ColorDialog();
-                        colorDlg.AllowFullOpen = false;
-                        colorDlg.AnyColor = true;
-                        colorDlg.SolidColorOnly = false;
-
+                    {                        
                         if (colorDlg.ShowDialog() == DialogResult.OK)
                         {
                             KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.First(a => a.Value.Item5 == sender);
                             TCProperty property = kvp.Key;
                             kvp.Value.Item5.BackColor = colorDlg.Color;
-                            IgnorePropertyInputChangedBiome = true;
-                            IgnoreOverrideCheckChangedBiome = true;
                             if (Session.SettingsType.ColorType == "0x")
                             {
                                 kvp.Value.Item1.Text = "0x" + colorDlg.Color.R.ToString("X2") + colorDlg.Color.G.ToString("X2") + colorDlg.Color.B.ToString("X2");
@@ -2344,15 +2920,14 @@ namespace TCEE
                             }
                             biomeConfig.SetProperty(property, kvp.Value.Item1.Text, false, false);
 
-                            if (biomeDefaultConfig == null || kvp.Value.Item1.Text != biomeDefaultConfig.GetPropertyValueAsString(property))
+                            if (biomeDefaultConfig == null || ColorTranslator.FromHtml(kvp.Value.Item1.Text).ToArgb() != ColorTranslator.FromHtml(biomeDefaultConfig.GetPropertyValueAsString(property)).ToArgb())
                             {
                                 kvp.Value.Item2.Checked = true;
                             } else {
                                 kvp.Value.Item2.Checked = false;
                             }
-                            IgnorePropertyInputChangedBiome = false;
-                            IgnoreOverrideCheckChangedBiome = false;
                         }
+                        this.panel3.Focus();
                     }
                     else if (sender is TextBox)
                     {
@@ -2360,7 +2935,7 @@ namespace TCEE
                         TCProperty property = kvp.Key;
                         try
                         {
-                            if (kvp.Value.Item1.Text.Length == 8 || (kvp.Value.Item1.Text.Length == 7 && kvp.Value.Item1.Text.StartsWith("#")))
+                            if ((kvp.Value.Item1.Text.StartsWith("0x") && kvp.Value.Item1.Text.Length == 8) || (kvp.Value.Item1.Text.StartsWith("#") && kvp.Value.Item1.Text.Length == 7))
                             {
                                 Session.BiomeSettingsInputs[property].Item5.BackColor = System.Drawing.ColorTranslator.FromHtml(kvp.Value.Item1.Text);
                                 if (Session.SettingsType.ColorType == "0x")
@@ -2373,13 +2948,12 @@ namespace TCEE
                                 }
                                 biomeConfig.SetProperty(property, kvp.Value.Item1.Text, false, false);
 
-                                if (biomeDefaultConfig == null || kvp.Value.Item1.Text != biomeDefaultConfig.GetPropertyValueAsString(property))
+                                if (biomeDefaultConfig == null || ColorTranslator.FromHtml(kvp.Value.Item1.Text).ToArgb() != ColorTranslator.FromHtml(biomeDefaultConfig.GetPropertyValueAsString(property)).ToArgb())
                                 {
                                     kvp.Value.Item2.Checked = true;
                                 } else {
                                     kvp.Value.Item2.Checked = false;
                                 }
-                                string breakpoint = "";
                             } else {
                                 Session.BiomeSettingsInputs[property].Item5.BackColor = Color.White;
                                 kvp.Value.Item2.Checked = false;
@@ -2414,14 +2988,53 @@ namespace TCEE
                     }
 
                     float result;
+                    int result2;
                     if (
                         property.PropertyType == "String" ||
+                        property.PropertyType == "BigString" ||
                         property.PropertyType == "Bool" ||
-                        (property.PropertyType == "Float" && float.TryParse(tb.Text, out result))
+                        (
+                            (
+                                property.PropertyType == "Float" &&
+                                (
+                                    String.IsNullOrEmpty(tb.Text) ||
+                                    float.TryParse(tb.Text, out result)
+                                )
+                            ) ||
+                            (
+                                property.PropertyType == "Int" &&
+                                (
+                                    String.IsNullOrEmpty(tb.Text) ||
+                                    int.TryParse(tb.Text, out result2)
+                                )
+                            )
+                        )
                     )
                     {
                         biomeConfig.SetProperty(property, tb.Text, kvp.Value.Item6 != null && ((RadioButton)kvp.Value.Item6.Controls.Find("Merge", true)[0]).Checked, kvp.Value.Item6 != null && ((RadioButton)kvp.Value.Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                        if (!(property.PropertyType == "Bool" && String.IsNullOrEmpty(tb.Text)) && (biomeDefaultConfig == null || (property.PropertyType != "Bool" && tb.Text != biomeDefaultConfig.GetPropertyValueAsString(property)) || (property.PropertyType == "Bool" && !String.IsNullOrEmpty(tb.Text) && tb.Text != biomeDefaultConfig.GetPropertyValueAsString(property))))
+                        if (
+                            !(
+                                property.PropertyType == "Bool" && 
+                                String.IsNullOrEmpty(tb.Text)
+                            ) && 
+                            (
+                                (
+                                    biomeDefaultConfig == null &&
+                                    !String.IsNullOrEmpty(tb.Text)
+                                ) || 
+                                (
+                                    biomeDefaultConfig != null &&
+                                    property.PropertyType != "Bool" && 
+                                    tb.Text != biomeDefaultConfig.GetPropertyValueAsString(property)
+                                ) || 
+                                (
+                                    biomeDefaultConfig != null &&
+                                    property.PropertyType == "Bool" && 
+                                    !String.IsNullOrEmpty(tb.Text) && 
+                                    tb.Text != biomeDefaultConfig.GetPropertyValueAsString(property)
+                                )
+                            )
+                        )
                         {
                             cb.Checked = true;
                         } else {
@@ -2430,6 +3043,16 @@ namespace TCEE
                                 IgnoreOverrideCheckChangedBiome = true;
                                 IgnorePropertyInputChangedBiome = true;
                                 tb.Text = biomeDefaultConfig.GetPropertyValueAsString(property);
+                                if(tb.Text.Equals("true"))
+                                {
+                                    tb.ForeColor = Color.Green;
+                                }
+                                else if (tb.Text.Equals("false"))
+                                {
+                                    tb.ForeColor = Color.Red;
+                                } else {
+                                    tb.ForeColor = Color.Empty;
+                                }
                                 IgnoreOverrideCheckChangedBiome = false;
                                 IgnorePropertyInputChangedBiome = false;
                             }
@@ -2464,7 +3087,7 @@ namespace TCEE
                     IgnorePropertyInputChangedBiome = true;
                     IgnoreOverrideCheckChangedBiome = true;
                     bool bSetToDefaults = false;
-                    if (((TextBox)sender).Text.Length == 8 || (((TextBox)sender).Text.Length == 7 && ((TextBox)sender).Text.StartsWith("#")))
+                    if ((((TextBox)sender).Text.StartsWith("0x") && ((TextBox)sender).Text.Length == 8) || (((TextBox)sender).Text.StartsWith("#") && ((TextBox)sender).Text.Length == 7))
                     {
                         try
                         {
@@ -2480,7 +3103,7 @@ namespace TCEE
                             }
                             Session.BiomeSettingsInputs[property].Item1.Text = value;
                             biomeConfig.SetProperty(property, value, false, false);
-                            if (biomeDefaultConfig == null || value.ToUpper() != biomeDefaultConfig.GetPropertyValueAsString(property).ToUpper())
+                            if (biomeDefaultConfig == null || ColorTranslator.FromHtml(value.ToUpper()).ToArgb() != ColorTranslator.FromHtml(biomeDefaultConfig.GetPropertyValueAsString(property).ToUpper()).ToArgb())
                             {
                                 Session.BiomeSettingsInputs[property].Item2.Checked = true;
                             } else {
@@ -2500,7 +3123,7 @@ namespace TCEE
                         {
                             string defaultValue = biomeDefaultConfig.GetPropertyValueAsString(property);
                             biomeConfig.SetProperty(property, null, false, false);
-                            if (defaultValue != null && (defaultValue.Length == 8 || (defaultValue.Length == 7 && defaultValue.StartsWith("#"))))
+                            if (defaultValue != null && ((defaultValue.StartsWith("0x") && defaultValue.Length == 8) || (defaultValue.StartsWith("#") && defaultValue.Length == 7)))
                             {
                                 try
                                 {
@@ -2536,27 +3159,41 @@ namespace TCEE
                     IgnorePropertyInputChangedBiome = false;
                     IgnoreOverrideCheckChangedBiome = false;
                 }
-                else if (property.PropertyType == "Float")
+                else if (property.PropertyType == "Float" || property.PropertyType == "Int")
                 {
                     float result = 0;
-                    if (!float.TryParse(((TextBox)sender).Text, out result))
+                    int result2 = 0;
+                    if (
+                        (
+                            property.PropertyType == "Float" &&
+                            !float.TryParse(((TextBox)sender).Text, out result)
+                        ) ||
+                        (
+                            property.PropertyType == "Int" &&
+                            !int.TryParse(((TextBox)sender).Text, out result2)
+                        )
+                    )
                     {
                         if (biomeDefaultConfig != null)
                         {
-                            ((TextBox)sender).Text = biomeDefaultConfig.GetPropertyValueAsString(property);
+                            string newText = biomeDefaultConfig.GetPropertyValueAsString(property);
+                            int numberOfDecimals = property.PropertyType == "Int" ? 0 : newText.IndexOf(".") > 0 ? newText.Length - (newText.IndexOf(".") + 1) : 0;
+                            ((NumericUpDownExt)sender).DecimalPlaces = numberOfDecimals;
+
+                            ((TextBox)sender).Text = newText;
                         } else {
                             ((TextBox)sender).Text = "";
                         }
                         Session.BiomeSettingsInputs[property].Item2.Checked = false;
                     }
                 }
-                else if (String.IsNullOrWhiteSpace(((TextBox)sender).Text) && property.PropertyType != "String")
+                else if (String.IsNullOrWhiteSpace(((Control)sender).Text) && property.PropertyType != "String" && property.PropertyType != "BigString")
                 {
                     if (biomeDefaultConfig != null)
                     {
-                        ((TextBox)sender).Text = biomeDefaultConfig.GetPropertyValueAsString(property);
+                        ((Control)sender).Text = biomeDefaultConfig.GetPropertyValueAsString(property);
                     } else {
-                        ((TextBox)sender).Text = "";
+                        ((Control)sender).Text = "";
                     }
                     Session.BiomeSettingsInputs[property].Item2.Checked = false;
                 }
@@ -2584,21 +3221,44 @@ namespace TCEE
                         CheckBox cb = kvp.Value.Item2;
 
                         float result;
+                        int result2;
                         if (
                             property.PropertyType == "String" ||
+                            property.PropertyType == "BigString" ||
                             (property.PropertyType == "Bool" && !String.IsNullOrEmpty(tb.Text)) ||
-                            (property.PropertyType == "Float" && float.TryParse(tb.Text, out result))
+                            (property.PropertyType == "Float" && float.TryParse(tb.Text, out result)) ||
+                            (property.PropertyType == "Int" && int.TryParse(tb.Text, out result2))
                         )
                         {
                             biomeConfig.SetProperty(property, tb.Text, kvp.Value.Item6 != null && ((RadioButton)kvp.Value.Item6.Controls.Find("Merge", true)[0]).Checked, kvp.Value.Item6 != null && ((CheckBox)kvp.Value.Item6.Controls.Find("OverrideParent", true)[0]).Checked);
                         }
-                        else if (property.PropertyType == "Float" || property.PropertyType == "Bool")
+                        else if (property.PropertyType == "Float" || property.PropertyType == "Int" || property.PropertyType == "Bool")
                         {
                             IgnoreOverrideCheckChangedBiome = true;
                             IgnorePropertyInputChangedBiome = true;
                             if (biomeDefaultConfig != null && biomeDefaultConfig.GetPropertyValueAsString(property) != null)
                             {
-                                tb.Text = biomeDefaultConfig.GetPropertyValueAsString(property);
+                                string newText = biomeDefaultConfig.GetPropertyValueAsString(property);
+                                if (property.PropertyType == "Float" || property.PropertyType == "Int")
+                                {                                    
+                                    int numberOfDecimals = property.PropertyType == "Int" ? 0 : newText.IndexOf(".") > 0 ? newText.Length - (newText.IndexOf(".") + 1) : 0;
+                                    ((NumericUpDownExt)tb).DecimalPlaces = numberOfDecimals;
+                                }
+
+                                tb.Text = newText;
+                                if (property.PropertyType == "Bool")
+                                {
+                                    if (tb.Text.Equals("true"))
+                                    {
+                                        tb.ForeColor = Color.Green;
+                                    }
+                                    else if (tb.Text.Equals("false"))
+                                    {
+                                        tb.ForeColor = Color.Red;
+                                    } else {
+                                        tb.ForeColor = Color.Empty;
+                                    }
+                                }
                             } else {
                                 tb.Text = "";
                             }
@@ -2611,27 +3271,9 @@ namespace TCEE
                         {
                             try
                             {
-                                if (kvp.Value.Item1.Text.Length == 8 || (kvp.Value.Item1.Text.Length == 7 && kvp.Value.Item1.Text.StartsWith("#")))
+                                if ((kvp.Value.Item1.Text.StartsWith("0x") && kvp.Value.Item1.Text.Length == 8) || (kvp.Value.Item1.Text.StartsWith("#") && kvp.Value.Item1.Text.Length == 7))
                                 {
-                                    if ((Session.SettingsType.ColorType == "0x" && kvp.Value.Item1.Text.StartsWith("0x")) || (Session.SettingsType.ColorType == "#" && kvp.Value.Item1.Text.StartsWith("#")))
-                                    {
-                                        biomeConfig.SetProperty(property, kvp.Value.Item1.Text, kvp.Value.Item6 != null && ((RadioButton)kvp.Value.Item6.Controls.Find("Merge", true)[0]).Checked, kvp.Value.Item6 != null && ((CheckBox)kvp.Value.Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                                    } else {
-                                        IgnoreOverrideCheckChangedBiome = true;
-                                        IgnorePropertyInputChangedBiome = true;
-                                        if (biomeDefaultConfig != null && !String.IsNullOrEmpty(biomeDefaultConfig.GetPropertyValueAsString(property)))
-                                        {
-                                            tb.Text = biomeDefaultConfig.GetPropertyValueAsString(property);
-                                            Session.BiomeSettingsInputs[property].Item5.BackColor = System.Drawing.ColorTranslator.FromHtml(biomeDefaultConfig.GetPropertyValueAsString(property));
-                                        } else {
-                                            tb.Text = "";
-                                            Session.BiomeSettingsInputs[property].Item5.BackColor = Color.White;
-                                        }
-                                        cb.Checked = false;
-                                        biomeConfig.SetProperty(property, null, false, false);
-                                        IgnoreOverrideCheckChangedBiome = false;
-                                        IgnorePropertyInputChangedBiome = false;
-                                    }
+                                    biomeConfig.SetProperty(property, kvp.Value.Item1.Text, kvp.Value.Item6 != null && ((RadioButton)kvp.Value.Item6.Controls.Find("Merge", true)[0]).Checked, kvp.Value.Item6 != null && ((CheckBox)kvp.Value.Item6.Controls.Find("OverrideParent", true)[0]).Checked);
                                 } else {
                                     IgnoreOverrideCheckChangedBiome = true;
                                     IgnorePropertyInputChangedBiome = true;
@@ -2693,7 +3335,7 @@ namespace TCEE
                 }
             }
 
-            void bSetDefaultsBiomesProperty(object sender, EventArgs e)
+            void bSetDefaultsBiomeProperty(object sender, EventArgs e)
             {
                 KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item3 == sender);
                 Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
@@ -2731,17 +3373,20 @@ namespace TCEE
                         case "Bool":
                             if (propertyValue.ToLower() == "true")
                             {
-                                ((ComboBox)kvp.Value.Item1).SelectedIndex = 1;
+                                ((Button)kvp.Value.Item1).Text = "true";
+                                ((Button)kvp.Value.Item1).ForeColor = Color.Green;
                             }
                             else if (propertyValue.ToLower() == "false")
                             {
-                                ((ComboBox)kvp.Value.Item1).SelectedIndex = 2;
+                                ((Button)kvp.Value.Item1).Text = "false";
+                                ((Button)kvp.Value.Item1).ForeColor = Color.Red;
                             } else {
-                                ((ComboBox)kvp.Value.Item1).SelectedIndex = 0;
+                                ((Button)kvp.Value.Item1).Text = "";
+                                ((Button)kvp.Value.Item1).ForeColor = Color.Empty;
                             }
                             break;
                         case "Color":
-                            if ((propertyValue != null && propertyValue.Length == 8) || (propertyValue != null && propertyValue.Length == 7 && propertyValue.StartsWith("#")))
+                            if (propertyValue != null && ((propertyValue.StartsWith("0x") && propertyValue.Length == 8) || (propertyValue.StartsWith("#") && propertyValue.Length == 7)))
                             {
                                 try
                                 {
@@ -2769,9 +3414,14 @@ namespace TCEE
                             }
                         break;
                         case "Float":
-                            kvp.Value.Item1.Text = propertyValue;
+                        case "Int":
+                            string newText = propertyValue;
+                            int numberOfDecimals = kvp.Key.PropertyType == "Int" ? 0 : newText.IndexOf(".") > 0 ? newText.Length - (newText.IndexOf(".") + 1) : 0;
+                            ((NumericUpDownExt)kvp.Value.Item1).DecimalPlaces = numberOfDecimals;
+                            kvp.Value.Item1.Text = newText;
                         break;
                         case "String":
+                        case "BigString":
                             kvp.Value.Item1.Text = propertyValue;
                         break;
                         case "ResourceQueue":
@@ -2803,16 +3453,19 @@ namespace TCEE
                             ((ListBox)kvp.Value.Item1).SelectedIndex = -1;
                             break;
                         case "Bool":
-                            ((ComboBox)kvp.Value.Item1).SelectedIndex = 0;
+                            ((Button)kvp.Value.Item1).Text = "";
+                            ((Button)kvp.Value.Item1).ForeColor = Color.Empty;
                             break;
                         case "Color":
                             kvp.Value.Item5.BackColor = Color.White;
                             kvp.Value.Item1.Text = "";
                             break;
                         case "Float":
+                        case "Int":
                             kvp.Value.Item1.Text = "";
                             break;
                         case "String":
+                        case "BigString":
                             kvp.Value.Item1.Text = "";
                             break;
                         case "ResourceQueue":
@@ -2825,6 +3478,8 @@ namespace TCEE
                     }
                     kvp.Value.Item2.Checked = false;
                 }
+
+                this.panel3.Focus();
             }
 
             void btAddResourceQueueItem_Click(object sender, EventArgs e)
@@ -3016,7 +3671,7 @@ namespace TCEE
                             {
                                 sPropertyNames += a + "\r\n";
                             }
-                            PopUpForm.CustomMessageBox("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
+                            PopUpForm.CustomMessageBox("Cannot add item. Setting name was not recognized. Legal setting names are: \r\n" + sPropertyNames, "Error: Illegal input");
                         }
                     }
                 } else {
@@ -3026,7 +3681,7 @@ namespace TCEE
                     }
                     else if (selectedOption == null)
                     {
-                        PopUpForm.CustomMessageBox("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
+                        PopUpForm.CustomMessageBox("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is SettingName(Parameters)", "Error: Illegal input");
                     }
                 }
                 if(bAllowed)
@@ -3101,76 +3756,54 @@ namespace TCEE
 
                 TCProperty property = ResourceQueueInputs[sender];
                 ListBox lb = ((ListBox)Session.BiomeSettingsInputs[property].Item1);
-                string originalPropertyValue = (string)lb.SelectedItem.ToString();
-                string propertyValue = (string)lb.SelectedItem.ToString();
-
-                if (PopUpForm.InputBox("Edit item", "", ref propertyValue, true) == DialogResult.OK && !propertyValue.Equals(originalPropertyValue))
+                if (lb.SelectedItem != null)
                 {
-                    if (propertyValue != null && !String.IsNullOrEmpty(propertyValue.Trim()))
+                    string originalPropertyValue = (string)lb.SelectedItem.ToString();
+                    string propertyValue = (string)lb.SelectedItem.ToString();
+
+                    if (PopUpForm.InputBox("Edit item", "", ref propertyValue, true) == DialogResult.OK && !propertyValue.Equals(originalPropertyValue))
                     {
-                        List<string> newPropertyValue = new List<string>();
-                        bool bFound1 = false;
-                        foreach (string item in lb.Items)
+                        if (propertyValue != null && !String.IsNullOrEmpty(propertyValue.Trim()))
                         {
-                            if (!item.Equals(originalPropertyValue) || bFound1)
+                            List<string> newPropertyValue = new List<string>();
+                            bool bFound1 = false;
+                            foreach (string item in lb.Items)
                             {
-                                newPropertyValue.Add(item.Trim());
-                            } else {
-                                bFound1 = true;
-                            }
-                        }
-
-                        bool bAllowed = false;
-                        bool bOverrideExisting = false;
-                        ResourceQueueItem selectedOption = null;
-                        foreach (ResourceQueueItem option in Session.VersionConfig.ResourceQueueOptions)
-                        {
-                            if (propertyValue.StartsWith(option.Name))
-                            {
-                                selectedOption = option;
-                                break;
-                            }
-                        }
-
-                        if (newPropertyValue != null && selectedOption != null)
-                        {
-                            DialogResult permissionGiven = DialogResult.Abort;
-                            bool bFound = false;
-                            if ((!selectedOption.HasUniqueParameter && newPropertyValue.Any(a => a.StartsWith(selectedOption.Name)) || (selectedOption.HasUniqueParameter && newPropertyValue.Any(a => (string)a == (string)propertyValue))))
-                            {
-                                if (selectedOption.HasUniqueParameter && !newPropertyValue.Any(a => (string)a == (string)propertyValue))
+                                if (!item.Equals(originalPropertyValue) || bFound1)
                                 {
-                                    if (addingMultipleResourcesXToAll == DialogResult.Abort)
-                                    {
-                                        string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                        //addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
-                                        addingMultipleResourcesXToAll = System.Windows.Forms.DialogResult.Yes;
-                                    }
-                                    permissionGiven = addingMultipleResourcesXToAll;
-                                    if (permissionGiven == DialogResult.No)
-                                    {
-                                        bOverrideExisting = true;
-                                    }
-                                    if (permissionGiven == DialogResult.Cancel)
-                                    {
-                                        return;
-                                    }
+                                    newPropertyValue.Add(item.Trim());
                                 } else {
-                                    if (newPropertyValue.Any(a => (string)a == (string)propertyValue))
+                                    bFound1 = true;
+                                }
+                            }
+
+                            bool bAllowed = false;
+                            bool bOverrideExisting = false;
+                            ResourceQueueItem selectedOption = null;
+                            foreach (ResourceQueueItem option in Session.VersionConfig.ResourceQueueOptions)
+                            {
+                                if (propertyValue.StartsWith(option.Name))
+                                {
+                                    selectedOption = option;
+                                    break;
+                                }
+                            }
+
+                            if (newPropertyValue != null && selectedOption != null)
+                            {
+                                DialogResult permissionGiven = DialogResult.Abort;
+                                bool bFound = false;
+                                if ((!selectedOption.HasUniqueParameter && newPropertyValue.Any(a => a.StartsWith(selectedOption.Name)) || (selectedOption.HasUniqueParameter && newPropertyValue.Any(a => (string)a == (string)propertyValue))))
+                                {
+                                    if (selectedOption.HasUniqueParameter && !newPropertyValue.Any(a => (string)a == (string)propertyValue))
                                     {
-                                        if (addingMultipleResourcesXToAll2 == DialogResult.Abort)
+                                        if (addingMultipleResourcesXToAll == DialogResult.Abort)
                                         {
-                                            //addingMultipleResourcesXToAll2 = PopUpForm.CustomYesNoBox("Add exact duplicate?", "Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Yes", "No");
-                                            addingMultipleResourcesXToAll2 = System.Windows.Forms.DialogResult.Yes;
+                                            string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                            //addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                            addingMultipleResourcesXToAll = System.Windows.Forms.DialogResult.Yes;
                                         }
-                                        permissionGiven = addingMultipleResourcesXToAll2;
-                                    } else {
-                                        if (addingMultipleResourcesXToAll3 == DialogResult.Abort)
-                                        {
-                                            //addingMultipleResourcesXToAll3 = PopUpForm.CustomYesNoBox("Keep same resource with different parameters?", "One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
-                                            addingMultipleResourcesXToAll3 = System.Windows.Forms.DialogResult.Yes;
-                                        }
-                                        permissionGiven = addingMultipleResourcesXToAll3;
+                                        permissionGiven = addingMultipleResourcesXToAll;
                                         if (permissionGiven == DialogResult.No)
                                         {
                                             bOverrideExisting = true;
@@ -3179,116 +3812,141 @@ namespace TCEE
                                         {
                                             return;
                                         }
-                                    }
-                                }
-                                if (permissionGiven == DialogResult.Yes)
-                                {
-                                    bAllowed = true;
-                                }
-                                bFound = true;
-                            }
-                            if (!bFound || bOverrideExisting)
-                            {
-                                if (propertyValue.Contains('(') && propertyValue.Contains(')'))
-                                {
-                                    if (selectedOption.IsUnique)
-                                    {
-                                        List<string> possibleDuplicates = new List<string>();
-                                        foreach (string value2 in newPropertyValue)
+                                    } else {
+                                        if (newPropertyValue.Any(a => (string)a == (string)propertyValue))
                                         {
-                                            if (value2.StartsWith(selectedOption.Name))
+                                            if (addingMultipleResourcesXToAll2 == DialogResult.Abort)
                                             {
-                                                if (!selectedOption.HasUniqueParameter && bOverrideExisting) // Is duplicate tag, but not necessarily same params
-                                                {
-                                                    //Delete old add new
-                                                    DeleteResourceQueueItem(property, value2);
-                                                } else {
-                                                    possibleDuplicates.Add(value2);
-                                                }
+                                                //addingMultipleResourcesXToAll2 = PopUpForm.CustomYesNoBox("Add exact duplicate?", "Resource \"" + propertyValue + "\" already exists, do you still want to add it?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Yes", "No");
+                                                addingMultipleResourcesXToAll2 = System.Windows.Forms.DialogResult.Yes;
+                                            }
+                                            permissionGiven = addingMultipleResourcesXToAll2;
+                                        } else {
+                                            if (addingMultipleResourcesXToAll3 == DialogResult.Abort)
+                                            {
+                                                //addingMultipleResourcesXToAll3 = PopUpForm.CustomYesNoBox("Keep same resource with different parameters?", "One or more \"" + selectedOption.Name + "\" resources already exist but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                                addingMultipleResourcesXToAll3 = System.Windows.Forms.DialogResult.Yes;
+                                            }
+                                            permissionGiven = addingMultipleResourcesXToAll3;
+                                            if (permissionGiven == DialogResult.No)
+                                            {
+                                                bOverrideExisting = true;
+                                            }
+                                            if (permissionGiven == DialogResult.Cancel)
+                                            {
+                                                return;
                                             }
                                         }
-                                        if (possibleDuplicates.Any())
+                                    }
+                                    if (permissionGiven == DialogResult.Yes)
+                                    {
+                                        bAllowed = true;
+                                    }
+                                    bFound = true;
+                                }
+                                if (!bFound || bOverrideExisting)
+                                {
+                                    if (propertyValue.Contains('(') && propertyValue.Contains(')'))
+                                    {
+                                        if (selectedOption.IsUnique)
                                         {
-                                            string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                            foreach (string existingValue in possibleDuplicates)
+                                            List<string> possibleDuplicates = new List<string>();
+                                            foreach (string value2 in newPropertyValue)
                                             {
-                                                string[] existingParameters = existingValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
-                                                if (existingParameters.Length > selectedOption.UniqueParameterIndex && newParameters.Length > selectedOption.UniqueParameterIndex)
+                                                if (value2.StartsWith(selectedOption.Name))
                                                 {
-                                                    bool bFound4 = false;
-                                                    if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
+                                                    if (!selectedOption.HasUniqueParameter && bOverrideExisting) // Is duplicate tag, but not necessarily same params
                                                     {
-                                                        if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(newParameters[selectedOption.UniqueParameterIndex].ToLower().Trim())))
+                                                        //Delete old add new
+                                                        DeleteResourceQueueItem(property, value2);
+                                                    } else {
+                                                        possibleDuplicates.Add(value2);
+                                                    }
+                                                }
+                                            }
+                                            if (possibleDuplicates.Any())
+                                            {
+                                                string[] newParameters = propertyValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                                foreach (string existingValue in possibleDuplicates)
+                                                {
+                                                    string[] existingParameters = existingValue.Replace(selectedOption.Name, "").Replace(")", "").Replace("\r", "").Replace("\n", "").Split(',');
+                                                    if (existingParameters.Length > selectedOption.UniqueParameterIndex && newParameters.Length > selectedOption.UniqueParameterIndex)
+                                                    {
+                                                        bool bFound4 = false;
+                                                        if (selectedOption.UniqueParameterValues != null && selectedOption.UniqueParameterValues.Count > 0)
                                                         {
+                                                            if (selectedOption.UniqueParameterValues.Any(a => a.ToLower().Trim().Equals(newParameters[selectedOption.UniqueParameterIndex].ToLower().Trim())))
+                                                            {
+                                                                if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
+                                                                {
+                                                                    bFound4 = true;
+                                                                }
+                                                            }
+                                                        } else {
                                                             if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
                                                             {
                                                                 bFound4 = true;
                                                             }
                                                         }
-                                                    } else {
-                                                        if (existingParameters[selectedOption.UniqueParameterIndex].Trim() == newParameters[selectedOption.UniqueParameterIndex].Trim())
+                                                        if (bFound4)
                                                         {
-                                                            bFound4 = true;
-                                                        }
-                                                    }
-                                                    if (bFound4)
-                                                    {
-                                                        //Delete old add new
-                                                        if (permissionGiven == DialogResult.Abort)
-                                                        {
-                                                            if (addingMultipleResourcesXToAll == DialogResult.Abort)
+                                                            //Delete old add new
+                                                            if (permissionGiven == DialogResult.Abort)
                                                             {
-                                                                addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                                                if (addingMultipleResourcesXToAll == DialogResult.Abort)
+                                                                {
+                                                                    addingMultipleResourcesXToAll = PopUpForm.CustomYesNoBox("Keep existing items?", "One ore more resources with parameter \"" + newParameters[selectedOption.UniqueParameterIndex].Trim() + "\" already exists but with different parameters, do you want to keep existing resources or override them?" + (copyPasting ? "\r\n\r\nThis action will be applied to all items currently being pasted." : ""), "Keep", "Override");
+                                                                }
+                                                                permissionGiven = addingMultipleResourcesXToAll;
                                                             }
-                                                            permissionGiven = addingMultipleResourcesXToAll;
-                                                        }
-                                                        if (permissionGiven == DialogResult.No)
-                                                        {
-                                                            DeleteResourceQueueItem(property, existingValue);
-                                                        }
-                                                        if (permissionGiven == DialogResult.Cancel)
-                                                        {
-                                                            return;
+                                                            if (permissionGiven == DialogResult.No)
+                                                            {
+                                                                DeleteResourceQueueItem(property, existingValue);
+                                                            }
+                                                            if (permissionGiven == DialogResult.Cancel)
+                                                            {
+                                                                return;
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
-                                            if (newParameters.Length > selectedOption.UniqueParameterIndex)
-                                            {
-                                                bAllowed = true;
+                                                if (newParameters.Length > selectedOption.UniqueParameterIndex)
+                                                {
+                                                    bAllowed = true;
+                                                } else {
+                                                    PopUpForm.CustomMessageBox("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
+                                                }
                                             } else {
-                                                PopUpForm.CustomMessageBox("Cannot add item. Illegal format, could not find parameter " + selectedOption.UniqueParameterIndex + ".", "Error: Illegal input");
+                                                bAllowed = true;
                                             }
                                         } else {
                                             bAllowed = true;
                                         }
                                     } else {
-                                        bAllowed = true;
+                                        string[] propertyNames = Session.VersionConfig.ResourceQueueOptions.Select(a => a.Name).ToArray();
+                                        string sPropertyNames = "";
+                                        foreach (string a in propertyNames)
+                                        {
+                                            sPropertyNames += a + "\r\n";
+                                        }
+                                        PopUpForm.CustomMessageBox("Cannot add item. Setting name was not recognized. Legal setting names are: \r\n" + sPropertyNames, "Error: Illegal input");
                                     }
-                                } else {
-                                    string[] propertyNames = Session.VersionConfig.ResourceQueueOptions.Select(a => a.Name).ToArray();
-                                    string sPropertyNames = "";
-                                    foreach (string a in propertyNames)
-                                    {
-                                        sPropertyNames += a + "\r\n";
-                                    }
-                                    PopUpForm.CustomMessageBox("Cannot add item. property name was not recognized. Legal property names are: \r\n" + sPropertyNames, "Error: Illegal input");
+                                }
+                            } else {
+                                if(newPropertyValue == null)
+                                {
+                                    bAllowed = true;
+                                }
+                                else if(selectedOption == null)
+                                {
+                                    PopUpForm.CustomMessageBox("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is SettingName(Parameters)", "Error: Illegal input");
                                 }
                             }
-                        } else {
-                            if(newPropertyValue == null)
+                            if(bAllowed)
                             {
-                                bAllowed = true;
+                                DeleteResourceQueueItem(property, originalPropertyValue);
+                                AddResourceToBiome(property, propertyValue);
                             }
-                            else if(selectedOption == null)
-                            {
-                                PopUpForm.CustomMessageBox("Cannot add item. Illegal format, opening and/or closing brace could not be found. Correct format is PropertyName(Parameters)", "Error: Illegal input");
-                            }
-                        }
-                        if(bAllowed)
-                        {
-                            DeleteResourceQueueItem(property, originalPropertyValue);
-                            AddResourceToBiome(property, propertyValue);
                         }
                     }
                 }
@@ -3377,203 +4035,16 @@ namespace TCEE
                 IgnoreOverrideCheckChangedBiome = false;
             }
 
-            private void btBiomeSettingsResetToDefaults_Click(object sender, EventArgs e)
-            {
-                Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
-                if (BiomeConfigsDefaultValues.Count > 0 && g.showDefaults)
-                {
-                    BiomeConfig biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
-                    if (biomeDefaultConfig != null)
-                    {
-                        foreach (TCProperty property in Session.VersionConfig.BiomeConfig)
-                        {
-                            Tuple<Control, CheckBox, Button, Label, ListBox, Panel> boxes = Session.BiomeSettingsInputs[property];
-                            IgnorePropertyInputChangedBiome = true;
-                            IgnoreOverrideCheckChangedBiome = true;
-
-                            string propertyValue = biomeDefaultConfig.GetPropertyValueAsString(property);
-                            switch (property.PropertyType)
-                            {
-                                case "BiomesList":
-                                    ((ListBox)Session.BiomeSettingsInputs[property].Item1).SelectedItems.Clear();
-                                    string[] biomeNames = propertyValue.Split(',');
-                                    for (int k = 0; k < biomeNames.Length; k++)
-                                    {
-                                        if (Session.BiomeNames.Any(a => (string)a.Trim() == (string)biomeNames[k].Trim()))
-                                        {
-                                            for (int l = 0; l < ((ListBox)Session.BiomeSettingsInputs[property].Item1).Items.Count; l++)
-                                            {
-                                                if (((string)((ListBox)Session.BiomeSettingsInputs[property].Item1).Items[l]).Trim() == (string)biomeNames[k].Trim())
-                                                {
-                                                    ((ListBox)Session.BiomeSettingsInputs[property].Item1).SelectedItems.Add(((ListBox)Session.BiomeSettingsInputs[property].Item1).Items[l]);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    break;
-                                case "Bool":
-                                    if (propertyValue != null && propertyValue.ToLower() == "true")
-                                    {
-                                        ((ComboBox)boxes.Item1).SelectedIndex = 1;
-                                    }
-                                    else if (propertyValue != null && propertyValue.ToLower() == "false")
-                                    {
-                                        ((ComboBox)boxes.Item1).SelectedIndex = 2;
-                                    } else {
-                                        ((ComboBox)boxes.Item1).SelectedIndex = 0;
-                                    }
-                                    break;
-                                case "Color":
-                                    if ((propertyValue != null && propertyValue.Length == 8) || (propertyValue != null && propertyValue.Length == 7 && propertyValue.StartsWith("#")))
-                                    {
-                                        boxes.Item5.BackColor = System.Drawing.ColorTranslator.FromHtml(propertyValue);
-                                        string value = "";
-                                        if (Session.SettingsType.ColorType == "0x")
-                                        {
-                                            value = "0x" + boxes.Item5.BackColor.R.ToString("X2") + boxes.Item5.BackColor.G.ToString("X2") + boxes.Item5.BackColor.B.ToString("X2");
-                                        }
-                                        else if (Session.SettingsType.ColorType == "#")
-                                        {
-                                            value = "#" + boxes.Item5.BackColor.R.ToString("X2") + boxes.Item5.BackColor.G.ToString("X2") + boxes.Item5.BackColor.B.ToString("X2");
-                                        }
-                                        boxes.Item1.Text = value;
-                                    } else {
-                                        boxes.Item5.BackColor = Color.White;
-                                        boxes.Item1.Text = "";
-                                    }
-                                    break;
-                                case "Float":
-                                    boxes.Item1.Text = biomeDefaultConfig.GetPropertyValueAsString(property);
-                                    break;
-                                case "String":
-                                    boxes.Item1.Text = biomeDefaultConfig.GetPropertyValueAsString(property);
-                                    break;
-                                case "ResourceQueue":
-                                    ((ListBox)boxes.Item1).Items.Clear();
-                                    ((ListBox)boxes.Item1).SelectedIndex = -1;
-                                    ((RadioButton)boxes.Item6.Controls.Find("Merge", true)[0]).Checked = false;
-                                    ((RadioButton)boxes.Item6.Controls.Find("Override", true)[0]).Checked = true;
-                                    ((CheckBox)boxes.Item6.Controls.Find("OverrideParent", true)[0]).Checked = false;
-                                    g.BiomeConfig.SetProperty(property, null, false, false);
-                                    if(propertyValue != null)
-                                    {
-                                        string[] resourceQueueItemNames = propertyValue.Replace("\r", "").Split('\n');
-                                        foreach (string resourceQueueItemName in resourceQueueItemNames)
-                                        {
-                                            if (!String.IsNullOrEmpty(resourceQueueItemName))
-                                            {
-                                                ((ListBox)boxes.Item1).Items.Add(resourceQueueItemName.Trim());
-                                            }
-                                        }
-                                    }
-                                    break;
-                            }
-                            boxes.Item2.Checked = false;
-
-                            IgnorePropertyInputChangedBiome = false;
-                            IgnoreOverrideCheckChangedBiome = false;
-                            g.BiomeConfig.SetProperty(property, null, false, false);
-                            g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = false;
-                        }
-                    } else {
-                        foreach (TCProperty property in Session.VersionConfig.BiomeConfig)
-                        {
-                            Tuple<Control, CheckBox, Button, Label, ListBox, Panel> boxes = Session.BiomeSettingsInputs[property];
-                            IgnorePropertyInputChangedBiome = true;
-                            IgnoreOverrideCheckChangedBiome = true;
-
-                            switch (property.PropertyType)
-                            {
-                                case "BiomesList":
-                                    ((ListBox)boxes.Item1).SelectedIndices.Clear();
-                                    ((ListBox)boxes.Item1).SelectedIndex = -1;
-                                    ((RadioButton)boxes.Item6.Controls.Find("Merge", true)[0]).Checked = false;
-                                    ((RadioButton)boxes.Item6.Controls.Find("Override", true)[0]).Checked = true;
-                                    ((CheckBox)boxes.Item6.Controls.Find("OverrideParent", true)[0]).Checked = false;
-                                    break;
-                                case "Bool":
-                                    ((ComboBox)boxes.Item1).SelectedIndex = 0;
-                                    break;
-                                case "Color":
-                                    boxes.Item5.BackColor = Color.White;
-                                    boxes.Item1.Text = "";
-                                    break;
-                                case "Float":
-                                    boxes.Item1.Text = "";
-                                    break;
-                                case "String":
-                                    boxes.Item1.Text = "";
-                                    break;
-                                case "ResourceQueue":
-                                    ((ListBox)boxes.Item1).Items.Clear();
-                                    ((ListBox)boxes.Item1).SelectedIndex = -1;
-                                    ((RadioButton)boxes.Item6.Controls.Find("Merge", true)[0]).Checked = false;
-                                    ((RadioButton)boxes.Item6.Controls.Find("Override", true)[0]).Checked = true;
-                                    ((CheckBox)boxes.Item6.Controls.Find("OverrideParent", true)[0]).Checked = false;
-                                    g.BiomeConfig.SetProperty(property, null, false, false);
-                                    break;
-                            }
-                            boxes.Item2.Checked = false;
-
-                            IgnorePropertyInputChangedBiome = false;
-                            IgnoreOverrideCheckChangedBiome = false;
-                            g.BiomeConfig.SetProperty(property, null, false, false);
-                            g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = false;
-                        }
-                    }
-                } else {
-                    foreach (TCProperty property in Session.VersionConfig.BiomeConfig)
-                    {
-                        Tuple<Control, CheckBox, Button, Label, ListBox, Panel> boxes = Session.BiomeSettingsInputs[property];
-                        IgnorePropertyInputChangedBiome = true;
-                        IgnoreOverrideCheckChangedBiome = true;
-
-                        switch (property.PropertyType)
-                        {
-                            case "BiomesList":
-                                ((ListBox)boxes.Item1).SelectedIndices.Clear();
-                                ((ListBox)boxes.Item1).SelectedIndex = -1;
-                                ((RadioButton)boxes.Item6.Controls.Find("Merge", true)[0]).Checked = false;
-                                ((RadioButton)boxes.Item6.Controls.Find("Override", true)[0]).Checked = true;
-                                ((CheckBox)boxes.Item6.Controls.Find("OverrideParent", true)[0]).Checked = false;
-                                break;
-                            case "Bool":
-                                ((ComboBox)boxes.Item1).SelectedIndex = 0;
-                                break;
-                            case "Color":
-                                boxes.Item5.BackColor = Color.White;
-                                boxes.Item1.Text = "";
-                                break;
-                            case "Float":
-                                boxes.Item1.Text = "";
-                                break;
-                            case "String":
-                                boxes.Item1.Text = "";
-                                break;
-                            case "ResourceQueue":
-                                ((ListBox)boxes.Item1).Items.Clear();
-                                ((ListBox)boxes.Item1).SelectedIndex = -1;
-                                ((RadioButton)boxes.Item6.Controls.Find("Merge", true)[0]).Checked = false;
-                                ((RadioButton)boxes.Item6.Controls.Find("Override", true)[0]).Checked = true;
-                                ((CheckBox)boxes.Item6.Controls.Find("OverrideParent", true)[0]).Checked = false;
-                                break;
-                        }
-                        boxes.Item2.Checked = false;
-
-                        IgnorePropertyInputChangedBiome = false;
-                        IgnoreOverrideCheckChangedBiome = false;
-                        g.BiomeConfig.SetProperty(property, null, false, false);
-                        g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = false;
-                    }
-                }
-            }
-
             private void lbGroups_SelectedIndexChanged(object sender, EventArgs e)
             {
                 if (lbGroups.SelectedIndex > -1)
                 {
-                    tlpBiomeSettings.Visible = true;
-                    btBiomeSettingsResetToDefaults.Visible = true;
+                    tlpBiomeSettings1.Visible = true;
+
+                    panel3.SuspendLayout();
+                    tlpBiomeSettingsContainer.SuspendLayout();
+                    tlpBiomeSettings1.SuspendLayout();
+
                     label3.Visible = true;
 
                     lbGroup.Items.Clear();
@@ -3595,7 +4066,6 @@ namespace TCEE
 
                     if (!g.showDefaults)
                     {
-                        btBiomeSettingsResetToDefaults.Text = "Clear all";
                         foreach (Button bSetDefaults in Session.BiomeSettingsInputs.Select(a => a.Value.Item3))
                         {
                             Session.ToolTip1.SetToolTip(bSetDefaults, "Clear");
@@ -3604,14 +4074,12 @@ namespace TCEE
                     } else {
                         if (biomeConfigDefaultValues != null)
                         {
-                            btBiomeSettingsResetToDefaults.Text = "Set to defaults";
                             foreach (Button bSetDefaults in Session.BiomeSettingsInputs.Select(a => a.Value.Item3))
                             {
                                 Session.ToolTip1.SetToolTip(bSetDefaults, "Set to default");
                                 bSetDefaults.Text = "<";
                             }
                         } else {
-                            btBiomeSettingsResetToDefaults.Text = "Clear all";
                             foreach (Button bSetDefaults in Session.BiomeSettingsInputs.Select(a => a.Value.Item3))
                             {
                                 Session.ToolTip1.SetToolTip(bSetDefaults, "Clear");
@@ -3645,21 +4113,24 @@ namespace TCEE
                                 ((CheckBox)Session.BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked = false;
                             break;
                             case "Bool":
-                            ((ComboBox)Session.BiomeSettingsInputs[property].Item1).SelectedIndex = 0;
+                                ((Button)Session.BiomeSettingsInputs[property].Item1).Text = "";
+                                ((Button)Session.BiomeSettingsInputs[property].Item1).ForeColor = Color.Empty;
                             break;
                             case "Color":
-                            Session.BiomeSettingsInputs[property].Item5.BackColor = Color.White;
-                            Session.BiomeSettingsInputs[property].Item1.Text = "";
+                                Session.BiomeSettingsInputs[property].Item5.BackColor = Color.White;
+                                Session.BiomeSettingsInputs[property].Item1.Text = "";
                             break;
                             case "Float":
-                            Session.BiomeSettingsInputs[property].Item1.Text = "";
+                            case "Int":
+                                Session.BiomeSettingsInputs[property].Item1.Text = "";
                             break;
                             case "String":
-                            Session.BiomeSettingsInputs[property].Item1.Text = "";
+                            case "BigString":
+                                Session.BiomeSettingsInputs[property].Item1.Text = "";
                             break;
                             case "ResourceQueue":
-                            ((ListBox)Session.BiomeSettingsInputs[property].Item1).Items.Clear();
-                            ((ListBox)Session.BiomeSettingsInputs[property].Item1).SelectedIndex = -1;
+                                ((ListBox)Session.BiomeSettingsInputs[property].Item1).Items.Clear();
+                                ((ListBox)Session.BiomeSettingsInputs[property].Item1).SelectedIndex = -1;
                                 if (g.showDefaults)
                                 {
                                     ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Visible = false;
@@ -3724,24 +4195,27 @@ namespace TCEE
                                 case "Bool":
                                     if (propertyValue.ToLower() == "true")
                                     {
-                                        ((ComboBox)boxes.Item1).SelectedIndex = 1;
+                                        ((Button)boxes.Item1).Text = "true";
+                                        ((Button)boxes.Item1).ForeColor = Color.Green;
                                     }
                                     else if (propertyValue.ToLower() == "false")
                                     {
-                                        ((ComboBox)boxes.Item1).SelectedIndex = 2;
+                                        ((Button)boxes.Item1).Text = "false";
+                                        ((Button)boxes.Item1).ForeColor = Color.Red;
                                     } else {
-                                        ((ComboBox)boxes.Item1).SelectedIndex = 0;
+                                        ((Button)boxes.Item1).Text = "";
+                                        ((Button)boxes.Item1).ForeColor = Color.Empty;
                                     }
                                     boxes.Item2.Checked = g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name) != null && g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override;
                                 break;
                                 case "Color":
-                                    if (propertyValue.Length == 8 || (propertyValue.Length == 7 && propertyValue.StartsWith("#")))
+                                    if ((propertyValue.StartsWith("0x") && propertyValue.Length == 8) || (propertyValue.StartsWith("#") && propertyValue.Length == 7))
                                     {
                                         boxes.Item2.Checked = g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name) != null && g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override;
                                         bool bException = false;
                                         try
                                         {
-                                            boxes.Item5.BackColor = System.Drawing.ColorTranslator.FromHtml(propertyValue);
+                                            boxes.Item5.BackColor = ColorTranslator.FromHtml(propertyValue);
                                             string value = "";
                                             if (Session.SettingsType.ColorType == "0x")
                                             {
@@ -3752,7 +4226,7 @@ namespace TCEE
                                                 value = "#" + boxes.Item5.BackColor.R.ToString("X2") + boxes.Item5.BackColor.G.ToString("X2") + boxes.Item5.BackColor.B.ToString("X2");
                                             }
                                             boxes.Item1.Text = value;
-                                            if (biomeConfigDefaultValues == null || boxes.Item2.Checked || value.ToUpper() != biomeConfigDefaultValues.GetPropertyValueAsString(property).ToUpper())
+                                            if (biomeConfigDefaultValues == null || boxes.Item2.Checked || ColorTranslator.FromHtml(value.ToUpper()).ToArgb() != ColorTranslator.FromHtml(biomeConfigDefaultValues.GetPropertyValueAsString(property).ToUpper()).ToArgb())
                                             {
                                                 boxes.Item2.Checked = true;
                                             } else {
@@ -3765,12 +4239,12 @@ namespace TCEE
                                         }
                                         if (bException)
                                         {
-                                            string asss = biomeConfigDefaultValues.GetPropertyValueAsString(property);
-                                            if (asss.Length == 8 || (asss.Length == 7 && asss.StartsWith("#")))
+                                            string propertyString = biomeConfigDefaultValues.GetPropertyValueAsString(property);
+                                            if ((propertyString.StartsWith("0x") && propertyString.Length == 8) || (propertyString.StartsWith("#") && propertyString.Length == 7))
                                             {
                                                 try
                                                 {
-                                                    boxes.Item5.BackColor = System.Drawing.ColorTranslator.FromHtml(asss);
+                                                    boxes.Item5.BackColor = System.Drawing.ColorTranslator.FromHtml(propertyString);
                                                     string value = "";
                                                     if (Session.SettingsType.ColorType == "0x")
                                                     {
@@ -3801,10 +4275,15 @@ namespace TCEE
                                     }
                                 break;
                                 case "Float":
-                                    boxes.Item1.Text = propertyValue;
+                                case "Int":
+                                    string newText = propertyValue;
+                                    int numberOfDecimals = property.PropertyType == "Int" ? 0 : newText.IndexOf(".") > 0 ? newText.Length - (newText.IndexOf(".") + 1) : 0;
+                                    ((NumericUpDownExt)boxes.Item1).DecimalPlaces = numberOfDecimals;
+                                    boxes.Item1.Text = newText;
                                     boxes.Item2.Checked = g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name) != null && g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override;
                                 break;
                                 case "String":
+                                case "BigString":
                                     boxes.Item1.Text = propertyValue;
                                     boxes.Item2.Checked = g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name) != null && g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Override;
                                 break;
@@ -3831,11 +4310,14 @@ namespace TCEE
                         }
                     }
 
+                    panel3.ResumeLayout();
+                    tlpBiomeSettingsContainer.ResumeLayout();
+                    tlpBiomeSettings1.ResumeLayout();
+
                     IgnoreOverrideCheckChangedBiome = false;
                     IgnorePropertyInputChangedBiome = false;
                 } else {
-                    tlpBiomeSettings.Visible = false;
-                    btBiomeSettingsResetToDefaults.Visible = false;
+                    tlpBiomeSettings1.Visible = false;
                     label3.Visible = false;
                 }
             }
@@ -3851,6 +4333,8 @@ namespace TCEE
                     lbGroups.Items[selectedIndex] = b;
                     lbGroups.SelectedIndex = selectedIndex - 1;
                 }
+
+                this.panel3.Focus();
             }
 
             private void btGroupMoveDown_Click(object sender, EventArgs e)
@@ -3864,6 +4348,8 @@ namespace TCEE
                     lbGroups.Items[selectedIndex] = b;
                     lbGroups.SelectedIndex = selectedIndex + 1;
                 }
+
+                this.panel3.Focus();
             }
 
             private void btNewGroup_Click(object sender, EventArgs e)
@@ -3885,13 +4371,15 @@ namespace TCEE
                         PopUpForm.CustomMessageBox("A group with this name already exists", "Error: Illegal input");
                     }
                 }
+
+                this.panel3.Focus();
             }
 
             private void btEditGroup_Click(object sender, EventArgs e)
             {
                 if(lbGroups.SelectedIndex > -1)
                 {
-                    string groupName = "";
+                    string groupName = (string)lbGroups.SelectedItem;
                     if(PopUpForm.InputBox("Rename group", "Enter a name for the group. Only a-z A-Z 0-9 space + - and _ are allowed.", ref groupName) == DialogResult.OK)
                     {
                         if(!string.IsNullOrWhiteSpace(groupName))
@@ -3906,6 +4394,7 @@ namespace TCEE
                         }
                     }
                 }
+                this.panel3.Focus();
             }
 
             private void btDeleteGroup_Click(object sender, EventArgs e)
@@ -3922,6 +4411,7 @@ namespace TCEE
                         lbBiomes.Items.Clear();
                     }
                 }
+                this.panel3.Focus();
             }
 
             private void btCloneGroup_Click(object sender, EventArgs e)
@@ -3964,6 +4454,8 @@ namespace TCEE
                         PopUpForm.CustomMessageBox("Cannot clone a biome group with a single biome (yet, sorry).");
                     }
                 }
+
+                this.panel3.Focus();
             }
 
             private void lbGroup_SelectedIndexChanged(object sender, EventArgs e)
@@ -4002,7 +4494,10 @@ namespace TCEE
                     {
                         lbBiomes.Items.Remove(selectedItem);
                     }
+                    lbGroups_SelectedIndexChanged(null, null);
                 }
+
+                this.panel3.Focus();
             }
 
             private void btRemoveFromGroup_Click(object sender, EventArgs e)
@@ -4032,14 +4527,249 @@ namespace TCEE
                     {
                         lbGroup.Items.Remove(selectedItem);
                     }
+                    lbGroups_SelectedIndexChanged(null, null);
                 } else {
                     if (lbGroup.Items.Count == 1 || lbGroup.SelectedItems.Count >= lbGroup.Items.Count)
                     {
                         PopUpForm.CustomMessageBox("Cannot delete the selected biome(s). A group must contain at least one biome.", "Error: Illegal input");
                     }
                 }
+
+                this.panel3.Focus();
             }
 
+            Control lastBiomeSetting = null;
+            private void tbSearchBiomeConfig_TextChanged(object sender, EventArgs e)
+            {
+                lastBiomeSetting = null;
+
+                bool textIsNullOrEmpty = String.IsNullOrWhiteSpace(this.tbSearchBiomeConfig.Text);
+
+                Control biomeSetting = null;
+
+                foreach (Control ctl in this.tlpBiomeSettings1.Controls)
+                {
+                    if(ctl is Label)
+                    {
+                        if (
+                            !textIsNullOrEmpty &&
+                            ctl.Text.ToLower().Trim().Contains(this.tbSearchBiomeConfig.Text.ToLower().Trim())
+                        )
+                        {
+                            if (biomeSetting == null)
+                            {
+                                biomeSetting = ctl;
+                                ctl.BackColor = Color.DodgerBlue;
+                                ctl.ForeColor = Color.White;
+                            } else {
+                                ctl.BackColor = Color.LightBlue;
+                                ctl.ForeColor = Color.Black;
+                            }
+                        } else {
+                            ctl.BackColor = Color.Empty;
+                            ctl.ForeColor = Color.Black;
+                        }
+                    }
+                }
+
+                if (biomeSetting != null && !textIsNullOrEmpty)
+                {
+                    lastBiomeSetting = biomeSetting;
+                    this.panel3.ScrollControlIntoView(biomeSetting);
+                }
+            }
+
+            void tbSearchBiomeConfig_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+            {           
+                this.panel3.Focus();
+            }
+
+            private void btSearchBiomeConfigPrev_Click(object sender, EventArgs e)
+            {
+                if (lastBiomeSetting != null)
+                {
+                    bool textIsNullOrEmpty = String.IsNullOrWhiteSpace(this.tbSearchBiomeConfig.Text);
+                    Control previousSetting = null;
+                    bool lastBiomeSettingFound = false;
+                    bool newBiomeSettingFound = false;
+
+                    foreach (Control ctl in this.tlpBiomeSettings1.Controls)
+                    {
+                        if (ctl is Label)
+                        {
+                            if (ctl == lastBiomeSetting)
+                            {
+                                lastBiomeSettingFound = true;
+                                if (previousSetting != null)
+                                {
+                                    newBiomeSettingFound = true;
+                                }
+                            } else {
+                                if (ctl.Text.ToLower().Trim().Contains(this.tbSearchBiomeConfig.Text.ToLower().Trim()))
+                                {
+                                    if (!lastBiomeSettingFound || !newBiomeSettingFound)
+                                    {
+                                        previousSetting = ctl;
+                                        previousSetting.BackColor = Color.LightBlue;
+                                        previousSetting.ForeColor = Color.Black;
+                                    }
+                                } else {
+                                    ctl.BackColor = Color.Empty;
+                                    ctl.ForeColor = Color.Black;
+                                }
+                            }
+                        }
+                    }
+
+                    if (previousSetting != null)
+                    {
+                        if (lastBiomeSetting != previousSetting)
+                        {
+                            lastBiomeSetting.BackColor = Color.LightBlue;
+                            lastBiomeSetting.ForeColor = Color.Black;
+
+                            lastBiomeSetting = previousSetting;
+
+                            previousSetting.BackColor = Color.DodgerBlue;
+                            previousSetting.ForeColor = Color.White;
+                        }
+
+                        this.panel3.ScrollControlIntoView(previousSetting);
+                    }
+                }
+
+                this.panel3.Focus();
+            }
+
+            private void btSearchBiomeConfigNext_Click(object sender, EventArgs e)
+            {
+                if (lastBiomeSetting != null)
+                {
+                    bool textIsNullOrEmpty = String.IsNullOrWhiteSpace(this.tbSearchBiomeConfig.Text);
+                    Control biomeSetting = null;
+                    Control firstBiomeSetting = null;
+                    bool lastBiomeSettingFound = false;
+
+                    foreach (Control ctl in this.tlpBiomeSettings1.Controls)
+                    {
+                        if(ctl is Label)
+                        {
+                            if (ctl == lastBiomeSetting)
+                            {
+                                lastBiomeSettingFound = true;
+                            }
+
+                            if (
+                                firstBiomeSetting == null &&
+                                ctl.Text.ToLower().Trim().Contains(this.tbSearchBiomeConfig.Text.ToLower().Trim())
+                            )
+                            {
+                                firstBiomeSetting = ctl;
+                            }
+
+                            if (
+                                !textIsNullOrEmpty &&
+                                ctl != lastBiomeSetting &&
+                                ctl.Text.ToLower().Trim().Contains(this.tbSearchBiomeConfig.Text.ToLower().Trim())
+                            )
+                            {
+                                if (biomeSetting == null && lastBiomeSettingFound)
+                                {
+                                    biomeSetting = ctl;
+                                    ctl.BackColor = Color.DodgerBlue;
+                                    ctl.ForeColor = Color.White;
+                                } else {
+                                    ctl.BackColor = Color.LightBlue;
+                                    ctl.ForeColor = Color.Black;
+                                }
+                            } else {
+                                ctl.BackColor = Color.Empty;
+                                ctl.ForeColor = Color.Black;
+                            }
+                        }
+                    }
+
+                    if (biomeSetting == null)
+                    {
+                        biomeSetting = firstBiomeSetting;
+                        if (biomeSetting != null)
+                        {
+                            biomeSetting.BackColor = Color.DodgerBlue;
+                            biomeSetting.ForeColor = Color.White;
+                        }
+                    }
+
+                    if (biomeSetting != null)
+                    {
+                        if (lastBiomeSetting != biomeSetting)
+                        {
+                            lastBiomeSetting.BackColor = Color.LightBlue;
+                            lastBiomeSetting.ForeColor = Color.Black;
+
+                            lastBiomeSetting = biomeSetting;
+                        }
+                        this.panel3.ScrollControlIntoView(biomeSetting);
+                    }
+                }
+
+                this.panel3.Focus();
+            }
+
+            void lbBiomesTabSetting_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+            {
+                bool senderIsMouseTarget = true;
+
+                if (!((Control)sender).ClientRectangle.Contains(((Control)sender).PointToClient(Control.MousePosition)))
+                {
+                    senderIsMouseTarget = false;
+                    this.panel3.Focus();
+                }
+
+                if (!senderIsMouseTarget)
+                {
+                    HandledMouseEventArgs args = e as HandledMouseEventArgs;
+                    if (args != null)
+                    {
+                        args.Handled = true;
+                    }
+                }
+            }
+
+            void lbBiomesTab_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+            {
+                bool senderIsMouseTarget = true;
+
+                if (this.panel3.ClientRectangle.Contains(this.panel3.PointToClient(Control.MousePosition)))
+                {
+                    senderIsMouseTarget = sender == this.panel3;
+                    this.panel3.Focus();
+                }
+                else if (this.lbGroups.ClientRectangle.Contains(this.lbGroups.PointToClient(Control.MousePosition)))
+                {
+                    senderIsMouseTarget = sender == this.lbGroups;
+                    this.lbGroups.Focus();
+                }
+                else if (this.lbGroup.ClientRectangle.Contains(this.lbGroup.PointToClient(Control.MousePosition)))
+                {
+                    senderIsMouseTarget = sender == this.lbGroup;
+                    this.lbGroup.Focus();
+                }
+                else if (this.lbBiomes.ClientRectangle.Contains(this.lbBiomes.PointToClient(Control.MousePosition)))
+                {
+                    senderIsMouseTarget = sender == this.lbBiomes;
+                    this.lbBiomes.Focus();
+                }
+
+                if (!senderIsMouseTarget)
+                {
+                    HandledMouseEventArgs args = e as HandledMouseEventArgs;
+                    if (args != null)
+                    {
+                        args.Handled = true;
+                    }
+                }
+            }        
+        
         #endregion
 
         #region Load / Save / Generate
@@ -4078,6 +4808,8 @@ namespace TCEE
 
                     PopUpForm.CustomMessageBox("Settings saved as: " + sfd.FileName, "Settings saved");
                 }
+
+                FocusOnTab();
             }
 
             void btLoad_Click(object sender, EventArgs e)
@@ -4090,7 +4822,7 @@ namespace TCEE
                     {
                         if (!ofd.FileName.ToLower().EndsWith("xml"))
                         {
-                            PopUpForm.CustomMessageBox("Error: The selected file was not a valid TCEE save file");
+                            PopUpForm.CustomMessageBox("Error: The selected file was not a valid OTGE save file");
                         } else {
                             SettingsFile settingsFile = null;
                             var serializer = new DataContractSerializer(typeof(SettingsFile));
@@ -4104,7 +4836,7 @@ namespace TCEE
                                 Session.WorldConfig1 = settingsFile.WorldConfig;
                                 foreach (Property prop in Session.WorldConfig1.Properties.Where(c => c.Override && !Session.VersionConfig.WorldConfig.Any(d => (string)d.Name == (string)c.PropertyName)))
                                 {
-                                    sErrorMessage += "Could not load value \"" + prop.Value + "\" for property \"" + prop.PropertyName + "\" in WorldConfig.\r\n";
+                                    sErrorMessage += "Could not load value \"" + prop.Value + "\" for setting \"" + prop.PropertyName + "\" in WorldConfig.\r\n";
                                 }
                                 Session.WorldConfig1.Properties.RemoveAll(a => !Session.VersionConfig.WorldConfig.Any(b => (string)b.Name == (string)a.PropertyName));
 
@@ -4122,16 +4854,19 @@ namespace TCEE
                                             ((RadioButton)Session.WorldSettingsInputs[property].Item6.Controls.Find("Override", true)[0]).Checked = true;
                                             break;
                                         case "Bool":
-                                            ((ComboBox)Session.WorldSettingsInputs[property].Item1).SelectedIndex = 0;
+                                            ((Button)Session.WorldSettingsInputs[property].Item1).Text = "";
+                                            ((Button)Session.WorldSettingsInputs[property].Item1).ForeColor = Color.Empty;
                                             break;
                                         case "Color":
                                             Session.WorldSettingsInputs[property].Item5.BackColor = Color.White;
                                             Session.WorldSettingsInputs[property].Item1.Text = "";
                                             break;
                                         case "Float":
+                                        case "Int":
                                             Session.WorldSettingsInputs[property].Item1.Text = "";
                                             break;
                                         case "String":
+                                        case "BigString":
                                             Session.WorldSettingsInputs[property].Item1.Text = "";
                                             break;
                                         case "ResourceQueue":
@@ -4182,7 +4917,7 @@ namespace TCEE
                                                     }
                                                     else if (!String.IsNullOrEmpty(biomeNames[k].Trim()))
                                                     {
-                                                        sErrorMessage2 += "Could not select biome \"" + biomeNames[k].Trim() + "\" for property \"" + property.Name + "\" in world config.\r\n";
+                                                        sErrorMessage2 += "Could not select biome \"" + biomeNames[k].Trim() + "\" for setting \"" + property.Name + "\" in world config.\r\n";
                                                     }
                                                 }
                                                 if(!String.IsNullOrEmpty(newpropertyValue))
@@ -4196,18 +4931,21 @@ namespace TCEE
                                             case "Bool":
                                                 if (propertyValue.ToLower() == "true")
                                                 {
-                                                    ((ComboBox)boxes.Item1).SelectedIndex = 1;
+                                                    ((Button)boxes.Item1).Text = "true";
+                                                    ((Button)boxes.Item1).ForeColor = Color.Green;
                                                 }
                                                 else if (propertyValue.ToLower() == "false")
                                                 {
-                                                    ((ComboBox)boxes.Item1).SelectedIndex = 2;
+                                                    ((Button)boxes.Item1).Text = "false";
+                                                    ((Button)boxes.Item1).ForeColor = Color.Red;
                                                 } else {
-                                                    ((ComboBox)boxes.Item1).SelectedIndex = 0;
+                                                    ((Button)boxes.Item1).Text = "";
+                                                    ((Button)boxes.Item1).ForeColor = Color.Empty;
                                                 }
                                                 boxes.Item2.Checked = Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override;
                                                 break;
                                             case "Color":
-                                                if (propertyValue.Length == 8 || (propertyValue.Length == 7 && propertyValue.StartsWith("#")))
+                                                if ((propertyValue.StartsWith("0x") && propertyValue.Length == 8) || (propertyValue.StartsWith("#") && propertyValue.Length == 7))
                                                 {
                                                     boxes.Item2.Checked = Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override;
                                                     bool bException = false;
@@ -4224,7 +4962,7 @@ namespace TCEE
                                                             value = "#" + boxes.Item5.BackColor.R.ToString("X2") + boxes.Item5.BackColor.G.ToString("X2") + boxes.Item5.BackColor.B.ToString("X2");
                                                         }
                                                         boxes.Item1.Text = value;
-                                                        if (Session.WorldConfigDefaultValues == null || boxes.Item2.Checked || value.ToUpper() != Session.WorldConfigDefaultValues.GetPropertyValueAsString(property).ToUpper())
+                                                        if (Session.WorldConfigDefaultValues == null || boxes.Item2.Checked || ColorTranslator.FromHtml(value.ToUpper()).ToArgb() != ColorTranslator.FromHtml(Session.WorldConfigDefaultValues.GetPropertyValueAsString(property).ToUpper()).ToArgb())
                                                         {
                                                             boxes.Item2.Checked = true;
                                                         } else {
@@ -4237,12 +4975,12 @@ namespace TCEE
                                                     }
                                                     if (bException)
                                                     {
-                                                        string asss = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
-                                                        if (asss.Length == 8 || (asss.Length == 7 && asss.StartsWith("#")))
+                                                        string propertyString = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
+                                                        if ((propertyString.StartsWith("0x") && propertyString.Length == 8) || (propertyString.StartsWith("#") && propertyString.Length == 7))
                                                         {
                                                             try
                                                             {
-                                                                boxes.Item5.BackColor = System.Drawing.ColorTranslator.FromHtml(asss);
+                                                                boxes.Item5.BackColor = System.Drawing.ColorTranslator.FromHtml(propertyString);
                                                                 string value = "";
                                                                 if (Session.SettingsType.ColorType == "0x")
                                                                 {
@@ -4273,10 +5011,15 @@ namespace TCEE
                                                 }
                                                 break;
                                             case "Float":
-                                                boxes.Item1.Text = propertyValue;
+                                            case "Int":
+                                                string newText = propertyValue;
+                                                int numberOfDecimals = property.PropertyType == "Int" ? 0 : newText.IndexOf(".") > 0 ? newText.Length - (newText.IndexOf(".") + 1) : 0;
+                                                ((NumericUpDownExt)boxes.Item1).DecimalPlaces = numberOfDecimals;
+                                                boxes.Item1.Text = newText;
                                                 boxes.Item2.Checked = Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override;
                                                 break;
                                             case "String":
+                                            case "BigString":
                                                 boxes.Item1.Text = propertyValue;
                                                 boxes.Item2.Checked = Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override;
                                                 break;
@@ -4310,9 +5053,7 @@ namespace TCEE
                                 lbGroup.Items.Clear();
                                 lbGroups.Items.Clear();
 
-                                //tlpBiomeSettings.Controls.Clear();
-                                tlpBiomeSettings.Visible = false;
-                                btBiomeSettingsResetToDefaults.Visible = false;
+                                tlpBiomeSettings1.Visible = false;
                                 label3.Visible = false;
 
                                 List<Group> newBiomeGroups = new List<Group>();
@@ -4382,7 +5123,7 @@ namespace TCEE
                                         }
                                         foreach (Property prop in biomeGroup.BiomeConfig.Properties.Where(c => c.Override && !Session.VersionConfig.BiomeConfig.Any(d => (string)d.Name == (string)c.PropertyName)))
                                         {
-                                            sErrorMessage += "Could not load value \"" + prop.Value + "\" for property \"" + prop.PropertyName + "\" in biome group \"" + biomeGroup.Name + "\".\r\n";
+                                            sErrorMessage += "Could not load value \"" + prop.Value + "\" for setting \"" + prop.PropertyName + "\" in biome group \"" + biomeGroup.Name + "\".\r\n";
                                         }
                                         foreach (Property prop in biomeGroup.BiomeConfig.Properties.Where(c => c.Override && Session.VersionConfig.BiomeConfig.Any(d => (string)d.Name == (string)c.PropertyName && d.PropertyType == "BiomesList")))
                                         {
@@ -4394,7 +5135,7 @@ namespace TCEE
                                                 {
                                                     if(!String.IsNullOrEmpty(biomeNames[k].Trim()))
                                                     {
-                                                        sErrorMessage2 += "Could not select biome \"" + biomeNames[k].Trim() + "\" for property \"" + prop.PropertyName + "\" in biome group \"" + biomeGroup.Name + "\".\r\n";
+                                                        sErrorMessage2 += "Could not select biome \"" + biomeNames[k].Trim() + "\" for setting \"" + prop.PropertyName + "\" in biome group \"" + biomeGroup.Name + "\".\r\n";
                                                     }
                                                 } else {
                                                     if (newBiomeNames != (string)biomeNames[k].Trim() + "," && !newBiomeNames.Contains("," + (string)biomeNames[k].Trim() + ","))
@@ -4417,43 +5158,78 @@ namespace TCEE
                 string sErrorMessageFinal = "";
                 if(!String.IsNullOrEmpty(sErrorMessage))
                 {
-                    sErrorMessageFinal = sErrorMessage + "\r\nThese properties do not exist in the selected version of TerrainControl.";
+                    sErrorMessageFinal = sErrorMessage + "\r\nThese settings do not exist in the selected version of OTG/TerrainControl.";
                 }
                 if (!String.IsNullOrEmpty(sErrorMessage2))
                 {
-                    sErrorMessageFinal = sErrorMessageFinal + "\r\n\r\n" + sErrorMessage2 + "\r\nThese biomes do not exist in the selected version of TerrainControl.";
+                    sErrorMessageFinal = sErrorMessageFinal + "\r\n\r\n" + sErrorMessage2 + "\r\nThese biomes do not exist in the selected version of OTG/TerrainControl.";
                 }
                 if(!String.IsNullOrEmpty(sErrorMessageFinal))
                 {
                     PopUpForm.CustomMessageBox(sErrorMessageFinal, "Version warnings");
                 }
+
+                FocusOnTab();
             }        
 
             void btGenerate_Click(object sender, EventArgs e)
             {
-                fbdDestinationWorldDir.Description = "Select a TerrainControl world folder.";
+                fbdDestinationWorldDir.Description = "Select a OTG/TerrainControl world folder (create if needed).";
 
                 if (fbdDestinationWorldDir.ShowDialog() == DialogResult.OK)
                 {
                     bool go = true;
                     String ares = fbdDestinationWorldDir.SelectedPath.Substring(0, fbdDestinationWorldDir.SelectedPath.LastIndexOf("\\"));
-                    if (!fbdDestinationWorldDir.SelectedPath.Substring(0, fbdDestinationWorldDir.SelectedPath.LastIndexOf("\\")).EndsWith("TerrainControl\\worlds"))
+                    if (!fbdDestinationWorldDir.SelectedPath.Substring(0, fbdDestinationWorldDir.SelectedPath.LastIndexOf("\\")).EndsWith("TerrainControl\\worlds") && !fbdDestinationWorldDir.SelectedPath.Substring(0, fbdDestinationWorldDir.SelectedPath.LastIndexOf("\\")).EndsWith("OpenTerrainGenerator\\worlds"))
                     {
-                        go = PopUpForm.CustomYesNoBox("Generate files here?", "The selected directory was not a TerrainControl/MCW world directory, are you sure you want to generate files here?", "Yes", "No") == DialogResult.OK;
+                        go = PopUpForm.CustomYesNoBox("Generate files here?", "The selected directory was not a OTG/TerrainControl world directory, are you sure you want to generate files here?", "Yes", "No") == DialogResult.OK;
                     }
                     if (go)
                     {
+                        Session.ShowProgessBox();
+
+                        DateTime startTime = DateTime.Now;
 
                         Session.DestinationConfigsDir = fbdDestinationWorldDir.SelectedPath;
-                        WorldSaveDir = Session.DestinationConfigsDir.Replace("mods\\TerrainControl\\worlds\\", "saves\\");
+                        WorldSaveDir = Session.DestinationConfigsDir.Replace("mods\\TerrainControl\\worlds\\", "saves\\").Replace("mods\\OpenTerrainGenerator\\worlds\\", "saves\\");
 
-                        World.ConfigWorld();
-                        Biomes.GenerateBiomeConfigs(new System.IO.DirectoryInfo(Session.SourceConfigsDir + "/" + "WorldBiomes"), new System.IO.DirectoryInfo(Session.DestinationConfigsDir + "/" + "WorldBiomes"), BiomeConfigsDefaultValues, Session.VersionConfig);
+                        World.ConfigWorld(Session.WorldConfig1, Session.WorldConfigDefaultValues, Session.VersionConfig, Session.SourceConfigsDir, Session.DestinationConfigsDir, false);
+
+                        DirectoryInfo destBiomesDir = new System.IO.DirectoryInfo(Session.DestinationConfigsDir + "\\WorldBiomes");
+                        DirectoryInfo sourceDirectory = new System.IO.DirectoryInfo(Session.SourceConfigsDir + "\\WorldBiomes");
+                        if (destBiomesDir.Exists)
+                        {
+                            // TODO: Is all this really necessary? <- Without this you can't overwrite an existing directory?
+
+                            List<string> filesToOverride = new List<string>();
+
+                            foreach (System.IO.FileInfo file in sourceDirectory.GetFiles())
+                            {
+                                filesToOverride.Add(Session.DestinationConfigsDir + "\\WorldBiomes\\" + file.Name);
+                            }
+
+                            System.Security.AccessControl.DirectorySecurity sec3 = destBiomesDir.GetAccessControl();
+                            System.Security.AccessControl.FileSystemAccessRule accRule3 = new System.Security.AccessControl.FileSystemAccessRule(Environment.UserDomainName + "\\" + Environment.UserName, System.Security.AccessControl.FileSystemRights.FullControl, System.Security.AccessControl.AccessControlType.Allow);
+                            sec3.AddAccessRule(accRule3);
+
+                            destBiomesDir.Delete(true);
+                            destBiomesDir.Refresh();
+
+                            destBiomesDir = new System.IO.DirectoryInfo(Session.DestinationConfigsDir + "\\WorldBiomes");
+
+                            if(!destBiomesDir.Exists)
+                            {
+                                destBiomesDir.Create();
+                                destBiomesDir.Refresh();
+                            }
+                        }
+
+                        Biomes.GenerateBiomeConfigs(sourceDirectory, destBiomesDir, BiomeConfigsDefaultValues, Session.VersionConfig, false);
 
                         bool bDone = true;
                         if (cbDeleteRegion.Checked)
                         {
-                            System.IO.DirectoryInfo WorldDirectory = new System.IO.DirectoryInfo(WorldSaveDir + "/region");
+                            System.IO.DirectoryInfo WorldDirectory = new System.IO.DirectoryInfo(WorldSaveDir + "\\region");
                             if (WorldDirectory.Exists)
                             {
                                 bDone = false;
@@ -4468,7 +5244,7 @@ namespace TCEE
                                 }
                             }
 
-                            System.IO.DirectoryInfo worldDirectory2 = new System.IO.DirectoryInfo(WorldSaveDir + "/data");
+                            System.IO.DirectoryInfo worldDirectory2 = new System.IO.DirectoryInfo(WorldSaveDir + "\\data");
                             if (worldDirectory2.Exists)
                             {
                                 bDone = false;
@@ -4483,13 +5259,14 @@ namespace TCEE
                                 }
                             }
 
-                            System.IO.DirectoryInfo StructureDataDirectory = new System.IO.DirectoryInfo(Session.DestinationConfigsDir + "/StructureData");
+                            System.IO.DirectoryInfo StructureDataDirectory = new System.IO.DirectoryInfo(Session.DestinationConfigsDir + "\\StructureData");
                             if (StructureDataDirectory.Exists)
                             {
                                 bDone = false;
                                 try
                                 {
                                     StructureDataDirectory.Delete(true);
+                                    StructureDataDirectory.Refresh();
                                     bDone = true;
                                 }
                                 catch (System.IO.IOException ex)
@@ -4498,396 +5275,76 @@ namespace TCEE
                                 }
                             }
 
-                            System.IO.FileInfo structureDataFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "/StructureData.txt");
+                            System.IO.FileInfo structureDataFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\StructureData.txt");
                             if (structureDataFile.Exists)
                             {
                                 structureDataFile.Delete();
                             }
-                            System.IO.FileInfo nullChunksFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "/NullChunks.txt");
+                            System.IO.FileInfo nullChunksFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\NullChunks.txt");
                             if (nullChunksFile.Exists)
                             {
                                 nullChunksFile.Delete();
                             }
-                            System.IO.FileInfo spawnedStructuresFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "/SpawnedStructures.txt");
+                            System.IO.FileInfo spawnedStructuresFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\SpawnedStructures.txt");
                             if (spawnedStructuresFile.Exists)
                             {
                                 spawnedStructuresFile.Delete();
                             }
 
-                            System.IO.FileInfo chunkProviderPopulatedChunksFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "/ChunkProviderPopulatedChunks.txt");
+                            System.IO.FileInfo chunkProviderPopulatedChunksFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\ChunkProviderPopulatedChunks.txt");
                             if (chunkProviderPopulatedChunksFile.Exists)
                             {
                                 chunkProviderPopulatedChunksFile.Delete();
                             }
 
-                            System.IO.FileInfo pregeneratedChunksFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "/PregeneratedChunks.txt");
+                            System.IO.FileInfo pregeneratedChunksFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\PregeneratedChunks.txt");
                             if (pregeneratedChunksFile.Exists)
                             {
                                 pregeneratedChunksFile.Delete();
                             }
                         }
 
+                        Session.HideProgessBox();
+
                         if (bDone)
                         {
-                            PopUpForm.CustomMessageBox("Done", "Generating");
+                            //PopUpForm.CustomMessageBox("Done in " + (DateTime.Now - startTime).TotalSeconds + " seconds.", "Generating");
+                            PopUpForm.CustomMessageBox("Done.");
                         }
                     }
                 }
+
+                FocusOnTab();
             }
 
         #endregion
 
-        # region Import world
+        # region Manage worlds
 
-            // User clicks button, selects default biomes version, then selects world directory               
-            // TCEE creates new world in VersionConfigs dir if there are custom biomes and/or BO3's
-            // TCEE creates a save with a group for each biome in the world (unless all its values are defaults)
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="sender"></param>
-            /// <param name="e"></param>
-            private void btImportWorld_Click(object sender, EventArgs e)
+            private void btmanageWorlds_Click(object sender, EventArgs e)
             {
-                // Show select menu and let user select version
-                string versionName = SelectVersion();
+                PopUpForm.ManageWorldsBox();
 
-                fbdDestinationWorldDir.Description = "Select a TerrainControl world folder. Any BO2's and BO3's that should be imported with this world must be placed in the world's WorldObjects folder (create if needed).";
-
-                // Make user select world
-                if (versionName != null && fbdDestinationWorldDir.ShowDialog() == DialogResult.OK)
+                cbWorld.Items.Clear();
+                DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\");
+                if (versionDir3.Exists)
                 {
-                    // Get world's resource directories
-
-                    DirectoryInfo sourceWorldDir = new DirectoryInfo(fbdDestinationWorldDir.SelectedPath);
-                    DirectoryInfo worldBiomesDir = sourceWorldDir.GetDirectories().FirstOrDefault(a => a.Name.ToLower() == "worldbiomes");
-                    DirectoryInfo worldObjectsDir = sourceWorldDir.GetDirectories().FirstOrDefault(a => a.Name.ToLower() == "worldobjects");
-
-                    List<BiomeConfig> worldBiomes = new List<BiomeConfig>();
-
-                    if (worldBiomesDir != null || worldObjectsDir != null)
+                    foreach (DirectoryInfo dir2 in versionDir3.GetDirectories())
                     {
-                        DirectoryInfo versionDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/");
-                        if (versionDir.Exists)
-                        {
-                            var xmlSerializer = new System.Xml.Serialization.XmlSerializer(typeof(VersionConfig));
-                            
-                            VersionConfig versionConfig = null;
-                            string path = Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/" + versionName + "/VersionConfig.xml";
-                            if(File.Exists(path))
-                            {
-                                using (var reader = new XmlTextReader(path))
-                                {
-                                    versionConfig = (VersionConfig)xmlSerializer.Deserialize(reader);
-                                }
-                                if (versionConfig != null)
-                                {
-                                    List<string> msgs = new List<string>();
-
-                                    // Load selected world's resources
-
-                                    // Load worldconfig
-                                    WorldConfig worldConfig = new WorldConfig(versionConfig);
-                                    FileInfo worldConfigFile = new FileInfo(sourceWorldDir + "/WorldConfig.ini");
-                                    if (worldConfigFile.Exists)
-                                    {
-                                        try
-                                        {
-                                            worldConfig = World.LoadWorldConfigFromFile(worldConfigFile, versionConfig, false);
-                                        }
-                                        catch(InvalidDataException ex)
-                                        {
-                                            return;
-                                        }
-                                        if(worldConfig != null)
-                                        {
-                                            msgs.Add("WorldConfig found");
-                                        }
-                                    }
-
-                                    DirectoryInfo biomesDir = worldBiomesDir != null && worldBiomesDir.Exists ? worldBiomesDir : null;
-
-                                    // Load biomeconfigs
-                                    List<BiomeConfig> biomeConfigs = new List<BiomeConfig>();
-                                    if (biomesDir != null)// || biomeConfigsDirPresent != null)
-                                    {
-                                        foreach (FileInfo biomeFile in biomesDir.GetFiles().ToList())
-                                        {
-                                            try
-                                            {
-                                                BiomeConfig biomeConfig = Biomes.LoadBiomeConfigFromFile(biomeFile, versionConfig, false);
-                                                if (biomeConfig != null)
-                                                {
-                                                    biomeConfigs.Add(biomeConfig);
-                                                }
-                                            }
-                                            catch(InvalidDataException ex)
-                                            {
-                                                return;
-                                            }
-                                        }
-                                        msgs.Add(biomeConfigs.Count + " biomes found");
-                                    }
-
-                                    // Copy world objects dir
-                                    //if (worldObjectsDir != null)
-                                    //{
-                                    //
-                                    //}
-
-                                    // Load default resources for the selected version of TC
-
-                                    // Load worldConfig
-                                    WorldConfig defaultWorldConfig = new WorldConfig(versionConfig);
-                                    FileInfo defaultWorldConfigFile = new FileInfo(Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/" + versionName + "/Worlds/Default/WorldConfig.ini");
-                                    if (defaultWorldConfigFile.Exists)
-                                    {
-                                        try
-                                        {
-                                            defaultWorldConfig = World.LoadWorldConfigFromFile(defaultWorldConfigFile, versionConfig, false);
-                                        }
-                                        catch(InvalidDataException ex)
-                                        {
-                                            return;
-                                        }
-                                        if (defaultWorldConfig != null)
-                                        {
-                                            msgs.Add("Default WorldConfig found");
-                                        }
-                                    } else {
-                                        throw new Exception("WorldConfig.ini could not be loaded. Please make sure that WorldConfig.ini is present in the TCVersionConfig directory for the selected version. Exiting TCEE.");
-                                    }
-
-                                    // Load biomeconfigs
-                                    List<BiomeConfig> defaultBiomeConfigs = new List<BiomeConfig>();
-                                    DirectoryInfo defaultBiomesDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/" + versionName + "/Worlds/Default/" + "WorldBiomes");
-                                    foreach (FileInfo biomeFile in defaultBiomesDir.GetFiles().ToList())
-                                    {
-                                        try
-                                        {
-                                            BiomeConfig biomeConfig = Biomes.LoadBiomeConfigFromFile(biomeFile, versionConfig, false);
-                                            if (biomeConfig != null)
-                                            {
-                                                defaultBiomeConfigs.Add(biomeConfig);
-                                            }
-                                        }
-                                        catch(InvalidDataException ex)
-                                        {
-                                            return;
-                                        }
-                                    }
-                                    msgs.Add(defaultBiomeConfigs.Count + " default biomes found");
-
-                                    if (msgs.Count > 0)
-                                    {
-                                        string msgboxmsg = "";
-                                        foreach (string msg in msgs)
-                                        {
-                                            msgboxmsg += msg + "\r\n";
-                                        }
-                                        PopUpForm.CustomMessageBox(msgboxmsg);
-                                    }
-
-                                    bool useDefaults = PopUpForm.CustomYesNoBox("Use TC default values?", "Use TC biome default values for this world and save any non-default values to a TCEE save file? Select No to use the imported world's values as default values instead. If you are unsure, just click No.", "Yes", "No") == DialogResult.Yes;
-
-                                    bool isDefaultWorld = worldObjectsDir == null;
-
-                                    // Check which settings in WorldConfig are different from default, save them as TCEE pre-set. If this world turns out to be non-compatible with default world then create new world folder and copy default worldconfig to it
-                                    foreach(TCProperty property in versionConfig.WorldConfig)
-                                    {
-                                        if (
-                                            worldConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Value != defaultWorldConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Value
-                                        )
-                                        {
-                                            worldConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Override = true;
-                                        } else {
-                                            worldConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Override = false;
-                                        }
-                                    }
-                                
-                                    // Check which biomeconfigs are standard/nonstandard and for standard biomes check which values are not defaults, save those values as TCEE pre-set. 
-                                    // If this world turns out to be non-compatible with default world then create new world folder and copy default biomeconfigs + non-standard biomeconfigs to it
-                                    // For non-standard biomes get values from inherited biome?
-
-                                    List<Group> groups = new List<Group>();
-                                    if (useDefaults)
-                                    {
-                                        foreach(BiomeConfig biomeConfig in biomeConfigs)
-                                        {
-                                            if(!defaultBiomeConfigs.Any(a => a.BiomeName == biomeConfig.BiomeName))
-                                            {
-                                                isDefaultWorld = false;
-                                            } else {
-                                                BiomeConfig biomeDefaultConfig = defaultBiomeConfigs.FirstOrDefault(a => a.BiomeName == biomeConfig.BiomeName);
-                                                bool hasDefaultValues = true;
-                                                foreach (TCProperty property in versionConfig.BiomeConfig)
-                                                {
-                                                    if (
-                                                        biomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Value != biomeDefaultConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Value
-                                                    )
-                                                    {
-                                                        biomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Override = true;
-                                                        hasDefaultValues = false;
-                                                    } else {
-                                                        biomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Override = false;
-                                                    }
-                                                }
-                                                if(!hasDefaultValues)
-                                                {
-                                                    groups.Add(new Group(biomeConfig.BiomeName, new List<string>() { biomeConfig.BiomeName }, biomeConfig));
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    sfd.Title = "Enter a world name and click save";
-
-                                    // 
-                                    sfd.CheckFileExists = false;
-                                    if (sfd.ShowDialog() == DialogResult.OK)
-                                    {
-                                        sfd.Title = "File selection / creation";
-
-                                        DirectoryInfo destinationWorldDirectory = new DirectoryInfo(sfd.FileName.Substring(0, sfd.FileName.LastIndexOf("\\") + 1));
-                                        if(destinationWorldDirectory.Exists)
-                                        {
-                                            SettingsFile settingsFile = new SettingsFile()
-                                            {
-                                                WorldConfig = worldConfig,
-                                                BiomeGroups = groups
-                                            };
-
-                                            var dataContractXMLSerializer = new DataContractSerializer(typeof(SettingsFile));
-                                            string xmlString;
-                                            using (var sw = new StringWriter())
-                                            {
-                                                using (var writer = new XmlTextWriter(sw))
-                                                {
-                                                    writer.Formatting = Formatting.Indented; // indent the Xml so it's human readable
-                                                    dataContractXMLSerializer.WriteObject(writer, settingsFile);
-                                                    writer.Flush();
-                                                    xmlString = sw.ToString();
-                                                }
-                                            }
-                                            System.IO.File.WriteAllText(sfd.FileName, xmlString);
-                                            PopUpForm.CustomMessageBox("Settings saved as: " + sfd.FileName, "Settings saved");
-
-                                            // Copy default WorldConfig, BiomeConfigs and WorldObjects to world output dir if the pre-set is not compatible with the default world
-                                            if (!isDefaultWorld || !useDefaults)
-                                            {
-                                                FileInfo presetFileName = new FileInfo(sfd.FileName);
-
-                                                DirectoryInfo destinationDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/" + versionName + "/Worlds/" + presetFileName.Name.Replace(".xml","") + "/");
-                                                if (!destinationDir.Exists)
-                                                {
-                                                    destinationDir.Create();
-                                                }
-
-                                                // Copy world config
-                                                defaultWorldConfigFile.CopyTo(destinationDir.FullName + "/WorldConfig.ini", true);
-
-                                                // Copy BO2's/BO3's
-                                                if (worldObjectsDir != null)
-                                                {
-                                                    //DirectoryInfo destinationWorldObjectsDir = new DirectoryInfo(destinationWorldDirectory.FullName + "/WorldObjects");
-                                                    DirectoryInfo destinationWorldObjectsDir = new DirectoryInfo(destinationDir.FullName + "/WorldObjects");
-                                                    if (!destinationWorldObjectsDir.Exists)
-                                                    {
-                                                        destinationWorldObjectsDir.Create();
-                                                    }
-
-                                                    PopUpForm.CustomMessageBox("Copying BO3's to output directory, this can take a while depending on the number and size of the BO3's.", "Copying BO3's");
-                                                    System.Security.AccessControl.DirectorySecurity sec = destinationWorldObjectsDir.GetAccessControl();
-                                                    System.Security.AccessControl.FileSystemAccessRule accRule = new System.Security.AccessControl.FileSystemAccessRule(Environment.UserDomainName + "\\" + Environment.UserName, System.Security.AccessControl.FileSystemRights.FullControl, System.Security.AccessControl.AccessControlType.Allow);
-                                                    sec.AddAccessRule(accRule);
-
-                                                    Utils.CopyDir.CopyAll(worldObjectsDir, destinationWorldObjectsDir);
-                                                }
-
-                                                // Copy Biomes
-                                                if (biomesDir != null)
-                                                {
-                                                    // Copy default biomes
-                                                    //GenerateBiomeConfigs(defaultBiomesDir, new DirectoryInfo(destinationWorldDirectory.FullName + settingsType.BiomesDirectory), defaultBiomeConfigs, versionConfig);
-                                                    if (!useDefaults)
-                                                    {
-                                                        Biomes.GenerateBiomeConfigs(defaultBiomesDir, new DirectoryInfo(destinationDir.FullName + "/" + "WorldBiomes"), defaultBiomeConfigs, versionConfig);
-                                                    }
-
-                                                    // Copy non-default biomes
-                                                    List<string> biomesToExport = new List<string>();
-                                                    foreach(BiomeConfig biomeConfig in biomeConfigs)
-                                                    {
-                                                        if(!useDefaults || !defaultBiomeConfigs.Any(a => a.BiomeName == biomeConfig.BiomeName))
-                                                        {
-
-                                                            FileInfo biomeConfigFile = new FileInfo(biomesDir.FullName + "/" + biomeConfig.FileName);
-                                                            biomeConfigFile.CopyTo(destinationDir.FullName + "/" + "WorldBiomes" + "/" + biomeConfig.FileName, true);
-                                                        }
-                                                    }
-                                                }
-
-                                                // Force refresh of available worlds list
-                                                cbWorld.Items.Clear();
-                                                DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/" + cbVersion.SelectedItem + "/Worlds/");
-                                                if (versionDir3.Exists)
-                                                {
-                                                    foreach (DirectoryInfo dir2 in versionDir3.GetDirectories())
-                                                    {
-                                                        cbWorld.Items.Add(dir2.Name);
-                                                    }
-                                                    if (cbWorld.Items.Count > 0)
-                                                    {
-                                                        cbWorld.SelectedIndex = 0;
-                                                    }
-                                                }
-
-                                                PopUpForm.CustomMessageBox("World import completed, you can now select the world and load your TCEE save.", "Import completed");
-                                            }
-                                        } else {
-                                            PopUpForm.CustomMessageBox("Derp! 1");
-                                        }
-                                    }
-                                } else {
-                                    PopUpForm.CustomMessageBox("Y u do dis? :(");
-                                }
-                            } else {
-                                PopUpForm.CustomMessageBox("Could not find ");
-                            }
-                        }
-                    } else {
-                        PopUpForm.CustomMessageBox("Could not find WorldBiomes or WorldObjects directory. At least one is required.");
+                        cbWorld.Items.Add(dir2.Name);
+                    }
+                    if (cbWorld.Items.Count > 0)
+                    {
+                        cbWorld.SelectedIndex = 0;
                     }
                 }
 
-                // Create versionconfig and save files for world
-                ImportWorld(versionName);
+                if(!System.IO.Directory.Exists(Session.SourceConfigsDir))
+                {
+                    UnloadUI();
+                }
 
-                // Load world with save using existing methods
-            }
-
-            /// <summary>
-            /// Shows select menu and let user select version
-            /// </summary>
-            private string SelectVersion()
-            {                 
-                // Get available versions from TCVersionConfigs
-                List<string> versions = VersionDir.GetDirectories().Select(a => a.Name).ToList();
-                return PopUpForm.SingleSelectListBox(versions, "Select a TC version", "Which version of TC will you use with this world?");
-            }
-
-            /// <summary>
-            /// Create versionconfig and save files for world
-            /// </summary>
-            /// <param name="versionName"></param>
-            private void ImportWorld(string versionName)
-            {
-                // Get biomes and bo2's/bo3's for the world and create TCVersionConfig directory if necessary
-                DirectoryInfo versionDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "/TCVersionConfigs/" + versionName);
-
-                // Create a save with a group for each biome in the world (unless all its values are defaults)
-
+                Session.Form1.FocusOnTab();
             }
 
         # endregion
@@ -4903,7 +5360,7 @@ namespace TCEE
                     {
                         bool useBranches = useBranchesResult == DialogResult.No;
 
-                        DialogResult exportForTCResult = !useBranches ? DialogResult.Yes : PopUpForm.CustomYesNoBox("TC/OTG or MCW/OTG+?", "Export BO3's for TC/OTG or MCW/OTG+?", "TC/OTG", "MCW/OTG+");
+                        DialogResult exportForTCResult = !useBranches ? DialogResult.Yes : PopUpForm.CustomYesNoBox("OTG/TerrainControl or MCW/OTG+?", "Export BO3's for TC/OTG or MCW/OTG+?", "OTG/TerrainControl", "MCW/OTG+");
                         if (exportForTCResult != System.Windows.Forms.DialogResult.Cancel)
                         {
                             bool exportForTC = useBranchesResult == DialogResult.Yes;
@@ -4929,7 +5386,8 @@ namespace TCEE
                                     int.TryParse(centerBlockIdString, out centerBlockId);
                                 }
 
-                                PopUpForm.CustomMessageBox("Converting schematics to BO3's, this can take a while depending on the number and size of the schematics.", "Converting schematics to BO3's");
+                                Session.ShowProgessBox();
+
                                 int converted = 0;
                                 foreach (String fileName in convertBO3ofd.FileNames)
                                 {
@@ -4941,6 +5399,9 @@ namespace TCEE
                                         Utils.SchematicToBO3.doSchematicToBO3(new FileInfo(fileName), new DirectoryInfo(convertBO3fbd.SelectedPath), exportForTC, useBranches, centerBlockId, removeAir);
                                     }
                                 }
+
+                                Session.HideProgessBox();
+
                                 if (converted > 1)
                                 {
                                     PopUpForm.CustomMessageBox(converted + " schematics were converted to BO3's and saved at " + convertBO3fbd.SelectedPath, "Converting schematics to BO3's");
@@ -4951,7 +5412,9 @@ namespace TCEE
                         }
                     }
                 }
-            }            
+            }
+
+            Session.Form1.FocusOnTab();
         }
 
         private void Link_Clicked(object sender, System.Windows.Forms.LinkClickedEventArgs e)
@@ -4971,13 +5434,14 @@ namespace TCEE
                 if (go)
                 {
                     PopUpForm.CustomMessageBox("Copying BO3's to output directory, this can take a while depending on the number and size of the BO3's.", "Copying BO3's");
-                    System.IO.DirectoryInfo SourceWorldDirectory = new System.IO.DirectoryInfo(Session.SourceConfigsDir + "/WorldObjects");
+                    System.IO.DirectoryInfo SourceWorldDirectory = new System.IO.DirectoryInfo(Session.SourceConfigsDir + "\\WorldObjects");
                     System.IO.DirectoryInfo DestinationWorldDirectory = new System.IO.DirectoryInfo(copyBO3fbd.SelectedPath);
                     if (SourceWorldDirectory.Exists)
                     {
                         if(!DestinationWorldDirectory.Exists)
                         {
                             DestinationWorldDirectory.Create();
+                            DestinationWorldDirectory.Refresh();
                         }
 
                         System.Security.AccessControl.DirectorySecurity sec = DestinationWorldDirectory.GetAccessControl();
@@ -4987,6 +5451,91 @@ namespace TCEE
                         Utils.CopyDir.CopyAll(SourceWorldDirectory, DestinationWorldDirectory);
                     }
                     PopUpForm.CustomMessageBox("All BO3's were copied to " + copyBO3fbd.SelectedPath, "Copying BO3's");
+                }
+            }
+
+            Session.Form1.FocusOnTab();
+        }
+
+        private void btClickBackGround(object sender, EventArgs e)
+        {
+            FocusOnTab();
+        }
+
+        bool isMaximised = false;
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if(isMaximised)
+            {
+                isMaximised = false;
+                this.Width += 1;
+            } else {
+                isMaximised = WindowState == FormWindowState.Maximized;
+            }
+        }
+
+        void Form1_ResizeEnd(object sender, EventArgs e)
+        {
+            isMaximised = false;
+            this.Width += 1;
+        }
+
+        void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+        }
+
+        void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            // For adding BO3/schematic files to the resource queue by drag/drop
+
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            // If the biomes tab has been selected
+            if (tabControl1.SelectedIndex == 1 && lbGroups.SelectedIndex > -1) 
+            {
+                bool bFound = false;
+
+                foreach (string file in files)
+                {
+                    if (file.ToLower().Contains(".bo3") || file.ToLower().Contains(".schematic"))
+                    {
+                        bFound = true;
+                    }
+                }
+
+                if(bFound)
+                {
+                    string propertyValue = "100";
+                    if (PopUpForm.InputBox("Add BO3", "Rarity", ref propertyValue, true) == DialogResult.OK)
+                    {
+                        if (propertyValue != null && !String.IsNullOrEmpty(propertyValue.Trim()))
+                        {
+                            double rarity = -1;
+                            bool isDouble = double.TryParse(propertyValue, out rarity);
+
+                            if (isDouble && rarity >= 0 && rarity <= 100)
+                            {
+                                TCProperty property = Session.BiomeSettingsInputs.First(a => a.Key.Name == "ResourceQueue").Key;
+                                ListBox box = (ListBox)Session.BiomeSettingsInputs.First(a => a.Key.Name == "ResourceQueue").Value.Item1;
+                                foreach (string file in files)
+                                {
+                                    string BO3Name = file.Substring(file.LastIndexOf("\\") + 1).Replace(".BO3", "").Replace(".bo3", "").Replace(".schematic", "").Replace("(", "").Replace(")", "");
+                                    bFound = false;
+                                    foreach (string item in box.Items)
+                                    {
+                                        if (item.Trim().ToLower().StartsWith("customstructure(" + BO3Name.Trim().ToLower()))
+                                        {
+                                            bFound = true;
+                                        }
+                                    }
+                                    if (!bFound)
+                                    {
+                                        AddToResourceQueue(property, "CustomStructure(" + BO3Name + "," + rarity + ")");
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -5000,53 +5549,102 @@ namespace TCEE
         {
             TCProperty property = Session.WorldSettingsInputs.FirstOrDefault(a => a.Value.Item1 == sender).Key;
 
-            if (e.Control && e.KeyCode == Keys.C)
+            if (e.Control && e.KeyCode == Keys.A)
             {
                 e.SuppressKeyPress = true;
 
                 ListBox lb = (ListBox)sender;
-                String clipBoardString = "";
-                foreach (String selectedItem in lb.SelectedItems)
+                lb.SuspendLayout();
+                for (int i = 0; i < lb.Items.Count; i++)
                 {
-                    clipBoardString += selectedItem + "\r\n";
+                    lb.SetSelected(i, true);
                 }
-                clipBoardString = clipBoardString.Substring(0, clipBoardString.Length - 1); // Remove trailing "/"
-                Clipboard.SetText(clipBoardString);
+                lb.ResumeLayout();
             }
-            if (e.Control && e.KeyCode == Keys.V)
+            else if (property.PropertyType == "BiomesList")
             {
-                e.SuppressKeyPress = true;
+                if (e.Control && e.KeyCode == Keys.C)
+                {
+                    e.SuppressKeyPress = true;
 
-                ListBox lb = (ListBox)sender;
-                String[] clipBoardStrings = Clipboard.GetText().Replace("\r\n", "/").Split('/');
-                addingMultipleResourcesXToAll = DialogResult.Abort;
-                addingMultipleResourcesXToAll2 = DialogResult.Abort;
-                addingMultipleResourcesXToAll3 = DialogResult.Abort;
-                resourcesToAdd = new List<string>();
-                copyPasting = true;
-                foreach (String selectedItem in clipBoardStrings)
-                {
-                    AddToResourceQueueWorld(property, selectedItem, false);
-                }
-                foreach (string itemToAdd in resourcesToAdd)
-                {
-                    AddResourceToWorld(property, itemToAdd);
-                }
-                copyPasting = false;
-            }
-            if(e.KeyCode == Keys.Delete)
-            {
-                ListBox lb = ((ListBox)Session.WorldSettingsInputs[property].Item1);
-                if (lb.SelectedItem != null)
-                {
-                    List<string> itemsToRemove = new List<string>();
-                    foreach (string selectedItem in lb.SelectedItems)
+                    ListBox lb = (ListBox)sender;
+                    String clipBoardString = "";
+                    foreach (String selectedItem in lb.SelectedItems)
                     {
-                        itemsToRemove.Add(selectedItem);
+                        clipBoardString += selectedItem + ", ";
                     }
-                    foreach (string selectedItem in itemsToRemove)
+                    clipBoardString = clipBoardString.Substring(0, clipBoardString.Length - 2); // Remove trailing ","
+                    Clipboard.SetText(clipBoardString);
+                }
+                else if (e.Control && e.KeyCode == Keys.V)
+                {
+                    e.SuppressKeyPress = true;
+
+                    ListBox lb = (ListBox)sender;
+                    String[] clipBoardStrings = Clipboard.GetText().Replace(")", "").Split(',');
+
+                    lb.SuspendLayout();
+                    lb.ClearSelected();
+                    for (int i = 0; i < lb.Items.Count; i++)
                     {
-                        DeleteResourceQueueItemWorld(property, selectedItem);
+                        if (clipBoardStrings.Any(a => a.Trim().Equals(((string)lb.Items[i]).Trim())))
+                        {
+                            lb.SetSelected(i, true);
+                        }
+                    }
+                    lb.ResumeLayout();
+                }
+            }
+            else if (property.PropertyType == "ResourceQueue")
+            {
+                if (e.Control && e.KeyCode == Keys.C)
+                {
+                    e.SuppressKeyPress = true;
+
+                    ListBox lb = (ListBox)sender;
+                    String clipBoardString = "";
+                    foreach (String selectedItem in lb.SelectedItems)
+                    {
+                        clipBoardString += selectedItem + "\r\n";
+                    }
+                    clipBoardString = clipBoardString.Substring(0, clipBoardString.Length - 1); // Remove trailing "/"
+                    Clipboard.SetText(clipBoardString);
+                }
+                else if (e.Control && e.KeyCode == Keys.V)
+                {
+                    e.SuppressKeyPress = true;
+
+                    ListBox lb = (ListBox)sender;
+                    String[] clipBoardStrings = Clipboard.GetText().Replace("\r\n", "/").Split('/');
+                    addingMultipleResourcesXToAll = DialogResult.Abort;
+                    addingMultipleResourcesXToAll2 = DialogResult.Abort;
+                    addingMultipleResourcesXToAll3 = DialogResult.Abort;
+                    resourcesToAdd = new List<string>();
+                    copyPasting = true;
+                    foreach (String selectedItem in clipBoardStrings)
+                    {
+                        AddToResourceQueueWorld(property, selectedItem, false);
+                    }
+                    foreach (string itemToAdd in resourcesToAdd)
+                    {
+                        AddResourceToWorld(property, itemToAdd);
+                    }
+                    copyPasting = false;
+                }
+                else if (e.KeyCode == Keys.Delete)
+                {
+                    ListBox lb = ((ListBox)Session.WorldSettingsInputs[property].Item1);
+                    if (lb.SelectedItem != null)
+                    {
+                        List<string> itemsToRemove = new List<string>();
+                        foreach (string selectedItem in lb.SelectedItems)
+                        {
+                            itemsToRemove.Add(selectedItem);
+                        }
+                        foreach (string selectedItem in itemsToRemove)
+                        {
+                            DeleteResourceQueueItemWorld(property, selectedItem);
+                        }
                     }
                 }
             }
@@ -5056,56 +5654,102 @@ namespace TCEE
         {
             TCProperty property = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item1 == sender).Key;
 
-            if (e.Control && e.KeyCode == Keys.C)
+            if (e.Control && e.KeyCode == Keys.A)
             {
                 e.SuppressKeyPress = true;
 
                 ListBox lb = (ListBox)sender;
-                String clipBoardString = "";
-                foreach (String selectedItem in lb.SelectedItems)
+                lb.SuspendLayout();
+                for (int i = 0; i < lb.Items.Count; i++)
                 {
-                    clipBoardString += selectedItem + "\r\n";
+                    lb.SetSelected(i, true);
                 }
-                if (clipBoardString.Length > 0)
+                lb.ResumeLayout();
+            }
+            else if (property.PropertyType == "BiomesList")
+            {
+                if (e.Control && e.KeyCode == Keys.C)
                 {
+                    e.SuppressKeyPress = true;
+
+                    ListBox lb = (ListBox)sender;
+                    String clipBoardString = "";
+                    foreach (String selectedItem in lb.SelectedItems)
+                    {
+                        clipBoardString += selectedItem + ", ";
+                    }
+                    clipBoardString = clipBoardString.Substring(0, clipBoardString.Length - 2); // Remove trailing ","
+                    Clipboard.SetText(clipBoardString);
+                }
+                if (e.Control && e.KeyCode == Keys.V)
+                {
+                    e.SuppressKeyPress = true;
+
+                    ListBox lb = (ListBox)sender;
+                    String[] clipBoardStrings = Clipboard.GetText().Replace(")", "").Split(',');
+
+                    lb.SuspendLayout();
+                    lb.ClearSelected();
+                    for (int i = 0; i < lb.Items.Count; i++)
+                    {
+                        if (clipBoardStrings.Any(a => a.Trim().Equals(((string)lb.Items[i]).Trim())))
+                        {
+                            lb.SetSelected(i, true);
+                        }
+                    }
+                    lb.ResumeLayout();
+                }
+            }
+            else if (property.PropertyType == "ResourceQueue")
+            {
+                if (e.Control && e.KeyCode == Keys.C)
+                {
+                    e.SuppressKeyPress = true;
+
+                    ListBox lb = (ListBox)sender;
+                    String clipBoardString = "";
+                    foreach (String selectedItem in lb.SelectedItems)
+                    {
+                        clipBoardString += selectedItem + "\r\n";
+                    }
                     clipBoardString = clipBoardString.Substring(0, clipBoardString.Length - 1); // Remove trailing "/"
                     Clipboard.SetText(clipBoardString);
                 }
-            }
-            if (e.Control && e.KeyCode == Keys.V)
-            {
-                e.SuppressKeyPress = true;
+                else if (e.Control && e.KeyCode == Keys.V)
+                {
+                    e.SuppressKeyPress = true;
 
-                ListBox lb = (ListBox)sender;
-                String[] clipBoardStrings = Clipboard.GetText().Replace("\r\n","/").Split('/');
-                addingMultipleResourcesXToAll = DialogResult.Abort;
-                addingMultipleResourcesXToAll2 = DialogResult.Abort;
-                addingMultipleResourcesXToAll3 = DialogResult.Abort;
-                resourcesToAdd = new List<string>();
-                copyPasting = true;
-                foreach (String selectedItem in clipBoardStrings)
-                {
-                    AddToResourceQueue(property, selectedItem, false);
-                }
-                foreach (string itemToAdd in resourcesToAdd)
-                {
-                    AddResourceToBiome(property, itemToAdd);
-                }
-                copyPasting = false;
-            }
-            if (e.KeyCode == Keys.Delete)
-            {
-                ListBox lb = ((ListBox)Session.BiomeSettingsInputs[property].Item1);
-                if (lb.SelectedItem != null)
-                {
-                    List<string> itemsToRemove = new List<string>();
-                    foreach (string selectedItem in lb.SelectedItems)
+                    ListBox lb = (ListBox)sender;
+                    String[] clipBoardStrings = Clipboard.GetText().Replace("\r\n", "/").Split('/');
+                    addingMultipleResourcesXToAll = DialogResult.Abort;
+                    addingMultipleResourcesXToAll2 = DialogResult.Abort;
+                    addingMultipleResourcesXToAll3 = DialogResult.Abort;
+                    resourcesToAdd = new List<string>();
+                    copyPasting = true;
+                    foreach (String selectedItem in clipBoardStrings)
                     {
-                        itemsToRemove.Add(selectedItem);
+                        AddToResourceQueue(property, selectedItem, false);
                     }
-                    foreach (string selectedItem in itemsToRemove)
+                    foreach (string itemToAdd in resourcesToAdd)
                     {
-                        DeleteResourceQueueItem(property, selectedItem);
+                        AddResourceToBiome(property, itemToAdd);
+                    }
+                    copyPasting = false;
+                }
+                else if (e.KeyCode == Keys.Delete)
+                {
+                    ListBox lb = ((ListBox)Session.BiomeSettingsInputs[property].Item1);
+                    if (lb.SelectedItem != null)
+                    {
+                        List<string> itemsToRemove = new List<string>();
+                        foreach (string selectedItem in lb.SelectedItems)
+                        {
+                            itemsToRemove.Add(selectedItem);
+                        }
+                        foreach (string selectedItem in itemsToRemove)
+                        {
+                            DeleteResourceQueueItem(property, selectedItem);
+                        }
                     }
                 }
             }
@@ -5113,7 +5757,7 @@ namespace TCEE
 
         private void rbSummerSkin_CheckedChanged(object sender, EventArgs e)
         {
-            this.BackgroundImage = global::TCEE.Properties.Resources.BGSummer;
+            this.BackgroundImage = global::OTGE.Properties.Resources.BGSummer;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 
             this.tabPage1.BackColor = System.Drawing.Color.Wheat;
@@ -5121,7 +5765,7 @@ namespace TCEE
             this.tabPage3.BackColor = System.Drawing.Color.Wheat;
 
             this.groupBox1.BackColor = System.Drawing.Color.Wheat;
-            this.groupBox2.BackColor = System.Drawing.Color.Wheat;
+            this.pnlVersionWorldSelect.BackColor = System.Drawing.Color.Wheat;
             this.groupBox3.BackColor = System.Drawing.Color.Wheat;
             this.groupBox4.BackColor = System.Drawing.Color.Wheat;
 
@@ -5138,11 +5782,13 @@ namespace TCEE
             this.richTextBox11.BackColor = System.Drawing.Color.Wheat;
 
             this.textBox10.BackColor = System.Drawing.Color.Wheat;
+
+            FocusOnTab();
         }
 
         private void rbWinterSkin_CheckedChanged(object sender, EventArgs e)
         {
-            this.BackgroundImage = global::TCEE.Properties.Resources.BGWinter;
+            this.BackgroundImage = global::OTGE.Properties.Resources.BGWinter;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 
             this.tabPage1.BackColor = System.Drawing.Color.GhostWhite;
@@ -5150,7 +5796,7 @@ namespace TCEE
             this.tabPage3.BackColor = System.Drawing.Color.GhostWhite;
 
             this.groupBox1.BackColor = System.Drawing.Color.GhostWhite;
-            this.groupBox2.BackColor = System.Drawing.Color.GhostWhite;
+            this.pnlVersionWorldSelect.BackColor = System.Drawing.Color.GhostWhite;
             this.groupBox3.BackColor = System.Drawing.Color.GhostWhite;
             this.groupBox4.BackColor = System.Drawing.Color.GhostWhite;
 
@@ -5170,6 +5816,181 @@ namespace TCEE
             this.textBox9.BackColor = System.Drawing.Color.GhostWhite;
             this.textBox10.BackColor = System.Drawing.Color.GhostWhite;
 
+            FocusOnTab();
         }
+
+        private void rbVanillaSkin_CheckedChanged(object sender, EventArgs e)
+        {
+            this.BackgroundImage = null;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.BackColor = Color.FromKnownColor(KnownColor.Control);
+
+            this.tabPage1.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.tabPage2.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.tabPage3.BackColor = Color.FromKnownColor(KnownColor.Control);
+
+            this.groupBox1.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.pnlVersionWorldSelect.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.groupBox3.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.groupBox4.BackColor = Color.FromKnownColor(KnownColor.Control);
+
+            this.richTextBox1.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.richTextBox2.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.richTextBox3.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.richTextBox4.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.richTextBox5.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.richTextBox6.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.richTextBox7.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.richTextBox8.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.richTextBox9.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.richTextBox10.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.richTextBox11.BackColor = Color.FromKnownColor(KnownColor.Control);
+
+            this.textBox7.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.textBox9.BackColor = Color.FromKnownColor(KnownColor.Control);
+            this.textBox10.BackColor = Color.FromKnownColor(KnownColor.Control);
+
+            FocusOnTab();
+        }
+        
+        private void cbDeleteRegion_Click(object sender, EventArgs e)
+        {
+            FocusOnTab();
+        }
+
+        object lastSender = null;
+        void lbPropertyInput_MouseHover(object sender, EventArgs e)
+        {
+            int scrollBarWidth = 20;
+            if (sender is ListBox)
+            {
+                ListBox listBox = (ListBox)sender;
+                string hoveredItem = DetermineHoveredItem((ListBox)sender);
+                if (hoveredItem != null)
+                {
+                    string textWithLineBreaks = Utils.Misc.FormatToolTipText(hoveredItem);
+
+                    if (!Session.ToolTip2.GetToolTip((ListBox)sender).Equals(textWithLineBreaks))
+                    {
+                        Size stringSize = TextRenderer.MeasureText(hoveredItem, listBox.Font);
+                        if (listBox.Width - (listBox.PreferredHeight > listBox.Height ? scrollBarWidth : 0) >= stringSize.Width)
+                        {
+                            Session.ToolTip2.RemoveAll();
+                        } else {
+                            Session.ToolTip2.RemoveAll();
+                            Session.ToolTip2.SetToolTip((ListBox)sender, textWithLineBreaks);
+                        }
+                    }
+                }
+                MouseInput.ResetMouseHover(((ListBox)sender).Handle);
+            }
+            if (sender is TextBox || sender is RichTextBox)
+            {
+                if(
+                    (
+                        sender is TextBox || 
+                        sender is RichTextBox
+                    ) &&
+                    sender != this.ActiveControl
+                )
+                {
+                    Control textBox = (Control)sender;
+
+                    string textWithLineBreaks = Utils.Misc.FormatToolTipText(textBox.Text);
+
+                    if (!Session.ToolTip2.GetToolTip((Control)sender).Equals(textWithLineBreaks))
+                    {
+                        Size stringSize = TextRenderer.MeasureText(textBox.Text, textBox.Font);
+                        if (textBox.Width >= stringSize.Width)
+                        {
+                            Session.ToolTip2.RemoveAll();
+                        } else {
+                            Session.ToolTip2.RemoveAll();
+                            Session.ToolTip2.SetToolTip((Control)sender, textWithLineBreaks);
+                            lastSender = sender;
+                        }
+                    }
+                } else {
+                    Session.ToolTip2.RemoveAll();
+                }
+            }            
+        }
+
+        private string DetermineHoveredItem(ListBox listBox)
+        {
+            Point screenPosition = ListBox.MousePosition;
+            Point listBoxClientAreaPosition = listBox.PointToClient(screenPosition);
+
+            int hoveredIndex = listBox.IndexFromPoint(listBoxClientAreaPosition);
+            if (hoveredIndex != -1)
+            {
+                return listBox.Items[hoveredIndex] as string;
+            } else {
+                return null;
+            }
+        }
+
+        public void FocusOnTab()
+        {
+            if (Session.tabControl1.SelectedIndex == 0)
+            {
+                panel2.Focus();
+            }
+            else if (Session.tabControl1.SelectedIndex == 1)
+            {
+                panel3.Focus();
+            }
+        }
+    }
+
+    public static class MouseInput
+    {
+        // TME_HOVER
+        // The caller wants hover notification. Notification is delivered as a 
+        // WM_MOUSEHOVER message.  If the caller requests hover tracking while 
+        // hover tracking is already active, the hover timer will be reset.
+
+        private const int TME_HOVER = 0x1;
+
+        private struct TRACKMOUSEEVENT
+        {
+            // Size of the structure - calculated in the constructor
+            public int cbSize;
+
+            // value that we'll set to specify we want to start over Mouse Hover and get
+            // notification when the hover has happened
+            public int dwFlags;
+
+            // Handle to what's interested in the event
+            public IntPtr hwndTrack;
+
+            // How long it takes for a hover to occur
+            public int dwHoverTime;
+
+            // Setting things up specifically for a simple reset
+            public TRACKMOUSEEVENT(IntPtr hWnd)
+            {
+                this.cbSize = Marshal.SizeOf(typeof(TRACKMOUSEEVENT));
+                this.hwndTrack = hWnd;
+                this.dwHoverTime = SystemInformation.MouseHoverTime;
+                this.dwFlags = TME_HOVER;
+            }
+
+        }
+
+        // Declaration of the Win32API function
+        [DllImport("user32")]
+        private static extern bool TrackMouseEvent(ref TRACKMOUSEEVENT lpEventTrack);
+
+        public static void ResetMouseHover(IntPtr windowTrackingMouseHandle)
+        {
+            // Set up the parameter collection for the API call so that the appropriate
+            // control fires the event
+            TRACKMOUSEEVENT parameterBag = new TRACKMOUSEEVENT(windowTrackingMouseHandle);
+
+            // The actual API call
+            TrackMouseEvent(ref parameterBag);
+        }
+
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace TCEE.XML
+namespace OTGE.XML
 {
     [DataContract(Namespace="http://schemas.datacontract.org/2004/07/TCEE")]
     public class WorldConfig
@@ -23,7 +23,7 @@ namespace TCEE.XML
 
         public void SetProperty(TCProperty property, string value, bool merge, bool overrideParentValues)
         {
-            if (property.PropertyType != "String" && property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue" && String.IsNullOrWhiteSpace(value))
+            if (property.PropertyType != "String" && property.PropertyType != "BigString" && property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue" && String.IsNullOrWhiteSpace(value))
             {
                 value = null;
             }

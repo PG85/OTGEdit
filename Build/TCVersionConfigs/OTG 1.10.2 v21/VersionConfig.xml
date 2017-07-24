@@ -1,452 +1,513 @@
 <VersionConfig xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
     <BiomeConfig>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Biome Inheritance</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeExtends</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>BiomeExtends:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Biome Inheritance</Group>
             <LabelText i:nil="true" />        
             <Name>ResourceInheritance</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>ResourceInheritance:</ScriptHandle>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Biome placement</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeSize</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>BiomeSize:</ScriptHandle>
-        </TCProperty>		
+			<MinValue>0</MinValue>
+			<MaxValue>20</MaxValue>
+        </TCProperty>	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Biome placement</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeRarity</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>BiomeRarity:</ScriptHandle>
-        </TCProperty>		
+			<MinValue>0</MinValue>
+        </TCProperty>	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Biome placement</Group>
             <LabelText i:nil="true" />
             <Name>BiomeColor</Name>
             <PropertyType>Color</PropertyType>
             <ScriptHandle>BiomeColor:</ScriptHandle>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+			<Group>Biome placement</Group>
             <LabelText i:nil="true" />        
             <Name>ReplaceToBiomeName</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>ReplaceToBiomeName:</ScriptHandle>
 			<Optional>true</Optional>
-        </TCProperty>		
+        </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+			<Group>Isle biomes only</Group>
             <LabelText i:nil="true" />        
             <Name>IsleInBiome</Name>            
             <PropertyType>BiomesList</PropertyType>
             <ScriptHandle>IsleInBiome:</ScriptHandle>
         </TCProperty>	
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Isle biomes only</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeSizeWhenIsle</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>BiomeSizeWhenIsle:</ScriptHandle>
 			<Optional>true</Optional>
+			<MinValue>0</MinValue>
+			<MaxValue>20</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Isle biomes only</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeRarityWhenIsle</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>BiomeRarityWhenIsle:</ScriptHandle>
 			<Optional>true</Optional>
+			<MinValue>0</MinValue>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Border biomes only</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeIsBorder</Name>            
             <PropertyType>BiomesList</PropertyType>
             <ScriptHandle>BiomeIsBorder:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Border biomes only</Group>
             <LabelText i:nil="true" />        
             <Name>NotBorderNear</Name>            
             <PropertyType>BiomesList</PropertyType>
             <ScriptHandle>NotBorderNear:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Border biomes only</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeSizeWhenBorder</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>BiomeSizeWhenBorder:</ScriptHandle>
 			<Optional>true</Optional>
+			<MinValue>0</MinValue>
+			<MaxValue>20</MaxValue>			
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeHeight</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>BiomeHeight:</ScriptHandle>
+			<MinValue>-10</MinValue>
+			<MaxValue>10</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeVolatility</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>BiomeVolatility:</ScriptHandle>
+			<MinValue>-1000</MinValue>
+			<MaxValue>1000</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>SmoothRadius</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>SmoothRadius:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>32</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>MaxAverageHeight</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>MaxAverageHeight:</ScriptHandle>
+			<MinValue>-1000</MinValue>
+			<MaxValue>1000</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>MaxAverageDepth</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>MaxAverageDepth:</ScriptHandle>
+			<MinValue>-1000</MinValue>
+			<MaxValue>1000</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>Volatility1</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>Volatility1:</ScriptHandle>
+			<MinValue>-1000</MinValue>
+			<MaxValue>1000</MaxValue>			
         </TCProperty>                
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>Volatility2</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>Volatility2:</ScriptHandle>
+			<MinValue>-1000</MinValue>
+			<MaxValue>1000</MaxValue>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>VolatilityWeight1</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>VolatilityWeight1:</ScriptHandle>
+			<MinValue>-1000</MinValue>
+			<MaxValue>1000</MaxValue>
         </TCProperty>                
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>VolatilityWeight2</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>VolatilityWeight2:</ScriptHandle>
+			<MinValue>-1000</MinValue>
+			<MaxValue>1000</MaxValue>
         </TCProperty> 
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>DisableBiomeHeight</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DisableBiomeHeight:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>CustomHeightControl</Name>            
-            <PropertyType>String</PropertyType>
+            <PropertyType>BigString</PropertyType>
             <ScriptHandle>CustomHeightControl:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rivers</Group>
             <LabelText i:nil="true" />        
             <Name>RiverBiome</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>RiverBiome:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rivers</Group>
             <LabelText i:nil="true" />        
             <Name>RiverHeight</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>RiverHeight:</ScriptHandle>
+			<MinValue>-10</MinValue>
+			<MaxValue>10</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rivers</Group>
             <LabelText i:nil="true" />        
             <Name>RiverVolatility</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>RiverVolatility:</ScriptHandle>
+			<MinValue>-1000</MinValue>
+			<MaxValue>1000</MaxValue>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rivers</Group>
             <LabelText i:nil="true" />        
             <Name>RiverWaterLevel</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>RiverWaterLevel:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>256</MaxValue>			
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rivers</Group>
             <LabelText i:nil="true" />        
             <Name>RiverCustomHeightControl</Name>            
-            <PropertyType>String</PropertyType>
+            <PropertyType>BigString</PropertyType>
             <ScriptHandle>RiverCustomHeightControl:</ScriptHandle>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Blocks</Group>
             <LabelText i:nil="true" />        
             <Name>StoneBlock</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>StoneBlock:</ScriptHandle>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Blocks</Group>
             <LabelText i:nil="true" />        
             <Name>SurfaceBlock</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>SurfaceBlock:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Blocks</Group>
             <LabelText i:nil="true" />        
             <Name>GroundBlock</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>GroundBlock:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Blocks</Group>
             <LabelText i:nil="true" />        
             <Name>SurfaceAndGroundControl</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>SurfaceAndGroundControl:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Blocks</Group>
             <LabelText i:nil="true" />        
             <Name>ReplacedBlocks</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>ReplacedBlocks:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Water / Lava &amp; Frozen States</Group>
             <LabelText i:nil="true" />        
             <Name>UseWorldWaterLevel</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>UseWorldWaterLevel:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Water / Lava &amp; Frozen States</Group>
             <LabelText i:nil="true" />        
             <Name>WaterLevelMax</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>WaterLevelMax:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>256</MaxValue>			
         </TCProperty>                
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Water / Lava &amp; Frozen States</Group>
             <LabelText i:nil="true" />        
             <Name>WaterLevelMin</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>WaterLevelMin:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>256</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Water / Lava &amp; Frozen States</Group>
             <LabelText i:nil="true" />        
             <Name>WaterBlock</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>WaterBlock:</ScriptHandle>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Water / Lava &amp; Frozen States</Group>
             <LabelText i:nil="true" />        
             <Name>IceBlock</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>IceBlock:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Water / Lava &amp; Frozen States</Group>
             <LabelText i:nil="true" />        
             <Name>CooledLavaBlock</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>CooledLavaBlock:</ScriptHandle>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Visuals and weather</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeTemperature</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>BiomeTemperature:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>2</MaxValue>			
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Visuals and weather</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeWetness</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>BiomeWetness:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>1</MaxValue>			
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Visuals and weather</Group>
             <LabelText i:nil="true" />        
             <Name>SkyColor</Name>            
             <PropertyType>Color</PropertyType>
             <ScriptHandle>SkyColor:</ScriptHandle>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Visuals and weather</Group>
             <LabelText i:nil="true" />        
             <Name>WaterColor</Name>            
             <PropertyType>Color</PropertyType>
             <ScriptHandle>WaterColor:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Visuals and weather</Group>
             <LabelText i:nil="true" />        
             <Name>GrassColor</Name>            
             <PropertyType>Color</PropertyType>
             <ScriptHandle>GrassColor:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Visuals and weather</Group>
             <LabelText i:nil="true" />        
             <Name>GrassColorIsMultiplier</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>GrassColorIsMultiplier:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Visuals and weather</Group>
             <LabelText i:nil="true" />        
             <Name>FoliageColor</Name>            
             <PropertyType>Color</PropertyType>
             <ScriptHandle>FoliageColor:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Visuals and weather</Group>
             <LabelText i:nil="true" />        
             <Name>FoliageColorIsMultiplier</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>FoliageColorIsMultiplier:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Resource queue</Group>
             <LabelText i:nil="true" />        
             <Name>ResourceQueue</Name>            
             <PropertyType>ResourceQueue</PropertyType>
             <ScriptHandle># |                          Resource queue                         | #</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Sapling resource</Group>
             <LabelText i:nil="true" />
             <Name>Sapling resource</Name>
             <PropertyType>ResourceQueue</PropertyType>
             <ScriptHandle># |                         Sapling resource                        | #</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Custom objects</Group>
             <LabelText i:nil="true" />
             <Name>BiomeObjects</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>BiomeObjects:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Structures</Group>
             <LabelText i:nil="true" />        
             <Name>StrongholdsEnabled</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>StrongholdsEnabled:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Structures</Group>
             <LabelText i:nil="true" />        
             <Name>OceanMonumentsEnabled</Name>
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>OceanMonumentsEnabled:</ScriptHandle>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Structures</Group>
             <LabelText i:nil="true" />        
             <Name>NetherFortressesEnabled</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>NetherFortressesEnabled:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Structures</Group>
             <LabelText i:nil="true" />        
             <Name>VillageType</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>VillageType:</ScriptHandle>
+			<AllowedValues>
+				<string>wood</string>
+				<string>sandstone</string>
+				<string>taiga</string>
+				<string>savanna</string>
+				<string>disabled</string>
+			</AllowedValues>				
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Structures</Group>
             <LabelText i:nil="true" />        
             <Name>MineshaftType</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>MineshaftType:</ScriptHandle>
+			<AllowedValues>
+				<string>normal</string>
+				<string>mesa</string>
+				<string>disabled</string>
+			</AllowedValues>				
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Structures</Group>
             <LabelText i:nil="true" />        
             <Name>MineshaftRarity</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>MineshaftRarity:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>100</MaxValue>			
         </TCProperty>  		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Structures</Group>
             <LabelText i:nil="true" />        
             <Name>RareBuildingType</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>RareBuildingType:</ScriptHandle>
+			<AllowedValues>
+				<string>desertPyramid</string>
+				<string>jungleTemple</string>
+				<string>swampHut</string>
+				<string>igloo</string>
+				<string>disabled</string>
+			</AllowedValues>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Mob spawning</Group>
             <LabelText i:nil="true" />        
             <Name>SpawnMonsters</Name>            
-            <PropertyType>String</PropertyType>
+            <PropertyType>BigString</PropertyType>
             <ScriptHandle>SpawnMonsters:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Mob spawning</Group>
             <LabelText i:nil="true" />        
             <Name>SpawnCreatures</Name>            
-            <PropertyType>String</PropertyType>
+            <PropertyType>BigString</PropertyType>
             <ScriptHandle>SpawnCreatures:</ScriptHandle>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Mob spawning</Group>
             <LabelText i:nil="true" />        
             <Name>SpawnWaterCreatures</Name>            
-            <PropertyType>String</PropertyType>
+            <PropertyType>BigString</PropertyType>
             <ScriptHandle>SpawnWaterCreatures:</ScriptHandle>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Mob spawning</Group>
             <LabelText i:nil="true" />        
             <Name>SpawnAmbientCreatures</Name>            
-            <PropertyType>String</PropertyType>
+            <PropertyType>BigString</PropertyType>
             <ScriptHandle>SpawnAmbientCreatures:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Mob spawning</Group>
+            <LabelText i:nil="true" />
+            <Name>InheritMobsBiomeName</Name>            
+            <PropertyType>String</PropertyType>
+            <ScriptHandle>InheritMobsBiomeName:</ScriptHandle>
+			<Optional>true</Optional>
+        </TCProperty>
+		<TCProperty>
+            <Group>Forge Biome Dictionary</Group>
             <LabelText i:nil="true" />
             <Name>BiomeDictId</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>BiomeDictId:</ScriptHandle>
 			<Optional>true</Optional>
         </TCProperty>
-        <TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />
-            <Name>InheritMobsBiomeName</Name>            
-            <PropertyType>String</PropertyType>
-            <ScriptHandle>InheritMobsBiomeName:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>		
     </BiomeConfig>
     <ResourceQueueOptions>
 		<ResourceQueueItem>            
@@ -632,956 +693,1135 @@
         </SettingsType>
         <SettingsType>
             <BiomesDirectory>BiomeConfigs</BiomesDirectory>            
-            <ColorType>0x</ColorType>
+            <ColorType>#</ColorType>
             <FileExtension>BiomeConfig.ini</FileExtension>
             <Type>Forge</Type>
         </SettingsType>
     </SettingsTypes>
     <WorldConfig>
 		<TCProperty>
-			<Group i:nil="true" />
+			<Group>WorldConfig</Group>
 			<LabelText i:nil="true" />
 			<Name>Author</Name>
 			<PropertyType>String</PropertyType>
 			<ScriptHandle>Author:</ScriptHandle>
 		</TCProperty>
 		<TCProperty>
-			<Group i:nil="true" />
+			<Group>WorldConfig</Group>
 			<LabelText i:nil="true" />
 			<Name>Description</Name>
 			<PropertyType>String</PropertyType>
 			<ScriptHandle>Description:</ScriptHandle>
 		</TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>WorldConfig</Group>
             <LabelText i:nil="true" />        
-            <Name>SettingsMode</Name>            
+            <Name>SettingsMode</Name>
             <PropertyType>String</PropertyType>
             <ScriptHandle>SettingsMode:</ScriptHandle>
+			<AllowedValues>
+				<string>WriteAll</string>
+				<string>WriteWithoutComments</string>
+				<string>WriteDisable</string>
+			</AllowedValues>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Modes</Group>
             <LabelText i:nil="true" />        
             <Name>TerrainMode</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>TerrainMode:</ScriptHandle>
+			<AllowedValues>
+				<string>Normal</string>
+				<string>TerrainTest</string>
+				<string>NotGenerate</string>
+				<string>Default</string>
+				<string>OldGenerator</string>
+			</AllowedValues>
         </TCProperty> 
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Modes</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeMode</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>BiomeMode:</ScriptHandle>
+			<AllowedValues>
+				<string>Normal</string>
+				<string>FromImage</string>
+				<string>Default</string>
+				<string>BeforeGroups</string>
+				<string>OldGenerator</string>
+			</AllowedValues>
         </TCProperty>  	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Custom biomes</Group>
             <LabelText i:nil="true" />        
             <Name>CustomBiomes</Name>            
-            <PropertyType>String</PropertyType>
+            <PropertyType>BigString</PropertyType>
             <ScriptHandle>CustomBiomes:</ScriptHandle>
         </TCProperty>  	
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode: Normal</Group>
             <LabelText i:nil="true" />        
             <Name>GenerationDepth</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>GenerationDepth:</ScriptHandle>
+			<MinValue>1</MinValue>
+			<MaxValue>20</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode: Normal</Group>
             <LabelText i:nil="true" />        
             <Name>BiomeRarityScale</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>BiomeRarityScale:</ScriptHandle>
+			<MinValue>1</MinValue>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode: Normal</Group>
             <LabelText i:nil="true" />        
             <Name>Biome Groups</Name>
             <PropertyType>ResourceQueue</PropertyType>
             <ScriptHandle># Biome Groups #</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode: Normal</Group>
             <LabelText i:nil="true" />        
             <Name>IsleBiomes</Name>            
             <PropertyType>BiomesList</PropertyType>
             <ScriptHandle>IsleBiomes:</ScriptHandle>
         </TCProperty> 	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode: Normal</Group>
             <LabelText i:nil="true" />        
             <Name>BorderBiomes</Name>            
             <PropertyType>BiomesList</PropertyType>
             <ScriptHandle>BorderBiomes:</ScriptHandle>
         </TCProperty>  	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Landmass settings (for NormalBiomes)</Group>
             <LabelText i:nil="true" />        
             <Name>LandRarity</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>LandRarity:</ScriptHandle>
+			<MinValue>1</MinValue>
+			<MaxValue>100</MaxValue>			
         </TCProperty>	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Landmass settings (for NormalBiomes)</Group>
             <LabelText i:nil="true" />        
             <Name>LandSize</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>LandSize:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>20</MaxValue>			
         </TCProperty> 	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Landmass settings (for NormalBiomes)</Group>
             <LabelText i:nil="true" />        
             <Name>LandFuzzy</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>LandFuzzy:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>20</MaxValue>			
         </TCProperty>	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Ice area settings</Group>
             <LabelText i:nil="true" />        
             <Name>FrozenOcean</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>FrozenOcean:</ScriptHandle>
         </TCProperty>	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Ice area settings</Group>
             <LabelText i:nil="true" />        
             <Name>OceanFreezingTemperature</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>OceanFreezingTemperature:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>2</MaxValue>			
         </TCProperty>	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Ice area settings</Group>
             <LabelText i:nil="true" />        
             <Name>FreezeAllBiomesInColdGroup</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>FreezeAllBiomesInColdGroup:</ScriptHandle>
         </TCProperty>	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rivers</Group>
             <LabelText i:nil="true" />        
             <Name>RiverRarity</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>RiverRarity:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>20</MaxValue>			
         </TCProperty>       
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rivers</Group>
             <LabelText i:nil="true" />        
             <Name>RiverSize</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>RiverSize:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>20</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rivers</Group>
             <LabelText i:nil="true" />        
             <Name>RiversEnabled</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>RiversEnabled:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rivers</Group>
             <LabelText i:nil="true" />        
             <Name>ImprovedRivers</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>ImprovedRivers:</ScriptHandle>
         </TCProperty> 
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rivers</Group>
             <LabelText i:nil="true" />        
             <Name>RandomRivers</Name>
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>RandomRivers:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode:FromImage</Group>
             <LabelText i:nil="true" />        
             <Name>ImageMode</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>ImageMode:</ScriptHandle>
+			<AllowedValues>
+				<string>Repeat</string>
+				<string>Mirror</string>
+				<string>ContinueNormal</string>
+				<string>FillEmpty</string>
+			</AllowedValues>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode:FromImage</Group>
             <LabelText i:nil="true" />        
             <Name>ImageFile</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>ImageFile:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode:FromImage</Group>
             <LabelText i:nil="true" />        
             <Name>ImageOrientation</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>ImageOrientation:</ScriptHandle>
+			<AllowedValues>
+				<string>North</string>
+				<string>East</string>
+				<string>South</string>
+				<string>West</string>
+			</AllowedValues>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode:FromImage</Group>
             <LabelText i:nil="true" />        
             <Name>ImageFillBiome</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>ImageFillBiome:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode:FromImage</Group>
             <LabelText i:nil="true" />        
             <Name>ImageXOffset</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>ImageXOffset:</ScriptHandle>
         </TCProperty>        
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode:FromImage</Group>
             <LabelText i:nil="true" />        
             <Name>ImageZOffset</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>ImageZOffset:</ScriptHandle>
         </TCProperty> 
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>WorldHeightScaleBits</Name>
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>WorldHeightScaleBits:</ScriptHandle>
+			<MinValue>5</MinValue>
+			<MaxValue>8</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>WorldHeightCapBits</Name>
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>WorldHeightCapBits:</ScriptHandle>
+			<MinValue>5</MinValue>
+			<MaxValue>8</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>FractureHorizontal</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>FractureHorizontal:</ScriptHandle>
+			<MinValue>-500</MinValue>
+			<MaxValue>500</MaxValue>			
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Terrain height and volatility</Group>
             <LabelText i:nil="true" />        
             <Name>FractureVertical</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>FractureVertical:</ScriptHandle>
+			<MinValue>-500</MinValue>
+			<MaxValue>500</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Blocks</Group>
             <LabelText i:nil="true" />        
             <Name>RemoveSurfaceStone</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>RemoveSurfaceStone:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Blocks</Group>
             <LabelText i:nil="true" />        
             <Name>DisableBedrock</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DisableBedrock:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Blocks</Group>
             <LabelText i:nil="true" />        
             <Name>CeilingBedrock</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>CeilingBedrock:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Blocks</Group>
             <LabelText i:nil="true" />        
             <Name>FlatBedrock</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>FlatBedrock:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Blocks</Group>
             <LabelText i:nil="true" />
             <Name>BedrockobBlock</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>BedrockobBlock:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Blocks</Group>
             <LabelText i:nil="true" />        
             <Name>PopulationBoundsCheck</Name>
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>PopulationBoundsCheck:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Water / Lava &amp; Frozen States</Group>
             <LabelText i:nil="true" />        
             <Name>WaterLevelMax</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>WaterLevelMax:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>256</MaxValue>			
         </TCProperty>        
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Water / Lava &amp; Frozen States</Group>
             <LabelText i:nil="true" />        
             <Name>WaterLevelMin</Name>
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>WaterLevelMin:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>256</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Water / Lava &amp; Frozen States</Group>
             <LabelText i:nil="true" />        
             <Name>WaterBlock</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>WaterBlock:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Water / Lava &amp; Frozen States</Group>
             <LabelText i:nil="true" />        
             <Name>IceBlock</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>IceBlock:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Water / Lava &amp; Frozen States</Group>
             <LabelText i:nil="true" />        
             <Name>CooledLavaBlock</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>CooledLavaBlock:</ScriptHandle>
         </TCProperty>	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>World only</Group>
             <LabelText i:nil="true" />        
             <Name>FullyFreezeLakes</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>FullyFreezeLakes:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>World only</Group>
             <LabelText i:nil="true" />        
             <Name>UseTemperatureForSnowHeight</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Bool</PropertyType>
             <ScriptHandle>UseTemperatureForSnowHeight:</ScriptHandle>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>World only</Group>
             <LabelText i:nil="true" />        
             <Name>BetterSnowFall</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>BetterSnowFall:</ScriptHandle>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Resources</Group>
             <LabelText i:nil="true" />        
             <Name>ResourcesSeed</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>ResourcesSeed:</ScriptHandle>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Structures</Group>
             <LabelText i:nil="true" />        
             <Name>StrongholdsEnabled</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>StrongholdsEnabled:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Strongholds</Group>
             <LabelText i:nil="true" />        
             <Name>StrongholdCount</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>StrongholdCount:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>1000</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Strongholds</Group>
             <LabelText i:nil="true" />        
             <Name>StrongholdDistance</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>StrongholdDistance:</ScriptHandle>
+			<MinValue>1</MinValue>
+			<MaxValue>1000</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Strongholds</Group>
             <LabelText i:nil="true" />        
             <Name>StrongholdSpread</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>StrongholdSpread:</ScriptHandle>
+			<MinValue>1</MinValue>
+			<MaxValue>1000</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Villages</Group>
             <LabelText i:nil="true" />        
             <Name>VillagesEnabled</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>VillagesEnabled:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Villages</Group>
             <LabelText i:nil="true" />        
             <Name>VillageSize</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>VillageSize:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>10</MaxValue>			
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Villages</Group>
             <LabelText i:nil="true" />        
             <Name>VillageDistance</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>VillageDistance:</ScriptHandle>
+			<MinValue>9</MinValue>
+			<MaxValue>10000</MaxValue>			
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rare buildings</Group>
             <LabelText i:nil="true" />        
             <Name>RareBuildingsEnabled</Name>
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>RareBuildingsEnabled:</ScriptHandle>
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rare buildings</Group>
             <LabelText i:nil="true" />        
             <Name>MinimumDistanceBetweenRareBuildings</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>MinimumDistanceBetweenRareBuildings:</ScriptHandle>
+			<MinValue>1</MinValue>
+			<MaxValue>10000</MaxValue>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Rare buildings</Group>
             <LabelText i:nil="true" />        
             <Name>MaximumDistanceBetweenRareBuildings</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>MaximumDistanceBetweenRareBuildings:</ScriptHandle>
+			<MinValue>1</MinValue>
+			<MaxValue>10000</MaxValue>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Ocean monuments</Group>
             <LabelText i:nil="true" />        
             <Name>OceanMonumentsEnabled</Name>
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>OceanMonumentsEnabled:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Ocean monuments</Group>
             <LabelText i:nil="true" />        
             <Name>OceanMonumentGridSize</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>OceanMonumentGridSize:</ScriptHandle>
+			<MinValue>5</MinValue>
+			<MaxValue>10000</MaxValue>			
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Ocean monuments</Group>
             <LabelText i:nil="true" />        
             <Name>OceanMonumentRandomOffset</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>OceanMonumentRandomOffset:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>10000</MaxValue>			
         </TCProperty>	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Custom structues</Group>
             <LabelText i:nil="true" />        
             <Name>MaximumCustomStructureRadius</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>MaximumCustomStructureRadius:</ScriptHandle>
+			<MinValue>1</MinValue>
+			<MaxValue>100</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Other structures</Group>
             <LabelText i:nil="true" />        
             <Name>MineshaftsEnabled</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>MineshaftsEnabled:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Other structures</Group>
             <LabelText i:nil="true" />
             <Name>NetherFortressesEnabled</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>NetherFortressesEnabled:</ScriptHandle>
         </TCProperty> 
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Visual settings</Group>
             <LabelText i:nil="true" />        
             <Name>WorldFog</Name>
             <PropertyType>Color</PropertyType>
             <ScriptHandle>WorldFog:</ScriptHandle>
         </TCProperty> 
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Visual settings</Group>
             <LabelText i:nil="true" />        
             <Name>WorldNightFog</Name>
             <PropertyType>Color</PropertyType>
             <ScriptHandle>WorldNightFog:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Cave settings</Group>
             <LabelText i:nil="true" />        
             <Name>CaveRarity</Name>
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>CaveRarity:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>100</MaxValue>			
         </TCProperty> 
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Cave settings</Group>
             <LabelText i:nil="true" />        
             <Name>CaveFrequency</Name>
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>CaveFrequency:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>200</MaxValue>			
         </TCProperty>		
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Cave settings</Group>
             <LabelText i:nil="true" />        
             <Name>CaveMinAltitude</Name>
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>CaveMinAltitude:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>256</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Cave settings</Group>
             <LabelText i:nil="true" />        
             <Name>CaveMaxAltitude</Name>
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>CaveMaxAltitude:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>256</MaxValue>			
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Cave settings</Group>
             <LabelText i:nil="true" />        
             <Name>IndividualCaveRarity</Name>
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>IndividualCaveRarity:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>100</MaxValue>			
         </TCProperty>		
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Cave settings</Group>
             <LabelText i:nil="true" />        
             <Name>CaveSystemFrequency</Name>
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>CaveSystemFrequency:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>200</MaxValue>			
         </TCProperty>	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Cave settings</Group>
             <LabelText i:nil="true" />        
             <Name>CaveSystemPocketChance</Name>
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>CaveSystemPocketChance:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>100</MaxValue>			
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Cave settings</Group>
             <LabelText i:nil="true" />        
             <Name>CaveSystemPocketMinSize</Name>
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>CaveSystemPocketMinSize:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>100</MaxValue>			
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Cave settings</Group>
             <LabelText i:nil="true" />        
             <Name>CaveSystemPocketMaxSize</Name>
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>CaveSystemPocketMaxSize:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>100</MaxValue>			
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Cave settings</Group>
             <LabelText i:nil="true" />        
             <Name>EvenCaveDistrubution</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>EvenCaveDistrubution:</ScriptHandle>
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Ravine settings</Group>
             <LabelText i:nil="true" />        
             <Name>RavineRarity</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>RavineRarity:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>100</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Ravine settings</Group>
             <LabelText i:nil="true" />        
             <Name>RavineMinAltitude</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>RavineMinAltitude:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>256</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Ravine settings</Group>
             <LabelText i:nil="true" />        
             <Name>RavineMaxAltitude</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>RavineMaxAltitude:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>256</MaxValue>			
         </TCProperty>		
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Ravine settings</Group>
             <LabelText i:nil="true" />        
             <Name>RavineMinLength</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>RavineMinLength:</ScriptHandle>
+			<MinValue>1</MinValue>
+			<MaxValue>500</MaxValue>			
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Ravine settings</Group>
             <LabelText i:nil="true" />        
             <Name>RavineMaxLength</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>RavineMaxLength:</ScriptHandle>
+			<MinValue>1</MinValue>
+			<MaxValue>500</MaxValue>			
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Ravine settings</Group>
             <LabelText i:nil="true" />        
             <Name>RavineDepth</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>RavineDepth:</ScriptHandle>
+			<MinValue>0.1</MinValue>
+			<MaxValue>15</MaxValue>			
         </TCProperty>			                           	
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode:OldGenerator</Group>
             <LabelText i:nil="true" />        
             <Name>OldBiomeSize</Name>
             <PropertyType>Float</PropertyType>
             <ScriptHandle>OldBiomeSize:</ScriptHandle>
+			<MinValue>0.1</MinValue>
+			<MaxValue>10</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode:OldGenerator</Group>
             <LabelText i:nil="true" />        
             <Name>MinMoisture</Name>
             <PropertyType>Float</PropertyType>
             <ScriptHandle>MinMoisture:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>1</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode:OldGenerator</Group>
             <LabelText i:nil="true" />        
             <Name>MaxMoisture</Name>
             <PropertyType>Float</PropertyType>
             <ScriptHandle>MaxMoisture:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>1</MaxValue>			
         </TCProperty>
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode:OldGenerator</Group>
             <LabelText i:nil="true" />        
             <Name>MinTemperature</Name>
             <PropertyType>Float</PropertyType>
             <ScriptHandle>MinTemperature:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>2</MaxValue>			
         </TCProperty>        
         <TCProperty>
-            <Group i:nil="true" />
+            <Group>Settings for BiomeMode:OldGenerator</Group>
             <LabelText i:nil="true" />        
             <Name>MaxTemperature</Name>
             <PropertyType>Float</PropertyType>
             <ScriptHandle>MaxTemperature:</ScriptHandle>
+			<MinValue>0</MinValue>
+			<MaxValue>2</MaxValue>			
         </TCProperty>
 		<TCProperty>
-			<Group i:nil="true" />
+			<Group>World Seed</Group>
 			<LabelText i:nil="true" />
 			<Name>WorldSeed</Name>
 			<PropertyType>String</PropertyType>
 			<ScriptHandle>WorldSeed:</ScriptHandle>
+			<Optional>true</Optional>
 		</TCProperty>
 		<TCProperty>
-			<Group i:nil="true" />
+			<Group>BO3 at spawn</Group>
 			<LabelText i:nil="true" />
 			<Name>BO3AtSpawn</Name>
 			<PropertyType>String</PropertyType>
 			<ScriptHandle>BO3AtSpawn:</ScriptHandle>
+			<Optional>true</Optional>
 		</TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Pre-generation radius</Group>
             <LabelText i:nil="true" />        
             <Name>PreGenerationRadius</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>PreGenerationRadius:</ScriptHandle>
+			<Optional>true</Optional>
+			<MinValue>0</MinValue>
+			<MaxValue>999999</MaxValue>			
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World border radius</Group>
             <LabelText i:nil="true" />        
             <Name>WorldBorderRadius</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>WorldBorderRadius:</ScriptHandle>
+			<Optional>true</Optional>
+			<MinValue>0</MinValue>
+			<MaxValue>999999</MaxValue>			
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Dimension</Group>
             <LabelText i:nil="true" />        
             <Name>Dimensions</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>Dimensions:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Dimension</Group>
             <LabelText i:nil="true" />        
             <Name>DimensionBelow</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>DimensionBelow:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Dimension</Group>
             <LabelText i:nil="true" />        
             <Name>DimensionAbove</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>DimensionAbove:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Dimension</Group>
             <LabelText i:nil="true" />        
             <Name>DimensionPortalMaterials</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>DimensionPortalMaterials:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Dimension</Group>
             <LabelText i:nil="true" />        
             <Name>TeleportToSpawnOnly</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>TeleportToSpawnOnly:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Dimension</Group>
             <LabelText i:nil="true" />        
             <Name>Cartographer</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>Cartographer:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>CommandBlockOutput</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>CommandBlockOutput:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>DisableElytraMovementCheck</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DisableElytraMovementCheck:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>DoDaylightCycle</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DoDaylightCycle:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>DoEntityDrops</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DoEntityDrops:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>DoFireTick</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DoFireTick:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>DoMobLoot</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DoMobLoot:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>DoMobSpawning</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DoMobSpawning:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>DoTileDrops</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DoTileDrops:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>DoWeatherCycle</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DoWeatherCycle:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>KeepInventory</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>KeepInventory:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>LogAdminCommands</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>LogAdminCommands:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>MaxEntityCramming</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>MaxEntityCramming:</ScriptHandle>
+			<Optional>true</Optional>
+			<MinValue>0</MinValue>
+			<MaxValue>999999</MaxValue>			
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>MobGriefing</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>MobGriefing:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>NaturalRegeneration</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>NaturalRegeneration:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>RandomTickSpeed</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>RandomTickSpeed:</ScriptHandle>
+			<Optional>true</Optional>
+			<MinValue>0</MinValue>
+			<MaxValue>999999</MaxValue>			
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>ReducedDebugInfo</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>ReducedDebugInfo:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>SendCommandFeedback</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>SendCommandFeedback:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>ShowDeathMessages</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>ShowDeathMessages:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>SpawnRadius</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>SpawnRadius:</ScriptHandle>
+			<Optional>true</Optional>
+			<MinValue>0</MinValue>
+			<MaxValue>999999</MaxValue>			
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>Game rules (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>SpectatorsGenerateChunks</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>SpectatorsGenerateChunks:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>WelcomeMessage</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>WelcomeMessage:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>DepartMessage</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>DepartMessage:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>HasSkyLight</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>HasSkyLight:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>IsSurfaceWorld</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>IsSurfaceWorld:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>CanRespawnHere</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>CanRespawnHere:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>DoesWaterVaporize</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DoesWaterVaporize:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>DoesXZShowFog</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>DoesXZShowFog:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>UseCustomFogColor</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>UseCustomFogColor:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>FogColorRed</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>FogColorRed:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>FogColorGreen</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>FogColorGreen:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>FogColorBlue</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>FogColorBlue:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>IsSkyColored</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>IsSkyColored:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>CloudHeight</Name>            
-            <PropertyType>Float</PropertyType>
+            <PropertyType>Int</PropertyType>
             <ScriptHandle>CloudHeight:</ScriptHandle>
+			<Optional>true</Optional>
+			<MinValue>0</MinValue>
+			<MaxValue>999999</MaxValue>			
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>CanDoLightning</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>CanDoLightning:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>CanDoRainSnowIce</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>CanDoRainSnowIce:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>IsNightWorld</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>IsNightWorld:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>VoidFogYFactor</Name>            
             <PropertyType>Float</PropertyType>
             <ScriptHandle>VoidFogYFactor:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>ShouldMapSpin</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>ShouldMapSpin:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
 		<TCProperty>
-            <Group i:nil="true" />
+            <Group>World provider settings (dimensions only)</Group>
             <LabelText i:nil="true" />        
             <Name>CanDropChunk</Name>            
             <PropertyType>Bool</PropertyType>
             <ScriptHandle>CanDropChunk:</ScriptHandle>
+			<Optional>true</Optional>
         </TCProperty>
     </WorldConfig>
 </VersionConfig>
