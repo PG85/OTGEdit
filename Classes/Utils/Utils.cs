@@ -240,7 +240,22 @@ namespace OTGE.Utils
             {
                 Session.Form1.FocusOnTab();
             } else {
+
+                TextBox tb = GetPrivateFieldValue(this, "upDownEdit") as TextBox;
+                int caretPosition = tb.SelectionStart;
+                int distanceFromEnd = tb.Text.Length - caretPosition;
+
                 int numberOfDecimals = !DecimalsAllowed ? 0 : this.Text.IndexOf(".") > 0 ? this.Text.Length - (this.Text.IndexOf(".") + 1) : 0;
+
+                if (numberOfDecimals > 0 && distanceFromEnd > 1)
+                {
+                    numberOfDecimals -= distanceFromEnd;
+                    if(numberOfDecimals < 0)
+                    {
+                        numberOfDecimals = 0;
+                    }
+                }
+
                 this.DecimalPlaces = numberOfDecimals;
                 double increment = numberOfDecimals == 0 ? 1 : (1D / (Math.Pow(10D, numberOfDecimals)));
 
@@ -275,7 +290,27 @@ namespace OTGE.Utils
                         this.Value -= Convert.ToDecimal(increment);
                     }
                 }
+
+                tb.SelectionLength = 0;
+                tb.SelectionStart = caretPosition > tb.Text.Length ? tb.Text.Length : caretPosition;
             }
+        }
+
+        private object GetPrivateFieldValue(object obj, string fieldName)
+        {
+            Type t = obj.GetType();
+            System.Reflection.FieldInfo[] fiArr = t.GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (fiArr != null)
+            {
+                foreach (System.Reflection.FieldInfo fi in fiArr)
+                {
+                    if (fi.Name == fieldName)
+                    {
+                        return (fi).GetValue(obj);
+                    }
+                }
+            }
+            return (null);
         }
     }
 

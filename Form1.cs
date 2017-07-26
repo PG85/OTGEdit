@@ -217,8 +217,11 @@ namespace OTGE
                     Session.WorldConfigDefaultValues = World.LoadWorldConfigFromFile(new FileInfo(Session.SourceConfigsDir + "WorldConfig.ini"), Session.VersionConfig, true);
                     if (Session.WorldConfigDefaultValues == null)
                     {
-                        PopUpForm.CustomMessageBox("WorldConfig.ini could not be loaded. Please make sure that WorldConfig.ini is present in the TCVersionConfig directory for the selected version.", "Incompatible WorldConfig.ini");
+                        Session.HideProgessBox();
                         UnloadUI();
+                        Session.Form1.ResumeLayout();
+                        PopUpForm.CustomMessageBox("WorldConfig.ini could not be loaded. Please make sure that WorldConfig.ini is present in the TCVersionConfig directory for the selected version.", "Incompatible WorldConfig.ini");
+                        return;
                     } else {
                         LoadBiomesList();
                         if (cbWorld.SelectedItem != null && cbWorld.SelectedItem.Equals("Default"))
@@ -587,6 +590,7 @@ namespace OTGE
                                 txPropertyInput2.LostFocus += PropertyInputLostFocusWorld;
                                 txPropertyInput2.MouseHover += lbPropertyInput_MouseHover;
                                 txPropertyInput2.MouseWheel += lbWorldTabSetting_MouseWheel;
+                                txPropertyInput2.KeyDown += lbPropertyInput_KeyDown_World;
 
                                 tlpWorldSettings1.Controls.Add(txPropertyInput2, 2, row);
                                 Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, null, null));
@@ -954,6 +958,7 @@ namespace OTGE
                                 txPropertyInput2.LostFocus += PropertyInputLostFocusBiome;
                                 txPropertyInput2.MouseHover += lbPropertyInput_MouseHover;
                                 txPropertyInput2.MouseWheel += lbBiomesTabSetting_MouseWheel;
+                                txPropertyInput2.KeyDown += lbPropertyInput_KeyDown;
 
                                 tlpBiomeSettings1.Controls.Add(txPropertyInput2, 2, row);
                                 Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, null, null));                                
@@ -5549,7 +5554,19 @@ namespace OTGE
         {
             TCProperty property = Session.WorldSettingsInputs.FirstOrDefault(a => a.Value.Item1 == sender).Key;
 
-            if (e.Control && e.KeyCode == Keys.A)
+            if (property.PropertyType == "BigString")
+            {
+                // Don't allow line breaks when pressing enter or pasting.
+                if(e.KeyCode == Keys.Enter)
+                {
+                    e.SuppressKeyPress = true;
+                }
+                else if (e.Control && e.KeyCode == Keys.V)
+                {
+                    Clipboard.SetText(Clipboard.GetText().Replace("\r", "").Replace("\n", "")); // TODO: Make this prettier.
+                }
+            }
+            else if (e.Control && e.KeyCode == Keys.A)
             {
                 e.SuppressKeyPress = true;
 
@@ -5654,7 +5671,19 @@ namespace OTGE
         {
             TCProperty property = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item1 == sender).Key;
 
-            if (e.Control && e.KeyCode == Keys.A)
+            if (property.PropertyType == "BigString")
+            {
+                // Don't allow line breaks when pressing enter or pasting.
+                if (e.KeyCode == Keys.Enter)
+                {
+                    e.SuppressKeyPress = true;
+                }
+                else if (e.Control && e.KeyCode == Keys.V)
+                {
+                    Clipboard.SetText(Clipboard.GetText().Replace("\r", "").Replace("\n", "")); // TODO: Make this prettier.
+                }
+            }
+            else if (e.Control && e.KeyCode == Keys.A)
             {
                 e.SuppressKeyPress = true;
 

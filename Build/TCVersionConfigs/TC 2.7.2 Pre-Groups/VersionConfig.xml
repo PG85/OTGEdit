@@ -392,22 +392,6 @@
             <Name>SpawnAmbientCreatures</Name>            
             <PropertyType>String</PropertyType>
             <ScriptHandle>SpawnAmbientCreatures:</ScriptHandle>
-        </TCProperty>
-        <TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />
-            <Name>BiomeDictId</Name>            
-            <PropertyType>String</PropertyType>
-            <ScriptHandle>BiomeDictId:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-        <TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />
-            <Name>InheritMobsBiomeName</Name>            
-            <PropertyType>String</PropertyType>
-            <ScriptHandle>InheritMobsBiomeName:</ScriptHandle>
-			<Optional>true</Optional>
         </TCProperty>		
     </BiomeConfig>
     <ResourceQueueOptions>
@@ -1205,101 +1189,5 @@
 			<ScriptHandle>WorldSeed:</ScriptHandle>
 			<Optional>true</Optional>
 		</TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>ReplaceBlocksList</Name>            
-            <PropertyType>String</PropertyType>
-            <ScriptHandle>ReplaceBlocksList:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>ImprovedMobSpawning</Name>            
-            <PropertyType>Bool</PropertyType>
-            <ScriptHandle>ImprovedMobSpawning:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MaxMonsters</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MaxMonsters:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MaxCreatures</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MaxCreatures:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MaxAmbientCreatures</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MaxAmbientCreatures:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MaxWaterCreatures</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MaxWaterCreatures:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MobCoolDownInSecs</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MobCoolDownInSecs:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>		
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>SpawnDistMinInBlocks</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>SpawnDistMinInBlocks:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>SpawnDistMaxInBlocks</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>SpawnDistMaxInBlocks:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MinDistBetweenMonsters</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MinDistBetweenMonsters:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>		
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>MinDistBetweenCreatures</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>MinDistBetweenCreatures:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>				
-		<TCProperty>
-            <Group i:nil="true" />
-            <LabelText i:nil="true" />        
-            <Name>DespawnRange</Name>            
-            <PropertyType>Float</PropertyType>
-            <ScriptHandle>DespawnRange:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>
     </WorldConfig> 
 </VersionConfig>

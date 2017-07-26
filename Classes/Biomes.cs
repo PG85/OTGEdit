@@ -63,6 +63,12 @@ namespace OTGE
                             }
                             replaceStartIndex++;
                             currentChar = defaultText[replaceStartIndex];
+
+                            if (replaceStartIndex >= defaultText.Length - 1)
+                            {
+                                replaceStartIndex = replaceEndIndex;
+                                break;
+                            }
                         }
                         if (replaceStartIndex > replaceEndIndex)
                         {
@@ -215,9 +221,18 @@ namespace OTGE
                         int skipCharsLength = (property.ScriptHandle).Length;
                         int valueStringLength = 0;
 
-                        while (defaultText[valueStringStartIndex + skipCharsLength + valueStringLength] != '\n')
+                        if (valueStringStartIndex + skipCharsLength + valueStringLength < defaultText.Length)
                         {
-                            valueStringLength += 1;
+                            while (defaultText[valueStringStartIndex + skipCharsLength + valueStringLength] != '\n')
+                            {
+                                valueStringLength += 1;
+
+                                if (valueStringStartIndex + skipCharsLength + valueStringLength >= defaultText.Length)
+                                {
+                                    valueStringLength = 0;
+                                    break;
+                                }
+                            }
                         }
                         if (valueStringLength > 0)
                         {
@@ -487,6 +502,12 @@ namespace OTGE
                                         }
                                         replaceStartIndex++;
                                         currentChar = defaultText[replaceStartIndex];
+
+                                        if (replaceStartIndex >= defaultText.Length - 1)
+                                        {
+                                            replaceStartIndex = replaceEndIndex;
+                                            break;
+                                        }
                                     }
                                     if (replaceStartIndex > replaceEndIndex)
                                     {
@@ -716,9 +737,18 @@ namespace OTGE
                                     int skipCharsLength = (property.ScriptHandle).Length;
                                     int valueStringLength = 0;
 
-                                    while (defaultText[valueStringStartIndex + skipCharsLength + valueStringLength] != '\n')
+                                    if (valueStringStartIndex + skipCharsLength + valueStringLength < defaultText.Length)
                                     {
-                                        valueStringLength += 1;
+                                        while (defaultText[valueStringStartIndex + skipCharsLength + valueStringLength] != '\n')
+                                        {
+                                            valueStringLength += 1;
+
+                                            if (valueStringStartIndex + skipCharsLength + valueStringLength >= defaultText.Length)
+                                            {
+                                                valueStringLength = 0;
+                                                break;
+                                            }
+                                        }
                                     }
 
                                     if (property.PropertyType == "BiomesList" && bMerge && valueStringLength > 0)

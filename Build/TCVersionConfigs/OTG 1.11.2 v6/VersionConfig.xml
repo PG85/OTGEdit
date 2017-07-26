@@ -717,7 +717,7 @@
 			<Group>WorldConfig</Group>
 			<LabelText i:nil="true" />
 			<Name>Description</Name>
-			<PropertyType>String</PropertyType>
+			<PropertyType>BigString</PropertyType>
 			<ScriptHandle>Description:</ScriptHandle>
 		</TCProperty>
 		<TCProperty>
