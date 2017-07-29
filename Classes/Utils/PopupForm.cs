@@ -5,11 +5,11 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
-using OTGE.XML;
+using OTGEdit.XML;
 using System.Xml;
 using System.Runtime.Serialization;
 
-namespace OTGE.Utils
+namespace OTGEdit.Utils
 {
     public static class PopUpForm
     {
@@ -22,6 +22,8 @@ namespace OTGE.Utils
             int margin = 4;
 
             System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            form.ShowIcon = false;
+            form.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
             form.Text = title;
 
             Label labelListBox = new Label();
@@ -39,6 +41,10 @@ namespace OTGE.Utils
             }
 
             Button buttonOk = new Button();
+            buttonOk.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonOk.ForeColor = System.Drawing.Color.White;
+            buttonOk.UseVisualStyleBackColor = false;
             buttonOk.Text = "OK";
             buttonOk.Click += new EventHandler
             (
@@ -54,6 +60,10 @@ namespace OTGE.Utils
             buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
             Button buttonCancel = new Button();
+            buttonCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonCancel.ForeColor = System.Drawing.Color.White;
+            buttonCancel.UseVisualStyleBackColor = false;
             buttonCancel.Text = "Cancel";
             buttonCancel.DialogResult = DialogResult.Cancel;
             buttonCancel.SetBounds(309, listBox.Location.Y + listBox.Height + margin, 75, 23);
@@ -84,6 +94,8 @@ namespace OTGE.Utils
             int margin = 4;
 
             System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            form.ShowIcon = false;
+            form.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
             form.Text = "Create group";
 
             Label label = new Label();
@@ -114,6 +126,10 @@ namespace OTGE.Utils
             }
 
             Button buttonOk = new Button();
+            buttonOk.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonOk.ForeColor = System.Drawing.Color.White;
+            buttonOk.UseVisualStyleBackColor = false;
             buttonOk.Text = "OK";
             buttonOk.Click += new EventHandler
             (
@@ -152,6 +168,10 @@ namespace OTGE.Utils
             buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
             Button buttonCancel = new Button();
+            buttonCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonCancel.ForeColor = System.Drawing.Color.White;
+            buttonCancel.UseVisualStyleBackColor = false;
             buttonCancel.Text = "Cancel";
             buttonCancel.DialogResult = DialogResult.Cancel;
             buttonCancel.SetBounds(309, listBox.Location.Y + listBox.Height + margin, 75, 23);
@@ -183,7 +203,7 @@ namespace OTGE.Utils
             }
         }
 
-        private static ComboBox ManageWorldsBoxFormLbVersion = null;
+        private static ComboBoxWithBorder ManageWorldsBoxFormLbVersion = null;
         private static ListBox ManageWorldsBoxFormLbWorlds = null;
         private static ListBox ManageWorldsBoxFormLbBiomes = null;
 
@@ -194,6 +214,8 @@ namespace OTGE.Utils
             int margin = 4;
 
             System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            form.ShowIcon = false;
+            form.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
             form.Text = "World templates and biomes";
             form.Width = 300;
             form.Height = 600;
@@ -203,7 +225,9 @@ namespace OTGE.Utils
             lbVersions.SetBounds(12, 12, 372, 20);
             lbVersions.Anchor = lbVersions.Anchor | AnchorStyles.Right;
 
-            ComboBox cbVersion = new ComboBox();
+            ComboBoxWithBorder cbVersion = new ComboBoxWithBorder();
+            cbVersion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            cbVersion.ForeColor = System.Drawing.Color.Black;
             cbVersion.SetBounds(12, lbVersions.Top + lbVersions.Height + margin, 372, 200);
             cbVersion.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             cbVersion.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -225,24 +249,40 @@ namespace OTGE.Utils
             ManageWorldsBoxFormLbWorlds = listBoxWorlds;
 
             Button buttonCreateWorld = new Button();
+            buttonCreateWorld.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonCreateWorld.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonCreateWorld.ForeColor = System.Drawing.Color.White;
+            buttonCreateWorld.UseVisualStyleBackColor = false;
             buttonCreateWorld.Width = 90;
             buttonCreateWorld.Text = "Create world";
             buttonCreateWorld.Location = new Point(12, listBoxWorlds.Location.Y + listBoxWorlds.Height + margin);
             buttonCreateWorld.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
             Button buttonRenameWorld = new Button();
+            buttonRenameWorld.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonRenameWorld.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonRenameWorld.ForeColor = System.Drawing.Color.White;
+            buttonRenameWorld.UseVisualStyleBackColor = false;
             buttonRenameWorld.Width = 90;
             buttonRenameWorld.Text = "Rename world";
             buttonRenameWorld.Location = new Point(buttonCreateWorld.Left + buttonCreateWorld.Width + margin, listBoxWorlds.Location.Y + listBoxWorlds.Height + margin);
             buttonRenameWorld.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
             Button buttonDeleteWorld = new Button();
+            buttonDeleteWorld.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonDeleteWorld.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonDeleteWorld.ForeColor = System.Drawing.Color.White;
+            buttonDeleteWorld.UseVisualStyleBackColor = false;
             buttonDeleteWorld.Width = 90;
             buttonDeleteWorld.Text = "Delete world";
             buttonDeleteWorld.Location = new Point(buttonRenameWorld.Left + buttonRenameWorld.Width + margin, listBoxWorlds.Location.Y + listBoxWorlds.Height + margin);
             buttonDeleteWorld.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
             Button buttonImportWorld = new Button();
+            buttonImportWorld.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonImportWorld.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonImportWorld.ForeColor = System.Drawing.Color.White;
+            buttonImportWorld.UseVisualStyleBackColor = false;
             buttonImportWorld.Width = 90;
             buttonImportWorld.Text = "Import world";
             buttonImportWorld.Location = new Point(buttonDeleteWorld.Left + buttonDeleteWorld.Width + margin, listBoxWorlds.Location.Y + listBoxWorlds.Height + margin);
@@ -263,18 +303,30 @@ namespace OTGE.Utils
             ManageWorldsBoxFormLbBiomes = listBoxBiomes;
 
             Button buttonCreateBiome = new Button();
+            buttonCreateBiome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonCreateBiome.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonCreateBiome.ForeColor = System.Drawing.Color.White;
+            buttonCreateBiome.UseVisualStyleBackColor = false;
             buttonCreateBiome.Width = 121;
             buttonCreateBiome.Text = "Create biome";
             buttonCreateBiome.Location = new Point(12, listBoxBiomes.Location.Y + listBoxBiomes.Height + (int)(margin * 1.5));
             buttonCreateBiome.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
             Button buttonRenameBiome = new Button();
+            buttonRenameBiome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonRenameBiome.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonRenameBiome.ForeColor = System.Drawing.Color.White;
+            buttonRenameBiome.UseVisualStyleBackColor = false;
             buttonRenameBiome.Width = 121;
             buttonRenameBiome.Text = "Rename biome";
             buttonRenameBiome.Location = new Point(buttonCreateBiome.Left + buttonCreateBiome.Width + margin, listBoxBiomes.Location.Y + listBoxBiomes.Height + (int)(margin * 1.5));
             buttonRenameBiome.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
             Button buttonDeleteBiome = new Button();
+            buttonDeleteBiome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonDeleteBiome.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonDeleteBiome.ForeColor = System.Drawing.Color.White;
+            buttonDeleteBiome.UseVisualStyleBackColor = false;
             buttonDeleteBiome.Width = 121;
             buttonDeleteBiome.Text = "Delete biome";
             buttonDeleteBiome.Location = new Point(buttonRenameBiome.Left + buttonRenameBiome.Width + margin, listBoxBiomes.Location.Y + listBoxBiomes.Height + (int)(margin * 1.5));
@@ -691,12 +743,20 @@ namespace OTGE.Utils
             }
 
             Button buttonOk = new Button();
+            buttonOk.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonOk.ForeColor = System.Drawing.Color.White;
+            buttonOk.UseVisualStyleBackColor = false;
             buttonOk.Text = "OK";
 
             buttonOk.SetBounds(12, buttonCreateBiome.Location.Y + buttonCreateBiome.Height + (margin * 4), 75, 23);
             buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
 
             Button buttonOpenWorldFolder = new Button();
+            buttonOpenWorldFolder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonOpenWorldFolder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonOpenWorldFolder.ForeColor = System.Drawing.Color.White;
+            buttonOpenWorldFolder.UseVisualStyleBackColor = false;
             buttonOpenWorldFolder.Text = "Open world folder";
 
             buttonOpenWorldFolder.SetBounds(92, buttonCreateBiome.Location.Y + buttonCreateBiome.Height + (margin * 4), 110, 23);
@@ -756,7 +816,7 @@ namespace OTGE.Utils
             }
         }
 
-        private static ComboBox CreateWorldBoxFormcbWorlds = null;
+        private static ComboBoxWithBorder CreateWorldBoxFormcbWorlds = null;
         public static void CreateWorldBox(string versionName, string worldName)
         {
             string groupName = "";
@@ -765,6 +825,8 @@ namespace OTGE.Utils
             int margin = 4;
 
             System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            form.ShowIcon = false;
+            form.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
             form.Text = "Create world";
 
             Label label = new Label();
@@ -785,7 +847,9 @@ namespace OTGE.Utils
             lbWorlds.SetBounds(12, textBox.Location.Y + textBox.Height + (margin * 2), 372, 20);
             lbWorlds.Anchor = lbWorlds.Anchor | AnchorStyles.Right;
 
-            ComboBox cbWorlds = new ComboBox();
+            ComboBoxWithBorder cbWorlds = new ComboBoxWithBorder();
+            cbWorlds.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            cbWorlds.ForeColor = System.Drawing.Color.Black;
             cbWorlds.SetBounds(12, lbWorlds.Top + lbWorlds.Height + margin, 372, 200);
             cbWorlds.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             cbWorlds.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -794,6 +858,10 @@ namespace OTGE.Utils
             CreateWorldBoxFormcbWorlds = cbWorlds;
 
             Button buttonOk = new Button();
+            buttonOk.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonOk.ForeColor = System.Drawing.Color.White;
+            buttonOk.UseVisualStyleBackColor = false;
             buttonOk.Text = "OK";
             buttonOk.Click += new EventHandler
             (
@@ -853,6 +921,10 @@ namespace OTGE.Utils
             buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
             Button buttonCancel = new Button();
+            buttonCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonCancel.ForeColor = System.Drawing.Color.White;
+            buttonCancel.UseVisualStyleBackColor = false;
             buttonCancel.Text = "Cancel";
             buttonCancel.DialogResult = DialogResult.Cancel;
             buttonCancel.SetBounds(309, cbWorlds.Location.Y + cbWorlds.Height + (margin * 2), 75, 23);
@@ -891,7 +963,7 @@ namespace OTGE.Utils
             }
         }
 
-        private static ComboBox CreateBiomeBoxFormcbWorlds = null;
+        private static ComboBoxWithBorder CreateBiomeBoxFormcbWorlds = null;
         private static ListBox CreateBiomeBoxFormLbBiomes = null;
         public static void CreateBiomeBox(string versionName, string worldName)
         {
@@ -901,6 +973,8 @@ namespace OTGE.Utils
             int margin = 4;
 
             System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            form.ShowIcon = false;
+            form.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
             form.Text = "Create biome";
 
             Label label = new Label();
@@ -921,7 +995,9 @@ namespace OTGE.Utils
             lbWorlds.SetBounds(12, textBox.Location.Y + textBox.Height + (margin * 2), 372, 20);
             lbWorlds.Anchor = lbWorlds.Anchor | AnchorStyles.Right;
 
-            ComboBox cbWorlds = new ComboBox();
+            ComboBoxWithBorder cbWorlds = new ComboBoxWithBorder();
+            cbWorlds.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            cbWorlds.ForeColor = System.Drawing.Color.Black;
             cbWorlds.SetBounds(12, lbWorlds.Top + lbWorlds.Height + margin, 372, 200);
             cbWorlds.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             cbWorlds.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -937,6 +1013,10 @@ namespace OTGE.Utils
             CreateBiomeBoxFormLbBiomes = listBoxBiomes;
 
             Button buttonOk = new Button();
+            buttonOk.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonOk.ForeColor = System.Drawing.Color.White;
+            buttonOk.UseVisualStyleBackColor = false;
             buttonOk.Text = "OK";
             buttonOk.Click += new EventHandler
             (
@@ -996,6 +1076,10 @@ namespace OTGE.Utils
             buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
             Button buttonCancel = new Button();
+            buttonCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonCancel.ForeColor = System.Drawing.Color.White;
+            buttonCancel.UseVisualStyleBackColor = false;
             buttonCancel.Text = "Cancel";
             buttonCancel.DialogResult = DialogResult.Cancel;
             buttonCancel.SetBounds(309, listBoxBiomes.Location.Y + listBoxBiomes.Height + (margin * 2), 75, 23);
@@ -1058,12 +1142,12 @@ namespace OTGE.Utils
         {
             bool senderIsMouseTarget = false;
 
-            if (CreateBiomeBoxFormcbWorlds.ClientRectangle.Contains(CreateBiomeBoxFormcbWorlds.PointToClient(Control.MousePosition)))
+            if (CreateBiomeBoxFormcbWorlds != null && CreateBiomeBoxFormcbWorlds.ClientRectangle.Contains(CreateBiomeBoxFormcbWorlds.PointToClient(Control.MousePosition)))
             {
                 senderIsMouseTarget = sender == CreateBiomeBoxFormcbWorlds;
                 CreateBiomeBoxFormcbWorlds.Focus();
             }
-            else if (CreateBiomeBoxFormLbBiomes.ClientRectangle.Contains(CreateBiomeBoxFormLbBiomes.PointToClient(Control.MousePosition)))
+            else if (CreateBiomeBoxFormLbBiomes != null && CreateBiomeBoxFormLbBiomes.ClientRectangle.Contains(CreateBiomeBoxFormLbBiomes.PointToClient(Control.MousePosition)))
             {
                 senderIsMouseTarget = sender == CreateBiomeBoxFormLbBiomes;
                 CreateBiomeBoxFormLbBiomes.Focus();
@@ -1082,8 +1166,8 @@ namespace OTGE.Utils
         static FolderBrowserDialog fbdDestinationWorldDir = new FolderBrowserDialog();
         static SaveFileDialog sfd = null;
         // User clicks button, selects default biomes version, then selects world directory               
-        // OTGE creates new world in VersionConfigs dir if there are custom biomes and/or BO3's
-        // OTGE creates a save with a group for each biome in the world (unless all its values are defaults)
+        // OTGEdit creates new world in VersionConfigs dir if there are custom biomes and/or BO3's
+        // OTGEdit creates a save with a group for each biome in the world (unless all its values are defaults)
 
         /// <summary>
         /// 
@@ -1255,7 +1339,7 @@ namespace OTGE.Utils
                                         }
                                     } else {
                                         Session.HideProgessBox();
-                                        throw new Exception("WorldConfig.ini could not be loaded. Please make sure that WorldConfig.ini is present in the TCVersionConfig directory for the selected version. Exiting OTGE.");
+                                        throw new Exception("WorldConfig.ini could not be loaded. Please make sure that WorldConfig.ini is present in the TCVersionConfig directory for the selected version. Exiting OTGEdit.");
                                     }
 
                                     // Load biomeconfigs
@@ -1308,7 +1392,7 @@ namespace OTGE.Utils
                                         PopUpForm.CustomMessageBox(msgboxmsg);
                                     }
 
-                                    bool useDefaults = PopUpForm.CustomYesNoBox("Use OTG/TerrainControl default values?", "Would you like to either:\r\n\r\n- Compare the world to default values and save any non-default values to a OTGE save file?\r\n- Use the imported world as default values for a new world.\r\n\r\n", "Save non-default values", "Use as default values") == DialogResult.Yes;
+                                    bool useDefaults = PopUpForm.CustomYesNoBox("Use OTG/TerrainControl default values?", "Would you like to either:\r\n\r\n- Compare the world to default values and save any non-default values to a OTGEdit save file?\r\n- Use the imported world as default values for a new world.\r\n\r\n", "Save non-default values", "Use as default values") == DialogResult.Yes;
 
                                     Session.ShowProgessBox();
 
@@ -1316,7 +1400,7 @@ namespace OTGE.Utils
 
                                     if (useDefaults)
                                     {
-                                        // Check which settings in WorldConfig are different from default, save them as OTGE pre-set. If this world turns out to be non-compatible with default world then create new world folder and copy default worldconfig to it
+                                        // Check which settings in WorldConfig are different from default, save them as OTGEdit pre-set. If this world turns out to be non-compatible with default world then create new world folder and copy default worldconfig to it
                                         foreach (TCProperty property in versionConfig.WorldConfig)
                                         {
                                             string value = worldConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Value;
@@ -1340,7 +1424,7 @@ namespace OTGE.Utils
                                         }
                                     }
 
-                                    // Check which biomeconfigs are standard/nonstandard and for standard biomes check which values are not defaults, save those values as OTGE pre-set. 
+                                    // Check which biomeconfigs are standard/nonstandard and for standard biomes check which values are not defaults, save those values as OTGEdit pre-set. 
                                     // If this world turns out to be non-compatible with default world then create new world folder and copy default biomeconfigs + non-standard biomeconfigs to it
                                     // For non-standard biomes get values from inherited biome?
 
@@ -1506,7 +1590,7 @@ namespace OTGE.Utils
 
                                         Session.HideProgessBox();
 
-                                        PopUpForm.CustomMessageBox("World import completed, you can now select the world and load your OTGE save (if any).", "Import completed");
+                                        PopUpForm.CustomMessageBox("World import completed, you can now select the world and load your OTGEdit save (if any).", "Import completed");
                                         //}
                                     }
                                 } else {
@@ -1591,6 +1675,8 @@ namespace OTGE.Utils
             int startWidth = 16;
 
             Form form = new Form();
+            form.ShowIcon = false;
+            form.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
             form.Text = title;
             form.Width = 600;
 
@@ -1634,6 +1720,10 @@ namespace OTGE.Utils
             textBox.SelectionLength = 0;
 
             Button buttonOk = new Button();
+            buttonOk.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonOk.ForeColor = System.Drawing.Color.White;
+            buttonOk.UseVisualStyleBackColor = false;
             buttonOk.Top = textBox.Top + textBox.Height + edgeMargin;
             buttonOk.Text = "OK";
             buttonOk.DialogResult = DialogResult.Yes;
@@ -1641,6 +1731,10 @@ namespace OTGE.Utils
             buttonOk.Left = ((form.Width - startWidth) / 2) - buttonOk.Width - (labelAndButtonMargin / 2);
 
             Button buttonCancel = new Button();
+            buttonCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonCancel.ForeColor = System.Drawing.Color.White;
+            buttonCancel.UseVisualStyleBackColor = false;
             buttonCancel.Top = textBox.Top + textBox.Height + edgeMargin;
             buttonCancel.Text = "Cancel";            
             buttonCancel.DialogResult = DialogResult.Cancel;
@@ -1731,18 +1825,28 @@ namespace OTGE.Utils
             }
 
             Button buttonOk = new Button();
+            buttonOk.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonOk.ForeColor = System.Drawing.Color.White;
+            buttonOk.UseVisualStyleBackColor = false;
             buttonOk.Text = yesText;
             buttonOk.Anchor = AnchorStyles.Top | AnchorStyles.Left;      
             buttonOk.DialogResult = DialogResult.Yes;
             buttonOk.AutoSize = true;
 
             Button buttonCancel = new Button();
+            buttonCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonCancel.ForeColor = System.Drawing.Color.White;
+            buttonCancel.UseVisualStyleBackColor = false;
             buttonCancel.Text = noText;
             buttonCancel.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             buttonCancel.DialogResult = DialogResult.No;
             buttonCancel.AutoSize = true;
 
             Form form = new System.Windows.Forms.Form();
+            form.ShowIcon = false;
+            form.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
             form.Text = title;
             form.FormBorderStyle = FormBorderStyle.FixedDialog;
             form.StartPosition = FormStartPosition.CenterParent;
@@ -1792,12 +1896,18 @@ namespace OTGE.Utils
             label.AutoSize = true;
 
             Button buttonOk = new Button();
+            buttonOk.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonOk.ForeColor = System.Drawing.Color.White;
+            buttonOk.UseVisualStyleBackColor = false;
             buttonOk.Text = "Ok";
             buttonOk.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             buttonOk.DialogResult = DialogResult.OK;
             buttonOk.AutoSize = true;
 
             Form form = new System.Windows.Forms.Form();
+            form.ShowIcon = false;
+            form.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
             form.Text = title;
             form.FormBorderStyle = FormBorderStyle.FixedDialog;
             form.StartPosition = FormStartPosition.CenterParent;

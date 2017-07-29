@@ -7,12 +7,12 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Runtime.Serialization;
-using OTGE.XML;
-using OTGE.Utils;
+using OTGEdit.XML;
+using OTGEdit.Utils;
 
 using System.Runtime.InteropServices;
 
-namespace OTGE
+namespace OTGEdit
 {
     public partial class Form1 : Form
     {
@@ -44,6 +44,10 @@ namespace OTGE
 
             public Form1()
             {
+                System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
+                customCulture.NumberFormat.NumberDecimalSeparator = ".";
+                System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
+
                 InitializeComponent();
 
                 // TODO: Pass these as method parameters instead of using static fields.
@@ -54,9 +58,6 @@ namespace OTGE
                 Session.btSave = btSave;
                 Session.btLoad = btLoad;
                 Session.btGenerate = btGenerate;
-                Session.rbSummerSkin = rbSummerSkin;
-                Session.rbWinterSkin = rbWinterSkin;
-                Session.rbNoSkin = rbNoSkin;
                 Session.lbGroups = lbGroups;
                 Session.btCopyBO3s = btCopyBO3s;
                 Session.cbDeleteRegion = cbDeleteRegion;
@@ -128,7 +129,7 @@ namespace OTGE
                 }
 
                 sfd = new SaveFileDialog() { DefaultExt = "xml", InitialDirectory = dir.FullName };
-                sfd.Title = "Select an OTGE save file";
+                sfd.Title = "Select an OTGEdit save file";
                 ofd = new OpenFileDialog() { DefaultExt = "xml", InitialDirectory = dir.FullName };
                 ofd.Title = "Select a save location";
 
@@ -146,10 +147,10 @@ namespace OTGE
             {
                 Session.ShowProgessBox();
 
-                tlpBiomeSettingsContainer.Hide();
-                tlpWorldSettingsContainer.Hide();
+                //tlpBiomeSettingsContainer.Hide();
+                //tlpWorldSettingsContainer.Hide();
 
-                Session.Form1.SuspendLayout();
+                //Session.Form1.SuspendLayout();
 
                 Session.BiomeNames.Clear();
                 BiomeListInputs.Clear();
@@ -241,16 +242,14 @@ namespace OTGE
                         btSetToDefault.Text = "Set to defaults";
                     }
 
+                    /*
                     Session.tabControl1.Visible = true;
                     Session.btSave.Enabled = true;
                     Session.btLoad.Enabled = true;
                     Session.btGenerate.Visible = true;
                     Session.btCopyBO3s.Visible = true;
                     Session.cbDeleteRegion.Visible = true;
-
-                    Session.rbSummerSkin.Visible = true;
-                    Session.rbWinterSkin.Visible = true;
-                    Session.rbNoSkin.Visible = true;
+                    */
 
                     //label4.Visible = true;
                     //label5.Visible = true;
@@ -270,10 +269,10 @@ namespace OTGE
                     btClickBackGround(null, null);
                 }
 
-                Session.Form1.ResumeLayout();
+                //Session.Form1.ResumeLayout();
 
-                tlpBiomeSettingsContainer.Show();
-                tlpWorldSettingsContainer.Show();
+                //tlpBiomeSettingsContainer.Show();
+                //tlpWorldSettingsContainer.Show();
 
                 Session.HideProgessBox();
             }
@@ -283,9 +282,6 @@ namespace OTGE
                 tabControl1.Visible = false;
                 btGenerate.Visible = false;
                 btCopyBO3s.Visible = false;
-                rbSummerSkin.Visible = false;
-                rbWinterSkin.Visible = false;
-                rbNoSkin.Visible = false;
                 cbDeleteRegion.Visible = false;
                 btSave.Enabled = false;
                 btLoad.Enabled = false;
@@ -313,16 +309,13 @@ namespace OTGE
                     "so you can add gold ore in the first group and diamond ore in the second."
                 );
 
-                tabControl1.Visible = false;
-                btGenerate.Visible = false;
-                btCopyBO3s.Visible = false;
-                rbSummerSkin.Visible = false;
-                rbWinterSkin.Visible = false;
-                rbNoSkin.Visible = false;
-                cbDeleteRegion.Visible = false;
+                //tabControl1.Hide();
+                btGenerate.Hide();
+                btCopyBO3s.Hide();
+                cbDeleteRegion.Hide();
                 btSave.Enabled = false;
                 btLoad.Enabled = false;
-                tlpBiomeSettings1.Visible = false;
+                //tlpBiomeSettings1.Visible = false;
                 label3.Visible = false;
 
                 string uniqueResourceQueueItems = "";
@@ -359,19 +352,19 @@ namespace OTGE
                     }
                 }
 
-                this.SuspendLayout();
+                //this.SuspendLayout();
 
-                panel2.SuspendLayout();
-                panel3.SuspendLayout();
+                //panel2.SuspendLayout();
+                //panel3.SuspendLayout();
 
-                tlpWorldSettingsContainer.SuspendLayout();
+                //tlpWorldSettingsContainer.SuspendLayout();
                 tlpWorldSettings1.SuspendLayout();
-
-                tlpBiomeSettingsContainer.SuspendLayout();
-                tlpBiomeSettings1.SuspendLayout();
 
                 tlpWorldSettings1.Controls.Clear();
                 tlpWorldSettings1.RowStyles.Clear();
+
+                //tlpBiomeSettingsContainer.SuspendLayout();
+                tlpBiomeSettings1.SuspendLayout();
 
                 tlpBiomeSettings1.Controls.Clear();
                 tlpBiomeSettings1.RowStyles.Clear();
@@ -419,8 +412,11 @@ namespace OTGE
                         cbOverride.CheckedChanged += PropertyInputOverrideCheckChangedWorld;
 
                         Button bSetDefaults = new Button();
+                        bSetDefaults.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+                        bSetDefaults.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                        bSetDefaults.ForeColor = System.Drawing.Color.White;
+                        bSetDefaults.UseVisualStyleBackColor = false;
                         bSetDefaults.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                        bSetDefaults.BackColor = Color.FromKnownColor(KnownColor.Control);
                         bSetDefaults.Text = "C";
                         bSetDefaults.Width = 23;
                         bSetDefaults.Height = 23;
@@ -466,9 +462,12 @@ namespace OTGE
                                 });
 
                                 Button btAddResourceQueueItem = new Button();
+                                btAddResourceQueueItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+                                btAddResourceQueueItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                                btAddResourceQueueItem.ForeColor = System.Drawing.Color.White;
+                                btAddResourceQueueItem.UseVisualStyleBackColor = false;
                                 btAddResourceQueueItem.Width = 50;
                                 btAddResourceQueueItem.Anchor = AnchorStyles.Top;
-                                btAddResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
                                 btAddResourceQueueItem.Text = "Add";
                                 btAddResourceQueueItem.Click += btAddResourceQueueItemWorld_Click;
                                 btAddResourceQueueItem.TabStop = false;
@@ -476,10 +475,13 @@ namespace OTGE
                                 pnl3.Controls.Add(btAddResourceQueueItem);
 
                                 Button btEditResourceQueueItem = new Button();
+                                btEditResourceQueueItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+                                btEditResourceQueueItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                                btEditResourceQueueItem.ForeColor = System.Drawing.Color.White;
+                                btEditResourceQueueItem.UseVisualStyleBackColor = false;
                                 btEditResourceQueueItem.Left = 55;
                                 btEditResourceQueueItem.Width = 50;
                                 btEditResourceQueueItem.Anchor = AnchorStyles.Top;
-                                btEditResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
                                 btEditResourceQueueItem.Text = "Edit";
                                 btEditResourceQueueItem.Click += btEditResourceQueueItemWorld_Click;
                                 btEditResourceQueueItem.TabStop = false;
@@ -487,10 +489,13 @@ namespace OTGE
                                 pnl3.Controls.Add(btEditResourceQueueItem);
 
                                 Button btDeleteResourceQueueItem = new Button();
+                                btDeleteResourceQueueItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+                                btDeleteResourceQueueItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                                btDeleteResourceQueueItem.ForeColor = System.Drawing.Color.White;
+                                btDeleteResourceQueueItem.UseVisualStyleBackColor = false;
                                 btDeleteResourceQueueItem.Left = 110;
                                 btDeleteResourceQueueItem.Width = 50;
                                 btDeleteResourceQueueItem.Anchor = AnchorStyles.Top;
-                                btDeleteResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);                               
                                 btDeleteResourceQueueItem.Text = "Delete";
                                 btDeleteResourceQueueItem.Click += btDeleteResourceQueueItemWorld_Click;
                                 btDeleteResourceQueueItem.TabStop = false;
@@ -555,7 +560,8 @@ namespace OTGE
                             case "String":
                                 if(property.AllowedValues != null && property.AllowedValues.Count > 0)
                                 {
-                                    ComboBox txPropertyInput = new ComboBox();
+                                    ComboBoxWithBorder txPropertyInput = new ComboBoxWithBorder();
+                                    txPropertyInput.FlatStyle = FlatStyle.Flat;
                                     txPropertyInput.DropDownStyle = ComboBoxStyle.DropDownList;
                                     txPropertyInput.Items.Add("");
                                     foreach(string allowedValue in property.AllowedValues)
@@ -571,7 +577,7 @@ namespace OTGE
                                     tlpWorldSettings1.Controls.Add(txPropertyInput, 2, row);
                                     Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
                                 } else {
-                                    TextBox txPropertyInput = new TextBox();                                
+                                    TextBoxWithBorder txPropertyInput = new TextBoxWithBorder();                                
                                     txPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
                                     txPropertyInput.TextChanged += PropertyInputChangedWorld;
                                     txPropertyInput.LostFocus += PropertyInputLostFocusWorld;
@@ -582,8 +588,9 @@ namespace OTGE
                                 }
                                 break;
                             case "BigString":
-                                RichTextBox txPropertyInput2 = new RichTextBox();
+                                RichTextBoxWithBorder txPropertyInput2 = new RichTextBoxWithBorder();                            
                                 txPropertyInput2.Multiline = true;
+                                txPropertyInput2.BorderStyle = BorderStyle.None;
                                 txPropertyInput2.Height = 58;
                                 txPropertyInput2.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
                                 txPropertyInput2.TextChanged += PropertyInputChangedWorld;
@@ -627,12 +634,13 @@ namespace OTGE
                                 lbPropertyInput2.Width = 20;
                                 lbPropertyInput2.Height = 20;
                                 lbPropertyInput2.BackColor = Color.White;
+                                
                                 lbPropertyInput2.Margin = new Padding(3, 0, 0, 0);
                                 lbPropertyInput2.TabStop = false;
                                 lbPropertyInput2.Click += PropertyInputColorChangedWorld;
                                 colorPickerPanel.Controls.Add(lbPropertyInput2);
 
-                                TextBox txPropertyInput4 = new TextBox();
+                                TextBoxWithBorder txPropertyInput4 = new TextBoxWithBorder();
                                 txPropertyInput4.Anchor = AnchorStyles.Left | AnchorStyles.Top;
                                 txPropertyInput4.TextChanged += PropertyInputColorChangedWorld;
                                 txPropertyInput4.LostFocus += PropertyInputLostFocusWorld;
@@ -719,10 +727,12 @@ namespace OTGE
                                 break;
                             case "Bool":
                                 Button btnTrueFalse = new Button();
+                                btnTrueFalse.BackColor = Color.White;
+                                btnTrueFalse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                                btnTrueFalse.ForeColor = Color.DarkGray;
+                                btnTrueFalse.UseVisualStyleBackColor = false;
                                 btnTrueFalse.Text = "";
-                                btnTrueFalse.BackColor = Color.FromKnownColor(KnownColor.Control);
                                 btnTrueFalse.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                                btnTrueFalse.ForeColor = Color.Empty;
                                 btnTrueFalse.Click += btnTrueFalseWorld_Click;
 
                                 tlpWorldSettings1.Controls.Add(btnTrueFalse, 2, row);
@@ -794,8 +804,11 @@ namespace OTGE
                         cbOverride.CheckedChanged += PropertyInputOverrideCheckChangedBiome;
 
                         Button bSetDefaults = new Button();
+                        bSetDefaults.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+                        bSetDefaults.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                        bSetDefaults.ForeColor = System.Drawing.Color.White;
+                        bSetDefaults.UseVisualStyleBackColor = false;
                         bSetDefaults.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                        bSetDefaults.BackColor = Color.FromKnownColor(KnownColor.Control);
                         bSetDefaults.Text = "C";
                         bSetDefaults.Width = 23;
                         bSetDefaults.Height = 23;
@@ -841,9 +854,12 @@ namespace OTGE
                                 });
 
                                 Button btAddResourceQueueItem = new Button();
+                                btAddResourceQueueItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+                                btAddResourceQueueItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                                btAddResourceQueueItem.ForeColor = System.Drawing.Color.White;
+                                btAddResourceQueueItem.UseVisualStyleBackColor = false;
                                 btAddResourceQueueItem.Width = 50;
                                 btAddResourceQueueItem.Anchor = AnchorStyles.Top;
-                                btAddResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
                                 btAddResourceQueueItem.Text = "Add";
                                 btAddResourceQueueItem.Click += btAddResourceQueueItem_Click;
                                 btAddResourceQueueItem.TabStop = false;
@@ -851,10 +867,13 @@ namespace OTGE
                                 pnl3.Controls.Add(btAddResourceQueueItem);
 
                                 Button btEditResourceQueueItem = new Button();
+                                btEditResourceQueueItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+                                btEditResourceQueueItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                                btEditResourceQueueItem.ForeColor = System.Drawing.Color.White;
+                                btEditResourceQueueItem.UseVisualStyleBackColor = false;
                                 btEditResourceQueueItem.Left = 55;
                                 btEditResourceQueueItem.Width = 50;
                                 btEditResourceQueueItem.Anchor = AnchorStyles.Top;
-                                btEditResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);
                                 btEditResourceQueueItem.Text = "Edit";
                                 btEditResourceQueueItem.Click += btEditResourceQueueItem_Click;
                                 btEditResourceQueueItem.TabStop = false;
@@ -862,10 +881,13 @@ namespace OTGE
                                 pnl3.Controls.Add(btEditResourceQueueItem);
 
                                 Button btDeleteResourceQueueItem = new Button();
+                                btDeleteResourceQueueItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+                                btDeleteResourceQueueItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                                btDeleteResourceQueueItem.ForeColor = System.Drawing.Color.White;
+                                btDeleteResourceQueueItem.UseVisualStyleBackColor = false;
                                 btDeleteResourceQueueItem.Left = 110;
                                 btDeleteResourceQueueItem.Width = 50;
                                 btDeleteResourceQueueItem.Anchor = AnchorStyles.Top;
-                                btDeleteResourceQueueItem.BackColor = Color.FromKnownColor(KnownColor.Control);                               
                                 btDeleteResourceQueueItem.Text = "Delete";
                                 btDeleteResourceQueueItem.Click += btDeleteResourceQueueItem_Click;
                                 btDeleteResourceQueueItem.TabStop = false;
@@ -923,7 +945,8 @@ namespace OTGE
                             case "String":
                                 if(property.AllowedValues != null && property.AllowedValues.Count > 0)
                                 {
-                                    ComboBox txPropertyInput = new ComboBox();
+                                    ComboBoxWithBorder txPropertyInput = new ComboBoxWithBorder();
+                                    txPropertyInput.FlatStyle = FlatStyle.Flat;
                                     txPropertyInput.DropDownStyle = ComboBoxStyle.DropDownList;
                                     txPropertyInput.Items.Add("");
                                     foreach(string allowedValue in property.AllowedValues)
@@ -939,7 +962,7 @@ namespace OTGE
                                     tlpBiomeSettings1.Controls.Add(txPropertyInput, 2, row);
                                     Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
                                 } else {
-                                    TextBox txPropertyInput = new TextBox();                                
+                                    TextBoxWithBorder txPropertyInput = new TextBoxWithBorder();                                
                                     txPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;                                
                                     txPropertyInput.TextChanged += PropertyInputChangedBiome;
                                     txPropertyInput.LostFocus += PropertyInputLostFocusBiome;
@@ -950,9 +973,10 @@ namespace OTGE
                                 }
                                 break;
                             case "BigString":
-                                RichTextBox txPropertyInput2 = new RichTextBox();
-                                txPropertyInput2.Height = 58;
+                                RichTextBoxWithBorder txPropertyInput2 = new RichTextBoxWithBorder();
                                 txPropertyInput2.Multiline = true;
+                                txPropertyInput2.BorderStyle = BorderStyle.None;
+                                txPropertyInput2.Height = 58;
                                 txPropertyInput2.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;                                
                                 txPropertyInput2.TextChanged += PropertyInputChangedBiome;
                                 txPropertyInput2.LostFocus += PropertyInputLostFocusBiome;
@@ -1000,7 +1024,7 @@ namespace OTGE
                                 lbPropertyInput2.Click += PropertyInputColorChangedBiome;
                                 colorPickerPanel.Controls.Add(lbPropertyInput2);
 
-                                TextBox txPropertyInput4 = new TextBox();
+                                TextBoxWithBorder txPropertyInput4 = new TextBoxWithBorder();
                                 txPropertyInput4.Anchor = AnchorStyles.Left | AnchorStyles.Top;
                                 txPropertyInput4.TextChanged += PropertyInputColorChangedBiome;
                                 txPropertyInput4.LostFocus += PropertyInputLostFocusBiome;
@@ -1081,12 +1105,13 @@ namespace OTGE
                                 break;
                             case "Bool":
                                 Button btnTrueFalse = new Button();
-                                btnTrueFalse.Text = "";
-                                btnTrueFalse.BackColor = Color.FromKnownColor(KnownColor.Control);
-                                btnTrueFalse.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                                btnTrueFalse.ForeColor = Color.Empty;
+                                btnTrueFalse.BackColor = Color.White;
+                                btnTrueFalse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                                btnTrueFalse.ForeColor = Color.DarkGray;
+                                btnTrueFalse.UseVisualStyleBackColor = false;
+                                btnTrueFalse.Text = "";                               
+                                btnTrueFalse.Anchor = AnchorStyles.Left | AnchorStyles.Top;                                
                                 btnTrueFalse.Click += btnTrueFalseBiome_Click;
-
                                 tlpBiomeSettings1.Controls.Add(btnTrueFalse, 2, row);
                                 Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(btnTrueFalse, cbOverride, bSetDefaults, txPropertyLabel, null, null));
 
@@ -1100,17 +1125,24 @@ namespace OTGE
                 }
 
                 tlpWorldSettings1.ResumeLayout();
-
-                tlpWorldSettingsContainer.ResumeLayout();
+                //tlpWorldSettingsContainer.ResumeLayout();
 
                 tlpBiomeSettings1.ResumeLayout();
+                //tlpBiomeSettingsContainer.ResumeLayout();
 
-                tlpBiomeSettingsContainer.ResumeLayout();
+                //panel3.ResumeLayout();
+                //panel2.ResumeLayout();
 
-                panel3.ResumeLayout();
-                panel2.ResumeLayout();
+                //this.ResumeLayout();
 
-                this.ResumeLayout();
+                //tabControl1.Show();
+                btGenerate.Show();
+                btCopyBO3s.Show();
+                cbDeleteRegion.Show();
+                btSave.Enabled = true;
+                btLoad.Enabled = true;
+                //tlpBiomeSettings1.Visible = false;
+                label3.Show();
             }
 
         #endregion
@@ -1312,7 +1344,7 @@ namespace OTGE
                         btnSender.ForeColor = Color.Green;
                     } else {
                         btnSender.Text = "";
-                        btnSender.ForeColor = Color.Empty;
+                        btnSender.ForeColor = Color.DarkGray;
                     }
                 }
 
@@ -1355,7 +1387,7 @@ namespace OTGE
                         btnSender.ForeColor = Color.Green;
                     } else {
                         btnSender.Text = "";
-                        btnSender.ForeColor = Color.Empty;
+                        btnSender.ForeColor = Color.DarkGray;
                     }
                 }
 
@@ -1421,7 +1453,7 @@ namespace OTGE
                                 {
                                     tb.ForeColor = Color.Red;
                                 } else {
-                                    tb.ForeColor = Color.Empty;
+                                    tb.ForeColor = Color.DarkGray;
                                 }
                                 Session.IgnorePropertyInputChangedWorld = false;
                                 Session.IgnoreOverrideCheckChangedWorld = false;
@@ -1701,7 +1733,7 @@ namespace OTGE
                                 ((Button)kvp.Value.Item1).ForeColor = Color.Red;
                             } else {
                                 ((Button)kvp.Value.Item1).Text = "";
-                                ((Button)kvp.Value.Item1).ForeColor = Color.Empty;
+                                ((Button)kvp.Value.Item1).ForeColor = Color.DarkGray;
                             }
                         break;
                         case "Color":
@@ -1766,7 +1798,7 @@ namespace OTGE
                         break;
                         case "Bool":
                             ((Button)kvp.Value.Item1).Text = "";
-                            ((Button)kvp.Value.Item1).ForeColor = Color.Empty;
+                            ((Button)kvp.Value.Item1).ForeColor = Color.DarkGray;
                         break;
                         case "Color":
                             kvp.Value.Item5.BackColor = Color.White;
@@ -2373,7 +2405,7 @@ namespace OTGE
                                     ((Button)boxes.Item1).ForeColor = Color.Red;
                                 } else {
                                     ((Button)boxes.Item1).Text = "";
-                                    ((Button)boxes.Item1).ForeColor = Color.Empty;
+                                    ((Button)boxes.Item1).ForeColor = Color.DarkGray;
                                 }
                                 break;
                             case "Color":
@@ -2440,7 +2472,7 @@ namespace OTGE
                                 break;
                             case "Bool":
                                 ((Button)boxes.Item1).Text = "";
-                                ((Button)boxes.Item1).ForeColor = Color.Empty;
+                                ((Button)boxes.Item1).ForeColor = Color.DarkGray;
                                 break;
                             case "Color":
                                 boxes.Item5.BackColor = Color.White;
@@ -2501,7 +2533,7 @@ namespace OTGE
                                 ctl.ForeColor = Color.Black;
                             }                    
                         } else {
-                            ctl.BackColor = Color.Empty;
+                            ctl.BackColor = Color.DarkGray;
                             ctl.ForeColor = Color.Black;
                         }
                     }
@@ -2549,7 +2581,7 @@ namespace OTGE
                                         previousSetting.ForeColor = Color.Black;
                                     }
                                 } else {
-                                    ctl.BackColor = Color.Empty;
+                                    ctl.BackColor = Color.DarkGray;
                                     ctl.ForeColor = Color.Black;
                                 }
                             }
@@ -2618,7 +2650,7 @@ namespace OTGE
                                     ctl.ForeColor = Color.Black;
                                 }                    
                             } else {
-                                ctl.BackColor = Color.Empty;
+                                ctl.BackColor = Color.DarkGray;
                                 ctl.ForeColor = Color.Black;
                             }
                         }
@@ -2654,10 +2686,11 @@ namespace OTGE
             {
                 bool senderIsMouseTarget = true;
 
-                if (!((Control)sender).ClientRectangle.Contains(((Control)sender).PointToClient(Control.MousePosition)))
+                if (ActiveControl != sender || !((Control)sender).ClientRectangle.Contains(((Control)sender).PointToClient(Control.MousePosition)))
                 {
                     senderIsMouseTarget = false;
                     this.panel2.Focus();
+                    this.panel2.OnMouseWheelPublic(e);
                 }
 
                 if (!senderIsMouseTarget)
@@ -2669,7 +2702,6 @@ namespace OTGE
                     }
                 }
             }
-
 
         #endregion
 
@@ -3056,7 +3088,7 @@ namespace OTGE
                                 {
                                     tb.ForeColor = Color.Red;
                                 } else {
-                                    tb.ForeColor = Color.Empty;
+                                    tb.ForeColor = Color.DarkGray;
                                 }
                                 IgnoreOverrideCheckChangedBiome = false;
                                 IgnorePropertyInputChangedBiome = false;
@@ -3261,7 +3293,7 @@ namespace OTGE
                                     {
                                         tb.ForeColor = Color.Red;
                                     } else {
-                                        tb.ForeColor = Color.Empty;
+                                        tb.ForeColor = Color.DarkGray;
                                     }
                                 }
                             } else {
@@ -3387,7 +3419,7 @@ namespace OTGE
                                 ((Button)kvp.Value.Item1).ForeColor = Color.Red;
                             } else {
                                 ((Button)kvp.Value.Item1).Text = "";
-                                ((Button)kvp.Value.Item1).ForeColor = Color.Empty;
+                                ((Button)kvp.Value.Item1).ForeColor = Color.DarkGray;
                             }
                             break;
                         case "Color":
@@ -3459,7 +3491,7 @@ namespace OTGE
                             break;
                         case "Bool":
                             ((Button)kvp.Value.Item1).Text = "";
-                            ((Button)kvp.Value.Item1).ForeColor = Color.Empty;
+                            ((Button)kvp.Value.Item1).ForeColor = Color.DarkGray;
                             break;
                         case "Color":
                             kvp.Value.Item5.BackColor = Color.White;
@@ -4119,7 +4151,7 @@ namespace OTGE
                             break;
                             case "Bool":
                                 ((Button)Session.BiomeSettingsInputs[property].Item1).Text = "";
-                                ((Button)Session.BiomeSettingsInputs[property].Item1).ForeColor = Color.Empty;
+                                ((Button)Session.BiomeSettingsInputs[property].Item1).ForeColor = Color.DarkGray;
                             break;
                             case "Color":
                                 Session.BiomeSettingsInputs[property].Item5.BackColor = Color.White;
@@ -4209,7 +4241,7 @@ namespace OTGE
                                         ((Button)boxes.Item1).ForeColor = Color.Red;
                                     } else {
                                         ((Button)boxes.Item1).Text = "";
-                                        ((Button)boxes.Item1).ForeColor = Color.Empty;
+                                        ((Button)boxes.Item1).ForeColor = Color.DarkGray;
                                     }
                                     boxes.Item2.Checked = g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name) != null && g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override;
                                 break;
@@ -4571,7 +4603,7 @@ namespace OTGE
                                 ctl.ForeColor = Color.Black;
                             }
                         } else {
-                            ctl.BackColor = Color.Empty;
+                            ctl.BackColor = Color.DarkGray;
                             ctl.ForeColor = Color.Black;
                         }
                     }
@@ -4619,7 +4651,7 @@ namespace OTGE
                                         previousSetting.ForeColor = Color.Black;
                                     }
                                 } else {
-                                    ctl.BackColor = Color.Empty;
+                                    ctl.BackColor = Color.DarkGray;
                                     ctl.ForeColor = Color.Black;
                                 }
                             }
@@ -4688,7 +4720,7 @@ namespace OTGE
                                     ctl.ForeColor = Color.Black;
                                 }
                             } else {
-                                ctl.BackColor = Color.Empty;
+                                ctl.BackColor = Color.DarkGray;
                                 ctl.ForeColor = Color.Black;
                             }
                         }
@@ -4724,10 +4756,11 @@ namespace OTGE
             {
                 bool senderIsMouseTarget = true;
 
-                if (!((Control)sender).ClientRectangle.Contains(((Control)sender).PointToClient(Control.MousePosition)))
+                if (ActiveControl != sender || !((Control)sender).ClientRectangle.Contains(((Control)sender).PointToClient(Control.MousePosition)))
                 {
                     senderIsMouseTarget = false;
                     this.panel3.Focus();
+                    this.panel3.OnMouseWheelPublic(e);
                 }
 
                 if (!senderIsMouseTarget)
@@ -4773,8 +4806,8 @@ namespace OTGE
                         args.Handled = true;
                     }
                 }
-            }        
-        
+            }
+
         #endregion
 
         #region Load / Save / Generate
@@ -4827,7 +4860,7 @@ namespace OTGE
                     {
                         if (!ofd.FileName.ToLower().EndsWith("xml"))
                         {
-                            PopUpForm.CustomMessageBox("Error: The selected file was not a valid OTGE save file");
+                            PopUpForm.CustomMessageBox("Error: The selected file was not a valid OTGEdit save file");
                         } else {
                             SettingsFile settingsFile = null;
                             var serializer = new DataContractSerializer(typeof(SettingsFile));
@@ -4860,7 +4893,7 @@ namespace OTGE
                                             break;
                                         case "Bool":
                                             ((Button)Session.WorldSettingsInputs[property].Item1).Text = "";
-                                            ((Button)Session.WorldSettingsInputs[property].Item1).ForeColor = Color.Empty;
+                                            ((Button)Session.WorldSettingsInputs[property].Item1).ForeColor = Color.DarkGray;
                                             break;
                                         case "Color":
                                             Session.WorldSettingsInputs[property].Item5.BackColor = Color.White;
@@ -4945,7 +4978,7 @@ namespace OTGE
                                                     ((Button)boxes.Item1).ForeColor = Color.Red;
                                                 } else {
                                                     ((Button)boxes.Item1).Text = "";
-                                                    ((Button)boxes.Item1).ForeColor = Color.Empty;
+                                                    ((Button)boxes.Item1).ForeColor = Color.DarkGray;
                                                 }
                                                 boxes.Item2.Checked = Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override;
                                                 break;
@@ -5784,104 +5817,6 @@ namespace OTGE
             }
         }
 
-        private void rbSummerSkin_CheckedChanged(object sender, EventArgs e)
-        {
-            this.BackgroundImage = global::OTGE.Properties.Resources.BGSummer;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-
-            this.tabPage1.BackColor = System.Drawing.Color.Wheat;
-            this.tabPage2.BackColor = System.Drawing.Color.Wheat;
-            this.tabPage3.BackColor = System.Drawing.Color.Wheat;
-
-            this.groupBox1.BackColor = System.Drawing.Color.Wheat;
-            this.pnlVersionWorldSelect.BackColor = System.Drawing.Color.Wheat;
-            this.groupBox3.BackColor = System.Drawing.Color.Wheat;
-            this.groupBox4.BackColor = System.Drawing.Color.Wheat;
-
-            this.richTextBox1.BackColor = System.Drawing.Color.Wheat;
-            this.richTextBox2.BackColor = System.Drawing.Color.Wheat;
-            this.richTextBox3.BackColor = System.Drawing.Color.Wheat;
-            this.richTextBox4.BackColor = System.Drawing.Color.Wheat;
-            this.richTextBox5.BackColor = System.Drawing.Color.Wheat;
-            this.richTextBox6.BackColor = System.Drawing.Color.Wheat;
-            this.richTextBox7.BackColor = System.Drawing.Color.Wheat;
-            this.richTextBox8.BackColor = System.Drawing.Color.Wheat;
-            this.richTextBox9.BackColor = System.Drawing.Color.Wheat;
-            this.richTextBox10.BackColor = System.Drawing.Color.Wheat;
-            this.richTextBox11.BackColor = System.Drawing.Color.Wheat;
-
-            this.textBox10.BackColor = System.Drawing.Color.Wheat;
-
-            FocusOnTab();
-        }
-
-        private void rbWinterSkin_CheckedChanged(object sender, EventArgs e)
-        {
-            this.BackgroundImage = global::OTGE.Properties.Resources.BGWinter;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-
-            this.tabPage1.BackColor = System.Drawing.Color.GhostWhite;
-            this.tabPage2.BackColor = System.Drawing.Color.GhostWhite;
-            this.tabPage3.BackColor = System.Drawing.Color.GhostWhite;
-
-            this.groupBox1.BackColor = System.Drawing.Color.GhostWhite;
-            this.pnlVersionWorldSelect.BackColor = System.Drawing.Color.GhostWhite;
-            this.groupBox3.BackColor = System.Drawing.Color.GhostWhite;
-            this.groupBox4.BackColor = System.Drawing.Color.GhostWhite;
-
-            this.richTextBox1.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox2.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox3.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox4.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox5.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox6.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox7.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox8.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox9.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox10.BackColor = System.Drawing.Color.GhostWhite;
-            this.richTextBox11.BackColor = System.Drawing.Color.GhostWhite;
-
-            this.textBox7.BackColor = System.Drawing.Color.GhostWhite;
-            this.textBox9.BackColor = System.Drawing.Color.GhostWhite;
-            this.textBox10.BackColor = System.Drawing.Color.GhostWhite;
-
-            FocusOnTab();
-        }
-
-        private void rbVanillaSkin_CheckedChanged(object sender, EventArgs e)
-        {
-            this.BackgroundImage = null;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.BackColor = Color.FromKnownColor(KnownColor.Control);
-
-            this.tabPage1.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.tabPage2.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.tabPage3.BackColor = Color.FromKnownColor(KnownColor.Control);
-
-            this.groupBox1.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.pnlVersionWorldSelect.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.groupBox3.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.groupBox4.BackColor = Color.FromKnownColor(KnownColor.Control);
-
-            this.richTextBox1.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.richTextBox2.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.richTextBox3.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.richTextBox4.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.richTextBox5.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.richTextBox6.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.richTextBox7.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.richTextBox8.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.richTextBox9.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.richTextBox10.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.richTextBox11.BackColor = Color.FromKnownColor(KnownColor.Control);
-
-            this.textBox7.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.textBox9.BackColor = Color.FromKnownColor(KnownColor.Control);
-            this.textBox10.BackColor = Color.FromKnownColor(KnownColor.Control);
-
-            FocusOnTab();
-        }
-        
         private void cbDeleteRegion_Click(object sender, EventArgs e)
         {
             FocusOnTab();

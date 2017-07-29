@@ -6,7 +6,7 @@ using System.IO;
 
 using System.Windows.Forms;
 
-namespace OTGE.Utils
+namespace OTGEdit.Utils
 {
     public static class Misc
     {
@@ -49,7 +49,7 @@ namespace OTGE.Utils
                                 lastSpaceAt--;
                             }
 
-                            if(lastSpaceAt > i && lastSpaceAt != i + maxCharactersPerLine)
+                            if (lastSpaceAt > i && lastSpaceAt != i + maxCharactersPerLine)
                             {
                                 textWithLineBreaks += subStr.Substring(0, lastSpaceAt - i) + "\r\n";
                                 i = lastSpaceAt - maxCharactersPerLine + 1; // + 1 to skip the space at the start of next line
@@ -236,7 +236,7 @@ namespace OTGE.Utils
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            if (!this.ClientRectangle.Contains(this.PointToClient(Control.MousePosition)))
+            if (Session.Form1.ActiveControl != this || !this.ClientRectangle.Contains(this.PointToClient(Control.MousePosition)))
             {
                 Session.Form1.FocusOnTab();
             } else {
@@ -250,7 +250,7 @@ namespace OTGE.Utils
                 if (numberOfDecimals > 0 && distanceFromEnd > 1)
                 {
                     numberOfDecimals -= distanceFromEnd;
-                    if(numberOfDecimals < 0)
+                    if (numberOfDecimals < 0)
                     {
                         numberOfDecimals = 0;
                     }
@@ -282,12 +282,20 @@ namespace OTGE.Utils
                     {
                         this.wheelDelta -= (num3 * (120d / (double)increment));
 
-                        this.Value += Convert.ToDecimal(increment);
-
+                        if (this.Value + Convert.ToDecimal(increment) <= this.Maximum)
+                        {
+                            this.Value += Convert.ToDecimal(increment);
+                        } else {
+                            this.Value = this.Maximum;
+                        }
                     } else {
                         this.wheelDelta -= (num3 * (120d / (double)increment));
-
-                        this.Value -= Convert.ToDecimal(increment);
+                        if (this.Value - Convert.ToDecimal(increment) >= this.Minimum)
+                        {
+                            this.Value -= Convert.ToDecimal(increment);
+                        } else {
+                            this.Value = this.Minimum;
+                        }
                     }
                 }
 
@@ -311,6 +319,88 @@ namespace OTGE.Utils
                 }
             }
             return (null);
+        }
+    }
+
+    public class ComboBoxWithBorder : ComboBox
+    {
+        private const int WM_PAINT = 0xF;
+        private int buttonWidth = SystemInformation.HorizontalScrollBarArrowWidth;
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (m.Msg == WM_PAINT)
+            {
+                using (var g = System.Drawing.Graphics.FromHwnd(Handle))
+                {
+                    var p = System.Drawing.Pens.DarkGray;
+                    g.DrawRectangle(p, 0, 0, Width - 1, Height - 1);
+                    g.DrawLine(p, Width - buttonWidth, 0, Width - buttonWidth, Height);
+                }
+            }
+        }
+    }
+
+    public class TextBoxWithBorder : TextBox
+    {
+        [System.Runtime.InteropServices.DllImport("user32")]
+        private static extern IntPtr GetWindowDC(IntPtr hwnd);
+        private const int WM_NCPAINT = 0x85;
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (m.Msg == WM_NCPAINT)
+            {
+                var dc = GetWindowDC(Handle);
+                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromHdc(dc))
+                {
+                    g.DrawRectangle(System.Drawing.Pens.DarkGray, 0, 0, Width - 1, Height - 1);
+                }
+            }
+        }
+    }
+
+    public class RichTextBoxWithBorder : RichTextBox
+    {
+        private const int WM_PAINT = 15;
+        protected override void WndProc(ref System.Windows.Forms.Message m)
+        {
+            base.WndProc(ref m);
+            if (m.Msg == WM_PAINT && !inhibitPaint)
+            {
+                // raise the paint event
+                using (System.Drawing.Graphics graphic = base.CreateGraphics())
+                {
+                    OnPaint(new PaintEventArgs(graphic, base.ClientRectangle));
+                }
+            }
+        }
+
+        private bool inhibitPaint = false;
+
+        public bool InhibitPaint
+        {
+            set { inhibitPaint = value; }
+        }
+
+        [System.Runtime.InteropServices.DllImport("user32")]
+        private static extern IntPtr GetWindowDC(IntPtr hwnd);
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            var dc = GetWindowDC(Handle);
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromHdc(dc))
+            {
+                g.DrawRectangle(System.Drawing.Pens.DarkGray, 0, 0, Width - 1, Height - 1);
+            }
+        }
+    }
+
+    public class PanelWithScrollExposePanelWithScrollExposed : Panel
+    {
+        public void OnMouseWheelPublic(MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
         }
     }
 

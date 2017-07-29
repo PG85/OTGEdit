@@ -4,17 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using OTGE.XML;
-using OTGE.Utils;
+using OTGEdit.XML;
+using OTGEdit.Utils;
 using System.Drawing;
 using System.Threading;
 
-namespace OTGE
+namespace OTGEdit
 {
     public static class Session
     {
-        public static int ClosedHeight = 152;
-        public static int ClosedWidth = 565;        
+        public static int ClosedHeight = 142;
+        public static int ClosedWidth = 950;        
 
         public static int OpenedHeight = 743;
         public static int OpenedWidth = 950;
@@ -51,9 +51,6 @@ namespace OTGE
         public static Button btSave;
         public static Button btLoad;
         public static Button btGenerate;
-        public static RadioButton rbSummerSkin;
-        public static RadioButton rbWinterSkin;
-        public static RadioButton rbNoSkin;
         public static ListBox lbGroups;
         public static Button btCopyBO3s;
         public static CheckBox cbDeleteRegion;

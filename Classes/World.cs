@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OTGE.XML;
+using OTGEdit.XML;
 using System.IO;
 using System.Windows.Forms;
 using System.Drawing;
-using OTGE.Utils;
+using OTGEdit.Utils;
 
-namespace OTGE
+namespace OTGEdit
 {
     public static class World
     {
@@ -313,7 +313,7 @@ namespace OTGE
                                                     Session.WorldSettingsInputs[property].Item2.Checked = false;
                                                 } else {
                                                     ((Button)Session.WorldSettingsInputs[property].Item1).Text = "";
-                                                    ((Button)Session.WorldSettingsInputs[property].Item1).ForeColor = Color.Empty;
+                                                    ((Button)Session.WorldSettingsInputs[property].Item1).ForeColor = Color.DarkGray;
                                                     Session.WorldSettingsInputs[property].Item2.Checked = false;
                                                 }
                                                 break;
@@ -360,8 +360,8 @@ namespace OTGE
                                 {
                                     if(ex is ArgumentNullException || ex is InvalidOperationException)
                                     {
-                                        txtErrorsWrongValue += "\r\nValue for setting " + property.Name + " could not be read from WorldConfig.ini file. There is either an error in the file or OTGE needs to be updated to support the value's formatting.";
-                                        //throw new Exception("Value for setting " + property.Name + " could not be read from file " + file.Name + ". There is either an error in the file or OTGE needs to be updated to support the value's formatting. Ex: " + ex.Message);
+                                        txtErrorsWrongValue += "\r\nValue for setting " + property.Name + " could not be read from WorldConfig.ini file. There is either an error in the file or OTGEdit needs to be updated to support the value's formatting.";
+                                        //throw new Exception("Value for setting " + property.Name + " could not be read from file " + file.Name + ". There is either an error in the file or OTGEdit needs to be updated to support the value's formatting. Ex: " + ex.Message);
                                     } else {
                                         throw;
                                     }
@@ -596,7 +596,7 @@ namespace OTGE
                             } else {
                                 //if (!property.Optional)
                                 {
-                                    //defaultText.Append("\r\n# This setting was added by OTGE and is most probably used by the Minecraft Worlds mod #\r\n");
+                                    //defaultText.Append("\r\n# This setting was added by OTGEdit and is most probably used by the Minecraft Worlds mod #\r\n");
                                     defaultText.Append(property.ScriptHandle + " " + newValue + "\r\n");
 
                                     //errorsTxt += "\r\nVersion config error: Setting \"" + property.Name + "\" could not be found in file \"" + defaultWorldConfig.FullName + "\". Added it to the end of the file.";

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using OTGE.XML;
+using OTGEdit.XML;
 using System.Windows.Forms;
-using OTGE.Utils;
+using OTGEdit.Utils;
 
-namespace OTGE
+namespace OTGEdit
 {
     public static class Biomes
     {
@@ -247,8 +247,8 @@ namespace OTGE
                         {
                             if(ex is ArgumentNullException || ex is InvalidOperationException)
                             {
-                                txtErrorsWrongValue += "\r\nValue for setting " + property.Name + " could not be read from file " + file.Name + ". There is either an error in the file or OTGE needs to be updated to support the value's formatting.";
-                                //throw new Exception("Value for setting " + property.Name + " could not be read from file " + file.Name + ". There is either an error in the file or OTGE needs to be updated to support the value's formatting. Ex: " + ex.Message);
+                                txtErrorsWrongValue += "\r\nValue for setting " + property.Name + " could not be read from file " + file.Name + ". There is either an error in the file or OTGEdit needs to be updated to support the value's formatting.";
+                                //throw new Exception("Value for setting " + property.Name + " could not be read from file " + file.Name + ". There is either an error in the file or OTGEdit needs to be updated to support the value's formatting. Ex: " + ex.Message);
                             } else {
                                 throw;
                             }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using fNbt;
 
-namespace OTGE.Utils
+namespace OTGEdit.Utils
 {
     public class Coordinates : IEquatable<Coordinates>
     {
@@ -406,7 +406,7 @@ namespace OTGE.Utils
                                 BO3String.Append("Author: Unknown\r\n");
                                 BO3String.Append("\r\n");
                                 BO3String.Append("# A short description of this BO3 object\r\n");
-                                BO3String.Append("Description: This BO3 was converted from a schematic using OTGE. The author and description information of the schematic could not be found. If you know who the author of the schematic is then please add this information.\r\n");
+                                BO3String.Append("Description: This BO3 was converted from a schematic using OTGEdit. The author and description information of the schematic could not be found. If you know who the author of the schematic is then please add this information.\r\n");
                                 BO3String.Append("\r\n");
                                 BO3String.Append("# The BO3 version, don't change this! It can be used by external applications to do a version check.\r\n");
                                 BO3String.Append("Version: 3\r\n");
