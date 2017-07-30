@@ -50,6 +50,9 @@ namespace OTGEdit
 
                 InitializeComponent();
 
+                groupBoxWorldTab.Location = new Point(21,144);
+                groupBoxBiomesTab.Location = new Point(-5000, 144);
+
                 tabControl1.Selected += tabControl1_Selected;
 
                 // TODO: Pass these as method parameters instead of using static fields.
@@ -143,18 +146,18 @@ namespace OTGEdit
             {
                 if(tabControl1.SelectedIndex == 0)
                 {
-                    groupBoxWorldTab.Show();
-                    groupBoxBiomesTab.Hide();
+                    groupBoxWorldTab.Location = new Point(21,144);
+                    groupBoxBiomesTab.Location = new Point(-5000, 144);
                 }
                 if (tabControl1.SelectedIndex == 1)
                 {
-                    groupBoxWorldTab.Hide();
-                    groupBoxBiomesTab.Show();
+                    groupBoxWorldTab.Location = new Point(-5000, 144);
+                    groupBoxBiomesTab.Location = new Point(21, 144);
                 }
                 if (tabControl1.SelectedIndex == 2)
                 {
-                    groupBoxWorldTab.Hide();
-                    groupBoxBiomesTab.Hide();
+                    groupBoxWorldTab.Location = new Point(-5000, 144);
+                    groupBoxBiomesTab.Location = new Point(-5000, 144);
                 }
             }
 
