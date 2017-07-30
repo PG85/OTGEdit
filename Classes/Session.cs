@@ -38,7 +38,7 @@ namespace OTGEdit
         public static bool IgnorePropertyInputChangedWorld = false;
         public static bool IgnoreOverrideCheckChangedWorld = false;
 
-        public static List<Group> BiomeGroups = new List<Group>();
+        public static Dictionary<string, Group> BiomeGroups = new Dictionary<string, Group>();
         public static Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> BiomeSettingsInputs = new Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>>();
 
         public static ToolTip ToolTip1 = new ToolTip() { AutoPopDelay = 32000, InitialDelay = 500, ReshowDelay = 0, ShowAlways = true, IsBalloon = true };
@@ -84,6 +84,7 @@ namespace OTGEdit
                     (Action)delegate
                     {
                         Form form = new System.Windows.Forms.Form();
+                        form.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
                         form.Text = "Please wait.";
                         form.FormBorderStyle = FormBorderStyle.FixedToolWindow;
                         form.StartPosition = FormStartPosition.CenterParent;

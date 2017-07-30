@@ -221,6 +221,11 @@ namespace OTGEdit.Utils
 
         protected override void OnLostFocus(EventArgs e)
         {
+            if(String.IsNullOrEmpty(this.Text))
+            {
+                this.Text = this.Value.ToString();
+            }
+
             int numberOfDecimals = !DecimalsAllowed ? 0 : this.Text.IndexOf(".") > 0 ? this.Text.Length - (this.Text.IndexOf(".") + 1) : 0;
             this.DecimalPlaces = numberOfDecimals;
 

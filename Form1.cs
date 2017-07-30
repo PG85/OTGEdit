@@ -64,17 +64,11 @@ namespace OTGEdit
                 Session.cbDeleteRegion.Click += cbDeleteRegion_Click;
                 Session.Init();
 
-                this.richTextBox1.LinkClicked += richTextBox_LinkClicked;
-                this.richTextBox2.LinkClicked += richTextBox_LinkClicked;
-                this.richTextBox3.LinkClicked += richTextBox_LinkClicked;
-                this.richTextBox4.LinkClicked += richTextBox_LinkClicked;
-                this.richTextBox5.LinkClicked += richTextBox_LinkClicked;
-                this.richTextBox6.LinkClicked += richTextBox_LinkClicked;
-                this.richTextBox7.LinkClicked += richTextBox_LinkClicked;
-                this.richTextBox8.LinkClicked += richTextBox_LinkClicked;
-                this.richTextBox9.LinkClicked += richTextBox_LinkClicked;
-                this.richTextBox10.LinkClicked += richTextBox_LinkClicked;
-                this.richTextBox11.LinkClicked += richTextBox_LinkClicked;
+                this.rtbHelpTabLink1.LinkClicked += richTextBox_LinkClicked;
+                this.rtbHelpTabLink2.LinkClicked += richTextBox_LinkClicked;
+                this.rtbHelpTabLink3.LinkClicked += richTextBox_LinkClicked;
+                this.rtbHelpTabLink4.LinkClicked += richTextBox_LinkClicked;
+                this.rtbHelpTabLink5.LinkClicked += richTextBox_LinkClicked;
 
                 this.AllowDrop = true;
                 this.DragEnter += new DragEventHandler(Form1_DragEnter);
@@ -146,11 +140,6 @@ namespace OTGEdit
             void SelectSourceWorld_Click(object sender, EventArgs e)
             {
                 Session.ShowProgessBox();
-
-                //tlpBiomeSettingsContainer.Hide();
-                //tlpWorldSettingsContainer.Hide();
-
-                //Session.Form1.SuspendLayout();
 
                 Session.BiomeNames.Clear();
                 BiomeListInputs.Clear();
@@ -242,17 +231,13 @@ namespace OTGEdit
                         btSetToDefault.Text = "Set to defaults";
                     }
 
-                    /*
-                    Session.tabControl1.Visible = true;
-                    Session.btSave.Enabled = true;
-                    Session.btLoad.Enabled = true;
-                    Session.btGenerate.Visible = true;
-                    Session.btCopyBO3s.Visible = true;
-                    Session.cbDeleteRegion.Visible = true;
-                    */
-
-                    //label4.Visible = true;
-                    //label5.Visible = true;
+                    string currentWorldTemplateName = new DirectoryInfo(Session.SourceConfigsDir).Name;
+                    if (lastUsedWorldName.ContainsKey(currentWorldTemplateName))
+                    {
+                        lastUsedWorldName[currentWorldTemplateName] = currentWorldTemplateName;
+                    } else {
+                        lastUsedWorldName.Add(currentWorldTemplateName, currentWorldTemplateName);
+                    } 
 
                     Session.Form1.AutoSize = false;
                     Session.Form1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowOnly;
@@ -269,24 +254,18 @@ namespace OTGEdit
                     btClickBackGround(null, null);
                 }
 
-                //Session.Form1.ResumeLayout();
-
-                //tlpBiomeSettingsContainer.Show();
-                //tlpWorldSettingsContainer.Show();
-
                 Session.HideProgessBox();
             }
 
             public void UnloadUI()
             {
-                tabControl1.Visible = false;
+                //tabControl1.Visible = false;
                 btGenerate.Visible = false;
                 btCopyBO3s.Visible = false;
                 cbDeleteRegion.Visible = false;
                 btSave.Enabled = false;
                 btLoad.Enabled = false;
                 tlpBiomeSettings1.Visible = false;
-                label3.Visible = false;
 
                 AutoSize = false;
 
@@ -296,9 +275,6 @@ namespace OTGEdit
 
             public void LoadUI()
             {
-                this.Resize += Form1_Resize;
-                this.ResizeEnd += Form1_ResizeEnd;
-
                 Session.ToolTip1.RemoveAll();
 
                 Session.ToolTip1.SetToolTip(lblGroups, 
@@ -309,14 +285,12 @@ namespace OTGEdit
                     "so you can add gold ore in the first group and diamond ore in the second."
                 );
 
-                //tabControl1.Hide();
                 btGenerate.Hide();
                 btCopyBO3s.Hide();
                 cbDeleteRegion.Hide();
                 btSave.Enabled = false;
                 btLoad.Enabled = false;
-                //tlpBiomeSettings1.Visible = false;
-                label3.Visible = false;
+                tlpBiomeSettings1.Hide();
 
                 string uniqueResourceQueueItems = "";
                 foreach (ResourceQueueItem resourceQueueItem in Session.VersionConfig.ResourceQueueOptions)
@@ -342,7 +316,7 @@ namespace OTGEdit
 
                 // Worlds
 
-                foreach (TCProperty property in Session.VersionConfig.WorldConfig)
+                foreach (TCProperty property in Session.VersionConfig.WorldConfigDict.Values)
                 {
                     if (settingsByGroup.ContainsKey(property.Group))
                     {
@@ -352,18 +326,11 @@ namespace OTGEdit
                     }
                 }
 
-                //this.SuspendLayout();
-
-                //panel2.SuspendLayout();
-                //panel3.SuspendLayout();
-
-                //tlpWorldSettingsContainer.SuspendLayout();
                 tlpWorldSettings1.SuspendLayout();
 
                 tlpWorldSettings1.Controls.Clear();
                 tlpWorldSettings1.RowStyles.Clear();
 
-                //tlpBiomeSettingsContainer.SuspendLayout();
                 tlpBiomeSettings1.SuspendLayout();
 
                 tlpBiomeSettings1.Controls.Clear();
@@ -751,7 +718,7 @@ namespace OTGEdit
 
                 settingsByGroup = new Dictionary<string, List<TCProperty>>();
 
-                foreach (TCProperty property in Session.VersionConfig.BiomeConfig)
+                foreach (TCProperty property in Session.VersionConfig.BiomeConfigDict.Values)
                 {
                     if (settingsByGroup.ContainsKey(property.Group))
                     {
@@ -1125,24 +1092,14 @@ namespace OTGEdit
                 }
 
                 tlpWorldSettings1.ResumeLayout();
-                //tlpWorldSettingsContainer.ResumeLayout();
 
                 tlpBiomeSettings1.ResumeLayout();
-                //tlpBiomeSettingsContainer.ResumeLayout();
 
-                //panel3.ResumeLayout();
-                //panel2.ResumeLayout();
-
-                //this.ResumeLayout();
-
-                //tabControl1.Show();
                 btGenerate.Show();
                 btCopyBO3s.Show();
                 cbDeleteRegion.Show();
                 btSave.Enabled = true;
                 btLoad.Enabled = true;
-                //tlpBiomeSettings1.Visible = false;
-                label3.Show();
             }
 
         #endregion
@@ -1372,12 +1329,12 @@ namespace OTGEdit
                     KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item1 == sender);
                     TCProperty property = kvp.Key;
 
-                    Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                    Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
 
                     BiomeConfig biomeDefaultConfig = null;
                     if (g.showDefaults)
                     {
-                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.BiomesHash.First());
                     }
 
                     string value = biomeDefaultConfig != null ? biomeDefaultConfig.GetPropertyValueAsString(property) : null;
@@ -1412,8 +1369,20 @@ namespace OTGEdit
                         property.PropertyType == "BigString" ||
                         property.PropertyType == "Bool" ||
                         (
-                            (property.PropertyType == "Float" && float.TryParse(tb.Text, out result)) ||
-                            (property.PropertyType == "Int" && int.TryParse(tb.Text, out result2))
+                            (
+                                property.PropertyType == "Float" &&
+                                (
+                                    String.IsNullOrEmpty(tb.Text) ||
+                                    float.TryParse(tb.Text, out result)
+                                )
+                            ) ||
+                            (
+                                property.PropertyType == "Int" &&
+                                (
+                                    String.IsNullOrEmpty(tb.Text) ||
+                                    int.TryParse(tb.Text, out result2)
+                                )
+                            )
                         )
                     )
                     {
@@ -1583,7 +1552,7 @@ namespace OTGEdit
                 if (!Session.IgnoreOverrideCheckChangedWorld)
                 {
                     TCProperty property = Session.WorldSettingsInputs.First(a => a.Value.Item2 == sender).Key;
-                    Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = ((CheckBox)sender).Checked;
+                    Session.WorldConfig1.PropertiesDict[property.Name].Override = ((CheckBox)sender).Checked;
 
                     if (((CheckBox)sender).Checked)
                     {
@@ -1596,11 +1565,9 @@ namespace OTGEdit
                         if (
                             property.PropertyType == "String" ||
                             property.PropertyType == "BigString" ||
-                            property.PropertyType == "Bool" ||
-                            (
-                                (property.PropertyType == "Float" && float.TryParse(tb.Text, out result)) ||
-                                (property.PropertyType == "Int" && int.TryParse(tb.Text, out result2))
-                            )
+                            (property.PropertyType == "Bool" && !String.IsNullOrEmpty(tb.Text)) ||
+                            (property.PropertyType == "Float" && (String.IsNullOrEmpty(tb.Text) || float.TryParse(tb.Text, out result))) ||
+                            (property.PropertyType == "Int" && (String.IsNullOrEmpty(tb.Text) || int.TryParse(tb.Text, out result2)))
                         )
                         {
                             Session.WorldConfig1.SetProperty(property, tb.Text, kvp.Value.Item6 != null && ((RadioButton)kvp.Value.Item6.Controls.Find("Merge", true)[0]).Checked, kvp.Value.Item6 != null && ((CheckBox)kvp.Value.Item6.Controls.Find("OverrideParent", true)[0]).Checked);
@@ -1786,7 +1753,7 @@ namespace OTGEdit
                         break;
 
                     }
-                    kvp.Value.Item2.Checked = Session.WorldConfigDefaultValues.Properties.First(a => a.PropertyName == kvp.Key.Name).Override;
+                    kvp.Value.Item2.Checked = Session.WorldConfigDefaultValues.PropertiesDict[kvp.Key.Name].Override;
                 } else {
                     switch(kvp.Key.PropertyType)
                     {
@@ -2055,15 +2022,15 @@ namespace OTGEdit
                     if (!bIsDefault)
                     {
                         Session.WorldConfig1.SetProperty(property, s, Session.WorldSettingsInputs[property].Item6 != null && ((RadioButton)Session.WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, Session.WorldSettingsInputs[property].Item6 != null && ((CheckBox)Session.WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                        Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = true;
+                        Session.WorldConfig1.PropertiesDict[property.Name].Override = true;
                         Session.WorldSettingsInputs[property].Item2.Checked = true;
                     } else {
                         Session.WorldConfig1.SetProperty(property, null, Session.WorldSettingsInputs[property].Item6 != null && ((RadioButton)Session.WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, Session.WorldSettingsInputs[property].Item6 != null && ((CheckBox)Session.WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                        Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = false;
+                        Session.WorldConfig1.PropertiesDict[property.Name].Override = false;
                         Session.WorldSettingsInputs[property].Item2.Checked = false;
                     }
                 } else {
-                    Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = true;
+                    Session.WorldConfig1.PropertiesDict[property.Name].Override = true;
                     Session.WorldSettingsInputs[property].Item2.Checked = true;
                     Session.WorldConfig1.SetProperty(property, s, Session.WorldSettingsInputs[property].Item6 != null && ((RadioButton)Session.WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, Session.WorldSettingsInputs[property].Item6 != null && ((CheckBox)Session.WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
                 }
@@ -2341,11 +2308,11 @@ namespace OTGEdit
                 if (!bIsDefault)
                 {
                     Session.WorldConfig1.SetProperty(property, s, Session.WorldSettingsInputs[property].Item6 != null && ((RadioButton)Session.WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, Session.WorldSettingsInputs[property].Item6 != null && ((CheckBox)Session.WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                    Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = true;
+                    Session.WorldConfig1.PropertiesDict[property.Name].Override = true;
                     Session.WorldSettingsInputs[property].Item2.Checked = true;
                 } else {
                     Session.WorldConfig1.SetProperty(property, null, Session.WorldSettingsInputs[property].Item6 != null && ((RadioButton)Session.WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, Session.WorldSettingsInputs[property].Item6 != null && ((CheckBox)Session.WorldSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                    Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override = false;
+                    Session.WorldConfig1.PropertiesDict[property.Name].Override = false;
                     Session.WorldSettingsInputs[property].Item2.Checked = false;
                 }
 
@@ -2365,7 +2332,7 @@ namespace OTGEdit
             {
                 if (Session.WorldConfigDefaultValues != null)
                 {
-                    foreach (TCProperty property in Session.VersionConfig.WorldConfig)
+                    foreach (TCProperty property in Session.VersionConfig.WorldConfigDict.Values)
                     {
                         Tuple<Control, CheckBox, Button, Label, ListBox, Panel> boxes = Session.WorldSettingsInputs[property];
                         Session.IgnorePropertyInputChangedWorld = true;
@@ -2456,7 +2423,7 @@ namespace OTGEdit
                     }
                     Session.WorldConfig1 = new WorldConfig(Session.VersionConfig);
                 } else {
-                    foreach (TCProperty property in Session.VersionConfig.WorldConfig)
+                    foreach (TCProperty property in Session.VersionConfig.WorldConfigDict.Values)
                     {
                         Tuple<Control, CheckBox, Button, Label, ListBox, Panel> boxes = Session.WorldSettingsInputs[property];
                         Session.IgnorePropertyInputChangedWorld = true;
@@ -2533,7 +2500,7 @@ namespace OTGEdit
                                 ctl.ForeColor = Color.Black;
                             }                    
                         } else {
-                            ctl.BackColor = Color.DarkGray;
+                            ctl.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
                             ctl.ForeColor = Color.Black;
                         }
                     }
@@ -2581,7 +2548,7 @@ namespace OTGEdit
                                         previousSetting.ForeColor = Color.Black;
                                     }
                                 } else {
-                                    ctl.BackColor = Color.DarkGray;
+                                    ctl.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
                                     ctl.ForeColor = Color.Black;
                                 }
                             }
@@ -2650,7 +2617,7 @@ namespace OTGEdit
                                     ctl.ForeColor = Color.Black;
                                 }                    
                             } else {
-                                ctl.BackColor = Color.DarkGray;
+                                ctl.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
                                 ctl.ForeColor = Color.Black;
                             }
                         }
@@ -2736,11 +2703,11 @@ namespace OTGEdit
 
                     if (txtErrorsWrongValue.Length > 0)
                     {
-                        PopUpForm.CustomMessageBox(txtErrorsWrongValue + "\r\n\r\nThe biome config files for this world contain errors, they were probably not generated with the selected version of TC/MCW/OTG/OTG+ and require manual updating.", "Version warnings");
+                        PopUpForm.ScrollingMessageBox("Version incompatibility warnings", "Values for the following settings could not be loaded:", txtErrorsWrongValue + "\r\n\r\nThe biome config files for this world contain errors, they were probably not generated with the selected version of TC/MCW/OTG/OTG+ and require manual updating.");
                     }
                     if (txtErrorsNoSetting.Length > 0)
                     {
-                        PopUpForm.CustomMessageBox(txtErrorsNoSetting + "\r\n\r\nThe biome config files for this world contain errors, they were probably not generated with the selected version of TC/MCW/OTG/OTG+ and require manual updating.", "Version warnings");
+                        PopUpForm.ScrollingMessageBox("Version incompatibility warnings", "The following settings could not be loaded:", txtErrorsNoSetting + "\r\n\r\nThe biome config files for this world contain errors, they were probably not generated with the selected version of TC/MCW/OTG/OTG+ and require manual updating.");
                     }
                 }
             }
@@ -2754,13 +2721,13 @@ namespace OTGEdit
                     {
                         if (biomeConfig.BiomeName != "Hell" && biomeConfig.BiomeName != "Sky" && !biomeConfig.BiomeName.ToLower().Contains("ocean"))
                         {
-                            overworldLand.Biomes.Add(biomeConfig.BiomeName);
+                            overworldLand.BiomesHash.Add(biomeConfig.BiomeName);
                         }
                     }
-                    if (overworldLand.Biomes.Any())
+                    if (overworldLand.BiomesHash.Count > 0)
                     {
                         lbGroups.Items.Add("Land");
-                        Session.BiomeGroups.Add(overworldLand);
+                        Session.BiomeGroups.Add(overworldLand.Name, overworldLand);
                     }
                     
                     Group overworldOceans = new Group("Oceans", Session.VersionConfig);
@@ -2768,13 +2735,13 @@ namespace OTGEdit
                     {
                         if (biomeConfig.BiomeName.ToLower().Contains("ocean"))
                         {
-                            overworldOceans.Biomes.Add(biomeConfig.BiomeName);
+                            overworldOceans.BiomesHash.Add(biomeConfig.BiomeName);
                         }
                     }
-                    if (overworldOceans.Biomes.Any())
+                    if (overworldOceans.BiomesHash.Count > 0)
                     {
                         lbGroups.Items.Add("Oceans");
-                        Session.BiomeGroups.Add(overworldOceans);
+                        Session.BiomeGroups.Add(overworldOceans.Name, overworldOceans);
                     }
 
                     Group overworldSky = new Group("Sky", Session.VersionConfig);
@@ -2782,13 +2749,13 @@ namespace OTGEdit
                     {
                         if (biomeConfig.BiomeName == "Sky")
                         {
-                            overworldSky.Biomes.Add(biomeConfig.BiomeName);
+                            overworldSky.BiomesHash.Add(biomeConfig.BiomeName);
                         }
                     }
-                    if (overworldSky.Biomes.Any())
+                    if (overworldSky.BiomesHash.Count > 0)
                     {
                         lbGroups.Items.Add("Sky");
-                        Session.BiomeGroups.Add(overworldSky);
+                        Session.BiomeGroups.Add(overworldSky.Name, overworldSky);
                     }
                     
                     Group hell = new Group("Nether", Session.VersionConfig);
@@ -2796,13 +2763,13 @@ namespace OTGEdit
                     {
                         if (biomeConfig.BiomeName == "Hell")
                         {
-                            hell.Biomes.Add(biomeConfig.BiomeName);
+                            hell.BiomesHash.Add(biomeConfig.BiomeName);
                         }
                     }
-                    if (hell.Biomes.Any())
+                    if (hell.BiomesHash.Any())
                     {
                         lbGroups.Items.Add("Nether");
-                        Session.BiomeGroups.Add(hell);
+                        Session.BiomeGroups.Add(hell.Name, hell);
                     }
                 }
             }
@@ -2814,7 +2781,7 @@ namespace OTGEdit
                     KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item6 == ((Control)sender).Parent);
                     TCProperty property = kvp.Key;
 
-                    Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                    Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                     BiomeConfig biomeConfig = g.BiomeConfig;
 
                     biomeConfig.SetProperty(property, biomeConfig.GetPropertyValueAsString(property), biomeConfig.GetPropertyMerge(property), ((CheckBox)sender).Checked);
@@ -2832,13 +2799,13 @@ namespace OTGEdit
                     CheckBox cb = kvp.Value.Item2;
                     TCProperty property = kvp.Key;
 
-                    Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                    Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                     BiomeConfig biomeConfig = g.BiomeConfig;
 
                     BiomeConfig biomeDefaultConfig = null;
                     if (g.showDefaults)
                     {
-                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.BiomesHash.First());
                     }
 
                     bool merge = false;
@@ -2887,13 +2854,13 @@ namespace OTGEdit
                     CheckBox cb = kvp.Value.Item2;
                     TCProperty property = kvp.Key;
 
-                    Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                    Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                     BiomeConfig biomeConfig = g.BiomeConfig;
 
                     BiomeConfig biomeDefaultConfig = null;
                     if (g.showDefaults)
                     {
-                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.BiomesHash.First());
                     }
 
                     List<string> biomeNames = new List<string>();
@@ -2931,13 +2898,13 @@ namespace OTGEdit
             {
                 if (!IgnorePropertyInputChangedBiome)
                 {
-                    Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                    Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                     BiomeConfig biomeConfig = g.BiomeConfig;
 
                     BiomeConfig biomeDefaultConfig = null;
                     if (g.showDefaults)
                     {
-                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.BiomesHash.First());
                     }
 
                     if (sender is ListBox)
@@ -3014,14 +2981,14 @@ namespace OTGEdit
                     CheckBox cb = kvp.Value.Item2;
                     TCProperty property = kvp.Key;
 
-                    Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                    Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                     BiomeConfig biomeConfig = g.BiomeConfig;
                     biomeConfig.SetProperty(property, tb.Text, kvp.Value.Item6 != null && ((RadioButton)kvp.Value.Item6.Controls.Find("Merge", true)[0]).Checked, kvp.Value.Item6 != null && ((CheckBox)kvp.Value.Item6.Controls.Find("OverrideParent", true)[0]).Checked);
 
                     BiomeConfig biomeDefaultConfig = null;
                     if (g.showDefaults)
                     {
-                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.BiomesHash.First());
                     }
 
                     float result;
@@ -3109,12 +3076,12 @@ namespace OTGEdit
 
                 KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.First(a => a.Value.Item1 == sender);
                 TCProperty property = kvp.Key;
-                Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                 BiomeConfig biomeConfig = g.BiomeConfig;
                 BiomeConfig biomeDefaultConfig = null;
                 if (g.showDefaults)
                 {
-                    biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                    biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.BiomesHash.First());
                 }
                 Control tb = kvp.Value.Item1;
                 CheckBox cb = kvp.Value.Item2;
@@ -3241,14 +3208,14 @@ namespace OTGEdit
                 if (!IgnoreOverrideCheckChangedBiome)
                 {
                     TCProperty property = Session.BiomeSettingsInputs.First(a => a.Value.Item2 == sender).Key;
-                    Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                    Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                     BiomeConfig biomeConfig = g.BiomeConfig;
-                    biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = ((CheckBox)sender).Checked;
+                    biomeConfig.PropertiesDict[property.Name].Override = ((CheckBox)sender).Checked;
 
                     BiomeConfig biomeDefaultConfig = null;
                     if (g.showDefaults)
                     {
-                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                        biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.BiomesHash.First());
                     }
 
                     if (((CheckBox)sender).Checked)
@@ -3263,8 +3230,8 @@ namespace OTGEdit
                             property.PropertyType == "String" ||
                             property.PropertyType == "BigString" ||
                             (property.PropertyType == "Bool" && !String.IsNullOrEmpty(tb.Text)) ||
-                            (property.PropertyType == "Float" && float.TryParse(tb.Text, out result)) ||
-                            (property.PropertyType == "Int" && int.TryParse(tb.Text, out result2))
+                            (property.PropertyType == "Float" && (String.IsNullOrEmpty(tb.Text) || float.TryParse(tb.Text, out result))) ||
+                            (property.PropertyType == "Int" && (String.IsNullOrEmpty(tb.Text) || int.TryParse(tb.Text, out result2)))
                         )
                         {
                             biomeConfig.SetProperty(property, tb.Text, kvp.Value.Item6 != null && ((RadioButton)kvp.Value.Item6.Controls.Find("Merge", true)[0]).Checked, kvp.Value.Item6 != null && ((CheckBox)kvp.Value.Item6.Controls.Find("OverrideParent", true)[0]).Checked);
@@ -3375,12 +3342,12 @@ namespace OTGEdit
             void bSetDefaultsBiomeProperty(object sender, EventArgs e)
             {
                 KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item3 == sender);
-                Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                 BiomeConfig biomeConfig = g.BiomeConfig;
                 BiomeConfig biomeDefaultConfig = null;
                 if (g.showDefaults)
                 {
-                    biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                    biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.BiomesHash.First());
                 }
                 if (biomeDefaultConfig != null)
                 {
@@ -3481,7 +3448,7 @@ namespace OTGEdit
                             }
                         break;
                     }
-                    kvp.Value.Item2.Checked = biomeDefaultConfig.Properties.First(a => a.PropertyName == kvp.Key.Name).Override;
+                    kvp.Value.Item2.Checked = biomeDefaultConfig.PropertiesDict[kvp.Key.Name].Override;
                 } else {
                     switch (kvp.Key.PropertyType)
                     {
@@ -3735,13 +3702,13 @@ namespace OTGEdit
             public void AddResourceToBiome(TCProperty property, string propertyValue)
             {
                 IgnoreOverrideCheckChangedBiome = true;
-                Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                 BiomeConfig biomeConfig = g.BiomeConfig;
 
                 BiomeConfig biomeDefaultConfig = null;
                 if (g.showDefaults)
                 {
-                    biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                    biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.BiomesHash.First());
                 }
 
                 string s = !String.IsNullOrEmpty(biomeConfig.GetPropertyValueAsString(property)) ? biomeConfig.GetPropertyValueAsString(property) + "\r\n" + propertyValue.Trim() : propertyValue.Trim();
@@ -3759,15 +3726,15 @@ namespace OTGEdit
                     if (!bIsDefault)
                     {
                         biomeConfig.SetProperty(property, s, Session.BiomeSettingsInputs[property].Item6 != null && ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, Session.BiomeSettingsInputs[property].Item6 != null && ((CheckBox)Session.BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                        biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = true;
+                        biomeConfig.PropertiesDict[property.Name].Override = true;
                         Session.BiomeSettingsInputs[property].Item2.Checked = true;
                     } else {
                         biomeConfig.SetProperty(property, null, Session.BiomeSettingsInputs[property].Item6 != null && ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, Session.BiomeSettingsInputs[property].Item6 != null && ((CheckBox)Session.BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                        biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = false;
+                        biomeConfig.PropertiesDict[property.Name].Override = false;
                         Session.BiomeSettingsInputs[property].Item2.Checked = false;
                     }
                 } else {
-                    biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = true;
+                    biomeConfig.PropertiesDict[property.Name].Override = true;
                     Session.BiomeSettingsInputs[property].Item2.Checked = true;
                     biomeConfig.SetProperty(property, s, Session.BiomeSettingsInputs[property].Item6 != null && ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, Session.BiomeSettingsInputs[property].Item6 != null && ((CheckBox)Session.BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);                    
                 }
@@ -4010,13 +3977,13 @@ namespace OTGEdit
             private void DeleteResourceQueueItem(TCProperty property, string selectedItem)
             {
                 IgnoreOverrideCheckChangedBiome = true;
-                Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                 BiomeConfig biomeConfig = g.BiomeConfig;
 
                 BiomeConfig biomeDefaultConfig = null;
                 if (g.showDefaults)
                 {
-                    biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                    biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.BiomesHash.First());
                 }
 
                 string s = biomeConfig.GetPropertyValueAsString(property) ?? (biomeDefaultConfig != null && biomeDefaultConfig.GetPropertyValueAsString(property) != null ? biomeDefaultConfig.GetPropertyValueAsString(property) : "");
@@ -4052,11 +4019,11 @@ namespace OTGEdit
                 if (!bIsDefault)
                 {
                     biomeConfig.SetProperty(property, s, Session.BiomeSettingsInputs[property].Item6 != null && ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, Session.BiomeSettingsInputs[property].Item6 != null && ((CheckBox)Session.BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                    biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = true;
+                    biomeConfig.PropertiesDict[property.Name].Override = true;
                     Session.BiomeSettingsInputs[property].Item2.Checked = true;
                 } else {
                     biomeConfig.SetProperty(property, null, Session.BiomeSettingsInputs[property].Item6 != null && ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked, Session.BiomeSettingsInputs[property].Item6 != null && ((CheckBox)Session.BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked);
-                    biomeConfig.Properties.First(a => a.PropertyName == property.Name).Override = false;
+                    biomeConfig.PropertiesDict[property.Name].Override = false;
                     Session.BiomeSettingsInputs[property].Item2.Checked = false;
                 }
 
@@ -4082,26 +4049,24 @@ namespace OTGEdit
                     tlpBiomeSettingsContainer.SuspendLayout();
                     tlpBiomeSettings1.SuspendLayout();
 
-                    label3.Visible = true;
-
                     lbGroup.Items.Clear();
                     lbBiomes.Items.Clear();
-                    Group g = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
-                    foreach (string biomeName in g.Biomes)
+                    Group group = Session.BiomeGroups[(string)lbGroups.SelectedItem];
+                    foreach (string biomeName in group.BiomesHash)
                     {
                         lbGroup.Items.Add(biomeName);
                     }
                     foreach (BiomeConfig biomeConfig in BiomeConfigsDefaultValues)
                     {
-                        if (!g.Biomes.Any(a => a == biomeConfig.BiomeName))
+                        if (!group.BiomesHash.Contains(biomeConfig.BiomeName))
                         {
                             lbBiomes.Items.Add(biomeConfig.BiomeName);
                         }
                     }
 
-                    BiomeConfig biomeConfigDefaultValues = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                    BiomeConfig biomeConfigDefaultValues = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == group.BiomesHash.First());
 
-                    if (!g.showDefaults)
+                    if (!group.showDefaults)
                     {
                         foreach (Button bSetDefaults in Session.BiomeSettingsInputs.Select(a => a.Value.Item3))
                         {
@@ -4128,14 +4093,14 @@ namespace OTGEdit
                     IgnorePropertyInputChangedBiome = true;
                     IgnoreOverrideCheckChangedBiome = true;
 
-                    foreach (TCProperty property in Session.VersionConfig.BiomeConfig)
+                    foreach (TCProperty property in Session.VersionConfig.BiomeConfigDict.Values)
                     {
                         switch (property.PropertyType)
                         {
                             case "BiomesList":
                                 ((ListBox)Session.BiomeSettingsInputs[property].Item1).SelectedIndices.Clear();
                                 ((ListBox)Session.BiomeSettingsInputs[property].Item1).SelectedIndex = -1;
-                                if (g.showDefaults)
+                                if (group.showDefaults)
                                 {
                                     ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Visible = false;
                                     ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Override", true)[0]).Visible = false;
@@ -4168,7 +4133,7 @@ namespace OTGEdit
                             case "ResourceQueue":
                                 ((ListBox)Session.BiomeSettingsInputs[property].Item1).Items.Clear();
                                 ((ListBox)Session.BiomeSettingsInputs[property].Item1).SelectedIndex = -1;
-                                if (g.showDefaults)
+                                if (group.showDefaults)
                                 {
                                     ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Visible = false;
                                     ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Override", true)[0]).Visible = false;
@@ -4186,22 +4151,22 @@ namespace OTGEdit
                         Session.BiomeSettingsInputs[property].Item2.Checked = false;
 
                         string s = "";
-                        if (!g.showDefaults)
+                        if (!group.showDefaults)
                         {
-                            s = g.BiomeConfig.GetPropertyValueAsString(property);
+                            s = group.BiomeConfig.GetPropertyValueAsString(property);
                         } else {
-                            BiomeConfig biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == g.Biomes[0]);
+                            BiomeConfig biomeDefaultConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == group.BiomesHash.First());
                             s = biomeDefaultConfig.GetPropertyValueAsString(property);
-                            if (g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name) != null && g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override)
+                            if (group.BiomeConfig.PropertiesDict[property.Name] != null && group.BiomeConfig.PropertiesDict[property.Name].Override)
                             {
-                                if(property.PropertyType != "ResourceQueue" || g.BiomeConfig.GetPropertyValueAsString(property) != null)
+                                if(property.PropertyType != "ResourceQueue" || group.BiomeConfig.GetPropertyValueAsString(property) != null)
                                 {
-                                    s = g.BiomeConfig.GetPropertyValueAsString(property);
+                                    s = group.BiomeConfig.GetPropertyValueAsString(property);
                                 }
                             }
                         }
 
-                        if (s != null || g.BiomeConfig.GetPropertyMerge(property) || (g.BiomeConfig.GetPropertyOverrideParentValues(property) && (property.PropertyType == "ResourceQueue" || property.PropertyType == "BiomesList")))
+                        if (s != null || group.BiomeConfig.GetPropertyMerge(property) || (group.BiomeConfig.GetPropertyOverrideParentValues(property) && (property.PropertyType == "ResourceQueue" || property.PropertyType == "BiomesList")))
                         {
                             Tuple<Control, CheckBox, Button, Label, ListBox, Panel> boxes = Session.BiomeSettingsInputs[property];
 
@@ -4224,10 +4189,10 @@ namespace OTGEdit
                                             }
                                         }
                                     }
-                                    ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Override", true)[0]).Checked = !g.BiomeConfig.GetPropertyMerge(property);
-                                    ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked = g.BiomeConfig.GetPropertyMerge(property);
-                                    ((CheckBox)Session.BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked = g.BiomeConfig.GetPropertyOverrideParentValues(property);
-                                    boxes.Item2.Checked = g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name) != null && g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override;
+                                    ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Override", true)[0]).Checked = !group.BiomeConfig.GetPropertyMerge(property);
+                                    ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked = group.BiomeConfig.GetPropertyMerge(property);
+                                    ((CheckBox)Session.BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked = group.BiomeConfig.GetPropertyOverrideParentValues(property);
+                                    boxes.Item2.Checked = group.BiomeConfig.PropertiesDict[property.Name] != null && group.BiomeConfig.PropertiesDict[property.Name].Override;
                                 break;
                                 case "Bool":
                                     if (propertyValue.ToLower() == "true")
@@ -4243,12 +4208,12 @@ namespace OTGEdit
                                         ((Button)boxes.Item1).Text = "";
                                         ((Button)boxes.Item1).ForeColor = Color.DarkGray;
                                     }
-                                    boxes.Item2.Checked = g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name) != null && g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override;
+                                    boxes.Item2.Checked = group.BiomeConfig.PropertiesDict[property.Name] != null && group.BiomeConfig.PropertiesDict[property.Name].Override;
                                 break;
                                 case "Color":
                                     if ((propertyValue.StartsWith("0x") && propertyValue.Length == 8) || (propertyValue.StartsWith("#") && propertyValue.Length == 7))
                                     {
-                                        boxes.Item2.Checked = g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name) != null && g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override;
+                                        boxes.Item2.Checked = group.BiomeConfig.PropertiesDict[property.Name] != null && group.BiomeConfig.PropertiesDict[property.Name].Override;
                                         bool bException = false;
                                         try
                                         {
@@ -4317,12 +4282,12 @@ namespace OTGEdit
                                     int numberOfDecimals = property.PropertyType == "Int" ? 0 : newText.IndexOf(".") > 0 ? newText.Length - (newText.IndexOf(".") + 1) : 0;
                                     ((NumericUpDownExt)boxes.Item1).DecimalPlaces = numberOfDecimals;
                                     boxes.Item1.Text = newText;
-                                    boxes.Item2.Checked = g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name) != null && g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override;
+                                    boxes.Item2.Checked = group.BiomeConfig.PropertiesDict[property.Name] != null && group.BiomeConfig.PropertiesDict[property.Name].Override;
                                 break;
                                 case "String":
                                 case "BigString":
                                     boxes.Item1.Text = propertyValue;
-                                    boxes.Item2.Checked = g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name) != null && g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Override;
+                                    boxes.Item2.Checked = group.BiomeConfig.PropertiesDict[property.Name] != null && group.BiomeConfig.PropertiesDict[property.Name].Override;
                                 break;
                                 case "ResourceQueue":
                                     string[] resourceQueueItemNames = {};
@@ -4338,10 +4303,10 @@ namespace OTGEdit
                                             ((ListBox)Session.BiomeSettingsInputs[property].Item1).Items.Add(resourceQueueItemName.Trim());
                                         }
                                     }
-                                    ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Override", true)[0]).Checked = !g.BiomeConfig.GetPropertyMerge(property);
-                                    ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked = g.BiomeConfig.GetPropertyMerge(property);
-                                    ((CheckBox)Session.BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked = g.BiomeConfig.GetPropertyOverrideParentValues(property);
-                                    boxes.Item2.Checked = g.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name) != null && g.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override;
+                                    ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Override", true)[0]).Checked = !group.BiomeConfig.GetPropertyMerge(property);
+                                    ((RadioButton)Session.BiomeSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked = group.BiomeConfig.GetPropertyMerge(property);
+                                    ((CheckBox)Session.BiomeSettingsInputs[property].Item6.Controls.Find("OverrideParent", true)[0]).Checked = group.BiomeConfig.GetPropertyOverrideParentValues(property);
+                                    boxes.Item2.Checked = group.BiomeConfig.PropertiesDict[property.Name] != null && group.BiomeConfig.PropertiesDict[property.Name].Override;
                                 break;
                             }                        
                         }
@@ -4355,7 +4320,6 @@ namespace OTGEdit
                     IgnorePropertyInputChangedBiome = false;
                 } else {
                     tlpBiomeSettings1.Visible = false;
-                    label3.Visible = false;
                 }
             }
 
@@ -4396,12 +4360,15 @@ namespace OTGEdit
 
                 if (!String.IsNullOrWhiteSpace(groupName))
                 {
-                    if (!Session.BiomeGroups.Any(a => a.Name == groupName))
+                    if (!Session.BiomeGroups.ContainsKey(groupName))
                     {
                         lbGroups.Items.Add(groupName);
                         Group g = new Group(groupName, Session.VersionConfig);
-                        g.Biomes.AddRange(biomesToAdd);
-                        Session.BiomeGroups.Add(g);
+                        foreach(string biomeToAdd in biomesToAdd)
+                        {
+                            g.BiomesHash.Add(biomeToAdd);
+                        }
+                        Session.BiomeGroups.Add(g.Name, g);
                         lbGroups.SelectedIndex = -1;
                         lbGroups.SelectedIndex = lbGroups.Items.Count - 1;
                     } else {
@@ -4417,13 +4384,13 @@ namespace OTGEdit
                 if(lbGroups.SelectedIndex > -1)
                 {
                     string groupName = (string)lbGroups.SelectedItem;
-                    if(PopUpForm.InputBox("Rename group", "Enter a name for the group. Only a-z A-Z 0-9 space + - and _ are allowed.", ref groupName) == DialogResult.OK)
+                    if(PopUpForm.InputBox("Rename group", "Enter a name for the group. Only a-z A-Z 0-9 space + - and _ are allowed.", ref groupName, false, false, false, true) == DialogResult.OK)
                     {
                         if(!string.IsNullOrWhiteSpace(groupName))
                         {
-                            if (!Session.BiomeGroups.Any(a => a.Name == groupName))
+                            if (!Session.BiomeGroups.ContainsKey(groupName))
                             {
-                                Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.Items[lbGroups.SelectedIndex]).Name = groupName;
+                                Session.BiomeGroups[(string)lbGroups.Items[lbGroups.SelectedIndex]].Name = groupName;
                                 lbGroups.Items[lbGroups.SelectedIndex] = groupName;                        
                             } else {
                                 PopUpForm.CustomMessageBox("A group with this name already exists", "Error: Illegal input");
@@ -4439,7 +4406,7 @@ namespace OTGEdit
                 if (lbGroups.SelectedIndex > -1)
                 {
                     int selectedIndex = lbGroups.SelectedIndex;
-                    Session.BiomeGroups.RemoveAll(a => a.Name == (string)lbGroups.SelectedItem);
+                    Session.BiomeGroups.Remove((string)lbGroups.SelectedItem);
                     lbGroups.Items.Remove(lbGroups.SelectedItem);
                     lbGroups.SelectedIndex = lbGroups.Items.Count > selectedIndex ? selectedIndex : (lbGroups.Items.Count > selectedIndex - 1 ? selectedIndex - 1 : (lbGroups.Items.Count > 0 ? 0 : -1));
                     if(lbGroups.Items.Count < 1)
@@ -4455,28 +4422,31 @@ namespace OTGEdit
             {
                 if (lbGroups.SelectedIndex > -1)
                 {
-                    Group groupToClone = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.Items[lbGroups.SelectedIndex]);
-                    if(groupToClone != null && groupToClone.Biomes.Count > 1)
+                    Group groupToClone = Session.BiomeGroups[(string)lbGroups.Items[lbGroups.SelectedIndex]];
+                    if(groupToClone != null && groupToClone.BiomesHash.Count > 1)
                     {
                         string groupName = "";
-                        if (PopUpForm.InputBox("Name new group", "Enter a name for the group. Only a-z A-Z 0-9 space + - and _ are allowed.", ref groupName) == DialogResult.OK)
+                        if (PopUpForm.InputBox("Name new group", "Enter a name for the group. Only a-z A-Z 0-9 space + - and _ are allowed.", ref groupName, false, false, false, true) == DialogResult.OK)
                         {
                             if (!string.IsNullOrWhiteSpace(groupName))
                             {
-                                if (!Session.BiomeGroups.Any(a => a.Name == groupName))
+                                if (!Session.BiomeGroups.ContainsKey(groupName))
                                 {
                                     Group g = new Group(groupName, Session.VersionConfig);
-                                    g.Biomes.AddRange(groupToClone.Biomes);                                                                
-                                    foreach(Property prop in groupToClone.BiomeConfig.Properties)
+                                    foreach(string biomeName in groupToClone.BiomesHash)
                                     {
-                                        TCProperty tcProp = Session.VersionConfig.BiomeConfig.FirstOrDefault(a => a.Name == prop.PropertyName);
+                                        g.BiomesHash.Add(biomeName);
+                                    }
+                                    foreach(string prop in groupToClone.BiomeConfig.PropertiesDict.Keys)
+                                    {
+                                        TCProperty tcProp = Session.VersionConfig.BiomeConfigDict[prop];
                                         if(tcProp != null)
                                         {
                                             g.BiomeConfig.SetProperty(tcProp, groupToClone.BiomeConfig.GetPropertyValueAsString(tcProp), groupToClone.BiomeConfig.GetPropertyMerge(tcProp), groupToClone.BiomeConfig.GetPropertyOverrideParentValues(tcProp));
-                                            g.BiomeConfig.Properties.First(a => a.PropertyName == tcProp.Name).Override = true;
+                                            g.BiomeConfig.PropertiesDict[tcProp.Name].Override = true;
                                         }
                                     }
-                                    Session.BiomeGroups.Add(g);
+                                    Session.BiomeGroups.Add(g.Name, g);
 
                                     lbGroups.Items.Add(groupName);
                                     lbGroups.SelectedIndex = -1;
@@ -4510,10 +4480,10 @@ namespace OTGEdit
                     List<string> itemsToDelete = new List<string>();
                     foreach(string selectedItem in lbBiomes.SelectedItems)
                     {
-                        Group biomeGroup = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                        Group biomeGroup = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                         if (biomeGroup != null)
                         {
-                            if (!biomeGroup.Biomes.Any(a => a == selectedItem))
+                            if (!biomeGroup.BiomesHash.Contains(selectedItem))
                             {
                                 int selectedIndex = lbBiomes.SelectedIndex;
                                 BiomeConfig defaultBiomeConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == selectedItem);
@@ -4521,7 +4491,7 @@ namespace OTGEdit
                                 {
                                     itemsToDelete.Add(selectedItem);
                                     lbGroup.Items.Add(selectedItem);
-                                    biomeGroup.Biomes.Add(defaultBiomeConfig.BiomeName);
+                                    biomeGroup.BiomesHash.Add(defaultBiomeConfig.BiomeName);
                                 }
                             }
                         }
@@ -4542,19 +4512,19 @@ namespace OTGEdit
                 if (lbGroup.Items.Count > 1 && lbGroup.SelectedItems.Count > 0 && lbGroup.SelectedItems.Count < lbGroup.Items.Count)
                 {
                     List<string> itemsToDelete = new List<string>();
-                    Group biomeGroup = Session.BiomeGroups.FirstOrDefault(a => a.Name == (string)lbGroups.SelectedItem);
+                    Group biomeGroup = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                     if (biomeGroup != null)
                     {
                         foreach (string selectedItem in lbGroup.SelectedItems)
                         {
-                            if (biomeGroup.Biomes.Any(a => a == selectedItem))
+                            if (biomeGroup.BiomesHash.Contains(selectedItem))
                             {
                                 BiomeConfig defaultBiomeConfig = BiomeConfigsDefaultValues.FirstOrDefault(a => a.BiomeName == selectedItem);
                                 if (defaultBiomeConfig != null)
                                 {
                                     lbBiomes.Items.Add(selectedItem);
                                 }
-                                biomeGroup.Biomes.RemoveAll(a => a == selectedItem);
+                                biomeGroup.BiomesHash.Remove(selectedItem);
                             }
                             itemsToDelete.Add(selectedItem);
                         }
@@ -4603,7 +4573,7 @@ namespace OTGEdit
                                 ctl.ForeColor = Color.Black;
                             }
                         } else {
-                            ctl.BackColor = Color.DarkGray;
+                            ctl.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
                             ctl.ForeColor = Color.Black;
                         }
                     }
@@ -4651,7 +4621,7 @@ namespace OTGEdit
                                         previousSetting.ForeColor = Color.Black;
                                     }
                                 } else {
-                                    ctl.BackColor = Color.DarkGray;
+                                    ctl.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
                                     ctl.ForeColor = Color.Black;
                                 }
                             }
@@ -4720,7 +4690,7 @@ namespace OTGEdit
                                     ctl.ForeColor = Color.Black;
                                 }
                             } else {
-                                ctl.BackColor = Color.DarkGray;
+                                ctl.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
                                 ctl.ForeColor = Color.Black;
                             }
                         }
@@ -4821,7 +4791,7 @@ namespace OTGEdit
                     List<Group> groups = new List<Group>();
                     foreach(string groupName in lbGroups.Items)
                     {
-                        groups.Add(Session.BiomeGroups.FirstOrDefault(a => a.Name == groupName));
+                        groups.Add(Session.BiomeGroups[groupName]);
                     }
 
                     SettingsFile settingsFile = new SettingsFile()
@@ -4843,6 +4813,8 @@ namespace OTGEdit
                         }
                     }
                     System.IO.File.WriteAllText(sfd.FileName, xmlString);
+
+                    sfd.InitialDirectory = new FileInfo(sfd.FileName).DirectoryName;
 
                     PopUpForm.CustomMessageBox("Settings saved as: " + sfd.FileName, "Settings saved");
                 }
@@ -4871,17 +4843,40 @@ namespace OTGEdit
 
                             if (settingsFile != null)
                             {
+                                ofd.InitialDirectory = new FileInfo(ofd.FileName).DirectoryName;
+
                                 Session.WorldConfig1 = settingsFile.WorldConfig;
-                                foreach (Property prop in Session.WorldConfig1.Properties.Where(c => c.Override && !Session.VersionConfig.WorldConfig.Any(d => (string)d.Name == (string)c.PropertyName)))
+                                foreach (Property prop in Session.WorldConfig1.PropertiesDict.Values.Where(c => c.Override && !Session.VersionConfig.WorldConfigDict.ContainsKey(c.PropertyName)))
                                 {
                                     sErrorMessage += "Could not load value \"" + prop.Value + "\" for setting \"" + prop.PropertyName + "\" in WorldConfig.\r\n";
                                 }
-                                Session.WorldConfig1.Properties.RemoveAll(a => !Session.VersionConfig.WorldConfig.Any(b => (string)b.Name == (string)a.PropertyName));
+
+                                foreach(TCProperty prop in Session.VersionConfig.WorldConfigDict.Values)
+                                {
+                                    if (!Session.WorldConfig1.PropertiesDict.ContainsKey(prop.Name))
+                                    {
+                                        Property newProp = new Property(Session.WorldConfigDefaultValues.PropertiesDict[prop.Name].Value, false, prop.Name, false, false);
+                                        Session.WorldConfig1.PropertiesDict.Add(newProp.PropertyName, newProp);
+                                        Session.WorldConfig1.Properties.Add(newProp);
+                                    }
+                                }
+                                List<string> propertiesToRemove = new List<string>();
+                                foreach (string propertyToRemove in Session.WorldConfig1.PropertiesDict.Keys)
+                                {
+                                    if (!Session.VersionConfig.WorldConfigDict.ContainsKey(propertyToRemove))
+                                    {
+                                        propertiesToRemove.Add(propertyToRemove);
+                                    }
+                                }
+                                foreach (string propertyToRemove in propertiesToRemove)
+                                {
+                                    Session.WorldConfig1.PropertiesDict.Remove(propertyToRemove);
+                                }
 
                                 Session.IgnorePropertyInputChangedWorld = true;
                                 Session.IgnoreOverrideCheckChangedWorld = true;
 
-                                foreach (TCProperty property in Session.VersionConfig.WorldConfig)
+                                foreach (TCProperty property in Session.VersionConfig.WorldConfigDict.Values)
                                 {
                                     switch (property.PropertyType)
                                     {
@@ -4916,13 +4911,13 @@ namespace OTGEdit
                                     }
                                     Session.WorldSettingsInputs[property].Item2.Checked = false;
                            
-                                    if (Session.WorldConfig1.Properties.FirstOrDefault(a => a.PropertyName == property.Name) == null)
+                                    if (Session.WorldConfig1.PropertiesDict.ContainsKey(property.Name) && Session.WorldConfig1.PropertiesDict[property.Name] == null)
                                     {
-                                        Session.WorldConfig1.Properties.Add(new Property(null, false, property.Name, false, false));
+                                        Session.WorldConfig1.PropertiesDict.Add(property.Name, new Property(null, false, property.Name, false, false));
                                     }
 
                                     string s = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
-                                    if (Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override)
+                                    if (Session.WorldConfig1.PropertiesDict.ContainsKey(property.Name) && Session.WorldConfig1.PropertiesDict[property.Name].Override)
                                     {
                                         if (property.PropertyType != "ResourceQueue" || Session.WorldConfig1.GetPropertyValueAsString(property) != null)
                                         {
@@ -4960,11 +4955,11 @@ namespace OTGEdit
                                                 }
                                                 if(!String.IsNullOrEmpty(newpropertyValue))
                                                 {
-                                                    Session.WorldConfig1.Properties.First(a => (string)a.PropertyName == (string)property.Name).Value = newpropertyValue;
+                                                    Session.WorldConfig1.PropertiesDict[property.Name].Value = newpropertyValue;
                                                 }
                                                 ((RadioButton)Session.WorldSettingsInputs[property].Item6.Controls.Find("Override", true)[0]).Checked = !Session.WorldConfig1.GetPropertyMerge(property);
                                                 ((RadioButton)Session.WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked = Session.WorldConfig1.GetPropertyMerge(property);
-                                                boxes.Item2.Checked = Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override;
+                                                boxes.Item2.Checked = Session.WorldConfig1.PropertiesDict.ContainsKey(property.Name) ? Session.WorldConfig1.PropertiesDict[property.Name].Override : false;
                                                 break;
                                             case "Bool":
                                                 if (propertyValue.ToLower() == "true")
@@ -4980,12 +4975,12 @@ namespace OTGEdit
                                                     ((Button)boxes.Item1).Text = "";
                                                     ((Button)boxes.Item1).ForeColor = Color.DarkGray;
                                                 }
-                                                boxes.Item2.Checked = Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override;
+                                                boxes.Item2.Checked = Session.WorldConfig1.PropertiesDict.ContainsKey(property.Name) ? Session.WorldConfig1.PropertiesDict[property.Name].Override : false;
                                                 break;
                                             case "Color":
                                                 if ((propertyValue.StartsWith("0x") && propertyValue.Length == 8) || (propertyValue.StartsWith("#") && propertyValue.Length == 7))
                                                 {
-                                                    boxes.Item2.Checked = Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override;
+                                                    boxes.Item2.Checked = Session.WorldConfig1.PropertiesDict.ContainsKey(property.Name) ? Session.WorldConfig1.PropertiesDict[property.Name].Override : false;
                                                     bool bException = false;
                                                     try
                                                     {
@@ -5054,12 +5049,12 @@ namespace OTGEdit
                                                 int numberOfDecimals = property.PropertyType == "Int" ? 0 : newText.IndexOf(".") > 0 ? newText.Length - (newText.IndexOf(".") + 1) : 0;
                                                 ((NumericUpDownExt)boxes.Item1).DecimalPlaces = numberOfDecimals;
                                                 boxes.Item1.Text = newText;
-                                                boxes.Item2.Checked = Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override;
+                                                boxes.Item2.Checked = Session.WorldConfig1.PropertiesDict.ContainsKey(property.Name) ? Session.WorldConfig1.PropertiesDict[property.Name].Override : false;
                                                 break;
                                             case "String":
                                             case "BigString":
                                                 boxes.Item1.Text = propertyValue;
-                                                boxes.Item2.Checked = Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override;
+                                                boxes.Item2.Checked = Session.WorldConfig1.PropertiesDict.ContainsKey(property.Name) ? Session.WorldConfig1.PropertiesDict[property.Name].Override : false;
                                                 break;
                                             case "ResourceQueue":
                                                 string[] resourceQueueItemNames = { };
@@ -5077,7 +5072,7 @@ namespace OTGEdit
                                                 }
                                                 ((RadioButton)Session.WorldSettingsInputs[property].Item6.Controls.Find("Override", true)[0]).Checked = !Session.WorldConfig1.GetPropertyMerge(property);
                                                 ((RadioButton)Session.WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked = Session.WorldConfig1.GetPropertyMerge(property);
-                                                boxes.Item2.Checked = Session.WorldConfig1.Properties.First(a => a.PropertyName == property.Name).Override;
+                                                boxes.Item2.Checked = Session.WorldConfig1.PropertiesDict.ContainsKey(property.Name) ? Session.WorldConfig1.PropertiesDict[property.Name].Override : false;
                                                 break;
                                         }
                                     }
@@ -5092,13 +5087,12 @@ namespace OTGEdit
                                 lbGroups.Items.Clear();
 
                                 tlpBiomeSettings1.Visible = false;
-                                label3.Visible = false;
 
                                 List<Group> newBiomeGroups = new List<Group>();
 
                                 foreach (Group biomeGroup in settingsFile.BiomeGroups)
                                 {
-                                    foreach(Property p in biomeGroup.BiomeConfig.Properties)
+                                    foreach(Property p in biomeGroup.BiomeConfig.PropertiesDict.Values)
                                     {
                                         if(!p.Override)
                                         {
@@ -5106,12 +5100,12 @@ namespace OTGEdit
                                         }
                                     }
 
-                                    if (biomeGroup.Biomes.Count > 1)
+                                    if (biomeGroup.BiomesHash.Count > 1)
                                     {
                                         int count = 0;
                                         string sErrorMessage3 = "";
                                         List<string> newBiomeGroupBiomes = new List<string>();
-                                        foreach(string biomeName in biomeGroup.Biomes)
+                                        foreach(string biomeName in biomeGroup.BiomesHash)
                                         {
                                             if (Session.BiomeNames.Any(a => a.Equals(biomeName)))
                                             {
@@ -5124,24 +5118,28 @@ namespace OTGEdit
                                                 sErrorMessage3 += "Could not load biome \"" + biomeName + "\" in biome group \"" + biomeGroup.Name + "\".\r\n";
                                             }
                                         }
-                                        biomeGroup.Biomes = newBiomeGroupBiomes;
+                                        biomeGroup.BiomesHash = new HashSet<string>();
+                                        foreach (string newBiomeGroupBiome in newBiomeGroupBiomes)
+                                        {
+                                            biomeGroup.BiomesHash.Add(newBiomeGroupBiome);
+                                        }
                                         if(count > 0)
                                         {
                                             newBiomeGroups.Add(biomeGroup);
                                             lbGroups.Items.Add(biomeGroup.Name);
-                                            Session.BiomeGroups.Add(biomeGroup);
+                                            Session.BiomeGroups.Add(biomeGroup.Name, biomeGroup);
                                         }
                                         if(!String.IsNullOrEmpty(sErrorMessage3))
                                         {
                                             sErrorMessage2 += sErrorMessage3;// +"These biomes do not exist.\r\n";
                                         }
                                     } else {
-                                        if (Session.BiomeNames.Any(a => a.Equals(biomeGroup.Biomes[0])))
+                                        if (Session.BiomeNames.Any(a => a.Equals(biomeGroup.BiomesHash.First())))
                                         {
                                             lbGroups.Items.Add(biomeGroup.Name);
-                                            Session.BiomeGroups.Add(biomeGroup);
+                                            Session.BiomeGroups.Add(biomeGroup.Name, biomeGroup);
                                         } else {
-                                            sErrorMessage2 += "Could not load biome group \"" + biomeGroup.Name + "\" because biome \"" + biomeGroup.Biomes[0] + "\" does not exist.\r\n";
+                                            sErrorMessage2 += "Could not load biome group \"" + biomeGroup.Name + "\" because biome \"" + biomeGroup.BiomesHash.First() + "\" does not exist.\r\n";
                                         }
                                     }
                                 }
@@ -5150,20 +5148,22 @@ namespace OTGEdit
                                 if(lbGroups.Items.Count > 0)
                                 {
                                     lbGroups.SelectedIndex = 0;
-                                    foreach (Group biomeGroup in Session.BiomeGroups)
+                                    foreach (Group biomeGroup in Session.BiomeGroups.Values)
                                     {
-                                        foreach(TCProperty tcProp in Session.VersionConfig.BiomeConfig)
+                                        foreach(string tcProp in Session.VersionConfig.BiomeConfigDict.Keys)
                                         {
-                                            if (!biomeGroup.BiomeConfig.Properties.Any(a => (string)a.PropertyName == (string)tcProp.Name))
+                                            if (!biomeGroup.BiomeConfig.PropertiesDict.ContainsKey(tcProp))
                                             {
-                                                biomeGroup.BiomeConfig.Properties.Add(new Property(null, false, tcProp.Name, false, false));
+                                                Property prop = new Property(null, false, tcProp, false, false);
+                                                biomeGroup.BiomeConfig.PropertiesDict.Add(prop.PropertyName, prop);
+                                                biomeGroup.BiomeConfig.Properties.Add(prop);
                                             }
                                         }
-                                        foreach (Property prop in biomeGroup.BiomeConfig.Properties.Where(c => c.Override && !Session.VersionConfig.BiomeConfig.Any(d => (string)d.Name == (string)c.PropertyName)))
+                                        foreach (Property prop in biomeGroup.BiomeConfig.PropertiesDict.Values.Where(c => c.Override && !Session.VersionConfig.BiomeConfigDict.ContainsKey(c.PropertyName)))
                                         {
                                             sErrorMessage += "Could not load value \"" + prop.Value + "\" for setting \"" + prop.PropertyName + "\" in biome group \"" + biomeGroup.Name + "\".\r\n";
                                         }
-                                        foreach (Property prop in biomeGroup.BiomeConfig.Properties.Where(c => c.Override && Session.VersionConfig.BiomeConfig.Any(d => (string)d.Name == (string)c.PropertyName && d.PropertyType == "BiomesList")))
+                                        foreach (Property prop in biomeGroup.BiomeConfig.PropertiesDict.Values.Where(c => c.Override && Session.VersionConfig.BiomeConfigDict.ContainsKey(c.PropertyName) && Session.VersionConfig.BiomeConfigDict[c.PropertyName].PropertyType == "BiomesList"))
                                         {
                                             string[] biomeNames = prop.Value.Split(',');
                                             string newBiomeNames = "";
@@ -5184,10 +5184,29 @@ namespace OTGEdit
                                             }
                                             prop.Value = newBiomeNames.Length == 0 ? newBiomeNames : newBiomeNames.Substring(0, newBiomeNames.Length - 1);
                                         }
-                                        biomeGroup.BiomeConfig.Properties.RemoveAll(a => !Session.VersionConfig.BiomeConfig.Any(b => (string)b.Name == (string)a.PropertyName));
+                                        propertiesToRemove = new List<string>();
+                                        foreach (Property prop in biomeGroup.BiomeConfig.PropertiesDict.Values)
+                                        {
+                                            if(!Session.VersionConfig.BiomeConfigDict.ContainsKey(prop.PropertyName))
+                                            {
+                                                propertiesToRemove.Add(prop.PropertyName);
+                                            }
+                                        }
+                                        foreach (string propertyToRemove in propertiesToRemove)
+                                        {
+                                            biomeGroup.BiomeConfig.PropertiesDict.Remove(propertyToRemove);
+                                        }
                                     }
                                 }
                             }
+
+                            string currentWorldTemplateName = new DirectoryInfo(Session.SourceConfigsDir).Name;
+                            if (lastUsedWorldName.ContainsKey(currentWorldTemplateName))
+                            {
+                                lastUsedWorldName[currentWorldTemplateName] = new FileInfo(ofd.FileName).Name.Replace(".xml", "");
+                            } else {
+                                lastUsedWorldName.Add(currentWorldTemplateName, new FileInfo(ofd.FileName).Name.Replace(".xml", ""));
+                            }                            
                         }
                     }
                 } else {
@@ -5200,154 +5219,284 @@ namespace OTGEdit
                 }
                 if (!String.IsNullOrEmpty(sErrorMessage2))
                 {
-                    sErrorMessageFinal = sErrorMessageFinal + "\r\n\r\n" + sErrorMessage2 + "\r\nThese biomes do not exist in the selected version of OTG/TerrainControl.";
+                    sErrorMessageFinal = (sErrorMessageFinal.Length > 0 ? sErrorMessageFinal + "\r\n\r\n" : "") + sErrorMessage2 + "\r\nThese biomes do not exist in the selected version of OTG/TerrainControl.";
                 }
                 if(!String.IsNullOrEmpty(sErrorMessageFinal))
                 {
-                    PopUpForm.CustomMessageBox(sErrorMessageFinal, "Version warnings");
+                    PopUpForm.ScrollingMessageBox("Version incompatibility warnings", "The following settings could not be loaded:", sErrorMessageFinal);
                 }
 
                 FocusOnTab();
-            }        
+            }
+
+            Dictionary<string, string> lastUsedWorldName = new Dictionary<string, string>();
 
             void btGenerate_Click(object sender, EventArgs e)
             {
-                fbdDestinationWorldDir.Description = "Select a OTG/TerrainControl world folder (create if needed).";
-
-                if (fbdDestinationWorldDir.ShowDialog() == DialogResult.OK)
+                string currentWorldTemplateName = new DirectoryInfo(Session.SourceConfigsDir).Name;
+                string worldName = lastUsedWorldName.ContainsKey(currentWorldTemplateName) ? lastUsedWorldName[currentWorldTemplateName] : currentWorldTemplateName;
+                PopUpForm.InputBox("Enter world name", "Enter a name for the world.", ref worldName, false, false, false, true);
+                if(!String.IsNullOrEmpty(worldName))
                 {
-                    bool go = true;
-                    String ares = fbdDestinationWorldDir.SelectedPath.Substring(0, fbdDestinationWorldDir.SelectedPath.LastIndexOf("\\"));
-                    if (!fbdDestinationWorldDir.SelectedPath.Substring(0, fbdDestinationWorldDir.SelectedPath.LastIndexOf("\\")).EndsWith("TerrainControl\\worlds") && !fbdDestinationWorldDir.SelectedPath.Substring(0, fbdDestinationWorldDir.SelectedPath.LastIndexOf("\\")).EndsWith("OpenTerrainGenerator\\worlds"))
+                    if (lastUsedWorldName.ContainsKey(currentWorldTemplateName))
                     {
-                        go = PopUpForm.CustomYesNoBox("Generate files here?", "The selected directory was not a OTG/TerrainControl world directory, are you sure you want to generate files here?", "Yes", "No") == DialogResult.OK;
+                        lastUsedWorldName[currentWorldTemplateName] = worldName;
+                    } else {
+                        lastUsedWorldName.Add(currentWorldTemplateName, worldName);
                     }
-                    if (go)
+
+                    fbdDestinationWorldDir.Description = "Select a Minecraft game folder.";
+
+                    if (fbdDestinationWorldDir.ShowDialog() == DialogResult.OK)
                     {
-                        Session.ShowProgessBox();
-
-                        DateTime startTime = DateTime.Now;
-
-                        Session.DestinationConfigsDir = fbdDestinationWorldDir.SelectedPath;
-                        WorldSaveDir = Session.DestinationConfigsDir.Replace("mods\\TerrainControl\\worlds\\", "saves\\").Replace("mods\\OpenTerrainGenerator\\worlds\\", "saves\\");
-
-                        World.ConfigWorld(Session.WorldConfig1, Session.WorldConfigDefaultValues, Session.VersionConfig, Session.SourceConfigsDir, Session.DestinationConfigsDir, false);
-
-                        DirectoryInfo destBiomesDir = new System.IO.DirectoryInfo(Session.DestinationConfigsDir + "\\WorldBiomes");
-                        DirectoryInfo sourceDirectory = new System.IO.DirectoryInfo(Session.SourceConfigsDir + "\\WorldBiomes");
-                        if (destBiomesDir.Exists)
+                        bool go = true;
+                        if (!System.IO.Directory.Exists(fbdDestinationWorldDir.SelectedPath))
                         {
-                            // TODO: Is all this really necessary? <- Without this you can't overwrite an existing directory?
-
-                            List<string> filesToOverride = new List<string>();
-
-                            foreach (System.IO.FileInfo file in sourceDirectory.GetFiles())
+                            PopUpForm.CustomMessageBox("Directory does not exist", "The selected directory does not exist, most likely it was renamed after it was selected. Please try again.");
+                            if (fbdDestinationWorldDir.ShowDialog() != DialogResult.OK)
                             {
-                                filesToOverride.Add(Session.DestinationConfigsDir + "\\WorldBiomes\\" + file.Name);
-                            }
-
-                            System.Security.AccessControl.DirectorySecurity sec3 = destBiomesDir.GetAccessControl();
-                            System.Security.AccessControl.FileSystemAccessRule accRule3 = new System.Security.AccessControl.FileSystemAccessRule(Environment.UserDomainName + "\\" + Environment.UserName, System.Security.AccessControl.FileSystemRights.FullControl, System.Security.AccessControl.AccessControlType.Allow);
-                            sec3.AddAccessRule(accRule3);
-
-                            destBiomesDir.Delete(true);
-                            destBiomesDir.Refresh();
-
-                            destBiomesDir = new System.IO.DirectoryInfo(Session.DestinationConfigsDir + "\\WorldBiomes");
-
-                            if(!destBiomesDir.Exists)
-                            {
-                                destBiomesDir.Create();
-                                destBiomesDir.Refresh();
+                                FocusOnTab();
+                                return;
                             }
                         }
 
-                        Biomes.GenerateBiomeConfigs(sourceDirectory, destBiomesDir, BiomeConfigsDefaultValues, Session.VersionConfig, false);
-
-                        bool bDone = true;
-                        if (cbDeleteRegion.Checked)
+                        string destinationWorldDir = "";
+                        if (
+                            (
+                                Session.VersionConfig.IsTerrainControl &&
+                                !System.IO.Directory.Exists(fbdDestinationWorldDir.SelectedPath + "\\mods\\TerrainControl\\") &&
+                                !System.IO.Directory.Exists(fbdDestinationWorldDir.SelectedPath + "\\plugins\\TerrainControl\\")
+                            ) || (
+                                !Session.VersionConfig.IsTerrainControl &&
+                                !System.IO.Directory.Exists(fbdDestinationWorldDir.SelectedPath + "\\mods\\OpenTerrainGenerator\\") &&
+                                !System.IO.Directory.Exists(fbdDestinationWorldDir.SelectedPath + "\\plugins\\OpenTerrainGenerator\\")
+                            )
+                        )
                         {
-                            System.IO.DirectoryInfo WorldDirectory = new System.IO.DirectoryInfo(WorldSaveDir + "\\region");
-                            if (WorldDirectory.Exists)
+                            go = PopUpForm.CustomYesNoBox("Generate files here?", "The selected directory is not a Minecraft directory with " + (Session.VersionConfig.IsTerrainControl ? "TerrainControl" : "OpenTerrainGenerator") + " installed, are you sure you want to generate files here?", "Yes", "No") == DialogResult.Yes;
+                            if(go)
                             {
-                                bDone = false;
-                                try
-                                {
-                                    WorldDirectory.Delete(true);
-                                    bDone = true;
-                                }
-                                catch (System.IO.IOException ex)
-                                {
-                                    PopUpForm.CustomMessageBox("Could not delete /regions directory because it is currently in use. Please make sure that no one is playing the selected world and try again.", "Generation error");
-                                }
+                                destinationWorldDir = fbdDestinationWorldDir.SelectedPath + "\\" + worldName + "\\";
                             }
-
-                            System.IO.DirectoryInfo worldDirectory2 = new System.IO.DirectoryInfo(WorldSaveDir + "\\data");
-                            if (worldDirectory2.Exists)
+                        } else {
+                            if(System.IO.Directory.Exists(fbdDestinationWorldDir.SelectedPath + "\\plugins\\"))
                             {
-                                bDone = false;
-                                try
-                                {
-                                    worldDirectory2.Delete(true);
-                                    bDone = true;
-                                }
-                                catch (System.IO.IOException ex)
-                                {
-                                    PopUpForm.CustomMessageBox("Could not delete /data directory because it is currently in use. Please make sure that no one is playing the selected world and try again.", "Generation error");
-                                }
+                                destinationWorldDir = fbdDestinationWorldDir.SelectedPath + "\\plugins\\" + (Session.VersionConfig.IsTerrainControl ? "TerrainControl" : "OpenTerrainGenerator") + "\\worlds\\" + worldName + "\\";
                             }
-
-                            System.IO.DirectoryInfo StructureDataDirectory = new System.IO.DirectoryInfo(Session.DestinationConfigsDir + "\\StructureData");
-                            if (StructureDataDirectory.Exists)
+                            else if (System.IO.Directory.Exists(fbdDestinationWorldDir.SelectedPath + "\\mods\\"))
                             {
-                                bDone = false;
-                                try
-                                {
-                                    StructureDataDirectory.Delete(true);
-                                    StructureDataDirectory.Refresh();
-                                    bDone = true;
-                                }
-                                catch (System.IO.IOException ex)
-                                {
-                                    PopUpForm.CustomMessageBox("Could not delete /StructureData directory because it is currently in use. Please make sure that no one is playing the selected world and try again.", "Generation error");
-                                }
-                            }
-
-                            System.IO.FileInfo structureDataFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\StructureData.txt");
-                            if (structureDataFile.Exists)
-                            {
-                                structureDataFile.Delete();
-                            }
-                            System.IO.FileInfo nullChunksFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\NullChunks.txt");
-                            if (nullChunksFile.Exists)
-                            {
-                                nullChunksFile.Delete();
-                            }
-                            System.IO.FileInfo spawnedStructuresFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\SpawnedStructures.txt");
-                            if (spawnedStructuresFile.Exists)
-                            {
-                                spawnedStructuresFile.Delete();
-                            }
-
-                            System.IO.FileInfo chunkProviderPopulatedChunksFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\ChunkProviderPopulatedChunks.txt");
-                            if (chunkProviderPopulatedChunksFile.Exists)
-                            {
-                                chunkProviderPopulatedChunksFile.Delete();
-                            }
-
-                            System.IO.FileInfo pregeneratedChunksFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\PregeneratedChunks.txt");
-                            if (pregeneratedChunksFile.Exists)
-                            {
-                                pregeneratedChunksFile.Delete();
+                                destinationWorldDir = fbdDestinationWorldDir.SelectedPath + "\\mods\\" + (Session.VersionConfig.IsTerrainControl ? "TerrainControl" : "OpenTerrainGenerator") + "\\worlds\\" + worldName + "\\";
                             }
                         }
 
-                        Session.HideProgessBox();
-
-                        if (bDone)
+                        if (System.IO.Directory.Exists(destinationWorldDir))
                         {
-                            //PopUpForm.CustomMessageBox("Done in " + (DateTime.Now - startTime).TotalSeconds + " seconds.", "Generating");
-                            PopUpForm.CustomMessageBox("Done.");
+                            DialogResult overWritePermission = PopUpForm.CustomYesNoBox("Directory already exists", "A world with this name already exists, overwrite it?", "Ok", "Cancel");
+                            if (overWritePermission != DialogResult.Yes)
+                            {
+                                FocusOnTab();
+                                return;
+                            }
+                        }
+                        else if(go)
+                        {
+                            System.IO.Directory.CreateDirectory(destinationWorldDir);
+                        }
+                        if (go)
+                        {
+                            Session.ShowProgessBox();
+
+                            DateTime startTime = DateTime.Now;
+
+                            Session.DestinationConfigsDir = destinationWorldDir;
+                            WorldSaveDir = Session.DestinationConfigsDir.Replace("mods\\TerrainControl\\worlds\\", "saves\\").Replace("mods\\OpenTerrainGenerator\\worlds\\", "saves\\").Replace("plugins\\TerrainControl\\worlds\\", "saves\\").Replace("plugins\\OpenTerrainGenerator\\worlds\\", "saves\\");
+
+                            World.ConfigWorld(Session.WorldConfig1, Session.WorldConfigDefaultValues, Session.VersionConfig, Session.SourceConfigsDir, Session.DestinationConfigsDir, false);
+
+                            DirectoryInfo destBiomesDir = new System.IO.DirectoryInfo(Session.DestinationConfigsDir + "\\WorldBiomes");
+                            DirectoryInfo sourceDirectory = new System.IO.DirectoryInfo(Session.SourceConfigsDir + "\\WorldBiomes");
+                            if (destBiomesDir.Exists)
+                            {
+                                // TODO: Is all this really necessary? <- Without this you can't overwrite an existing directory?
+
+                                List<string> filesToOverride = new List<string>();
+
+                                foreach (System.IO.FileInfo file in sourceDirectory.GetFiles())
+                                {
+                                    filesToOverride.Add(Session.DestinationConfigsDir + "\\WorldBiomes\\" + file.Name);
+                                }
+
+                                try
+                                {
+                                    System.Security.AccessControl.DirectorySecurity sec3 = destBiomesDir.GetAccessControl();
+                                    System.Security.AccessControl.FileSystemAccessRule accRule3 = new System.Security.AccessControl.FileSystemAccessRule(Environment.UserDomainName + "\\" + Environment.UserName, System.Security.AccessControl.FileSystemRights.FullControl, System.Security.AccessControl.AccessControlType.Allow);
+                                    sec3.AddAccessRule(accRule3);
+
+                                    destBiomesDir.Delete(true);
+                                    destBiomesDir.Refresh();
+                                }
+                                catch(System.IO.IOException ex)
+                                {
+                                    Session.HideProgessBox();
+                                    PopUpForm.CustomMessageBox("Could not delete the /WorldBiomes directory because it is currently in use. Please make sure that no one is playing the selected world and no application is using the files and try again.", "Generation error");
+                                    return;
+                                }
+
+                                destBiomesDir = new System.IO.DirectoryInfo(Session.DestinationConfigsDir + "\\WorldBiomes");
+
+                                if(!destBiomesDir.Exists)
+                                {
+                                    destBiomesDir.Create();
+                                    destBiomesDir.Refresh();
+                                }
+                            }
+
+                            DirectoryInfo destObjectsDir = new System.IO.DirectoryInfo(Session.DestinationConfigsDir + "\\WorldObjects");
+                            if (!destObjectsDir.Exists)
+                            {
+                                destObjectsDir.Create();
+                                destObjectsDir.Refresh();
+                            }
+
+                            Biomes.GenerateBiomeConfigs(sourceDirectory, destBiomesDir, BiomeConfigsDefaultValues, Session.VersionConfig, false);
+
+                            bool bDone = true;
+                            if (cbDeleteRegion.Checked)
+                            {
+                                System.IO.DirectoryInfo WorldDirectory = new System.IO.DirectoryInfo(WorldSaveDir + "\\region");
+                                if (WorldDirectory.Exists)
+                                {
+                                    bDone = false;
+                                    try
+                                    {
+                                        WorldDirectory.Delete(true);
+                                        bDone = true;
+                                    }
+                                    catch (System.IO.IOException ex)
+                                    {
+                                        Session.HideProgessBox();
+                                        PopUpForm.CustomMessageBox("Could not delete the /region directory because it is currently in use. Please make sure that no one is playing the selected world and no application is using the files and try again.", "Generation error");
+                                        return;
+                                    }
+                                }
+
+                                System.IO.DirectoryInfo worldDirectory2 = new System.IO.DirectoryInfo(WorldSaveDir + "\\data");
+                                if (worldDirectory2.Exists)
+                                {
+                                    bDone = false;
+                                    try
+                                    {
+                                        worldDirectory2.Delete(true);
+                                        bDone = true;
+                                    }
+                                    catch (System.IO.IOException ex)
+                                    {
+                                        Session.HideProgessBox();
+                                        PopUpForm.CustomMessageBox("Could not delete the /data directory because it is currently in use. Please make sure that no one is playing the selected world and no application is using the files and try again.", "Generation error");
+                                        return;
+                                    }
+                                }
+
+                                System.IO.DirectoryInfo StructureDataDirectory = new System.IO.DirectoryInfo(Session.DestinationConfigsDir + "\\StructureData");
+                                if (StructureDataDirectory.Exists)
+                                {
+                                    bDone = false;
+                                    try
+                                    {
+                                        StructureDataDirectory.Delete(true);
+                                        StructureDataDirectory.Refresh();
+                                        bDone = true;
+                                    }
+                                    catch (System.IO.IOException ex)
+                                    {
+                                        Session.HideProgessBox();
+                                        PopUpForm.CustomMessageBox("Could not delete the /StructureData directory because it is currently in use. Please make sure that no one is playing the selected world and no application is using the files and try again.", "Generation error");
+                                        return;
+                                    }
+                                }
+
+                                System.IO.FileInfo structureDataFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\StructureData.txt");
+                                if (structureDataFile.Exists)
+                                {
+                                    try
+                                    { 
+                                        structureDataFile.Delete();
+                                    }
+                                    catch (System.IO.IOException ex)
+                                    {
+                                        Session.HideProgessBox();
+                                        PopUpForm.CustomMessageBox("Could not delete StructureData.txt because it is currently in use. Please make sure that no one is playing the selected world and no application is using the files and try again.", "Generation error");
+                                        return;
+                                    }
+                                }
+                                System.IO.FileInfo nullChunksFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\NullChunks.txt");
+                                if (nullChunksFile.Exists)
+                                {
+                                    try
+                                    {
+                                        nullChunksFile.Delete();
+                                    }
+                                    catch (System.IO.IOException ex)
+                                    {
+                                        Session.HideProgessBox();
+                                        PopUpForm.CustomMessageBox("Could not delete NullChunks.txt because it is currently in use. Please make sure that no one is playing the selected world and no application is using the files and try again.", "Generation error");
+                                        return;
+                                    }
+                                }
+                                System.IO.FileInfo spawnedStructuresFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\SpawnedStructures.txt");
+                                if (spawnedStructuresFile.Exists)
+                                {
+                                    try
+                                    { 
+                                        spawnedStructuresFile.Delete();
+                                    }
+                                    catch (System.IO.IOException ex)
+                                    {
+                                        Session.HideProgessBox();
+                                        PopUpForm.CustomMessageBox("Could not delete SpawnedStructures.txt because it is currently in use. Please make sure that no one is playing the selected world and no application is using the files and try again.", "Generation error");
+                                        return;
+                                    }
+                                }
+
+                                System.IO.FileInfo chunkProviderPopulatedChunksFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\ChunkProviderPopulatedChunks.txt");
+                                if (chunkProviderPopulatedChunksFile.Exists)
+                                {
+                                    try
+                                    { 
+                                        chunkProviderPopulatedChunksFile.Delete();
+                                    }
+                                    catch (System.IO.IOException ex)
+                                    {
+                                        Session.HideProgessBox();
+                                        PopUpForm.CustomMessageBox("Could not delete ChunkProviderPopulatedChunks.txt because it is currently in use. Please make sure that no one is playing the selected world and no application is using the files and try again.", "Generation error");
+                                        return;
+                                    }
+                                }
+
+                                System.IO.FileInfo pregeneratedChunksFile = new System.IO.FileInfo(Session.DestinationConfigsDir + "\\PregeneratedChunks.txt");
+                                if (pregeneratedChunksFile.Exists)
+                                {
+                                    try
+                                    { 
+                                        pregeneratedChunksFile.Delete();
+                                    }
+                                    catch (System.IO.IOException ex)
+                                    {
+                                        Session.HideProgessBox();
+                                        PopUpForm.CustomMessageBox("Could not delete PregeneratedChunks.txt because it is currently in use. Please make sure that no one is playing the selected world and no application is using the files and try again.", "Generation error");
+                                        return;
+                                    }
+                                }
+                            }
+
+                            Session.HideProgessBox();
+
+                            if (bDone)
+                            {
+                                //PopUpForm.CustomMessageBox("Done in " + (DateTime.Now - startTime).TotalSeconds + " seconds.", "Generating");
+                                PopUpForm.CustomMessageBox("World and biome config files generated.\r\n\r\nUse the \"Copy structure files (BO3's)\" button to\r\ncopy any BO2's/BO3's to the WorldObjects directory.\r\nYou only have to do this once.");
+                                copyBO3fbd.SelectedPath = destObjectsDir.FullName;
+                            }
                         }
                     }
                 }
@@ -5411,7 +5560,7 @@ namespace OTGEdit
                                 string centerBlockIdString = null;
                                 if (!useBranches)
                                 {
-                                    DialogResult useCenterBlockResult = PopUpForm.InputBox("Use a center block?", "Center the BO3 around a specific block? If so, enter the block id (number).", ref centerBlockIdString, false, true, true);
+                                    DialogResult useCenterBlockResult = PopUpForm.InputBox("Use a center block?", "Center the BO3 around a specific block? If so, enter the block id (number).", ref centerBlockIdString, false, true, true, true);
                                     if (useCenterBlockResult == System.Windows.Forms.DialogResult.Cancel)
                                     {
                                         return;
@@ -5471,7 +5620,7 @@ namespace OTGEdit
                 }
                 if (go)
                 {
-                    PopUpForm.CustomMessageBox("Copying BO3's to output directory, this can take a while depending on the number and size of the BO3's.", "Copying BO3's");
+                    Session.ShowProgessBox();
                     System.IO.DirectoryInfo SourceWorldDirectory = new System.IO.DirectoryInfo(Session.SourceConfigsDir + "\\WorldObjects");
                     System.IO.DirectoryInfo DestinationWorldDirectory = new System.IO.DirectoryInfo(copyBO3fbd.SelectedPath);
                     if (SourceWorldDirectory.Exists)
@@ -5488,6 +5637,7 @@ namespace OTGEdit
 
                         Utils.CopyDir.CopyAll(SourceWorldDirectory, DestinationWorldDirectory);
                     }
+                    Session.HideProgessBox();
                     PopUpForm.CustomMessageBox("All BO3's were copied to " + copyBO3fbd.SelectedPath, "Copying BO3's");
                 }
             }
@@ -5498,24 +5648,6 @@ namespace OTGEdit
         private void btClickBackGround(object sender, EventArgs e)
         {
             FocusOnTab();
-        }
-
-        bool isMaximised = false;
-        private void Form1_Resize(object sender, EventArgs e)
-        {
-            if(isMaximised)
-            {
-                isMaximised = false;
-                this.Width += 1;
-            } else {
-                isMaximised = WindowState == FormWindowState.Maximized;
-            }
-        }
-
-        void Form1_ResizeEnd(object sender, EventArgs e)
-        {
-            isMaximised = false;
-            this.Width += 1;
         }
 
         void Form1_DragEnter(object sender, DragEventArgs e)
@@ -5544,7 +5676,7 @@ namespace OTGEdit
                 if(bFound)
                 {
                     string propertyValue = "100";
-                    if (PopUpForm.InputBox("Add BO3", "Rarity", ref propertyValue, true) == DialogResult.OK)
+                    if (PopUpForm.InputBox("Add BO3", "Rarity", ref propertyValue, true, false, false, true) == DialogResult.OK)
                     {
                         if (propertyValue != null && !String.IsNullOrEmpty(propertyValue.Trim()))
                         {

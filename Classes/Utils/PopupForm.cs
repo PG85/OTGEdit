@@ -246,6 +246,7 @@ namespace OTGEdit.Utils
             listBoxWorlds.SelectionMode = SelectionMode.One;
             listBoxWorlds.Height = 100;
             listBoxWorlds.MouseWheel += ManageWorldsBox_MouseWheel;
+            listBoxWorlds.TabIndex = 0;
             ManageWorldsBoxFormLbWorlds = listBoxWorlds;
 
             Button buttonCreateWorld = new Button();
@@ -378,7 +379,7 @@ namespace OTGEdit.Utils
                 delegate
                 {
                     string newWorldName = (string)listBoxWorlds.SelectedItem;
-                    if (listBoxWorlds.SelectedItem != null && PopUpForm.InputBox("Rename world", "", ref newWorldName, false) == DialogResult.OK)
+                    if (listBoxWorlds.SelectedItem != null && PopUpForm.InputBox("Rename world", "", ref newWorldName, false, false, false, true) == DialogResult.OK)
                     {
                         DirectoryInfo srcworldDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\");
                         DirectoryInfo worldDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + newWorldName + "\\");
@@ -447,12 +448,21 @@ namespace OTGEdit.Utils
                         {
                             Session.ShowProgessBox();
 
-                            System.Security.AccessControl.DirectorySecurity sec3 = srcworldDir3.GetAccessControl();
-                            System.Security.AccessControl.FileSystemAccessRule accRule3 = new System.Security.AccessControl.FileSystemAccessRule(Environment.UserDomainName + "\\" + Environment.UserName, System.Security.AccessControl.FileSystemRights.FullControl, System.Security.AccessControl.AccessControlType.Allow);
-                            sec3.AddAccessRule(accRule3);
+                            try
+                            {
+                                System.Security.AccessControl.DirectorySecurity sec3 = srcworldDir3.GetAccessControl();
+                                System.Security.AccessControl.FileSystemAccessRule accRule3 = new System.Security.AccessControl.FileSystemAccessRule(Environment.UserDomainName + "\\" + Environment.UserName, System.Security.AccessControl.FileSystemRights.FullControl, System.Security.AccessControl.AccessControlType.Allow);
+                                sec3.AddAccessRule(accRule3);
 
-                            srcworldDir3.Delete(true);
-                            srcworldDir3.Refresh();
+                                srcworldDir3.Delete(true);
+                                srcworldDir3.Refresh();
+                            }
+                            catch(System.IO.IOException ex)
+                            {
+                                Session.HideProgessBox();
+                                PopUpForm.CustomMessageBox("Could not delete the world, the files are in use by another application.");
+                                return;
+                            }
 
                             srcworldDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\");
                             srcworldDir3.Refresh();
@@ -543,7 +553,7 @@ namespace OTGEdit.Utils
                 delegate
                 {
                     string newBiomeName = (string)listBoxBiomes.SelectedItem;
-                    if (listBoxBiomes.SelectedItem != null && PopUpForm.InputBox("Rename biome", "", ref newBiomeName, false) == DialogResult.OK)
+                    if (listBoxBiomes.SelectedItem != null && PopUpForm.InputBox("Rename biome", "", ref newBiomeName, false, false, false, true) == DialogResult.OK)
                     {
                         FileInfo srcbiomeFile3 = new FileInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\" + listBoxBiomes.SelectedItem + ".bc");
                         FileInfo biomeFile3 = new FileInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\" + newBiomeName + ".bc");
@@ -1401,9 +1411,9 @@ namespace OTGEdit.Utils
                                     if (useDefaults)
                                     {
                                         // Check which settings in WorldConfig are different from default, save them as OTGEdit pre-set. If this world turns out to be non-compatible with default world then create new world folder and copy default worldconfig to it
-                                        foreach (TCProperty property in versionConfig.WorldConfig)
+                                        foreach (TCProperty property in versionConfig.WorldConfigDict.Values)
                                         {
-                                            string value = worldConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Value;
+                                            string value = worldConfig.PropertiesDict[property.Name].Value;
                                             if (
                                                 !(
                                                     (
@@ -1414,12 +1424,12 @@ namespace OTGEdit.Utils
                                                     ) &&
                                                     String.IsNullOrWhiteSpace(value)
                                                 ) &&
-                                                value != defaultWorldConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Value
+                                                value != defaultWorldConfig.PropertiesDict[property.Name].Value
                                             )
                                             {
-                                                worldConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Override = true;
+                                                worldConfig.PropertiesDict[property.Name].Override = true;
                                             } else {
-                                                worldConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Override = false;
+                                                worldConfig.PropertiesDict[property.Name].Override = false;
                                             }
                                         }
                                     }
@@ -1437,13 +1447,13 @@ namespace OTGEdit.Utils
                                             if (!defaultBiomeConfigs.Any(a => a.BiomeName == biomeConfig.BiomeName))
                                             {
                                                 //isDefaultWorld = false;
-                                                customBiomes.Biomes.Add(biomeConfig.BiomeName);
+                                                customBiomes.BiomesHash.Add(biomeConfig.BiomeName);
                                             } else {
                                                 BiomeConfig biomeDefaultConfig = defaultBiomeConfigs.FirstOrDefault(a => a.BiomeName == biomeConfig.BiomeName);
                                                 bool hasDefaultValues = true;
-                                                foreach (TCProperty property in versionConfig.BiomeConfig)
+                                                foreach (TCProperty property in versionConfig.BiomeConfigDict.Values)
                                                 {
-                                                    string value = biomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Value;
+                                                    string value = biomeConfig.PropertiesDict[property.Name].Value;
                                                     if (
                                                         !(
                                                             (
@@ -1454,13 +1464,13 @@ namespace OTGEdit.Utils
                                                             ) &&
                                                             String.IsNullOrWhiteSpace(value)
                                                         ) && 
-                                                        value != biomeDefaultConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Value
+                                                        value != biomeDefaultConfig.PropertiesDict[property.Name].Value
                                                     )
                                                     {
-                                                        biomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Override = true;
+                                                        biomeConfig.PropertiesDict[property.Name].Override = true;
                                                         hasDefaultValues = false;
                                                     } else {
-                                                        biomeConfig.Properties.FirstOrDefault(a => a.PropertyName == property.Name).Override = false;
+                                                        biomeConfig.PropertiesDict[property.Name].Override = false;
                                                     }
                                                 }
                                                 if (!hasDefaultValues)
@@ -1470,7 +1480,7 @@ namespace OTGEdit.Utils
                                             }
                                         }
                                     }
-                                    if (customBiomes.Biomes.Any())
+                                    if (customBiomes.BiomesHash.Count > 0)
                                     {
                                         List<Group> newGroups = new List<Group>();
                                         newGroups.Add(customBiomes);
@@ -1666,7 +1676,7 @@ namespace OTGEdit.Utils
             }
         }
 
-        public static DialogResult InputBox(string title, string promptText, ref string value, bool allowBracesCommasDotsColons = false, bool numericOnly = false, bool allowEmpty = false)
+        public static DialogResult ScrollingMessageBox(string title, string promptText, string bigtext)
         {
             PopupFormSelectedItem = null;
 
@@ -1679,6 +1689,89 @@ namespace OTGEdit.Utils
             form.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
             form.Text = title;
             form.Width = 600;
+
+            form.FormBorderStyle = FormBorderStyle.Sizable;
+            form.StartPosition = FormStartPosition.CenterParent;
+            form.MinimizeBox = false;
+            form.MaximizeBox = false;
+
+            bool showPromptText = !String.IsNullOrEmpty(promptText);
+
+            Label label = null;
+            if (showPromptText)
+            {
+                label = new Label();
+                label.Text = promptText;
+                label.Top = edgeMargin;
+                label.Left = edgeMargin;
+                label.Width = form.Width - (edgeMargin * 2) - startWidth;
+                label.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+                label.AutoSize = true;
+            }
+
+            RichTextBox textBox = new RichTextBox();
+            textBox.Multiline = true;
+            textBox.WordWrap = true;
+            textBox.Left = edgeMargin;
+            textBox.Top = edgeMargin + (label != null ? label.Height : 0) + (label != null ? labelAndButtonMargin : 0);
+            textBox.Height = 175;
+            textBox.Width = form.Width - (edgeMargin * 2) - startWidth;
+            textBox.Text = bigtext;
+            textBox.TabIndex = 0;
+            textBox.SelectionStart = Math.Max(0, textBox.Text.Length);
+            textBox.SelectionLength = 0;
+            textBox.ReadOnly = true;
+
+            Button buttonOk = new Button();
+            buttonOk.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            buttonOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            buttonOk.ForeColor = System.Drawing.Color.White;
+            buttonOk.UseVisualStyleBackColor = false;
+            buttonOk.Top = textBox.Top + textBox.Height + 6;
+            buttonOk.Text = "OK";
+            buttonOk.DialogResult = DialogResult.Yes;
+            buttonOk.AutoSize = true;
+            buttonOk.Left = ((form.Width - startWidth) / 2) - (buttonOk.Width / 2);
+
+            if (showPromptText)
+            {
+                form.Controls.AddRange(new Control[] { buttonOk, textBox, label });
+            } else {
+                form.Controls.AddRange(new Control[] { buttonOk, textBox });
+            }
+            form.AcceptButton = buttonOk;
+
+            form.Height = 292;
+
+            textBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+            buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+            form.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            form.MinimumSize = new Size(194, 119);
+
+            form.Resize += new EventHandler(delegate(object s, EventArgs args)
+            {
+                buttonOk.Left = ((form.Width - startWidth) / 2) - (buttonOk.Width / 2);
+            });
+
+            DialogResult dialogResult = form.ShowDialog();
+            return dialogResult;
+        }
+
+        public static DialogResult InputBox(string title, string promptText, ref string value, bool allowBracesCommasDotsColons = false, bool numericOnly = false, bool allowEmpty = false, bool slimSize = false)
+        {
+            PopupFormSelectedItem = null;
+
+            int edgeMargin = 13;
+            int labelAndButtonMargin = 5;
+            int startWidth = 16;
+
+            Form form = new Form();
+            form.ShowIcon = false;
+            form.BackColor = Color.FromKnownColor(KnownColor.ControlLightLight);
+            form.Text = title;
+            form.Width = slimSize ? 300 : 600;
 
             form.FormBorderStyle = FormBorderStyle.Sizable;
             form.StartPosition = FormStartPosition.CenterParent;

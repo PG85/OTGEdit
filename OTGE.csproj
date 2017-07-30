@@ -94,7 +94,9 @@
     <Compile Include="Classes\Biomes.cs" />
     <Compile Include="Classes\Utils\PopUpForm.cs" />
     <Compile Include="Classes\Session.cs" />
-    <Compile Include="Classes\Utils\Utils.cs" />
+    <Compile Include="Classes\Utils\Utils.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Classes\World.cs" />
     <Compile Include="Classes\XML\BiomeConfig.cs" />
     <Compile Include="Classes\XML\Group.cs" />

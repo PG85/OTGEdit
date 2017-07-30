@@ -20,7 +20,7 @@ namespace OTGEdit
 
             StringBuilder defaultText = new StringBuilder(System.IO.File.ReadAllText(file.FullName));
             string sDefaultText = defaultText.ToString();
-            foreach (TCProperty property in versionConfig.BiomeConfig)
+            foreach (TCProperty property in versionConfig.BiomeConfigDict.Values)
             {
                 string propertyValue = "";
                 if (property.PropertyType == "ResourceQueue")
@@ -52,6 +52,7 @@ namespace OTGEdit
                                 if (nextChar != '#' && nextChar != '\r' && nextChar != '\n')
                                 {
                                     // Resource found
+                                    replaceStartIndex++;
                                     break;
                                 }
 
@@ -282,54 +283,69 @@ namespace OTGEdit
 
         public static void GenerateBiomeConfigs(System.IO.DirectoryInfo sourceDirectory, System.IO.DirectoryInfo destinationDirectory, List<BiomeConfig> biomeConfigsDefaultValues, VersionConfig versionConfig, bool ignoreOverrideCheck)
         {
-            if (!destinationDirectory.Exists)
+            if (!System.IO.Directory.Exists(destinationDirectory.FullName))
             {
                 destinationDirectory.Create();
                 destinationDirectory.Refresh();
             }
-            if (sourceDirectory.Exists)
+            if (System.IO.Directory.Exists(sourceDirectory.FullName))
             {
                 string errorsTxt = "";
+                StringBuilder newValue = new StringBuilder();
+                StringBuilder aggregateValue = new StringBuilder();
+                StringBuilder defaultValue = new StringBuilder();
+
                 foreach (System.IO.FileInfo file in sourceDirectory.GetFiles())
-                {
+                {                   
                     BiomeConfig defaultBiome = biomeConfigsDefaultValues.FirstOrDefault(a => a.FileName == file.Name);
                     if (defaultBiome != null)
                     {
+                        Dictionary<string, Group> biomeGroups = new Dictionary<string, Group>();
+                        foreach (KeyValuePair<string, Group> biomeGroup in Session.BiomeGroups)
+                        {
+                            if (biomeGroup.Value.BiomesHash.Contains(defaultBiome.BiomeName))
+                            {
+                                biomeGroups.Add(biomeGroup.Key, biomeGroup.Value);
+                            }
+                        }
+
                         StringBuilder defaultText = new StringBuilder(System.IO.File.ReadAllText(file.FullName));
-                        foreach (TCProperty property in versionConfig.BiomeConfig)
+                        foreach (TCProperty property in versionConfig.BiomeConfigDict.Values)
                         {
                             string sDefaultText = defaultText.ToString();
 
                             List<string> valuesPerBiomeGroup = new List<string>();
 
-                            string newValue = "";
-                            string aggregateValue = "";
-                            string defaultValue = "";
+                            newValue.Clear();
+                            aggregateValue.Clear();
+                            defaultValue.Clear();
 
                             if (property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
                             {
-                                if (
-                                    !Session.BiomeGroups.Any(a => 
-                                        a.Biomes.Any(b => b == defaultBiome.BiomeName) && 
-                                        (
-                                            ignoreOverrideCheck ||
-                                            a.BiomeConfig.Properties.First(c => c.PropertyName == property.Name).Override
-                                        )
-                                    )
-                                )
+                                bool bFound = false;
+                                foreach (Group group in biomeGroups.Values)
+                                {
+                                    if (ignoreOverrideCheck || group.BiomeConfig.PropertiesDict[property.Name].Override)
+                                    {
+                                        bFound = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!bFound)
                                 {
                                     //Never overriden, set to default value
-                                    defaultValue = defaultBiome.GetPropertyValueAsString(property);
+                                    defaultValue.Append(defaultBiome.GetPropertyValueAsString(property));
                                 }
                             } else {
-                                defaultValue = defaultBiome.GetPropertyValueAsString(property);
+                                defaultValue.Append(defaultBiome.GetPropertyValueAsString(property));
                             }
 
-                            newValue += defaultValue;
-                            aggregateValue += defaultValue;
-                            if (!String.IsNullOrEmpty(defaultValue))
+                            newValue.Append(defaultValue);
+                            aggregateValue.Append(defaultValue);
+                            if (defaultValue.Length > 0)
                             {
-                                valuesPerBiomeGroup.Add(defaultValue);
+                                valuesPerBiomeGroup.Add(defaultValue.ToString());
                             }
 
                             bool bOverride = false;
@@ -338,26 +354,21 @@ namespace OTGEdit
 
                             string lastBiomeGroupNameToOverrideParentValues = null;
 
-                            foreach (string biomeGroupName in Session.lbGroups.Items)
+                            foreach (Group biomeGroup in biomeGroups.Values)
                             {
-                                Group biomeGroup = Session.BiomeGroups.FirstOrDefault(a => a.Name.Equals(biomeGroupName));
-                                if (biomeGroup != null)
+                                Property prop = biomeGroup.BiomeConfig.PropertiesDict[property.Name];
+
+                                if (
+                                    prop != null && 
+                                    (
+                                        ignoreOverrideCheck ||
+                                        prop.Override
+                                    )
+                                )
                                 {
-                                    if (biomeGroup.Biomes.Any(a => a == defaultBiome.BiomeName))
+                                    if (prop.OverrideParentValues)
                                     {
-                                        if (
-                                            biomeGroup.BiomeConfig.Properties.Any(a => a.PropertyName == property.Name) && 
-                                            (
-                                                ignoreOverrideCheck ||
-                                                biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override
-                                            )
-                                        )
-                                        {
-                                            if (biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).OverrideParentValues)
-                                            {
-                                                lastBiomeGroupNameToOverrideParentValues = biomeGroupName;
-                                            }
-                                        }
+                                        lastBiomeGroupNameToOverrideParentValues = biomeGroup.Name;
                                     }
                                 }
                             }
@@ -365,87 +376,88 @@ namespace OTGEdit
                             // Make sure that the biome groups are processed in the correct order
                             foreach (string biomeGroupName in Session.lbGroups.Items)
                             {
-                                if (lastBiomeGroupNameToOverrideParentValues == null || lastBiomeGroupNameToOverrideParentValues.Equals(biomeGroupName))
+                                if (
+                                    biomeGroups.ContainsKey(biomeGroupName) &&
+                                    (lastBiomeGroupNameToOverrideParentValues == null || lastBiomeGroupNameToOverrideParentValues.Equals(biomeGroupName))
+                                )
                                 {
-                                    Group biomeGroup = Session.BiomeGroups.FirstOrDefault(a => a.Name.Equals(biomeGroupName));
+                                    Group biomeGroup = Session.BiomeGroups[biomeGroupName];
                                     if (biomeGroup != null)
                                     {
                                         string groupvalue = "";
-                                        if (biomeGroup.Biomes.Any(a => a == defaultBiome.BiomeName))
-                                        {
-                                            if (
-                                                biomeGroup.BiomeConfig.Properties.Any(a => a.PropertyName == property.Name) && 
-                                                (
-                                                    ignoreOverrideCheck ||
-                                                    biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override
-                                                )
+                                        if (
+                                            biomeGroup.BiomeConfig.PropertiesDict.ContainsKey(property.Name) && 
+                                            (
+                                                ignoreOverrideCheck ||
+                                                biomeGroup.BiomeConfig.PropertiesDict[property.Name].Override
                                             )
+                                        )
+                                        {
+                                            if (!biomeGroup.BiomeConfig.GetPropertyMerge(property))
                                             {
-                                                if (!biomeGroup.BiomeConfig.GetPropertyMerge(property))
+                                                bOverride = true;
+                                            }
+
+                                            bMerge = biomeGroup.BiomeConfig.GetPropertyMerge(property);
+                                            bOverrideParentvalues = biomeGroup.BiomeConfig.PropertiesDict[property.Name].OverrideParentValues;
+
+                                            if (biomeGroup.BiomeConfig.GetPropertyOverrideParentValues(property) || (property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue"))
+                                            {
+                                                if (!String.IsNullOrEmpty(biomeGroup.BiomeConfig.GetPropertyValueAsString(property)) || property.PropertyType == "String" || property.PropertyType == "BigString"  || property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
                                                 {
-                                                    bOverride = true;
+                                                    groupvalue = biomeGroup.BiomeConfig.GetPropertyValueAsString(property);
+                                                    aggregateValue.Clear();
+                                                    aggregateValue.Append(biomeGroup.BiomeConfig.GetPropertyValueAsString(property));
                                                 }
-
-                                                bMerge = biomeGroup.BiomeConfig.GetPropertyMerge(property);
-                                                bOverrideParentvalues = biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).OverrideParentValues;
-
-                                                if (biomeGroup.BiomeConfig.GetPropertyOverrideParentValues(property) || (property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue"))
-                                                {
-                                                    if (!String.IsNullOrEmpty(biomeGroup.BiomeConfig.GetPropertyValueAsString(property)) || property.PropertyType == "String" || property.PropertyType == "BigString"  || property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
-                                                    {
-                                                        groupvalue = biomeGroup.BiomeConfig.GetPropertyValueAsString(property);
-                                                        aggregateValue = biomeGroup.BiomeConfig.GetPropertyValueAsString(property);
-                                                    }
-                                                }
-                                                else if (property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
-                                                {
-                                                    if (
-                                                        property.PropertyType == "BiomesList" && 
-                                                        (
-                                                            ignoreOverrideCheck ||
-                                                            biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override
-                                                        )
+                                            }
+                                            else if (property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
+                                            {
+                                                if (
+                                                    property.PropertyType == "BiomesList" && 
+                                                    (
+                                                        ignoreOverrideCheck ||
+                                                        biomeGroup.BiomeConfig.PropertiesDict[property.Name].Override
                                                     )
+                                                )
+                                                {
+                                                    if (groupvalue != null && !String.IsNullOrEmpty(groupvalue.Trim()))
                                                     {
-                                                        if (groupvalue != null && !String.IsNullOrEmpty(groupvalue.Trim()))
-                                                        {
-                                                            groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? ", " + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
-                                                        } else {
-                                                            groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
-                                                        }
-
-                                                        if (aggregateValue != null && !String.IsNullOrEmpty(aggregateValue.Trim()))
-                                                        {
-                                                            aggregateValue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? ", " + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
-                                                        } else {
-                                                            aggregateValue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
-                                                        }
-                                                    }
-                                                    else if (
-                                                        property.PropertyType == "ResourceQueue" && 
-                                                        (
-                                                            ignoreOverrideCheck ||
-                                                            biomeGroup.BiomeConfig.Properties.First(a => a.PropertyName == property.Name).Override
-                                                        )
-                                                    )
-                                                    {
-                                                        if (groupvalue != null && !String.IsNullOrEmpty(groupvalue.Trim()))
-                                                        {
-                                                            groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? "\r\n" + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
-                                                        } else {
-                                                            groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
-                                                        }
-
-                                                        if (aggregateValue != null && !String.IsNullOrEmpty(aggregateValue.Trim()))
-                                                        {
-                                                            aggregateValue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? "\r\n" + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
-                                                        } else {
-                                                            aggregateValue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
-                                                        }
+                                                        groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? ", " + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
                                                     } else {
-                                                        PopUpForm.CustomMessageBox("One does not simply merge a non-BiomesList, non-ResourceQueue setting. Setting \"" + property.Name + "\" group \"" + biomeGroup.Name + "\". Biome generation aborted.", "Generation error");
-                                                        return;
+                                                        groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
                                                     }
+
+                                                    if (aggregateValue.Length > 0)
+                                                    {
+                                                        aggregateValue.Append(biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? ", " + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "");
+                                                    } else {
+                                                        aggregateValue.Append(biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "");
+                                                    }
+                                                }
+                                                else if (
+                                                    property.PropertyType == "ResourceQueue" && 
+                                                    (
+                                                        ignoreOverrideCheck ||
+                                                        biomeGroup.BiomeConfig.PropertiesDict[property.Name].Override
+                                                    )
+                                                )
+                                                {
+                                                    if (groupvalue != null && !String.IsNullOrEmpty(groupvalue.Trim()))
+                                                    {
+                                                        groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? "\r\n" + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "";
+                                                    } else {
+                                                        groupvalue += biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "";
+                                                    }
+
+                                                    if (aggregateValue.Length > 0)
+                                                    {
+                                                        aggregateValue.Append(biomeGroup.BiomeConfig.GetPropertyValueAsString(property) != null ? "\r\n" + biomeGroup.BiomeConfig.GetPropertyValueAsString(property) : "");
+                                                    } else {
+                                                        aggregateValue.Append(biomeGroup.BiomeConfig.GetPropertyValueAsString(property) ?? "");
+                                                    }
+                                                } else {
+                                                    PopUpForm.CustomMessageBox("One does not simply merge a non-BiomesList, non-ResourceQueue setting. Setting \"" + property.Name + "\" group \"" + biomeGroup.Name + "\". Biome generation aborted.", "Generation error");
+                                                    return;
                                                 }
                                             }
                                         }
@@ -491,6 +503,7 @@ namespace OTGEdit
                                             if (nextChar != '#' && nextChar != '\r' && nextChar != '\n')
                                             {
                                                 // Resource found
+                                                replaceStartIndex++;
                                                 break;
                                             }
 
@@ -687,11 +700,11 @@ namespace OTGEdit
                                             newPropertyValue.AddRange(newGroupPropertyValue);
                                         }
 
-                                        newValue = "";
+                                        newValue.Clear();
                                         int i = 0;
                                         foreach (string value1 in newPropertyValue)
                                         {
-                                            newValue += (i != newPropertyValue.Count() - 1 ? value1 + "\r\n" : value1);
+                                            newValue.Append(i != newPropertyValue.Count - 1 ? value1 + "\r\n" : value1);
                                             i++;
                                         }
                                     }
@@ -700,7 +713,7 @@ namespace OTGEdit
                                         defaultText = defaultText.Remove(replaceStartIndex, replaceLength);
                                     }
 
-                                    if (!String.IsNullOrWhiteSpace(newValue))
+                                    if (newValue.Length > 0)
                                     {
                                         defaultText = defaultText.Insert(replaceStartIndex, newValue + "\r\n");
                                     }
@@ -716,7 +729,8 @@ namespace OTGEdit
                                     //return;
                                 }
                             } else {
-                                newValue = aggregateValue;
+                                newValue.Clear();
+                                newValue.Append(aggregateValue);
 
                                 int valueStringStartIndex = sDefaultText.IndexOf(property.ScriptHandle);
                                 while (valueStringStartIndex != -1 && !(valueStringStartIndex == 0 || defaultText.ToString(valueStringStartIndex - 1, defaultText.Length - (valueStringStartIndex - 1)).IndexOf("\n") == 0))
@@ -753,7 +767,7 @@ namespace OTGEdit
 
                                     if (property.PropertyType == "BiomesList" && bMerge && valueStringLength > 0)
                                     {
-                                        string[] biomesListItemNames = newValue != null ? newValue.Split(',') : null;
+                                        string[] biomesListItemNames = newValue.Length > 0 ? newValue.ToString().Split(',') : null;
                                         string[] defaultBiomesListItemNames = defaultBiome.GetPropertyValueAsString(property) != null ? defaultBiome.GetPropertyValueAsString(property).Split(',') : null;
                                         List<string> newPropertyValue = new List<string>();
                                         if (biomesListItemNames != null)
@@ -777,10 +791,10 @@ namespace OTGEdit
                                             }
                                         }
 
-                                        newValue = "";
+                                        newValue.Clear();
                                         foreach (string value1 in newPropertyValue)
                                         {
-                                            newValue += (value1 != newPropertyValue[newPropertyValue.Count() - 1] ? value1 + ", " : value1);
+                                            newValue.Append(value1 != newPropertyValue[newPropertyValue.Count - 1] ? value1 + ", " : value1);
                                         }
                                     }
                                     if (valueStringLength > 0)

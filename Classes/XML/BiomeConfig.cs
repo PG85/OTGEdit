@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 using System.IO;
+using System.Xml.Serialization;
 
 namespace OTGEdit.XML
 {
@@ -26,20 +27,39 @@ namespace OTGEdit.XML
         }
 
         [DataMember]
-        public List<Property> Properties;
+        public List<Property> Properties = new List<Property>();
 
-        public BiomeConfig(VersionConfig config)
+        private Dictionary<string, Property> propertiesDict = null;
+        [XmlIgnore]
+        public Dictionary<string, Property> PropertiesDict
         {
-            Properties = new List<Property>();
-            foreach (TCProperty property in config.BiomeConfig)
+            get
             {
-                Properties.Add(new Property(null, false, property.Name, false, property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue"));
+                if (propertiesDict == null)
+                {
+                    propertiesDict = new Dictionary<string, Property>();
+                    foreach (Property property in Properties)
+                    {
+                        propertiesDict.Add(property.PropertyName, property);
+                    }
+                }
+                return propertiesDict;
             }
         }
 
-        public void SetProperty(TCProperty property, string value, bool merge, bool overrideParentValues)
+        public BiomeConfig(VersionConfig config)
         {
-            if (property.PropertyType != "String" && property.PropertyType != "BigString" && property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue" && String.IsNullOrWhiteSpace(value))
+            propertiesDict = new Dictionary<string, Property>();
+            foreach (TCProperty tcProperty in config.BiomeConfigDict.Values)
+            {
+                Property property = new Property(null, false, tcProperty.Name, false, tcProperty.PropertyType != "BiomesList" && tcProperty.PropertyType != "ResourceQueue");
+                propertiesDict.Add(property.PropertyName, property);
+            }
+        }
+
+        public void SetProperty(TCProperty tcProperty, string value, bool merge, bool overrideParentValues)
+        {
+            if (tcProperty.PropertyType != "String" && tcProperty.PropertyType != "BigString" && tcProperty.PropertyType != "BiomesList" && tcProperty.PropertyType != "ResourceQueue" && String.IsNullOrWhiteSpace(value))
             {
                 value = null;
             }
@@ -47,26 +67,27 @@ namespace OTGEdit.XML
             {
                 value = value.Trim();
             }
-            Properties.First(a => a.PropertyName == property.Name).Value = value;
-            Properties.First(a => a.PropertyName == property.Name).Merge = merge;
-            Properties.First(a => a.PropertyName == property.Name).OverrideParentValues = overrideParentValues;
+            Property property = PropertiesDict[tcProperty.Name];
+            property.Value = value;
+            property.Merge = merge;
+            property.OverrideParentValues = overrideParentValues;
         }
 
         public string GetPropertyValueAsString(TCProperty property)
         {
-            Property prop = Properties.FirstOrDefault(a => a.PropertyName == property.Name);
+            Property prop = PropertiesDict.ContainsKey(property.Name) ? PropertiesDict[property.Name] : null;
             return prop != null ? prop.Value : null;
         }
 
         public bool GetPropertyMerge(TCProperty property)
         {
-            Property prop = Properties.FirstOrDefault(a => a.PropertyName == property.Name);
+            Property prop = PropertiesDict.ContainsKey(property.Name) ? PropertiesDict[property.Name] : null;
             return prop != null ? prop.Merge : false;
         }
 
         public bool GetPropertyOverrideParentValues(TCProperty property)
         {
-            Property prop = Properties.FirstOrDefault(a => a.PropertyName == property.Name);
+            Property prop = PropertiesDict.ContainsKey(property.Name) ? PropertiesDict[property.Name] : null;
             return prop != null ? prop.OverrideParentValues : false;
         }
     }

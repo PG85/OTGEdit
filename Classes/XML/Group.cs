@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace OTGEdit.XML
 {
@@ -12,11 +13,35 @@ namespace OTGEdit.XML
         [DataMember]
         public string Name;
         [DataMember]
-        public List<string> Biomes = new List<string>();
+        private List<string> Biomes = new List<string>();
+
+        private HashSet<string> biomesHash = null;
+        [XmlIgnore]
+        public HashSet<string> BiomesHash
+        {
+            get
+            {
+                if (biomesHash == null)
+                {
+                    biomesHash = new HashSet<string>();
+                    foreach (string property in Biomes)
+                    {
+                        biomesHash.Add(property);
+                    }
+                }
+                return biomesHash;
+            }
+            set
+            {
+                biomesHash = value;
+            }
+        }
+
+
         [DataMember]
         public BiomeConfig BiomeConfig;
 
-        public bool showDefaults { get { return Biomes.Count == 1 && Name.Equals(Biomes[0]); } }
+        public bool showDefaults { get { return BiomesHash.Count == 1 && Name.Equals(BiomesHash.First()); } }
 
         public Group(string name, VersionConfig config)
         {

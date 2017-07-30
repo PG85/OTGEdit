@@ -23,7 +23,7 @@ namespace OTGEdit
 
                 StringBuilder defaultText = new StringBuilder(System.IO.File.ReadAllText(file.FullName));
                 string sDefaultText = defaultText.ToString();
-                foreach (TCProperty property in versionConfig.WorldConfig)
+                foreach (TCProperty property in versionConfig.WorldConfigDict.Values)
                 {
                     if (!loadUI || Session.WorldSettingsInputs.ContainsKey(property))
                     {
@@ -57,6 +57,7 @@ namespace OTGEdit
                                         if (nextChar != '#' && nextChar != '\r' && nextChar != '\n')
                                         {
                                             // Resource found
+                                            replaceStartIndex++;
                                             break;
                                         }
 
@@ -267,6 +268,7 @@ namespace OTGEdit
                                         }
                                     }
                                 }
+
                                 if (valueStringLength > 0)
                                 {
                                     propertyValue = defaultText.ToString(valueStringStartIndex + skipCharsLength, valueStringLength).Trim();
@@ -407,35 +409,38 @@ namespace OTGEdit
             if (defaultWorldConfig.Exists)
             {
                 StringBuilder defaultText = new StringBuilder(System.IO.File.ReadAllText(defaultWorldConfig.FullName));
+                StringBuilder newValue = new StringBuilder();
                 string errorsTxt = "";
-                foreach (TCProperty property in versionConfig.WorldConfig)
+                foreach (TCProperty property in versionConfig.WorldConfigDict.Values)
                 {
-                    string sDefaultText = defaultText.ToString();
+                    newValue.Clear();
 
-                    string newValue = worldConfig.GetPropertyValueAsString(property);
+                    string sDefaultText = defaultText.ToString();
+                    bool isDefault = false;
+                    newValue.Append(worldConfig.GetPropertyValueAsString(property));
+                    string newValueString = newValue.ToString();
                     if (
-                        newValue != null && 
                         worldConfigDefaultValues != null && 
                         (
-                            newValue == worldConfigDefaultValues.GetPropertyValueAsString(property) || 
+                            newValueString == worldConfigDefaultValues.GetPropertyValueAsString(property) || 
                             (
-                                property.PropertyType.Equals("BiomesList") && 
-                                Utils.TCSettingsUtils.CompareBiomeLists(newValue, worldConfigDefaultValues.GetPropertyValueAsString(property))
+                                property.PropertyType.Equals("BiomesList") &&
+                                Utils.TCSettingsUtils.CompareBiomeLists(newValueString, worldConfigDefaultValues.GetPropertyValueAsString(property))
                             ) || 
                             (
-                                property.PropertyType.Equals("ResourceQueue") && 
-                                Utils.TCSettingsUtils.CompareResourceQueues(newValue, worldConfigDefaultValues.GetPropertyValueAsString(property))
+                                property.PropertyType.Equals("ResourceQueue") &&
+                                Utils.TCSettingsUtils.CompareResourceQueues(newValueString, worldConfigDefaultValues.GetPropertyValueAsString(property))
                             )
                         )
                     )
                     {
-                        newValue = null;
+                        isDefault = true;
                     }
                     if (
-                        newValue != null && 
+                        !isDefault && 
                         (
                             ignoreOverrideCheck ||
-                            worldConfig.Properties.First(a => a.PropertyName == property.Name).Override
+                            worldConfig.PropertiesDict[property.Name].Override
                         )
                     )
                     {
@@ -469,6 +474,7 @@ namespace OTGEdit
                                         if (nextChar != '#' && nextChar != '\r' && nextChar != '\n')
                                         {
                                             // Resource found
+                                            replaceStartIndex++;
                                             break;
                                         }
 
@@ -496,7 +502,7 @@ namespace OTGEdit
 
                                 if (replaceLength > 0)
                                 {
-                                    string[] biomesListItemNames = newValue != null ? newValue.Replace("\r", "").Split('\n') : null;
+                                    string[] biomesListItemNames = newValue.Length > 0 ? newValue.Replace("\r", "").ToString().Split('\n') : null;
                                     string[] defaultBiomesListItemNames = worldConfig.GetPropertyValueAsString(property) != null ? worldConfig.GetPropertyValueAsString(property).Replace("\r", "").Split('\n') : null;
                                     List<string> newPropertyValue = new List<string>();
 
@@ -576,11 +582,11 @@ namespace OTGEdit
                                             }
                                         }
                                     }
-                                    newValue = "";
+                                    newValue.Clear();
                                     int i = 0;
                                     foreach (string value1 in newPropertyValue)
                                     {
-                                        newValue += (i != newPropertyValue.Count() - 1 ? value1 + "\r\n" : value1);
+                                        newValue.Append(i != newPropertyValue.Count - 1 ? value1 + "\r\n" : value1);
                                         i++;
                                     }
                                 }
@@ -589,7 +595,7 @@ namespace OTGEdit
                                     defaultText = defaultText.Remove(replaceStartIndex, replaceLength);
                                 }
 
-                                if (!String.IsNullOrWhiteSpace(newValue))
+                                if (newValue.Length > 0)
                                 {
                                     defaultText = defaultText.Insert(replaceStartIndex, newValue + "\r\n");
                                 }
@@ -637,7 +643,7 @@ namespace OTGEdit
 
                                 if (property.PropertyType == "BiomesList" && worldConfig.GetPropertyMerge(property) && valueStringLength > 0)
                                 {
-                                    string[] biomesListItemNames = newValue != null ? newValue.Split(',') : null;
+                                    string[] biomesListItemNames = newValue.Length > 0 ? newValue.ToString().Split(',') : null;
                                     string[] defaultBiomesListItemNames = worldConfigDefaultValues.GetPropertyValueAsString(property) != null ? worldConfigDefaultValues.GetPropertyValueAsString(property).Split(',') : null;
                                     List<string> newPropertyValue = new List<string>();
                                     if (biomesListItemNames != null)
@@ -661,10 +667,10 @@ namespace OTGEdit
                                         }
                                     }
 
-                                    newValue = "";
+                                    newValue.Clear();
                                     foreach (string value1 in newPropertyValue)
                                     {
-                                        newValue += (value1 != newPropertyValue[newPropertyValue.Count() - 1] ? value1 + ", " : value1);
+                                        newValue.Append(value1 != newPropertyValue[newPropertyValue.Count - 1] ? value1 + ", " : value1);
                                     }
                                 }
                                 if (valueStringLength > 0)

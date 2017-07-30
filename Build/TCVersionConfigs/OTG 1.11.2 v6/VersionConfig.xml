@@ -551,6 +551,13 @@
             <UniqueParameterIndex>0</UniqueParameterIndex>            
         </ResourceQueueItem>
         <ResourceQueueItem>                            
+            <HasUniqueParameter>false</HasUniqueParameter>
+            <IsUnique>true</IsUnique>
+            <Name>Fossil(</Name>
+            <UniqueParameterIndex>0</UniqueParameterIndex>
+			<PopupAskForOverride>true</PopupAskForOverride>
+        </ResourceQueueItem>		
+        <ResourceQueueItem>                            
             <HasUniqueParameter>true</HasUniqueParameter>
             <IsUnique>true</IsUnique>
             <Name>Ore(</Name>
