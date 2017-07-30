@@ -50,6 +50,8 @@ namespace OTGEdit
 
                 InitializeComponent();
 
+                tabControl1.Selected += tabControl1_Selected;
+
                 // TODO: Pass these as method parameters instead of using static fields.
                 Session.Form1 = this;
                 Session.tabControl1 = tabControl1;
@@ -135,6 +137,25 @@ namespace OTGEdit
 
                 copyBO3fbd = new FolderBrowserDialog();
                 copyBO3fbd.Description = "Select a /GlobalObjects or /WorldObjects directory (create if needed).";
+            }
+
+            void tabControl1_Selected(object sender, TabControlEventArgs e)
+            {
+                if(tabControl1.SelectedIndex == 0)
+                {
+                    groupBoxWorldTab.Show();
+                    groupBoxBiomesTab.Hide();
+                }
+                if (tabControl1.SelectedIndex == 1)
+                {
+                    groupBoxWorldTab.Hide();
+                    groupBoxBiomesTab.Show();
+                }
+                if (tabControl1.SelectedIndex == 2)
+                {
+                    groupBoxWorldTab.Hide();
+                    groupBoxBiomesTab.Hide();
+                }
             }
 
             void SelectSourceWorld_Click(object sender, EventArgs e)
@@ -1101,7 +1122,7 @@ namespace OTGEdit
                 btSave.Enabled = true;
                 btLoad.Enabled = true;
             }
-
+            
         #endregion
 
         #region World
