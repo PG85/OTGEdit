@@ -365,42 +365,6 @@ namespace OTGEdit.Utils
         }
     }
 
-    public class RichTextBoxWithBorder : RichTextBox
-    {
-        private const int WM_PAINT = 15;
-        protected override void WndProc(ref System.Windows.Forms.Message m)
-        {
-            base.WndProc(ref m);
-            if (m.Msg == WM_PAINT && !inhibitPaint)
-            {
-                // raise the paint event
-                using (System.Drawing.Graphics graphic = base.CreateGraphics())
-                {
-                    OnPaint(new PaintEventArgs(graphic, base.ClientRectangle));
-                }
-            }
-        }
-
-        private bool inhibitPaint = false;
-
-        public bool InhibitPaint
-        {
-            set { inhibitPaint = value; }
-        }
-
-        [System.Runtime.InteropServices.DllImport("user32")]
-        private static extern IntPtr GetWindowDC(IntPtr hwnd);
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            var dc = GetWindowDC(Handle);
-            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromHdc(dc))
-            {
-                g.DrawRectangle(System.Drawing.Pens.DarkGray, 0, 0, Width - 1, Height - 1);
-            }
-        }
-    }
-
     public class PanelWithScrollExposePanelWithScrollExposed : Panel
     {
         public void OnMouseWheelPublic(MouseEventArgs e)

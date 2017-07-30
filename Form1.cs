@@ -579,7 +579,7 @@ namespace OTGEdit
                                 }
                                 break;
                             case "BigString":
-                                RichTextBoxWithBorder txPropertyInput2 = new RichTextBoxWithBorder();                            
+                                RichTextBox txPropertyInput2 = new RichTextBox();                            
                                 txPropertyInput2.Multiline = true;
                                 txPropertyInput2.BorderStyle = BorderStyle.None;
                                 txPropertyInput2.Height = 58;
@@ -589,8 +589,17 @@ namespace OTGEdit
                                 txPropertyInput2.MouseHover += lbPropertyInput_MouseHover;
                                 txPropertyInput2.MouseWheel += lbWorldTabSetting_MouseWheel;
                                 txPropertyInput2.KeyDown += lbPropertyInput_KeyDown_World;
+                                txPropertyInput2.Left = 1;
+                                txPropertyInput2.Top = 1;
 
-                                tlpWorldSettings1.Controls.Add(txPropertyInput2, 2, row);
+                                Panel txtBoxBorder = new Panel();
+                                txtBoxBorder.Width = txPropertyInput2.Width + 2;
+                                txtBoxBorder.Height = txPropertyInput2.Height + 2;
+                                txtBoxBorder.BackColor = Color.DarkGray;
+                                txtBoxBorder.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                txtBoxBorder.Controls.Add(txPropertyInput2);
+
+                                tlpWorldSettings1.Controls.Add(txtBoxBorder, 2, row);
                                 Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, null, null));
                                 break;
                             case "Float":
@@ -964,7 +973,7 @@ namespace OTGEdit
                                 }
                                 break;
                             case "BigString":
-                                RichTextBoxWithBorder txPropertyInput2 = new RichTextBoxWithBorder();
+                                RichTextBox txPropertyInput2 = new RichTextBox();
                                 txPropertyInput2.Multiline = true;
                                 txPropertyInput2.BorderStyle = BorderStyle.None;
                                 txPropertyInput2.Height = 58;
@@ -974,8 +983,17 @@ namespace OTGEdit
                                 txPropertyInput2.MouseHover += lbPropertyInput_MouseHover;
                                 txPropertyInput2.MouseWheel += lbBiomesTabSetting_MouseWheel;
                                 txPropertyInput2.KeyDown += lbPropertyInput_KeyDown;
+                                txPropertyInput2.Left = 1;
+                                txPropertyInput2.Top = 1;
 
-                                tlpBiomeSettings1.Controls.Add(txPropertyInput2, 2, row);
+                                Panel txtBoxBorder = new Panel();
+                                txtBoxBorder.Width = txPropertyInput2.Width + 2;
+                                txtBoxBorder.Height = txPropertyInput2.Height + 2;
+                                txtBoxBorder.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                                txtBoxBorder.BackColor = Color.DarkGray;
+                                txtBoxBorder.Controls.Add(txPropertyInput2);
+
+                                tlpBiomeSettings1.Controls.Add(txtBoxBorder, 2, row);
                                 Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, null, null));                                
                                 break;
                             case "Float":
