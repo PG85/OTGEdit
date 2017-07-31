@@ -58,8 +58,8 @@ namespace OTGEdit
                 // TODO: Pass these as method parameters instead of using static fields.
                 Session.Form1 = this;
                 Session.tabControl1 = tabControl1;
-                Session.panel2 = panel2;
-                Session.panel3 = panel3;
+                Session.panel2 = pnlWorldTabInputs;
+                Session.panel3 = pnlBiomesTabInputs;
                 Session.btSave = btSave;
                 Session.btLoad = btLoad;
                 Session.btGenerate = btGenerate;
@@ -81,7 +81,7 @@ namespace OTGEdit
 
                 tbSearchWorldConfig.MouseWheel += tbSearchWorldConfig_MouseWheel;
                 tbSearchBiomeConfig.MouseWheel += tbSearchBiomeConfig_MouseWheel;
-                panel3.MouseWheel += lbBiomesTab_MouseWheel;
+                pnlBiomesTabInputs.MouseWheel += lbBiomesTab_MouseWheel;
                 lbGroups.MouseWheel += lbBiomesTab_MouseWheel;
                 lbGroup.MouseWheel += lbBiomesTab_MouseWheel;
                 lbBiomes.MouseWheel += lbBiomesTab_MouseWheel;
@@ -402,6 +402,12 @@ namespace OTGEdit
                         tlpWorldSettings1.Controls.Add(cbOverride, 1, row);
                         cbOverride.CheckedChanged += PropertyInputOverrideCheckChangedWorld;
 
+                        Panel pnlBtnHolder = new Panel();
+                        pnlBtnHolder.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                        pnlBtnHolder.Width = 23;
+                        pnlBtnHolder.Height = 23;
+                        pnlBtnHolder.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
+
                         Button bSetDefaults = new Button();
                         bSetDefaults.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
                         bSetDefaults.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -411,10 +417,30 @@ namespace OTGEdit
                         bSetDefaults.Text = "C";
                         bSetDefaults.Width = 23;
                         bSetDefaults.Height = 23;
-                        bSetDefaults.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
                         bSetDefaults.Click += bSetDefaultsWorldProperty;
                         bSetDefaults.TabStop = false;
-                        tlpWorldSettings1.Controls.Add(bSetDefaults, 3, row);
+                        pnlBtnHolder.Controls.Add(bSetDefaults);
+                        tlpWorldSettings1.Controls.Add(pnlBtnHolder, 3, row);
+
+                        Button bOpenTextEditor = null;
+                        if (property.PropertyType == "BigString")
+                        {
+                            pnlBtnHolder.Height = 60;
+
+                            bOpenTextEditor = new Button();
+                            bOpenTextEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+                            bOpenTextEditor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                            bOpenTextEditor.ForeColor = System.Drawing.Color.White;
+                            bOpenTextEditor.UseVisualStyleBackColor = false;
+                            bOpenTextEditor.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                            bOpenTextEditor.Text = "E";
+                            bOpenTextEditor.Width = 23;
+                            bOpenTextEditor.Height = 23;
+                            bOpenTextEditor.Top = 26;
+                            bOpenTextEditor.Click += bOpenTextEditBoxWorldProperty;
+                            bOpenTextEditor.TabStop = false;
+                            pnlBtnHolder.Controls.Add(bOpenTextEditor);
+                        }
 
                         switch (property.PropertyType)
                         {
@@ -545,7 +571,7 @@ namespace OTGEdit
                                 pnl.AutoSize = true;
 
                                 tlpWorldSettings1.Controls.Add(pnl, 2, row);
-                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(lbPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes));
+                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(lbPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes, bOpenTextEditor));
 
                                 break;
                             case "String":
@@ -566,7 +592,7 @@ namespace OTGEdit
                                     txPropertyInput.MouseWheel += lbWorldTabSetting_MouseWheel;
 
                                     tlpWorldSettings1.Controls.Add(txPropertyInput, 2, row);
-                                    Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                    Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null, bOpenTextEditor));
                                 } else {
                                     TextBoxWithBorder txPropertyInput = new TextBoxWithBorder();                                
                                     txPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
@@ -575,7 +601,7 @@ namespace OTGEdit
                                     txPropertyInput.MouseHover += lbPropertyInput_MouseHover;
 
                                     tlpWorldSettings1.Controls.Add(txPropertyInput, 2, row);
-                                    Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                    Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null, bOpenTextEditor));
                                 }
                                 break;
                             case "BigString":
@@ -600,7 +626,7 @@ namespace OTGEdit
                                 txtBoxBorder.Controls.Add(txPropertyInput2);
 
                                 tlpWorldSettings1.Controls.Add(txtBoxBorder, 2, row);
-                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(txPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, null, null, bOpenTextEditor));
                                 break;
                             case "Float":
                             case "Int":
@@ -618,7 +644,7 @@ namespace OTGEdit
                                 txPropertyInput3.Height = 0;
 
                                 tlpWorldSettings1.Controls.Add(txPropertyInput3, 2, row);
-                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(txPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, null, bOpenTextEditor));
                                 break;
                             case "Color":
                                 Panel colorPickerPanel = new Panel();
@@ -650,7 +676,7 @@ namespace OTGEdit
                                 colorPickerPanel.AutoSize = true;
 
                                 tlpWorldSettings1.Controls.Add(colorPickerPanel, 2, row);
-                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput4, cbOverride, bSetDefaults, txPropertyLabel, lbPropertyInput2, null));
+                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(txPropertyInput4, cbOverride, bSetDefaults, txPropertyLabel, lbPropertyInput2, null, bOpenTextEditor));
                                 break;
                             case "BiomesList":
 
@@ -721,7 +747,7 @@ namespace OTGEdit
                                 pnl4.AutoSize = true;
 
                                 tlpWorldSettings1.Controls.Add(pnl4, 2, row);
-                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(lbPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes2));
+                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(lbPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes2, bOpenTextEditor));
                                 BiomeListInputs.Add(lbPropertyInput3);
 
                                 break;
@@ -736,7 +762,7 @@ namespace OTGEdit
                                 btnTrueFalse.Click += btnTrueFalseWorld_Click;
 
                                 tlpWorldSettings1.Controls.Add(btnTrueFalse, 2, row);
-                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(btnTrueFalse, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                Session.WorldSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(btnTrueFalse, cbOverride, bSetDefaults, txPropertyLabel, null, null, bOpenTextEditor));
 
                                 break;
                         }
@@ -803,6 +829,12 @@ namespace OTGEdit
                         tlpBiomeSettings1.Controls.Add(cbOverride, 1, row);
                         cbOverride.CheckedChanged += PropertyInputOverrideCheckChangedBiome;
 
+                        Panel pnlBtnHolder = new Panel();
+                        pnlBtnHolder.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                        pnlBtnHolder.Width = 23;
+                        pnlBtnHolder.Height = 23;
+                        pnlBtnHolder.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
+
                         Button bSetDefaults = new Button();
                         bSetDefaults.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
                         bSetDefaults.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -811,11 +843,31 @@ namespace OTGEdit
                         bSetDefaults.Anchor = AnchorStyles.Left | AnchorStyles.Top;
                         bSetDefaults.Text = "C";
                         bSetDefaults.Width = 23;
-                        bSetDefaults.Height = 23;
-                        bSetDefaults.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
+                        bSetDefaults.Height = 23;                        
                         bSetDefaults.Click += bSetDefaultsBiomeProperty;
                         bSetDefaults.TabStop = false;
-                        tlpBiomeSettings1.Controls.Add(bSetDefaults, 3, row);
+                        pnlBtnHolder.Controls.Add(bSetDefaults);
+                        tlpBiomeSettings1.Controls.Add(pnlBtnHolder, 3, row);
+
+                        Button bOpenTextEditor = null;
+                        if (property.PropertyType == "BigString")
+                        {
+                            pnlBtnHolder.Height = 60;
+
+                            bOpenTextEditor = new Button();
+                            bOpenTextEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+                            bOpenTextEditor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+                            bOpenTextEditor.ForeColor = System.Drawing.Color.White;
+                            bOpenTextEditor.UseVisualStyleBackColor = false;
+                            bOpenTextEditor.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                            bOpenTextEditor.Text = "E";
+                            bOpenTextEditor.Width = 23;
+                            bOpenTextEditor.Height = 23;
+                            bOpenTextEditor.Top = 26;
+                            bOpenTextEditor.Click += bOpenTextEditBoxBiomeProperty;
+                            bOpenTextEditor.TabStop = false;
+                            pnlBtnHolder.Controls.Add(bOpenTextEditor);
+                        }
 
                         switch (property.PropertyType)
                         {
@@ -939,7 +991,7 @@ namespace OTGEdit
                                 pnl.AutoSize = true;
 
                                 tlpBiomeSettings1.Controls.Add(pnl, 2, row);
-                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(lbPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes));
+                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(lbPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes, bOpenTextEditor));
 
                                 break;
                             case "String":
@@ -960,7 +1012,7 @@ namespace OTGEdit
                                     txPropertyInput.MouseWheel += lbBiomesTabSetting_MouseWheel;
 
                                     tlpBiomeSettings1.Controls.Add(txPropertyInput, 2, row);
-                                    Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                    Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null, bOpenTextEditor));
                                 } else {
                                     TextBoxWithBorder txPropertyInput = new TextBoxWithBorder();                                
                                     txPropertyInput.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;                                
@@ -969,7 +1021,7 @@ namespace OTGEdit
                                     txPropertyInput.MouseHover += lbPropertyInput_MouseHover;
 
                                     tlpBiomeSettings1.Controls.Add(txPropertyInput, 2, row);
-                                    Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                    Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(txPropertyInput, cbOverride, bSetDefaults, txPropertyLabel, null, null, bOpenTextEditor));
                                 }
                                 break;
                             case "BigString":
@@ -994,7 +1046,8 @@ namespace OTGEdit
                                 txtBoxBorder.Controls.Add(txPropertyInput2);
 
                                 tlpBiomeSettings1.Controls.Add(txtBoxBorder, 2, row);
-                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, null, null));                                
+                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(txPropertyInput2, cbOverride, bSetDefaults, txPropertyLabel, null, null, bOpenTextEditor));                                
+
                                 break;
                             case "Float":
                             case "Int":
@@ -1012,7 +1065,7 @@ namespace OTGEdit
                                 txPropertyInput3.Height = 0;
 
                                 tlpBiomeSettings1.Controls.Add(txPropertyInput3, 2, row);
-                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, null));                                
+                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(txPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, null, bOpenTextEditor));
                                 break;
                             case "Color":
                                 Panel colorPickerPanel = new Panel();
@@ -1043,7 +1096,7 @@ namespace OTGEdit
                                 colorPickerPanel.AutoSize = true;
 
                                 tlpBiomeSettings1.Controls.Add(colorPickerPanel, 2, row);
-                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(txPropertyInput4, cbOverride, bSetDefaults, txPropertyLabel, lbPropertyInput2, null));
+                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(txPropertyInput4, cbOverride, bSetDefaults, txPropertyLabel, lbPropertyInput2, null, bOpenTextEditor));
                                 break;
                             case "BiomesList":
 
@@ -1108,7 +1161,7 @@ namespace OTGEdit
                                 pnl4.AutoSize = true;
 
                                 tlpBiomeSettings1.Controls.Add(pnl4, 2, row);
-                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(lbPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes2));
+                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(lbPropertyInput3, cbOverride, bSetDefaults, txPropertyLabel, null, pCheckBoxes2, bOpenTextEditor));
                                 BiomeListInputs.Add(lbPropertyInput3);
 
                                 break;
@@ -1122,7 +1175,7 @@ namespace OTGEdit
                                 btnTrueFalse.Anchor = AnchorStyles.Left | AnchorStyles.Top;                                
                                 btnTrueFalse.Click += btnTrueFalseBiome_Click;
                                 tlpBiomeSettings1.Controls.Add(btnTrueFalse, 2, row);
-                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel>(btnTrueFalse, cbOverride, bSetDefaults, txPropertyLabel, null, null));
+                                Session.BiomeSettingsInputs.Add(property, new Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>(btnTrueFalse, cbOverride, bSetDefaults, txPropertyLabel, null, null, bOpenTextEditor));
 
                                 break;
                         }
@@ -1152,20 +1205,20 @@ namespace OTGEdit
             {
                 if (!Session.IgnorePropertyInputChangedWorld)
                 {
-                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item6 == ((Control)sender).Parent);
+                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item6 == ((Control)sender).Parent);
                     TCProperty property = kvp.Key;
 
                     Session.WorldConfig1.SetProperty(property, Session.WorldConfig1.GetPropertyValueAsString(property), Session.WorldConfig1.GetPropertyMerge(property), ((CheckBox)sender).Checked);
                 }
 
-                this.panel2.Focus();
+                this.pnlWorldTabInputs.Focus();
             }
 
             private void btOverrideAllWorld_CheckedChanged(object sender, EventArgs e)
             {
                 if (!Session.IgnorePropertyInputChangedWorld && ((RadioButton)sender).Checked)
                 {
-                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item6 == ((Control)sender).Parent);
+                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item6 == ((Control)sender).Parent);
                     Control tb = kvp.Value.Item1;
                     CheckBox cb = kvp.Value.Item2;
                     TCProperty property = kvp.Key;
@@ -1206,14 +1259,14 @@ namespace OTGEdit
                     }
                 }
 
-                this.panel2.Focus();
+                this.pnlWorldTabInputs.Focus();
             }
 
             private void lbPropertyInputWorld_SelectedIndexChanged(object sender, EventArgs e)
             {
                 if (!Session.IgnorePropertyInputChangedWorld)
                 {
-                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item1 == sender);
+                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item1 == sender);
                     CheckBox cb = kvp.Value.Item2;
                     TCProperty property = kvp.Key;
 
@@ -1257,7 +1310,7 @@ namespace OTGEdit
                     {
                         if (colorDlg.ShowDialog() == DialogResult.OK)
                         {
-                            KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item5 == sender);
+                            KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item5 == sender);
                             TCProperty property = kvp.Key;
                             kvp.Value.Item5.BackColor = colorDlg.Color;
                             if (Session.SettingsType.ColorType == "0x")
@@ -1277,11 +1330,11 @@ namespace OTGEdit
                                 kvp.Value.Item2.Checked = false;
                             }
                         }
-                        this.panel2.Focus();
+                        this.pnlWorldTabInputs.Focus();
                     }
                     else if(sender is TextBox)
                     {
-                        KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item1 == sender);
+                        KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item1 == sender);
                         TCProperty property = kvp.Key;
                         try
                         {
@@ -1334,7 +1387,7 @@ namespace OTGEdit
                 }
                 else if (btnSender.Text.Equals("false"))
                 {
-                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item1 == sender);
+                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item1 == sender);
                     TCProperty property = kvp.Key;
                     string value = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
                     if (value != null && value.Equals("false"))
@@ -1349,7 +1402,7 @@ namespace OTGEdit
 
                 PropertyInputChangedWorld(sender, e);
 
-                this.panel2.Focus();
+                this.pnlWorldTabInputs.Focus();
             }
 
             void btnTrueFalseBiome_Click(object sender, EventArgs e)
@@ -1368,7 +1421,7 @@ namespace OTGEdit
                 }
                 else if (btnSender.Text.Equals("false"))
                 {
-                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item1 == sender);
+                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item1 == sender);
                     TCProperty property = kvp.Key;
 
                     Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
@@ -1392,14 +1445,14 @@ namespace OTGEdit
 
                 PropertyInputChangedBiome(sender, e);
 
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             void PropertyInputChangedWorld(object sender, EventArgs e)
             {
                 if (!Session.IgnorePropertyInputChangedWorld)
                 {
-                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item1 == sender);
+                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item1 == sender);
                     Control tb = kvp.Value.Item1;
                     CheckBox cb = kvp.Value.Item2;
                     TCProperty property = kvp.Key;
@@ -1598,7 +1651,7 @@ namespace OTGEdit
 
                     if (((CheckBox)sender).Checked)
                     {
-                        KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item2 == sender);
+                        KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.WorldSettingsInputs.First(a => a.Value.Item2 == sender);
                         Control tb = kvp.Value.Item1;
                         CheckBox cb = kvp.Value.Item2;
 
@@ -1700,9 +1753,19 @@ namespace OTGEdit
                 }
             }
 
+            void bOpenTextEditBoxWorldProperty(object sender, EventArgs e)
+            {
+                KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.WorldSettingsInputs.FirstOrDefault(a => a.Value.Item7 == sender);
+                string propertyValue = kvp.Value.Item1.Text;
+                if(PopUpForm.InputBox("Enter a new value", null, ref propertyValue, true, false, true) == DialogResult.OK)
+                {
+                    kvp.Value.Item1.Text = propertyValue;
+                }
+            }
+
             void bSetDefaultsWorldProperty(object sender, EventArgs e)
             {
-                KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.WorldSettingsInputs.FirstOrDefault(a => a.Value.Item3 == sender);
+                KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.WorldSettingsInputs.FirstOrDefault(a => a.Value.Item3 == sender);
                 if (Session.WorldConfigDefaultValues != null)
                 {
                     string propertyValue = Session.WorldConfigDefaultValues.GetPropertyValueAsString(kvp.Key);
@@ -2376,7 +2439,7 @@ namespace OTGEdit
                 {
                     foreach (TCProperty property in Session.VersionConfig.WorldConfigDict.Values)
                     {
-                        Tuple<Control, CheckBox, Button, Label, ListBox, Panel> boxes = Session.WorldSettingsInputs[property];
+                        Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button> boxes = Session.WorldSettingsInputs[property];
                         Session.IgnorePropertyInputChangedWorld = true;
                         Session.IgnoreOverrideCheckChangedWorld = true;
 
@@ -2467,7 +2530,7 @@ namespace OTGEdit
                 } else {
                     foreach (TCProperty property in Session.VersionConfig.WorldConfigDict.Values)
                     {
-                        Tuple<Control, CheckBox, Button, Label, ListBox, Panel> boxes = Session.WorldSettingsInputs[property];
+                        Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button> boxes = Session.WorldSettingsInputs[property];
                         Session.IgnorePropertyInputChangedWorld = true;
                         Session.IgnoreOverrideCheckChangedWorld = true;
                    
@@ -2511,7 +2574,7 @@ namespace OTGEdit
                     }
                 }
 
-                this.panel2.Focus();
+                this.pnlWorldTabInputs.Focus();
             }
 
             Control lastWorldSetting = null;
@@ -2551,13 +2614,13 @@ namespace OTGEdit
                 if (worldSetting != null && !textIsNullOrEmpty)
                 {
                     lastWorldSetting = worldSetting;
-                    this.panel2.ScrollControlIntoView(worldSetting);
+                    this.pnlWorldTabInputs.ScrollControlIntoView(worldSetting);
                 }
             }
 
             void tbSearchWorldConfig_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
             {
-                this.panel2.Focus();
+                this.pnlWorldTabInputs.Focus();
             }
 
             private void btSearchWorldConfigPrev_Click(object sender, EventArgs e)
@@ -2610,11 +2673,11 @@ namespace OTGEdit
                             previousSetting.ForeColor = Color.White;
                         }
 
-                        this.panel2.ScrollControlIntoView(previousSetting);
+                        this.pnlWorldTabInputs.ScrollControlIntoView(previousSetting);
                     }
                 }
 
-                this.panel2.Focus();
+                this.pnlWorldTabInputs.Focus();
             }
 
             private void btSearchWorldConfigNext_Click(object sender, EventArgs e)
@@ -2684,11 +2747,11 @@ namespace OTGEdit
                             lastWorldSetting = worldSetting;
                         }
 
-                        this.panel2.ScrollControlIntoView(worldSetting);
+                        this.pnlWorldTabInputs.ScrollControlIntoView(worldSetting);
                     }
                 }
 
-                this.panel2.Focus();
+                this.pnlWorldTabInputs.Focus();
             }
 
             void lbWorldTabSetting_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -2698,8 +2761,8 @@ namespace OTGEdit
                 if (ActiveControl != sender || !((Control)sender).ClientRectangle.Contains(((Control)sender).PointToClient(Control.MousePosition)))
                 {
                     senderIsMouseTarget = false;
-                    this.panel2.Focus();
-                    this.panel2.OnMouseWheelPublic(e);
+                    this.pnlWorldTabInputs.Focus();
+                    this.pnlWorldTabInputs.OnMouseWheelPublic(e);
                 }
 
                 if (!senderIsMouseTarget)
@@ -2820,7 +2883,7 @@ namespace OTGEdit
             {
                 if (!IgnorePropertyInputChangedBiome)
                 {
-                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item6 == ((Control)sender).Parent);
+                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item6 == ((Control)sender).Parent);
                     TCProperty property = kvp.Key;
 
                     Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
@@ -2829,14 +2892,14 @@ namespace OTGEdit
                     biomeConfig.SetProperty(property, biomeConfig.GetPropertyValueAsString(property), biomeConfig.GetPropertyMerge(property), ((CheckBox)sender).Checked);
                 }
 
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             private void btOverrideAllBiome_CheckedChanged(object sender, EventArgs e)
             {
                 if (!IgnorePropertyInputChangedBiome && ((RadioButton)sender).Checked)
                 {
-                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item6 == ((Control)sender).Parent);
+                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item6 == ((Control)sender).Parent);
                     Control tb = kvp.Value.Item1;
                     CheckBox cb = kvp.Value.Item2;
                     TCProperty property = kvp.Key;
@@ -2885,14 +2948,14 @@ namespace OTGEdit
                     }
                 }
 
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             private void lbPropertyInputBiome_SelectedIndexChanged(object sender, EventArgs e)
             {
                 if (!IgnorePropertyInputChangedBiome)
                 {
-                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.First(a => a.Value.Item1 == sender);
+                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.BiomeSettingsInputs.First(a => a.Value.Item1 == sender);
                     CheckBox cb = kvp.Value.Item2;
                     TCProperty property = kvp.Key;
 
@@ -2953,7 +3016,7 @@ namespace OTGEdit
                     {                        
                         if (colorDlg.ShowDialog() == DialogResult.OK)
                         {
-                            KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.First(a => a.Value.Item5 == sender);
+                            KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.BiomeSettingsInputs.First(a => a.Value.Item5 == sender);
                             TCProperty property = kvp.Key;
                             kvp.Value.Item5.BackColor = colorDlg.Color;
                             if (Session.SettingsType.ColorType == "0x")
@@ -2973,11 +3036,11 @@ namespace OTGEdit
                                 kvp.Value.Item2.Checked = false;
                             }
                         }
-                        this.panel3.Focus();
+                        this.pnlBiomesTabInputs.Focus();
                     }
                     else if (sender is TextBox)
                     {
-                        KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.First(a => a.Value.Item1 == sender);
+                        KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.BiomeSettingsInputs.First(a => a.Value.Item1 == sender);
                         TCProperty property = kvp.Key;
                         try
                         {
@@ -3018,7 +3081,7 @@ namespace OTGEdit
             {
                 if (!IgnorePropertyInputChangedBiome)
                 {
-                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item1 == sender);
+                    KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item1 == sender);
                     Control tb = kvp.Value.Item1;
                     CheckBox cb = kvp.Value.Item2;
                     TCProperty property = kvp.Key;
@@ -3116,7 +3179,7 @@ namespace OTGEdit
                     sender = Session.BiomeSettingsInputs.First(a => a.Value.Item5 == sender).Value.Item1;
                 }
 
-                KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.First(a => a.Value.Item1 == sender);
+                KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.BiomeSettingsInputs.First(a => a.Value.Item1 == sender);
                 TCProperty property = kvp.Key;
                 Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                 BiomeConfig biomeConfig = g.BiomeConfig;
@@ -3262,7 +3325,7 @@ namespace OTGEdit
 
                     if (((CheckBox)sender).Checked)
                     {
-                        KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.First(a => a.Value.Item2 == sender);
+                        KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.BiomeSettingsInputs.First(a => a.Value.Item2 == sender);
                         Control tb = kvp.Value.Item1;
                         CheckBox cb = kvp.Value.Item2;
 
@@ -3381,9 +3444,20 @@ namespace OTGEdit
                 }
             }
 
+            void bOpenTextEditBoxBiomeProperty(object sender, EventArgs e)
+            {
+                KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item7 == sender);
+
+                string propertyValue = kvp.Value.Item1.Text;
+                if (PopUpForm.InputBox("Enter a new value", null, ref propertyValue,true, false, true) == DialogResult.OK)
+                {
+                    kvp.Value.Item1.Text = propertyValue;
+                }
+            }
+
             void bSetDefaultsBiomeProperty(object sender, EventArgs e)
             {
-                KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item3 == sender);
+                KeyValuePair<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> kvp = Session.BiomeSettingsInputs.FirstOrDefault(a => a.Value.Item3 == sender);
                 Group g = Session.BiomeGroups[(string)lbGroups.SelectedItem];
                 BiomeConfig biomeConfig = g.BiomeConfig;
                 BiomeConfig biomeDefaultConfig = null;
@@ -3525,7 +3599,7 @@ namespace OTGEdit
                     kvp.Value.Item2.Checked = false;
                 }
 
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             void btAddResourceQueueItem_Click(object sender, EventArgs e)
@@ -4087,7 +4161,7 @@ namespace OTGEdit
                 {
                     tlpBiomeSettings1.Visible = true;
 
-                    panel3.SuspendLayout();
+                    pnlBiomesTabInputs.SuspendLayout();
                     tlpBiomeSettingsContainer.SuspendLayout();
                     tlpBiomeSettings1.SuspendLayout();
 
@@ -4210,7 +4284,7 @@ namespace OTGEdit
 
                         if (s != null || group.BiomeConfig.GetPropertyMerge(property) || (group.BiomeConfig.GetPropertyOverrideParentValues(property) && (property.PropertyType == "ResourceQueue" || property.PropertyType == "BiomesList")))
                         {
-                            Tuple<Control, CheckBox, Button, Label, ListBox, Panel> boxes = Session.BiomeSettingsInputs[property];
+                            Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button> boxes = Session.BiomeSettingsInputs[property];
 
                             string propertyValue = s;
                             switch (property.PropertyType)
@@ -4354,7 +4428,7 @@ namespace OTGEdit
                         }
                     }
 
-                    panel3.ResumeLayout();
+                    pnlBiomesTabInputs.ResumeLayout();
                     tlpBiomeSettingsContainer.ResumeLayout();
                     tlpBiomeSettings1.ResumeLayout();
 
@@ -4377,7 +4451,7 @@ namespace OTGEdit
                     lbGroups.SelectedIndex = selectedIndex - 1;
                 }
 
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             private void btGroupMoveDown_Click(object sender, EventArgs e)
@@ -4392,7 +4466,7 @@ namespace OTGEdit
                     lbGroups.SelectedIndex = selectedIndex + 1;
                 }
 
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             private void btNewGroup_Click(object sender, EventArgs e)
@@ -4418,7 +4492,7 @@ namespace OTGEdit
                     }
                 }
 
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             private void btEditGroup_Click(object sender, EventArgs e)
@@ -4440,7 +4514,7 @@ namespace OTGEdit
                         }
                     }
                 }
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             private void btDeleteGroup_Click(object sender, EventArgs e)
@@ -4457,7 +4531,7 @@ namespace OTGEdit
                         lbBiomes.Items.Clear();
                     }
                 }
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             private void btCloneGroup_Click(object sender, EventArgs e)
@@ -4504,7 +4578,7 @@ namespace OTGEdit
                     }
                 }
 
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             private void lbGroup_SelectedIndexChanged(object sender, EventArgs e)
@@ -4546,7 +4620,7 @@ namespace OTGEdit
                     lbGroups_SelectedIndexChanged(null, null);
                 }
 
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             private void btRemoveFromGroup_Click(object sender, EventArgs e)
@@ -4584,7 +4658,7 @@ namespace OTGEdit
                     }
                 }
 
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             Control lastBiomeSetting = null;
@@ -4624,13 +4698,13 @@ namespace OTGEdit
                 if (biomeSetting != null && !textIsNullOrEmpty)
                 {
                     lastBiomeSetting = biomeSetting;
-                    this.panel3.ScrollControlIntoView(biomeSetting);
+                    this.pnlBiomesTabInputs.ScrollControlIntoView(biomeSetting);
                 }
             }
 
             void tbSearchBiomeConfig_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
             {           
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             private void btSearchBiomeConfigPrev_Click(object sender, EventArgs e)
@@ -4683,11 +4757,11 @@ namespace OTGEdit
                             previousSetting.ForeColor = Color.White;
                         }
 
-                        this.panel3.ScrollControlIntoView(previousSetting);
+                        this.pnlBiomesTabInputs.ScrollControlIntoView(previousSetting);
                     }
                 }
 
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             private void btSearchBiomeConfigNext_Click(object sender, EventArgs e)
@@ -4757,11 +4831,11 @@ namespace OTGEdit
 
                             lastBiomeSetting = biomeSetting;
                         }
-                        this.panel3.ScrollControlIntoView(biomeSetting);
+                        this.pnlBiomesTabInputs.ScrollControlIntoView(biomeSetting);
                     }
                 }
 
-                this.panel3.Focus();
+                this.pnlBiomesTabInputs.Focus();
             }
 
             void lbBiomesTabSetting_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -4771,8 +4845,8 @@ namespace OTGEdit
                 if (ActiveControl != sender || !((Control)sender).ClientRectangle.Contains(((Control)sender).PointToClient(Control.MousePosition)))
                 {
                     senderIsMouseTarget = false;
-                    this.panel3.Focus();
-                    this.panel3.OnMouseWheelPublic(e);
+                    this.pnlBiomesTabInputs.Focus();
+                    this.pnlBiomesTabInputs.OnMouseWheelPublic(e);
                 }
 
                 if (!senderIsMouseTarget)
@@ -4789,10 +4863,10 @@ namespace OTGEdit
             {
                 bool senderIsMouseTarget = true;
 
-                if (this.panel3.ClientRectangle.Contains(this.panel3.PointToClient(Control.MousePosition)))
+                if (this.pnlBiomesTabInputs.ClientRectangle.Contains(this.pnlBiomesTabInputs.PointToClient(Control.MousePosition)))
                 {
-                    senderIsMouseTarget = sender == this.panel3;
-                    this.panel3.Focus();
+                    senderIsMouseTarget = sender == this.pnlBiomesTabInputs;
+                    this.pnlBiomesTabInputs.Focus();
                 }
                 else if (this.lbGroups.ClientRectangle.Contains(this.lbGroups.PointToClient(Control.MousePosition)))
                 {
@@ -4969,7 +5043,7 @@ namespace OTGEdit
 
                                     if (s != null || Session.WorldConfig1.GetPropertyMerge(property))
                                     {
-                                        Tuple<Control, CheckBox, Button, Label, ListBox, Panel> boxes = Session.WorldSettingsInputs[property];
+                                        Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button> boxes = Session.WorldSettingsInputs[property];
                                         string propertyValue = s;
                                         switch (property.PropertyType)
                                         {
@@ -6072,12 +6146,22 @@ namespace OTGEdit
         {
             if (Session.tabControl1.SelectedIndex == 0)
             {
-                panel2.Focus();
+                pnlWorldTabInputs.Focus();
             }
             else if (Session.tabControl1.SelectedIndex == 1)
             {
-                panel3.Focus();
+                pnlBiomesTabInputs.Focus();
             }
+        }
+
+        private void btWorldTabHelp_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://openterraingen.wikia.com/wiki/WorldConfig.ini");
+        }
+
+        private void btBiomeTabHelp_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://openterraingen.wikia.com/wiki/Biome_Configs");
         }
     }
 

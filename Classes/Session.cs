@@ -33,13 +33,13 @@ namespace OTGEdit
 
         public static WorldConfig WorldConfigDefaultValues;
         public static WorldConfig WorldConfig1;
-        public static Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> WorldSettingsInputs = new Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>>();
+        public static Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> WorldSettingsInputs = new Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>>();
 
         public static bool IgnorePropertyInputChangedWorld = false;
         public static bool IgnoreOverrideCheckChangedWorld = false;
 
         public static Dictionary<string, Group> BiomeGroups = new Dictionary<string, Group>();
-        public static Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>> BiomeSettingsInputs = new Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel>>();
+        public static Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> BiomeSettingsInputs = new Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>>();
 
         public static ToolTip ToolTip1 = new ToolTip() { AutoPopDelay = 32000, InitialDelay = 500, ReshowDelay = 0, ShowAlways = true, IsBalloon = true };
         public static ToolTip ToolTip2 = new ToolTip() { AutoPopDelay = 32000, InitialDelay = 0, ReshowDelay = 0, ShowAlways = true }; //AutomaticDelay = 0, 

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TCEE")]
-[assembly: AssemblyDescription("TerrainControl's Excellent Editor (TM) by PeeGee85")]
+[assembly: AssemblyTitle("OTGEdit")]
+[assembly: AssemblyDescription("OTGEdit by PeeGee85")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("PeeGee85")]
-[assembly: AssemblyProduct("TerrainControl's Excellent Editor (TM) by PeeGee85")]
+[assembly: AssemblyProduct("OTGEdit by PeeGee85")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

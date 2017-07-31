@@ -8,8 +8,8 @@
     <ProjectGuid>{7B782A76-4AD5-49D8-AAF1-5DC2DDB72DD6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OTGE</RootNamespace>
-    <AssemblyName>OTGE</AssemblyName>
+    <RootNamespace>OTGEdit</RootNamespace>
+    <AssemblyName>OTGEdit</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

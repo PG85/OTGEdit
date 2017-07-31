@@ -48,12 +48,22 @@
             this.textBoxWithBorder2 = new System.Windows.Forms.TextBox();
             this.textBoxWithBorder3 = new System.Windows.Forms.TextBox();
             this.groupBoxWorldTab = new System.Windows.Forms.GroupBox();
+            this.btWorldTabHelp = new System.Windows.Forms.Button();
             this.btSearchWorldConfigNext = new System.Windows.Forms.Button();
             this.btSearchWorldConfigPrev = new System.Windows.Forms.Button();
+            this.tbSearchWorldConfig = new OTGEdit.Utils.TextBoxWithBorder();
+            this.pnlWorldTabInputs = new OTGEdit.Utils.PanelWithScrollExposePanelWithScrollExposed();
+            this.tlpWorldSettingsContainer = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpWorldSettings1 = new System.Windows.Forms.TableLayoutPanel();
             this.btSetToDefault = new System.Windows.Forms.Button();
             this.groupBoxBiomesTab = new System.Windows.Forms.GroupBox();
+            this.btBiomeTabHelp = new System.Windows.Forms.Button();
             this.btSearchBiomeConfigNext = new System.Windows.Forms.Button();
             this.btSearchBiomeConfigPrev = new System.Windows.Forms.Button();
+            this.tbSearchBiomeConfig = new OTGEdit.Utils.TextBoxWithBorder();
+            this.pnlBiomesTabInputs = new OTGEdit.Utils.PanelWithScrollExposePanelWithScrollExposed();
+            this.tlpBiomeSettingsContainer = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpBiomeSettings1 = new System.Windows.Forms.TableLayoutPanel();
             this.btCloneGroup = new System.Windows.Forms.Button();
             this.btGroupMoveDown = new System.Windows.Forms.Button();
             this.btGroupMoveUp = new System.Windows.Forms.Button();
@@ -81,25 +91,17 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btnConvertSchematicToBO3 = new System.Windows.Forms.Button();
-            this.tbSearchBiomeConfig = new OTGEdit.Utils.TextBoxWithBorder();
-            this.panel3 = new OTGEdit.Utils.PanelWithScrollExposePanelWithScrollExposed();
-            this.tlpBiomeSettingsContainer = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpBiomeSettings1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tbSearchWorldConfig = new OTGEdit.Utils.TextBoxWithBorder();
-            this.panel2 = new OTGEdit.Utils.PanelWithScrollExposePanelWithScrollExposed();
-            this.tlpWorldSettingsContainer = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpWorldSettings1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBoxWorldTab.SuspendLayout();
+            this.pnlWorldTabInputs.SuspendLayout();
+            this.tlpWorldSettingsContainer.SuspendLayout();
             this.groupBoxBiomesTab.SuspendLayout();
+            this.pnlBiomesTabInputs.SuspendLayout();
+            this.tlpBiomeSettingsContainer.SuspendLayout();
             this.pnlVersionWorldSelect.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.panel3.SuspendLayout();
-            this.tlpBiomeSettingsContainer.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.tlpWorldSettingsContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // btGenerate
@@ -351,10 +353,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxWorldTab.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.groupBoxWorldTab.Controls.Add(this.btWorldTabHelp);
             this.groupBoxWorldTab.Controls.Add(this.btSearchWorldConfigNext);
             this.groupBoxWorldTab.Controls.Add(this.btSearchWorldConfigPrev);
             this.groupBoxWorldTab.Controls.Add(this.tbSearchWorldConfig);
-            this.groupBoxWorldTab.Controls.Add(this.panel2);
+            this.groupBoxWorldTab.Controls.Add(this.pnlWorldTabInputs);
             this.groupBoxWorldTab.Controls.Add(this.btSetToDefault);
             this.groupBoxWorldTab.Location = new System.Drawing.Point(21, 144);
             this.groupBoxWorldTab.Name = "groupBoxWorldTab";
@@ -363,13 +366,28 @@
             this.groupBoxWorldTab.TabStop = false;
             this.groupBoxWorldTab.Click += new System.EventHandler(this.btClickBackGround);
             // 
+            // btWorldTabHelp
+            // 
+            this.btWorldTabHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btWorldTabHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            this.btWorldTabHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btWorldTabHelp.ForeColor = System.Drawing.Color.White;
+            this.btWorldTabHelp.Location = new System.Drawing.Point(905, 13);
+            this.btWorldTabHelp.Name = "btWorldTabHelp";
+            this.btWorldTabHelp.Size = new System.Drawing.Size(85, 25);
+            this.btWorldTabHelp.TabIndex = 33;
+            this.btWorldTabHelp.TabStop = false;
+            this.btWorldTabHelp.Text = "Help";
+            this.btWorldTabHelp.UseVisualStyleBackColor = false;
+            this.btWorldTabHelp.Click += new System.EventHandler(this.btWorldTabHelp_Click);
+            // 
             // btSearchWorldConfigNext
             // 
             this.btSearchWorldConfigNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btSearchWorldConfigNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btSearchWorldConfigNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btSearchWorldConfigNext.ForeColor = System.Drawing.Color.White;
-            this.btSearchWorldConfigNext.Location = new System.Drawing.Point(963, 13);
+            this.btSearchWorldConfigNext.Location = new System.Drawing.Point(875, 13);
             this.btSearchWorldConfigNext.Name = "btSearchWorldConfigNext";
             this.btSearchWorldConfigNext.Size = new System.Drawing.Size(26, 25);
             this.btSearchWorldConfigNext.TabIndex = 31;
@@ -384,7 +402,7 @@
             this.btSearchWorldConfigPrev.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btSearchWorldConfigPrev.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btSearchWorldConfigPrev.ForeColor = System.Drawing.Color.White;
-            this.btSearchWorldConfigPrev.Location = new System.Drawing.Point(933, 13);
+            this.btSearchWorldConfigPrev.Location = new System.Drawing.Point(845, 13);
             this.btSearchWorldConfigPrev.Name = "btSearchWorldConfigPrev";
             this.btSearchWorldConfigPrev.Size = new System.Drawing.Size(26, 25);
             this.btSearchWorldConfigPrev.TabIndex = 30;
@@ -392,6 +410,65 @@
             this.btSearchWorldConfigPrev.Text = "<";
             this.btSearchWorldConfigPrev.UseVisualStyleBackColor = false;
             this.btSearchWorldConfigPrev.Click += new System.EventHandler(this.btSearchWorldConfigPrev_Click);
+            // 
+            // tbSearchWorldConfig
+            // 
+            this.tbSearchWorldConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbSearchWorldConfig.Location = new System.Drawing.Point(685, 16);
+            this.tbSearchWorldConfig.Name = "tbSearchWorldConfig";
+            this.tbSearchWorldConfig.Size = new System.Drawing.Size(154, 20);
+            this.tbSearchWorldConfig.TabIndex = 29;
+            this.tbSearchWorldConfig.TextChanged += new System.EventHandler(this.tbSearchWorldConfig_TextChanged);
+            // 
+            // pnlWorldTabInputs
+            // 
+            this.pnlWorldTabInputs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlWorldTabInputs.AutoScroll = true;
+            this.pnlWorldTabInputs.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlWorldTabInputs.Controls.Add(this.tlpWorldSettingsContainer);
+            this.pnlWorldTabInputs.Location = new System.Drawing.Point(6, 45);
+            this.pnlWorldTabInputs.Name = "pnlWorldTabInputs";
+            this.pnlWorldTabInputs.Size = new System.Drawing.Size(983, 465);
+            this.pnlWorldTabInputs.TabIndex = 28;
+            // 
+            // tlpWorldSettingsContainer
+            // 
+            this.tlpWorldSettingsContainer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpWorldSettingsContainer.AutoSize = true;
+            this.tlpWorldSettingsContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tlpWorldSettingsContainer.ColumnCount = 1;
+            this.tlpWorldSettingsContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpWorldSettingsContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpWorldSettingsContainer.Controls.Add(this.tlpWorldSettings1, 0, 0);
+            this.tlpWorldSettingsContainer.Location = new System.Drawing.Point(0, 0);
+            this.tlpWorldSettingsContainer.Name = "tlpWorldSettingsContainer";
+            this.tlpWorldSettingsContainer.RowCount = 1;
+            this.tlpWorldSettingsContainer.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpWorldSettingsContainer.Size = new System.Drawing.Size(983, 6);
+            this.tlpWorldSettingsContainer.TabIndex = 27;
+            this.tlpWorldSettingsContainer.Click += new System.EventHandler(this.btClickBackGround);
+            // 
+            // tlpWorldSettings1
+            // 
+            this.tlpWorldSettings1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpWorldSettings1.AutoSize = true;
+            this.tlpWorldSettings1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tlpWorldSettings1.ColumnCount = 4;
+            this.tlpWorldSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpWorldSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpWorldSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpWorldSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpWorldSettings1.Location = new System.Drawing.Point(3, 3);
+            this.tlpWorldSettings1.Name = "tlpWorldSettings1";
+            this.tlpWorldSettings1.RowCount = 1;
+            this.tlpWorldSettings1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpWorldSettings1.Size = new System.Drawing.Size(977, 0);
+            this.tlpWorldSettings1.TabIndex = 19;
+            this.tlpWorldSettings1.Click += new System.EventHandler(this.btClickBackGround);
             // 
             // btSetToDefault
             // 
@@ -413,10 +490,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxBiomesTab.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.groupBoxBiomesTab.Controls.Add(this.btBiomeTabHelp);
             this.groupBoxBiomesTab.Controls.Add(this.btSearchBiomeConfigNext);
             this.groupBoxBiomesTab.Controls.Add(this.btSearchBiomeConfigPrev);
             this.groupBoxBiomesTab.Controls.Add(this.tbSearchBiomeConfig);
-            this.groupBoxBiomesTab.Controls.Add(this.panel3);
+            this.groupBoxBiomesTab.Controls.Add(this.pnlBiomesTabInputs);
             this.groupBoxBiomesTab.Controls.Add(this.btCloneGroup);
             this.groupBoxBiomesTab.Controls.Add(this.btGroupMoveDown);
             this.groupBoxBiomesTab.Controls.Add(this.btGroupMoveUp);
@@ -438,13 +516,28 @@
             this.groupBoxBiomesTab.TabStop = false;
             this.groupBoxBiomesTab.Click += new System.EventHandler(this.btClickBackGround);
             // 
+            // btBiomeTabHelp
+            // 
+            this.btBiomeTabHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btBiomeTabHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
+            this.btBiomeTabHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btBiomeTabHelp.ForeColor = System.Drawing.Color.White;
+            this.btBiomeTabHelp.Location = new System.Drawing.Point(905, 13);
+            this.btBiomeTabHelp.Name = "btBiomeTabHelp";
+            this.btBiomeTabHelp.Size = new System.Drawing.Size(85, 25);
+            this.btBiomeTabHelp.TabIndex = 42;
+            this.btBiomeTabHelp.TabStop = false;
+            this.btBiomeTabHelp.Text = "Help";
+            this.btBiomeTabHelp.UseVisualStyleBackColor = false;
+            this.btBiomeTabHelp.Click += new System.EventHandler(this.btBiomeTabHelp_Click);
+            // 
             // btSearchBiomeConfigNext
             // 
             this.btSearchBiomeConfigNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btSearchBiomeConfigNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btSearchBiomeConfigNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btSearchBiomeConfigNext.ForeColor = System.Drawing.Color.White;
-            this.btSearchBiomeConfigNext.Location = new System.Drawing.Point(963, 13);
+            this.btSearchBiomeConfigNext.Location = new System.Drawing.Point(875, 13);
             this.btSearchBiomeConfigNext.Name = "btSearchBiomeConfigNext";
             this.btSearchBiomeConfigNext.Size = new System.Drawing.Size(26, 25);
             this.btSearchBiomeConfigNext.TabIndex = 40;
@@ -459,7 +552,7 @@
             this.btSearchBiomeConfigPrev.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btSearchBiomeConfigPrev.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btSearchBiomeConfigPrev.ForeColor = System.Drawing.Color.White;
-            this.btSearchBiomeConfigPrev.Location = new System.Drawing.Point(933, 13);
+            this.btSearchBiomeConfigPrev.Location = new System.Drawing.Point(845, 13);
             this.btSearchBiomeConfigPrev.Name = "btSearchBiomeConfigPrev";
             this.btSearchBiomeConfigPrev.Size = new System.Drawing.Size(26, 25);
             this.btSearchBiomeConfigPrev.TabIndex = 39;
@@ -467,6 +560,65 @@
             this.btSearchBiomeConfigPrev.Text = "<";
             this.btSearchBiomeConfigPrev.UseVisualStyleBackColor = false;
             this.btSearchBiomeConfigPrev.Click += new System.EventHandler(this.btSearchBiomeConfigPrev_Click);
+            // 
+            // tbSearchBiomeConfig
+            // 
+            this.tbSearchBiomeConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbSearchBiomeConfig.Location = new System.Drawing.Point(685, 16);
+            this.tbSearchBiomeConfig.Name = "tbSearchBiomeConfig";
+            this.tbSearchBiomeConfig.Size = new System.Drawing.Size(154, 20);
+            this.tbSearchBiomeConfig.TabIndex = 38;
+            this.tbSearchBiomeConfig.TextChanged += new System.EventHandler(this.tbSearchBiomeConfig_TextChanged);
+            // 
+            // pnlBiomesTabInputs
+            // 
+            this.pnlBiomesTabInputs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlBiomesTabInputs.AutoScroll = true;
+            this.pnlBiomesTabInputs.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlBiomesTabInputs.Controls.Add(this.tlpBiomeSettingsContainer);
+            this.pnlBiomesTabInputs.Location = new System.Drawing.Point(220, 43);
+            this.pnlBiomesTabInputs.Name = "pnlBiomesTabInputs";
+            this.pnlBiomesTabInputs.Size = new System.Drawing.Size(769, 467);
+            this.pnlBiomesTabInputs.TabIndex = 37;
+            // 
+            // tlpBiomeSettingsContainer
+            // 
+            this.tlpBiomeSettingsContainer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpBiomeSettingsContainer.AutoSize = true;
+            this.tlpBiomeSettingsContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tlpBiomeSettingsContainer.ColumnCount = 1;
+            this.tlpBiomeSettingsContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpBiomeSettingsContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpBiomeSettingsContainer.Controls.Add(this.tlpBiomeSettings1, 0, 0);
+            this.tlpBiomeSettingsContainer.Location = new System.Drawing.Point(0, 0);
+            this.tlpBiomeSettingsContainer.Name = "tlpBiomeSettingsContainer";
+            this.tlpBiomeSettingsContainer.RowCount = 1;
+            this.tlpBiomeSettingsContainer.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpBiomeSettingsContainer.Size = new System.Drawing.Size(769, 6);
+            this.tlpBiomeSettingsContainer.TabIndex = 27;
+            this.tlpBiomeSettingsContainer.Click += new System.EventHandler(this.btClickBackGround);
+            // 
+            // tlpBiomeSettings1
+            // 
+            this.tlpBiomeSettings1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpBiomeSettings1.AutoSize = true;
+            this.tlpBiomeSettings1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tlpBiomeSettings1.ColumnCount = 4;
+            this.tlpBiomeSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpBiomeSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpBiomeSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpBiomeSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpBiomeSettings1.Location = new System.Drawing.Point(3, 3);
+            this.tlpBiomeSettings1.Name = "tlpBiomeSettings1";
+            this.tlpBiomeSettings1.RowCount = 1;
+            this.tlpBiomeSettings1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpBiomeSettings1.Size = new System.Drawing.Size(763, 0);
+            this.tlpBiomeSettings1.TabIndex = 19;
+            this.tlpBiomeSettings1.Click += new System.EventHandler(this.btClickBackGround);
             // 
             // btCloneGroup
             // 
@@ -780,7 +932,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::OTGE.Properties.Resources.OTGEdit;
+            this.pictureBox1.Image = global::OTGEdit.Properties.Resources.OTGEdit;
             this.pictureBox1.Location = new System.Drawing.Point(593, 27);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(304, 63);
@@ -821,124 +973,6 @@
             this.btnConvertSchematicToBO3.UseVisualStyleBackColor = false;
             this.btnConvertSchematicToBO3.Click += new System.EventHandler(this.btnConvertSchematicToBO3_Click);
             // 
-            // tbSearchBiomeConfig
-            // 
-            this.tbSearchBiomeConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbSearchBiomeConfig.Location = new System.Drawing.Point(773, 16);
-            this.tbSearchBiomeConfig.Name = "tbSearchBiomeConfig";
-            this.tbSearchBiomeConfig.Size = new System.Drawing.Size(154, 20);
-            this.tbSearchBiomeConfig.TabIndex = 38;
-            this.tbSearchBiomeConfig.TextChanged += new System.EventHandler(this.tbSearchBiomeConfig_TextChanged);
-            // 
-            // panel3
-            // 
-            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel3.AutoScroll = true;
-            this.panel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel3.Controls.Add(this.tlpBiomeSettingsContainer);
-            this.panel3.Location = new System.Drawing.Point(220, 43);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(768, 467);
-            this.panel3.TabIndex = 37;
-            // 
-            // tlpBiomeSettingsContainer
-            // 
-            this.tlpBiomeSettingsContainer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tlpBiomeSettingsContainer.AutoSize = true;
-            this.tlpBiomeSettingsContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tlpBiomeSettingsContainer.ColumnCount = 1;
-            this.tlpBiomeSettingsContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpBiomeSettingsContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpBiomeSettingsContainer.Controls.Add(this.tlpBiomeSettings1, 0, 0);
-            this.tlpBiomeSettingsContainer.Location = new System.Drawing.Point(0, 0);
-            this.tlpBiomeSettingsContainer.Name = "tlpBiomeSettingsContainer";
-            this.tlpBiomeSettingsContainer.RowCount = 1;
-            this.tlpBiomeSettingsContainer.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpBiomeSettingsContainer.Size = new System.Drawing.Size(760, 6);
-            this.tlpBiomeSettingsContainer.TabIndex = 27;
-            this.tlpBiomeSettingsContainer.Click += new System.EventHandler(this.btClickBackGround);
-            // 
-            // tlpBiomeSettings1
-            // 
-            this.tlpBiomeSettings1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tlpBiomeSettings1.AutoSize = true;
-            this.tlpBiomeSettings1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tlpBiomeSettings1.ColumnCount = 4;
-            this.tlpBiomeSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpBiomeSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpBiomeSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpBiomeSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpBiomeSettings1.Location = new System.Drawing.Point(3, 3);
-            this.tlpBiomeSettings1.Name = "tlpBiomeSettings1";
-            this.tlpBiomeSettings1.RowCount = 1;
-            this.tlpBiomeSettings1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpBiomeSettings1.Size = new System.Drawing.Size(754, 0);
-            this.tlpBiomeSettings1.TabIndex = 19;
-            this.tlpBiomeSettings1.Click += new System.EventHandler(this.btClickBackGround);
-            // 
-            // tbSearchWorldConfig
-            // 
-            this.tbSearchWorldConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbSearchWorldConfig.Location = new System.Drawing.Point(773, 16);
-            this.tbSearchWorldConfig.Name = "tbSearchWorldConfig";
-            this.tbSearchWorldConfig.Size = new System.Drawing.Size(154, 20);
-            this.tbSearchWorldConfig.TabIndex = 29;
-            this.tbSearchWorldConfig.TextChanged += new System.EventHandler(this.tbSearchWorldConfig_TextChanged);
-            // 
-            // panel2
-            // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.AutoScroll = true;
-            this.panel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel2.Controls.Add(this.tlpWorldSettingsContainer);
-            this.panel2.Location = new System.Drawing.Point(6, 45);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(983, 474);
-            this.panel2.TabIndex = 28;
-            // 
-            // tlpWorldSettingsContainer
-            // 
-            this.tlpWorldSettingsContainer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tlpWorldSettingsContainer.AutoSize = true;
-            this.tlpWorldSettingsContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tlpWorldSettingsContainer.ColumnCount = 1;
-            this.tlpWorldSettingsContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpWorldSettingsContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpWorldSettingsContainer.Controls.Add(this.tlpWorldSettings1, 0, 0);
-            this.tlpWorldSettingsContainer.Location = new System.Drawing.Point(0, 0);
-            this.tlpWorldSettingsContainer.Name = "tlpWorldSettingsContainer";
-            this.tlpWorldSettingsContainer.RowCount = 1;
-            this.tlpWorldSettingsContainer.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpWorldSettingsContainer.Size = new System.Drawing.Size(982, 6);
-            this.tlpWorldSettingsContainer.TabIndex = 27;
-            this.tlpWorldSettingsContainer.Click += new System.EventHandler(this.btClickBackGround);
-            // 
-            // tlpWorldSettings1
-            // 
-            this.tlpWorldSettings1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tlpWorldSettings1.AutoSize = true;
-            this.tlpWorldSettings1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tlpWorldSettings1.ColumnCount = 4;
-            this.tlpWorldSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpWorldSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpWorldSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpWorldSettings1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpWorldSettings1.Location = new System.Drawing.Point(3, 3);
-            this.tlpWorldSettings1.Name = "tlpWorldSettings1";
-            this.tlpWorldSettings1.RowCount = 1;
-            this.tlpWorldSettings1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpWorldSettings1.Size = new System.Drawing.Size(976, 0);
-            this.tlpWorldSettings1.TabIndex = 19;
-            this.tlpWorldSettings1.Click += new System.EventHandler(this.btClickBackGround);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -956,7 +990,7 @@
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "OTGEdit v1.0.11";
+            this.Text = "OTGEdit v1.0.12";
             this.Click += new System.EventHandler(this.btClickBackGround);
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -964,19 +998,19 @@
             this.groupBox3.PerformLayout();
             this.groupBoxWorldTab.ResumeLayout(false);
             this.groupBoxWorldTab.PerformLayout();
+            this.pnlWorldTabInputs.ResumeLayout(false);
+            this.pnlWorldTabInputs.PerformLayout();
+            this.tlpWorldSettingsContainer.ResumeLayout(false);
+            this.tlpWorldSettingsContainer.PerformLayout();
             this.groupBoxBiomesTab.ResumeLayout(false);
             this.groupBoxBiomesTab.PerformLayout();
+            this.pnlBiomesTabInputs.ResumeLayout(false);
+            this.pnlBiomesTabInputs.PerformLayout();
+            this.tlpBiomeSettingsContainer.ResumeLayout(false);
+            this.tlpBiomeSettingsContainer.PerformLayout();
             this.pnlVersionWorldSelect.ResumeLayout(false);
             this.pnlVersionWorldSelect.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.tlpBiomeSettingsContainer.ResumeLayout(false);
-            this.tlpBiomeSettingsContainer.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.tlpWorldSettingsContainer.ResumeLayout(false);
-            this.tlpWorldSettingsContainer.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1026,10 +1060,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tlpWorldSettings1;
         private System.Windows.Forms.TableLayoutPanel tlpWorldSettingsContainer;
-        private Utils.PanelWithScrollExposePanelWithScrollExposed panel2;
+        private Utils.PanelWithScrollExposePanelWithScrollExposed pnlWorldTabInputs;
         private System.Windows.Forms.TableLayoutPanel tlpBiomeSettings1;
         private System.Windows.Forms.TableLayoutPanel tlpBiomeSettingsContainer;
-        private Utils.PanelWithScrollExposePanelWithScrollExposed panel3;
+        private Utils.PanelWithScrollExposePanelWithScrollExposed pnlBiomesTabInputs;
         private Utils.TextBoxWithBorder tbSearchWorldConfig;
         private System.Windows.Forms.Button btSearchWorldConfigNext;
         private System.Windows.Forms.Button btSearchWorldConfigPrev;
@@ -1044,6 +1078,8 @@
         private System.Windows.Forms.TextBox textBoxWithBorder5;
         private System.Windows.Forms.RichTextBox rtbHelpTabLink1;
         private System.Windows.Forms.TextBox textBoxWithBorder7;
+        private System.Windows.Forms.Button btWorldTabHelp;
+        private System.Windows.Forms.Button btBiomeTabHelp;
     }
 }
 

@@ -1806,6 +1806,10 @@ namespace OTGEdit.Utils
             textBox.Left = edgeMargin;
             textBox.Top = edgeMargin + (label != null ? label.Height : 0) + (label != null ? labelAndButtonMargin : 0);
             textBox.Height = measureTextWidthLabel.PreferredHeight + edgeMargin;
+            if (textBox.Height > Screen.PrimaryScreen.Bounds.Height - 200)
+            {
+                textBox.Height = Screen.PrimaryScreen.Bounds.Height - 200;
+            }
             textBox.Width = form.Width - (edgeMargin * 2) - startWidth;
             textBox.Text = value;
             textBox.TabIndex = 0;
@@ -1862,7 +1866,7 @@ namespace OTGEdit.Utils
 
             string regExNumeric = "^[0-9]*$";
             string regExNumericAlphabetic = "^[a-z0-9_+ -]*$";
-            string regExNumericAlphabeticExtended = "^[a-z0-9_+(),.: -]*$";
+            string regExNumericAlphabeticExtended = "^[a-z0-9_+(),.:\"'{}\\[\\] -]*$";
 
             buttonOk.Click += new EventHandler
             (
@@ -1885,6 +1889,11 @@ namespace OTGEdit.Utils
                         {
                             form.DialogResult = DialogResult.None;
                             PopUpForm.CustomMessageBox("Value cannot be empty.", "Illegal input");
+                        } else {
+                            PopupFormSelectedItem = textBox.Text;
+                            form.DialogResult = DialogResult.OK;
+                            form.Close();
+                            form.Dispose();
                         }
                     }
                 }
