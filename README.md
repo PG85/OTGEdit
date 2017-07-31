@@ -6,6 +6,7 @@ OTGEdit is a WinForms app and works for Windows only. If you're a Java coder who
 
 CurseForge: https://minecraft.curseforge.com/projects/otgedit-gui-for-openterraingenerator-terraincontrol-and-minecraft-worlds-mod
 Wiki: http://openterraingen.wikia.com/wiki/OTGEdit
+To package your worldpack as a mod see: https://github.com/PG85/WorldPacker
 
 Virus scanner note
 
