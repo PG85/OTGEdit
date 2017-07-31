@@ -1,8 +1,8 @@
 # OTGEdit
 
-OTGEdit is a graphical user interface for Open Terrain Generator (OTG), TerrainControl (TC) and Minecraft Worlds (MCW). OTGEdit can be used to create, import and edit worlds and convert schematic files to BO3's. 
+OTGEdit is a graphical user interface for Open Terrain Generator (OTG), TerrainControl (TC) and Minecraft Worlds (MCW). OTGEdit can be used to create, import, edit and generate worlds. OTGEdit can also convert schematic files to BO3's. 
 
-OTGEdit is a WinForms app and works for Windows only. If you're a Java coder who would like to port OTGEdit to Java, let me know! 
+OTGEdit is a WinForms app and works for Windows only. If you're a Java coder who would like to port OTGEdit to Java, please let me know! 
 
 CurseForge: https://minecraft.curseforge.com/projects/otgedit-gui-for-openterraingenerator-terraincontrol-and-minecraft-worlds-mod
 
