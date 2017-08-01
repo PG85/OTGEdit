@@ -22,6 +22,7 @@ namespace OTGEdit.XML
         [DataMember]
         public List<TCProperty> BiomeConfig = new List<TCProperty>();
 
+        [XmlIgnore]
         private Dictionary<string, TCProperty> worldConfigDict = null;
         [XmlIgnore]
         public Dictionary<string, TCProperty> WorldConfigDict
@@ -40,6 +41,7 @@ namespace OTGEdit.XML
             }
         }
 
+        [XmlIgnore]
         private Dictionary<string, TCProperty> biomeConfigDict = null;
         [XmlIgnore]
         public Dictionary<string, TCProperty> BiomeConfigDict

@@ -29,9 +29,10 @@ namespace OTGEdit.XML
         [DataMember]
         public List<Property> Properties = new List<Property>();
 
+        [XmlIgnore]
         private Dictionary<string, Property> propertiesDict = null;
         [XmlIgnore]
-        public Dictionary<string, Property> PropertiesDict
+        public Dictionary<string, Property> PropertiesDict // TODO: Fix this properly and don't expose this
         {
             get
             {
@@ -52,9 +53,21 @@ namespace OTGEdit.XML
             propertiesDict = new Dictionary<string, Property>();
             foreach (TCProperty tcProperty in config.BiomeConfigDict.Values)
             {
-                Property property = new Property(null, false, tcProperty.Name, false, tcProperty.PropertyType != "BiomesList" && tcProperty.PropertyType != "ResourceQueue");
-                propertiesDict.Add(property.PropertyName, property);
+                AddProperty(new Property(null, false, tcProperty.Name, false, tcProperty.PropertyType != "BiomesList" && tcProperty.PropertyType != "ResourceQueue"));
             }
+        }
+
+        public void AddProperty(Property property)
+        {
+            PropertiesDict.Add(property.PropertyName, property);
+            Properties.Add(property);
+        }
+
+        public void RemoveProperty(string propertyName)
+        {
+            Property property = PropertiesDict[propertyName];
+            PropertiesDict.Remove(propertyName);
+            Properties.Remove(property);
         }
 
         public void SetProperty(TCProperty tcProperty, string value, bool merge, bool overrideParentValues)

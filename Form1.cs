@@ -211,7 +211,8 @@ namespace OTGEdit
                     if (!String.IsNullOrEmpty(Session.SourceConfigsDir) && System.IO.Directory.Exists(Session.SourceConfigsDir + "\\" + "WorldBiomes" + "\\"))
                     {
                         System.IO.DirectoryInfo defaultWorldDirectory = new System.IO.DirectoryInfo(Session.SourceConfigsDir + "\\" + "WorldBiomes" + "\\");
-                        foreach (System.IO.FileInfo file in defaultWorldDirectory.GetFiles())
+                        List<FileInfo> biomeFiles = DirectoryUtils.GetAllFilesInDirAndSubDirs(defaultWorldDirectory.FullName);
+                        foreach (System.IO.FileInfo file in biomeFiles)
                         {
                             if (file.Name.EndsWith(".bc"))
                             {
@@ -547,7 +548,7 @@ namespace OTGEdit
                                 btMergeWithDefaults.Name = "Merge";
                                 btMergeWithDefaults.CheckedChanged += btOverrideAllWorld_CheckedChanged;
                                 pCheckBoxes.Controls.Add(btMergeWithDefaults);
-                                Session.ToolTip1.SetToolTip(btMergeWithDefaults, "Adds the selected resources to the default resources.\r\n\r\nSome resource and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE resources. Unique resources are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nResource name and * must be unique.\r\n\r\nResources that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique resources, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\n\r\nUpdate: Unique resources can now be added multiple times, duplicates are allowed but only within a single list.\r\nWhen merging resource lists with other biome groups and default values merging behaviours are applied and\r\nduplicates between lists are removed.");
+                                Session.ToolTip1.SetToolTip(btMergeWithDefaults, "Adds the selected resources to the default resources.\r\n\r\nSome resource and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE resources. Unique resources are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nResource name and * must be unique.\r\n\r\nResources that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique resources, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\nFor Ore(), UnderWaterOre() and Vein() by default all ore blocks are unique (iron_ore, gold_ore, quartz_ore etc).\r\n\r\nUpdate: Unique resources can now be added multiple times, duplicates are allowed but only within a single list.\r\nWhen merging resource lists with other biome groups and default values the normal merging behaviours are\r\napplied and duplicates between lists are removed.");
 
                                 RadioButton btOverrideAll = new RadioButton();
                                 btOverrideAll.Top = 50;
@@ -695,6 +696,7 @@ namespace OTGEdit
                                 lbPropertyInput3.Height = 140;
                                 lbPropertyInput3.MouseWheel += lbWorldTabSetting_MouseWheel;
                                 lbPropertyInput3.MouseHover += lbPropertyInput_MouseHover;
+                                lbPropertyInput3.SelectedIndexChanged += lbPropertyInput3_SelectedIndexChanged;
                                 pnl4.Controls.Add(lbPropertyInput3);
                            
                                 Panel pCheckBoxes2 = new Panel();
@@ -969,7 +971,7 @@ namespace OTGEdit
                                 btMergeWithDefaults.Name = "Merge";
                                 btMergeWithDefaults.CheckedChanged += btOverrideAllBiome_CheckedChanged;
                                 pCheckBoxes.Controls.Add(btMergeWithDefaults);
-                                Session.ToolTip1.SetToolTip(btMergeWithDefaults, "Adds the selected resources to the default resources.\r\n\r\nSome resource and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE resources. Unique resources are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nResource name and * must be unique.\r\n\r\nResources that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique resources, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\n\r\nUpdate: Unique resources can now be added multiple times, duplicates are allowed but only within a single list.\r\nWhen merging resource lists with other biome groups and default values merging behaviours are applied and\r\nduplicates between lists are removed.");
+                                Session.ToolTip1.SetToolTip(btMergeWithDefaults, "Adds the selected resources to the default resources.\r\n\r\nSome resource and parameter combinations are configured as \"must be unique\" in the VersionConfig.xml and will always be \r\noverridden, for instance Ore(GOLD_ORE, which means the values configured in this list will replace \r\nany existing Ore(GOLD_ORE resources. Unique resources are:\r\n\r\n" + uniqueResourceQueueItems + "\r\n\r\nResource name and * must be unique.\r\n\r\nResources that have a block as a unique parameter (such as ORE(Block,...)) can be configured to\r\nbe unique only when used with specific blocks (like GOLD_ORE, IRON_ORE etc).\r\n\r\nUnique resources, parameters and lists of blocks can be configured in the VersionConfig.xml.\r\nFor Ore(), UnderWaterOre() and Vein() by default all ore blocks are unique (iron_ore, gold_ore, quartz_ore etc).\r\n\r\nUpdate: Unique resources can now be added multiple times, duplicates are allowed but only within a single list.\r\nWhen merging resource lists with other biome groups and default values the normal merging behaviours are\r\napplied and duplicates between lists are removed.");
 
                                 RadioButton btOverrideAll = new RadioButton();
                                 btOverrideAll.Top = 50;
@@ -1115,6 +1117,7 @@ namespace OTGEdit
                                 lbPropertyInput3.Height = 140;
                                 lbPropertyInput3.MouseWheel += lbBiomesTabSetting_MouseWheel;
                                 lbPropertyInput3.MouseHover += lbPropertyInput_MouseHover;
+                                lbPropertyInput3.SelectedIndexChanged += lbPropertyInput3_SelectedIndexChanged;
                                 pnl4.Controls.Add(lbPropertyInput3);
                            
                                 Panel pCheckBoxes2 = new Panel();
@@ -1196,7 +1199,7 @@ namespace OTGEdit
                 btSave.Enabled = true;
                 btLoad.Enabled = true;
             }
-            
+           
         #endregion
 
         #region World
@@ -2826,7 +2829,7 @@ namespace OTGEdit
                     {
                         if (biomeConfig.BiomeName != "Hell" && biomeConfig.BiomeName != "Sky" && !biomeConfig.BiomeName.ToLower().Contains("ocean"))
                         {
-                            overworldLand.BiomesHash.Add(biomeConfig.BiomeName);
+                            overworldLand.AddBiome(biomeConfig.BiomeName);
                         }
                     }
                     if (overworldLand.BiomesHash.Count > 0)
@@ -2840,7 +2843,7 @@ namespace OTGEdit
                     {
                         if (biomeConfig.BiomeName.ToLower().Contains("ocean"))
                         {
-                            overworldOceans.BiomesHash.Add(biomeConfig.BiomeName);
+                            overworldOceans.AddBiome(biomeConfig.BiomeName);
                         }
                     }
                     if (overworldOceans.BiomesHash.Count > 0)
@@ -2854,7 +2857,7 @@ namespace OTGEdit
                     {
                         if (biomeConfig.BiomeName == "Sky")
                         {
-                            overworldSky.BiomesHash.Add(biomeConfig.BiomeName);
+                            overworldSky.AddBiome(biomeConfig.BiomeName);
                         }
                     }
                     if (overworldSky.BiomesHash.Count > 0)
@@ -2868,7 +2871,7 @@ namespace OTGEdit
                     {
                         if (biomeConfig.BiomeName == "Hell")
                         {
-                            hell.BiomesHash.Add(biomeConfig.BiomeName);
+                            hell.AddBiome(biomeConfig.BiomeName);
                         }
                     }
                     if (hell.BiomesHash.Any())
@@ -4482,7 +4485,7 @@ namespace OTGEdit
                         Group g = new Group(groupName, Session.VersionConfig);
                         foreach(string biomeToAdd in biomesToAdd)
                         {
-                            g.BiomesHash.Add(biomeToAdd);
+                            g.AddBiome(biomeToAdd);
                         }
                         Session.BiomeGroups.Add(g.Name, g);
                         lbGroups.SelectedIndex = -1;
@@ -4500,7 +4503,7 @@ namespace OTGEdit
                 if(lbGroups.SelectedIndex > -1)
                 {
                     string groupName = (string)lbGroups.SelectedItem;
-                    if(PopUpForm.InputBox("Rename group", "Enter a name for the group. Only a-z A-Z 0-9 space + - and _ are allowed.", ref groupName, false, false, false, true) == DialogResult.OK)
+                    if(PopUpForm.InputBox("Rename group", "Enter a name for the group. Only a-z A-Z 0-9 space + - and _ are allowed.", ref groupName, false, false, false, false) == DialogResult.OK)
                     {
                         if(!string.IsNullOrWhiteSpace(groupName))
                         {
@@ -4551,7 +4554,7 @@ namespace OTGEdit
                                     Group g = new Group(groupName, Session.VersionConfig);
                                     foreach(string biomeName in groupToClone.BiomesHash)
                                     {
-                                        g.BiomesHash.Add(biomeName);
+                                        g.AddBiome(biomeName);
                                     }
                                     foreach(string prop in groupToClone.BiomeConfig.PropertiesDict.Keys)
                                     {
@@ -4607,7 +4610,7 @@ namespace OTGEdit
                                 {
                                     itemsToDelete.Add(selectedItem);
                                     lbGroup.Items.Add(selectedItem);
-                                    biomeGroup.BiomesHash.Add(defaultBiomeConfig.BiomeName);
+                                    biomeGroup.AddBiome(defaultBiomeConfig.BiomeName);
                                 }
                             }
                         }
@@ -4640,7 +4643,7 @@ namespace OTGEdit
                                 {
                                     lbBiomes.Items.Add(selectedItem);
                                 }
-                                biomeGroup.BiomesHash.Remove(selectedItem);
+                                biomeGroup.RemoveBiome(selectedItem);
                             }
                             itemsToDelete.Add(selectedItem);
                         }
@@ -4972,8 +4975,7 @@ namespace OTGEdit
                                     if (!Session.WorldConfig1.PropertiesDict.ContainsKey(prop.Name))
                                     {
                                         Property newProp = new Property(Session.WorldConfigDefaultValues.PropertiesDict[prop.Name].Value, false, prop.Name, false, false);
-                                        Session.WorldConfig1.PropertiesDict.Add(newProp.PropertyName, newProp);
-                                        Session.WorldConfig1.Properties.Add(newProp);
+                                        Session.WorldConfig1.AddProperty(newProp);
                                     }
                                 }
                                 List<string> propertiesToRemove = new List<string>();
@@ -4986,7 +4988,7 @@ namespace OTGEdit
                                 }
                                 foreach (string propertyToRemove in propertiesToRemove)
                                 {
-                                    Session.WorldConfig1.PropertiesDict.Remove(propertyToRemove);
+                                    Session.WorldConfig1.RemoveProperty(propertyToRemove);
                                 }
 
                                 Session.IgnorePropertyInputChangedWorld = true;
@@ -5029,7 +5031,7 @@ namespace OTGEdit
                            
                                     if (Session.WorldConfig1.PropertiesDict.ContainsKey(property.Name) && Session.WorldConfig1.PropertiesDict[property.Name] == null)
                                     {
-                                        Session.WorldConfig1.PropertiesDict.Add(property.Name, new Property(null, false, property.Name, false, false));
+                                        Session.WorldConfig1.AddProperty(new Property(null, false, property.Name, false, false));
                                     }
 
                                     string s = Session.WorldConfigDefaultValues.GetPropertyValueAsString(property);
@@ -5234,10 +5236,10 @@ namespace OTGEdit
                                                 sErrorMessage3 += "Could not load biome \"" + biomeName + "\" in biome group \"" + biomeGroup.Name + "\".\r\n";
                                             }
                                         }
-                                        biomeGroup.BiomesHash = new HashSet<string>();
+                                        biomeGroup.ClearBiomes();
                                         foreach (string newBiomeGroupBiome in newBiomeGroupBiomes)
                                         {
-                                            biomeGroup.BiomesHash.Add(newBiomeGroupBiome);
+                                            biomeGroup.AddBiome(newBiomeGroupBiome);
                                         }
                                         if(count > 0)
                                         {
@@ -5247,7 +5249,7 @@ namespace OTGEdit
                                         }
                                         if(!String.IsNullOrEmpty(sErrorMessage3))
                                         {
-                                            sErrorMessage2 += sErrorMessage3;// +"These biomes do not exist.\r\n";
+                                            sErrorMessage2 += sErrorMessage3;// + "These biomes do not exist.\r\n";
                                         }
                                     } else {
                                         if (Session.BiomeNames.Any(a => a.Equals(biomeGroup.BiomesHash.First())))
@@ -5271,8 +5273,7 @@ namespace OTGEdit
                                             if (!biomeGroup.BiomeConfig.PropertiesDict.ContainsKey(tcProp))
                                             {
                                                 Property prop = new Property(null, false, tcProp, false, false);
-                                                biomeGroup.BiomeConfig.PropertiesDict.Add(prop.PropertyName, prop);
-                                                biomeGroup.BiomeConfig.Properties.Add(prop);
+                                                biomeGroup.BiomeConfig.AddProperty(prop);
                                             }
                                         }
                                         foreach (Property prop in biomeGroup.BiomeConfig.PropertiesDict.Values.Where(c => c.Override && !Session.VersionConfig.BiomeConfigDict.ContainsKey(c.PropertyName)))
@@ -5310,7 +5311,7 @@ namespace OTGEdit
                                         }
                                         foreach (string propertyToRemove in propertiesToRemove)
                                         {
-                                            biomeGroup.BiomeConfig.PropertiesDict.Remove(propertyToRemove);
+                                            biomeGroup.BiomeConfig.RemoveProperty(propertyToRemove);
                                         }
                                     }
                                 }
@@ -5676,7 +5677,7 @@ namespace OTGEdit
                                 string centerBlockIdString = null;
                                 if (!useBranches)
                                 {
-                                    DialogResult useCenterBlockResult = PopUpForm.InputBox("Use a center block?", "Center the BO3 around a specific block? If so, enter the block id (number).", ref centerBlockIdString, false, true, true, true);
+                                    DialogResult useCenterBlockResult = PopUpForm.InputBox("Use a center block?", "Center the BO3 around a specific block? If so, enter the block id (number).", ref centerBlockIdString, false, true, true, false);
                                     if (useCenterBlockResult == System.Windows.Forms.DialogResult.Cancel)
                                     {
                                         return;
@@ -5831,6 +5832,35 @@ namespace OTGEdit
             System.Diagnostics.Process.Start(e.LinkText);
         }
 
+        bool IgnoreBiomesListSelectedIndexChanged = false;
+        Dictionary<ListBox, List<int>[]> lastSelectedIndices = new Dictionary<ListBox, List<int>[]>();
+        void lbPropertyInput3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!IgnoreBiomesListSelectedIndexChanged)
+            {
+                // Remember the last and current value for CTRL+Z
+                if (!lastSelectedIndices.ContainsKey((ListBox)sender))
+                {
+                    List<int> selectedIndices = new List<int>();
+                    foreach(int a in ((ListBox)sender).SelectedIndices)
+                    {
+                        selectedIndices.Add(a);
+                    }
+                    List<int>[] selectedIndicesArr = { selectedIndices, null };
+                    lastSelectedIndices.Add(((ListBox)sender), selectedIndicesArr);
+                } else {
+                    List<int>[] currentAndLastSelectedIndex = lastSelectedIndices[(ListBox)sender];
+                    currentAndLastSelectedIndex[1] = currentAndLastSelectedIndex[0];
+                    List<int> selectedIndices = new List<int>();
+                    foreach(int a in ((ListBox)sender).SelectedIndices)
+                    {
+                        selectedIndices.Add(a);
+                    }
+                    currentAndLastSelectedIndex[0] = selectedIndices;
+                }
+            }
+        }
+
         void lbPropertyInput_KeyDown_World(object sender, KeyEventArgs e)
         {
             TCProperty property = Session.WorldSettingsInputs.FirstOrDefault(a => a.Value.Item1 == sender).Key;
@@ -5891,6 +5921,32 @@ namespace OTGEdit
                         }
                     }
                     lb.ResumeLayout();
+                }
+                if (e.Control && (e.KeyCode == Keys.Z || e.KeyCode == Keys.Y))
+                {                    
+                    IgnoreBiomesListSelectedIndexChanged = true;
+                    List<int>[] currentAndLastSelectedIndex = lastSelectedIndices[(ListBox)sender];
+                    List<int> selectedIndices = new List<int>();
+                    foreach (int a in ((ListBox)sender).SelectedIndices)
+                    {
+                        selectedIndices.Add(a);
+                    }
+                    int i = e.KeyCode == Keys.Y ? 0 : selectedIndices.Equals(currentAndLastSelectedIndex[1]) ? 0 : 1;
+                    ((ListBox)sender).ClearSelected();
+                    if (currentAndLastSelectedIndex[i] != null)
+                    {
+                        foreach (int a in currentAndLastSelectedIndex[i])
+                        {
+                            ((ListBox)sender).SetSelected(a, true);
+                        }
+                    }
+
+                    List<int> current = currentAndLastSelectedIndex[0];
+                    List<int> last = currentAndLastSelectedIndex[1];
+                    currentAndLastSelectedIndex[1] = current;
+                    currentAndLastSelectedIndex[0] = last;
+
+                    IgnoreBiomesListSelectedIndexChanged = false;
                 }
             }
             else if (property.PropertyType == "ResourceQueue")
@@ -6008,6 +6064,32 @@ namespace OTGEdit
                         }
                     }
                     lb.ResumeLayout();
+                }
+                if (e.Control && (e.KeyCode == Keys.Z || e.KeyCode == Keys.Y))
+                {
+                    IgnoreBiomesListSelectedIndexChanged = true;
+                    List<int>[] currentAndLastSelectedIndex = lastSelectedIndices[(ListBox)sender];
+                    List<int> selectedIndices = new List<int>();
+                    foreach (int a in ((ListBox)sender).SelectedIndices)
+                    {
+                        selectedIndices.Add(a);
+                    }
+                    int i = e.KeyCode == Keys.Y ? 0 : selectedIndices.Equals(currentAndLastSelectedIndex[1]) ? 0 : 1;
+                    ((ListBox)sender).ClearSelected();
+                    if (currentAndLastSelectedIndex[i] != null)
+                    {
+                        foreach (int a in currentAndLastSelectedIndex[i])
+                        {
+                            ((ListBox)sender).SetSelected(a, true);
+                        }
+                    }
+
+                    List<int> current = currentAndLastSelectedIndex[0];
+                    List<int> last = currentAndLastSelectedIndex[1];
+                    currentAndLastSelectedIndex[1] = current;
+                    currentAndLastSelectedIndex[0] = last;
+
+                    IgnoreBiomesListSelectedIndexChanged = false;
                 }
             }
             else if (property.PropertyType == "ResourceQueue")

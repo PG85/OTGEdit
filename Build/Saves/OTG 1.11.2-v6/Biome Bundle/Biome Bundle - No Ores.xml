@@ -1,0 +1,1893 @@
+<SettingsFile xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/TCEE">
+  <BiomeGroups>
+    <Group>
+      <BiomeConfig>
+        <FileName />
+        <Properties>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeExtends</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>ResourceInheritance</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeSize</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeRarity</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeColor</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>ReplaceToBiomeName</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>false</OverrideParentValues>
+            <PropertyName>IsleInBiome</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeSizeWhenIsle</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeRarityWhenIsle</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>false</OverrideParentValues>
+            <PropertyName>BiomeIsBorder</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>false</OverrideParentValues>
+            <PropertyName>NotBorderNear</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeSizeWhenBorder</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeHeight</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeVolatility</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>SmoothRadius</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>MaxAverageHeight</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>MaxAverageDepth</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>Volatility1</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>Volatility2</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>VolatilityWeight1</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>VolatilityWeight2</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>DisableBiomeHeight</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>CustomHeightControl</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>RiverBiome</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>RiverHeight</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>RiverVolatility</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>RiverWaterLevel</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>RiverCustomHeightControl</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>StoneBlock</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>SurfaceBlock</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>GroundBlock</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>SurfaceAndGroundControl</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>ReplacedBlocks</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>UseWorldWaterLevel</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>WaterLevelMax</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>WaterLevelMin</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>WaterBlock</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>IceBlock</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>CooledLavaBlock</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeTemperature</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeWetness</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>SkyColor</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>WaterColor</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>GrassColor</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>GrassColorIsMultiplier</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>FoliageColor</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>FoliageColorIsMultiplier</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>true</Merge>
+            <Override>true</Override>
+            <OverrideParentValues>false</OverrideParentValues>
+            <PropertyName>ResourceQueue</PropertyName>
+            <Value>Ore(COAL_ORE,0,0,0.0,0,0,STONE)
+Ore(DIAMOND_ORE,0,0,0.0,0,0,STONE)
+Ore(EMERALD_ORE,0,0,0.0,0,0,STONE)
+Ore(GOLD_ORE,0,0,0.0,0,0,STONE)
+Ore(IRON_ORE,0,0,0.0,0,0,STONE)
+Ore(LAPIS_ORE,0,0,0.0,0,0,STONE)
+Ore(QUARTZ_ORE,0,0,0.0,0,0,STONE)
+Ore(REDSTONE_ORE,0,0,0.0,0,0,STONE)
+UnderWaterOre(COAL_ORE,0,0,0.0,STONE)
+UnderWaterOre(DIAMOND_ORE,0,0,0.0,STONE)
+UnderWaterOre(EMERALD_ORE,0,0,0.0,STONE)
+UnderWaterOre(GOLD_ORE,0,0,0.0,STONE)
+UnderWaterOre(IRON_ORE,0,0,0.0,STONE)
+UnderWaterOre(LAPIS_ORE,0,0,0.0,STONE)
+UnderWaterOre(QUARTZ_ORE,0,0,0.0,STONE)
+UnderWaterOre(REDSTONE_ORE,0,0,0.0,STONE)
+Vein(COAL_ORE,0,0,0.0,0,0,0,0,0,STONE)
+Vein(DIAMOND_ORE,0,0,0.0,0,0,0,0,0,STONE)
+Vein(EMERALD_ORE,0,0,0.0,0,0,0,0,0,STONE)
+Vein(GOLD_ORE,0,0,0.0,0,0,0,0,0,STONE)
+Vein(IRON_ORE,0,0,0.0,0,0,0,0,0,STONE)
+Vein(LAPIS_ORE,0,0,0.0,0,0,0,0,0,STONE)
+Vein(QUARTZ_ORE,0,0,0.0,0,0,0,0,0,STONE)
+Vein(REDSTONE_ORE,0,0,0.0,0,0,0,0,0,STONE)</Value>
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>false</OverrideParentValues>
+            <PropertyName>Sapling resource</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeObjects</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>StrongholdsEnabled</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>WoodLandMansionsEnabled</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>OceanMonumentsEnabled</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>NetherFortressesEnabled</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>VillageType</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>MineshaftType</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>MineshaftRarity</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>RareBuildingType</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>SpawnMonsters</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>SpawnCreatures</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>SpawnWaterCreatures</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>SpawnAmbientCreatures</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>InheritMobsBiomeName</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+          <Property>
+            <Merge>false</Merge>
+            <Override>false</Override>
+            <OverrideParentValues>true</OverrideParentValues>
+            <PropertyName>BiomeDictId</PropertyName>
+            <Value i:nil="true" />
+          </Property>
+        </Properties>
+      </BiomeConfig>
+      <Biomes xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+        <d4p1:string>Alpine</d4p1:string>
+        <d4p1:string>AlpineConiferMountain</d4p1:string>
+        <d4p1:string>AlpineConiferSnow</d4p1:string>
+        <d4p1:string>AlpineForest</d4p1:string>
+        <d4p1:string>AlpineM</d4p1:string>
+        <d4p1:string>Alps</d4p1:string>
+        <d4p1:string>AlpsEdge</d4p1:string>
+        <d4p1:string>AlpsForest</d4p1:string>
+        <d4p1:string>AlpsMountain1</d4p1:string>
+        <d4p1:string>AlpsMountain2</d4p1:string>
+        <d4p1:string>AlpsMountain3</d4p1:string>
+        <d4p1:string>AlpsMountainEdge</d4p1:string>
+        <d4p1:string>AlpsMountainEdge2</d4p1:string>
+        <d4p1:string>AlpsMountainHighlands</d4p1:string>
+        <d4p1:string>AlpsMountainPeak</d4p1:string>
+        <d4p1:string>AlpsMountainPeak2</d4p1:string>
+        <d4p1:string>Archipelago</d4p1:string>
+        <d4p1:string>ArchipelagoHigh</d4p1:string>
+        <d4p1:string>ArchipelagoMid</d4p1:string>
+        <d4p1:string>Arctic</d4p1:string>
+        <d4p1:string>ArcticEdge</d4p1:string>
+        <d4p1:string>Autumnal Woods Hills</d4p1:string>
+        <d4p1:string>Autumnal Woods M</d4p1:string>
+        <d4p1:string>Autumnal Woods</d4p1:string>
+        <d4p1:string>Beach Desert</d4p1:string>
+        <d4p1:string>Beach</d4p1:string>
+        <d4p1:string>Birch Forest Hills M</d4p1:string>
+        <d4p1:string>Birch Forest Hills</d4p1:string>
+        <d4p1:string>Birch Forest M</d4p1:string>
+        <d4p1:string>Birch Forest Peak</d4p1:string>
+        <d4p1:string>Birch Forest</d4p1:string>
+        <d4p1:string>Birch Meadow</d4p1:string>
+        <d4p1:string>BirchForestHighlands</d4p1:string>
+        <d4p1:string>BirchForestMountain</d4p1:string>
+        <d4p1:string>BirchForestMountainRange</d4p1:string>
+        <d4p1:string>BirchForestRocky</d4p1:string>
+        <d4p1:string>BirchForestTropical</d4p1:string>
+        <d4p1:string>BirchForestTropicalIsle</d4p1:string>
+        <d4p1:string>BirchForestTropicalIsle2</d4p1:string>
+        <d4p1:string>BirchForestTropicalIsle3</d4p1:string>
+        <d4p1:string>BirchGrove</d4p1:string>
+        <d4p1:string>BirchGroveBorder</d4p1:string>
+        <d4p1:string>Canyon</d4p1:string>
+        <d4p1:string>CanyonHigh</d4p1:string>
+        <d4p1:string>CanyonMid</d4p1:string>
+        <d4p1:string>Caverns Edge</d4p1:string>
+        <d4p1:string>Caverns M</d4p1:string>
+        <d4p1:string>Caverns+ M</d4p1:string>
+        <d4p1:string>Caverns+</d4p1:string>
+        <d4p1:string>Caverns</d4p1:string>
+        <d4p1:string>CliffsSmall</d4p1:string>
+        <d4p1:string>CliffsSmallEdge</d4p1:string>
+        <d4p1:string>CliffsSmallForest</d4p1:string>
+        <d4p1:string>CliffsSmallForest2</d4p1:string>
+        <d4p1:string>CliffsSmallMountain</d4p1:string>
+        <d4p1:string>CliffsSmallMountainEdge</d4p1:string>
+        <d4p1:string>CliffsSmallPlateau</d4p1:string>
+        <d4p1:string>CliffsSmallPlateau2</d4p1:string>
+        <d4p1:string>CliffsSmallPlateau3</d4p1:string>
+        <d4p1:string>Cold Beach</d4p1:string>
+        <d4p1:string>Cold Plains</d4p1:string>
+        <d4p1:string>Cold Taiga Hills</d4p1:string>
+        <d4p1:string>Cold Taiga M</d4p1:string>
+        <d4p1:string>Cold Taiga</d4p1:string>
+        <d4p1:string>ColdForestFirThicket</d4p1:string>
+        <d4p1:string>ColdForestFirThicketEdge</d4p1:string>
+        <d4p1:string>ColdTaigaBorder</d4p1:string>
+        <d4p1:string>Deep Ocean</d4p1:string>
+        <d4p1:string>Desert Cliffs Edge</d4p1:string>
+        <d4p1:string>Desert Cliffs</d4p1:string>
+        <d4p1:string>Desert M</d4p1:string>
+        <d4p1:string>Desert</d4p1:string>
+        <d4p1:string>DesertBaobabs</d4p1:string>
+        <d4p1:string>DesertCanyon</d4p1:string>
+        <d4p1:string>DesertCanyonHigh</d4p1:string>
+        <d4p1:string>DesertCanyonMid</d4p1:string>
+        <d4p1:string>DesertCliffsOasis</d4p1:string>
+        <d4p1:string>DesertCliffsOasisEdge</d4p1:string>
+        <d4p1:string>DesertFlats</d4p1:string>
+        <d4p1:string>DesertHills</d4p1:string>
+        <d4p1:string>DesertLowlands</d4p1:string>
+        <d4p1:string>DesertLowlandsEdge</d4p1:string>
+        <d4p1:string>DesertLowlandsOasis</d4p1:string>
+        <d4p1:string>DesertLowlandsOasisEdge</d4p1:string>
+        <d4p1:string>DesertMountain</d4p1:string>
+        <d4p1:string>DesertOasis</d4p1:string>
+        <d4p1:string>DesertOasisBorder</d4p1:string>
+        <d4p1:string>DesertRed</d4p1:string>
+        <d4p1:string>DesertRedConifer</d4p1:string>
+        <d4p1:string>DesertSmall</d4p1:string>
+        <d4p1:string>DesertSmallRed</d4p1:string>
+        <d4p1:string>DesertSmallRedEdge</d4p1:string>
+        <d4p1:string>DesertTropical</d4p1:string>
+        <d4p1:string>DesertTropicalEdge</d4p1:string>
+        <d4p1:string>DesertTropicalM</d4p1:string>
+        <d4p1:string>DesertTropicalPlateau</d4p1:string>
+        <d4p1:string>DioriteCliffs</d4p1:string>
+        <d4p1:string>DioriteCliffsM</d4p1:string>
+        <d4p1:string>DioriteCliffsPeak</d4p1:string>
+        <d4p1:string>Dry Plains</d4p1:string>
+        <d4p1:string>Drylands</d4p1:string>
+        <d4p1:string>DrylandsEdge1</d4p1:string>
+        <d4p1:string>DrylandsEdge2</d4p1:string>
+        <d4p1:string>DrylandsIsle</d4p1:string>
+        <d4p1:string>DryPlainsM</d4p1:string>
+        <d4p1:string>DrySavanna</d4p1:string>
+        <d4p1:string>DrySavannaBorder</d4p1:string>
+        <d4p1:string>Extreme Hills Edge</d4p1:string>
+        <d4p1:string>Extreme Hills Jungle Edge</d4p1:string>
+        <d4p1:string>Extreme Hills Jungle</d4p1:string>
+        <d4p1:string>Extreme Hills M</d4p1:string>
+        <d4p1:string>Extreme Hills+ M</d4p1:string>
+        <d4p1:string>Extreme Hills+</d4p1:string>
+        <d4p1:string>Extreme Hills</d4p1:string>
+        <d4p1:string>FloatingEdge</d4p1:string>
+        <d4p1:string>FloatingHole</d4p1:string>
+        <d4p1:string>FloatingIslands</d4p1:string>
+        <d4p1:string>FloatingJungle</d4p1:string>
+        <d4p1:string>FloatingJungleEdge</d4p1:string>
+        <d4p1:string>FloatingJungleHole</d4p1:string>
+        <d4p1:string>FloatingPlains</d4p1:string>
+        <d4p1:string>Flower Forest</d4p1:string>
+        <d4p1:string>FlyingForest</d4p1:string>
+        <d4p1:string>Forest M</d4p1:string>
+        <d4p1:string>Forest Wetland</d4p1:string>
+        <d4p1:string>Forest</d4p1:string>
+        <d4p1:string>ForestBaldCypress</d4p1:string>
+        <d4p1:string>ForestBaldCypressSmall</d4p1:string>
+        <d4p1:string>ForestCliffs</d4p1:string>
+        <d4p1:string>ForestCliffsBorder</d4p1:string>
+        <d4p1:string>ForestCliffsLowlands</d4p1:string>
+        <d4p1:string>ForestCliffsMountain</d4p1:string>
+        <d4p1:string>ForestCliffsMountainEdge</d4p1:string>
+        <d4p1:string>ForestConifer</d4p1:string>
+        <d4p1:string>ForestConiferEdge</d4p1:string>
+        <d4p1:string>ForestConiferMountain</d4p1:string>
+        <d4p1:string>ForestConiferSnow</d4p1:string>
+        <d4p1:string>ForestConiferSnow2</d4p1:string>
+        <d4p1:string>ForestDry</d4p1:string>
+        <d4p1:string>ForestDryEdge</d4p1:string>
+        <d4p1:string>ForestEnchanted</d4p1:string>
+        <d4p1:string>ForestEnchantedBorder</d4p1:string>
+        <d4p1:string>ForestEnchantedCaves</d4p1:string>
+        <d4p1:string>ForestEnchantedGrove</d4p1:string>
+        <d4p1:string>ForestEnder</d4p1:string>
+        <d4p1:string>ForestEnderMountain</d4p1:string>
+        <d4p1:string>ForestEnderValley</d4p1:string>
+        <d4p1:string>ForestFir</d4p1:string>
+        <d4p1:string>ForestFirMountain</d4p1:string>
+        <d4p1:string>ForestFirMountainEdge1</d4p1:string>
+        <d4p1:string>ForestFirMountainEdge2</d4p1:string>
+        <d4p1:string>ForestFirThicket</d4p1:string>
+        <d4p1:string>ForestFirThicketEdge</d4p1:string>
+        <d4p1:string>ForestGrandFir</d4p1:string>
+        <d4p1:string>ForestGrandFirSmall</d4p1:string>
+        <d4p1:string>ForestHighlands</d4p1:string>
+        <d4p1:string>ForestHills</d4p1:string>
+        <d4p1:string>ForestLarch</d4p1:string>
+        <d4p1:string>ForestLarchPeak</d4p1:string>
+        <d4p1:string>ForestMountain</d4p1:string>
+        <d4p1:string>ForestMountainRange</d4p1:string>
+        <d4p1:string>ForestMountainRangeEdge</d4p1:string>
+        <d4p1:string>ForestOakSmall</d4p1:string>
+        <d4p1:string>ForestPeak</d4p1:string>
+        <d4p1:string>ForestPinyon</d4p1:string>
+        <d4p1:string>ForestPlateau</d4p1:string>
+        <d4p1:string>ForestPlateauPinyon</d4p1:string>
+        <d4p1:string>ForestPlateauRoofed</d4p1:string>
+        <d4p1:string>ForestPlateauThicket</d4p1:string>
+        <d4p1:string>ForestPoplar</d4p1:string>
+        <d4p1:string>ForestSakura</d4p1:string>
+        <d4p1:string>ForestSakuraHills</d4p1:string>
+        <d4p1:string>ForestWetlandM</d4p1:string>
+        <d4p1:string>ForestWoodland</d4p1:string>
+        <d4p1:string>Frozen Forest Edge</d4p1:string>
+        <d4p1:string>Frozen Forest</d4p1:string>
+        <d4p1:string>FrozenOcean</d4p1:string>
+        <d4p1:string>FrozenRiver</d4p1:string>
+        <d4p1:string>GiantMushroomIsland</d4p1:string>
+        <d4p1:string>Glacier</d4p1:string>
+        <d4p1:string>GlacierM</d4p1:string>
+        <d4p1:string>Hell</d4p1:string>
+        <d4p1:string>High Cliffs</d4p1:string>
+        <d4p1:string>HighCliffsEdge</d4p1:string>
+        <d4p1:string>HighCliffsSummit</d4p1:string>
+        <d4p1:string>HighCliffsThicket</d4p1:string>
+        <d4p1:string>HighCliffsThicketMountain</d4p1:string>
+        <d4p1:string>Highlands</d4p1:string>
+        <d4p1:string>HighlandsPeaks</d4p1:string>
+        <d4p1:string>Ice Mountains</d4p1:string>
+        <d4p1:string>Ice Plains Spikes</d4p1:string>
+        <d4p1:string>Ice Plains</d4p1:string>
+        <d4p1:string>IceWall</d4p1:string>
+        <d4p1:string>IcyMountainPeak1</d4p1:string>
+        <d4p1:string>IcyMountainPeak2</d4p1:string>
+        <d4p1:string>IcyMountains</d4p1:string>
+        <d4p1:string>IsleRiver</d4p1:string>
+        <d4p1:string>Jungle M</d4p1:string>
+        <d4p1:string>Jungle</d4p1:string>
+        <d4p1:string>JungleAncient</d4p1:string>
+        <d4p1:string>JungleAncientMountain</d4p1:string>
+        <d4p1:string>JungleAncientMountainTall</d4p1:string>
+        <d4p1:string>JungleAncientMushrooms</d4p1:string>
+        <d4p1:string>JungleAncientRocks</d4p1:string>
+        <d4p1:string>JungleCliffs</d4p1:string>
+        <d4p1:string>JungleCliffsCanyon</d4p1:string>
+        <d4p1:string>JungleCliffsCanyonHigh</d4p1:string>
+        <d4p1:string>JungleCliffsCanyonMid</d4p1:string>
+        <d4p1:string>JungleCliffsEdge</d4p1:string>
+        <d4p1:string>JungleCliffsVolcano</d4p1:string>
+        <d4p1:string>JungleEdge M</d4p1:string>
+        <d4p1:string>JungleEdge</d4p1:string>
+        <d4p1:string>JungleHighlands</d4p1:string>
+        <d4p1:string>JungleHills</d4p1:string>
+        <d4p1:string>JungleLonePeak</d4p1:string>
+        <d4p1:string>JungleLowlands</d4p1:string>
+        <d4p1:string>JungleMountainPeak</d4p1:string>
+        <d4p1:string>JungleMountainRange</d4p1:string>
+        <d4p1:string>JunglePlateau</d4p1:string>
+        <d4p1:string>JunglePlateauLow</d4p1:string>
+        <d4p1:string>JungleSwampy</d4p1:string>
+        <d4p1:string>Mangrove Forest</d4p1:string>
+        <d4p1:string>Marsh</d4p1:string>
+        <d4p1:string>MarshBorder</d4p1:string>
+        <d4p1:string>Mega Spruce Taiga Hills</d4p1:string>
+        <d4p1:string>Mega Spruce Taiga</d4p1:string>
+        <d4p1:string>Mega Taiga Hills</d4p1:string>
+        <d4p1:string>Mega Taiga Mountains</d4p1:string>
+        <d4p1:string>Mega Taiga</d4p1:string>
+        <d4p1:string>Mesa (Bryce) Edge</d4p1:string>
+        <d4p1:string>Mesa (Bryce) Forest</d4p1:string>
+        <d4p1:string>Mesa (Bryce) Rocks</d4p1:string>
+        <d4p1:string>Mesa (Bryce)</d4p1:string>
+        <d4p1:string>Mesa Desert</d4p1:string>
+        <d4p1:string>Mesa Plateau F M</d4p1:string>
+        <d4p1:string>Mesa Plateau F</d4p1:string>
+        <d4p1:string>Mesa Plateau M</d4p1:string>
+        <d4p1:string>Mesa Plateau</d4p1:string>
+        <d4p1:string>Mesa River</d4p1:string>
+        <d4p1:string>Mesa Rock</d4p1:string>
+        <d4p1:string>Mesa Sandstone Edge</d4p1:string>
+        <d4p1:string>Mesa Sandstone M</d4p1:string>
+        <d4p1:string>Mesa Sandstone Peak</d4p1:string>
+        <d4p1:string>Mesa Sandstone</d4p1:string>
+        <d4p1:string>Mesa Small Edge</d4p1:string>
+        <d4p1:string>Mesa Small M</d4p1:string>
+        <d4p1:string>Mesa Small</d4p1:string>
+        <d4p1:string>Mesa Verde Edge</d4p1:string>
+        <d4p1:string>Mesa Verde Forest</d4p1:string>
+        <d4p1:string>Mesa Verde Mountain</d4p1:string>
+        <d4p1:string>Mesa Verde</d4p1:string>
+        <d4p1:string>Mesa</d4p1:string>
+        <d4p1:string>MesaCanyon</d4p1:string>
+        <d4p1:string>MesaPaintedCanyon</d4p1:string>
+        <d4p1:string>MesaPeak</d4p1:string>
+        <d4p1:string>MesaVerdeCanyon</d4p1:string>
+        <d4p1:string>MesaVerdeCanyonHigh</d4p1:string>
+        <d4p1:string>MesaVerdeCanyonMid</d4p1:string>
+        <d4p1:string>MesaWhite</d4p1:string>
+        <d4p1:string>MesaWhiteEdge1</d4p1:string>
+        <d4p1:string>MesaWhiteEdge2</d4p1:string>
+        <d4p1:string>MesaWhiteLow</d4p1:string>
+        <d4p1:string>MesaWhitePeak</d4p1:string>
+        <d4p1:string>Monument</d4p1:string>
+        <d4p1:string>MonumentM</d4p1:string>
+        <d4p1:string>MonumentMountains</d4p1:string>
+        <d4p1:string>MonumentMountainsPeak1</d4p1:string>
+        <d4p1:string>MonumentMountainsPeak2</d4p1:string>
+        <d4p1:string>MonumentSmall</d4p1:string>
+        <d4p1:string>MonumentValley</d4p1:string>
+        <d4p1:string>MonumentValleyEdge</d4p1:string>
+        <d4p1:string>MonumentValleyFir</d4p1:string>
+        <d4p1:string>Mountain Peak</d4p1:string>
+        <d4p1:string>Mountain Peak2</d4p1:string>
+        <d4p1:string>Mountain Peak3</d4p1:string>
+        <d4p1:string>Mountain Range</d4p1:string>
+        <d4p1:string>MountainSteps</d4p1:string>
+        <d4p1:string>MountainStepsEdge1</d4p1:string>
+        <d4p1:string>MountainStepsEdge2</d4p1:string>
+        <d4p1:string>MountainStepsGlacier</d4p1:string>
+        <d4p1:string>MountainStepsGlacierEdge1</d4p1:string>
+        <d4p1:string>MountainStepsGlacierEdge2</d4p1:string>
+        <d4p1:string>MushroomIsland</d4p1:string>
+        <d4p1:string>MushroomIslandShore</d4p1:string>
+        <d4p1:string>Ocean Island</d4p1:string>
+        <d4p1:string>Ocean</d4p1:string>
+        <d4p1:string>OceanCoral</d4p1:string>
+        <d4p1:string>OceanDesertIsland</d4p1:string>
+        <d4p1:string>OceanForestHighlands</d4p1:string>
+        <d4p1:string>OceanForestHighlandsBorder</d4p1:string>
+        <d4p1:string>OceanForestIsland</d4p1:string>
+        <d4p1:string>OceanIslandDesert</d4p1:string>
+        <d4p1:string>OceanIslandForest</d4p1:string>
+        <d4p1:string>OceanIslandRoofedForest</d4p1:string>
+        <d4p1:string>OceanPlateau</d4p1:string>
+        <d4p1:string>OceanPlateauLow</d4p1:string>
+        <d4p1:string>OceanPlateauM</d4p1:string>
+        <d4p1:string>OceanRocks</d4p1:string>
+        <d4p1:string>OceanRocksDiorite</d4p1:string>
+        <d4p1:string>OceanRocksM</d4p1:string>
+        <d4p1:string>OceanRockyIsland</d4p1:string>
+        <d4p1:string>OceanRockyIslandPeak</d4p1:string>
+        <d4p1:string>Plains</d4p1:string>
+        <d4p1:string>PlainsCliff</d4p1:string>
+        <d4p1:string>PlainsCliffM</d4p1:string>
+        <d4p1:string>Pumpkin Plains</d4p1:string>
+        <d4p1:string>Rainforest M</d4p1:string>
+        <d4p1:string>Rainforest Plateau Low</d4p1:string>
+        <d4p1:string>Rainforest Plateau M</d4p1:string>
+        <d4p1:string>Rainforest Plateau</d4p1:string>
+        <d4p1:string>Rainforest</d4p1:string>
+        <d4p1:string>RainforestBog</d4p1:string>
+        <d4p1:string>RainforestTropical</d4p1:string>
+        <d4p1:string>RainforestTropicalEdge</d4p1:string>
+        <d4p1:string>RainforestTropicalMountain</d4p1:string>
+        <d4p1:string>RainforestTropicalMountainPeak</d4p1:string>
+        <d4p1:string>RedMountain</d4p1:string>
+        <d4p1:string>Redwood Forest</d4p1:string>
+        <d4p1:string>RedwoodSmall</d4p1:string>
+        <d4p1:string>River</d4p1:string>
+        <d4p1:string>RiverAlpine</d4p1:string>
+        <d4p1:string>RiverAutumnal</d4p1:string>
+        <d4p1:string>RiverBirchForest</d4p1:string>
+        <d4p1:string>RiverClay</d4p1:string>
+        <d4p1:string>RiverDesert</d4p1:string>
+        <d4p1:string>RiverDiorite</d4p1:string>
+        <d4p1:string>RiverEnchantedForest</d4p1:string>
+        <d4p1:string>RiverEnder</d4p1:string>
+        <d4p1:string>RiverForest</d4p1:string>
+        <d4p1:string>RiverForestConifer</d4p1:string>
+        <d4p1:string>RiverHaunted</d4p1:string>
+        <d4p1:string>RiverRocky</d4p1:string>
+        <d4p1:string>RiverRoofedForest</d4p1:string>
+        <d4p1:string>RiverSandy</d4p1:string>
+        <d4p1:string>RiverSavanna</d4p1:string>
+        <d4p1:string>RiverSpooky</d4p1:string>
+        <d4p1:string>RiverSteppe</d4p1:string>
+        <d4p1:string>RiverSwampland</d4p1:string>
+        <d4p1:string>RiverTaiga</d4p1:string>
+        <d4p1:string>RiverTropical</d4p1:string>
+        <d4p1:string>RiverTundra</d4p1:string>
+        <d4p1:string>RiverUplands</d4p1:string>
+        <d4p1:string>RiverVerde</d4p1:string>
+        <d4p1:string>RiverWetland</d4p1:string>
+        <d4p1:string>Rocks</d4p1:string>
+        <d4p1:string>RockyHills</d4p1:string>
+        <d4p1:string>RockyHillsCliff</d4p1:string>
+        <d4p1:string>RockyHillsEdge</d4p1:string>
+        <d4p1:string>RockyMountainPeak1</d4p1:string>
+        <d4p1:string>RockyMountainPeak2</d4p1:string>
+        <d4p1:string>RockyMountains</d4p1:string>
+        <d4p1:string>RockyMountainsPeakEdge</d4p1:string>
+        <d4p1:string>RockyPlains</d4p1:string>
+        <d4p1:string>RockyPlainsM</d4p1:string>
+        <d4p1:string>RockyPlainsSmall</d4p1:string>
+        <d4p1:string>Roofed Forest M</d4p1:string>
+        <d4p1:string>Roofed Forest</d4p1:string>
+        <d4p1:string>Roofed Fungi Forest</d4p1:string>
+        <d4p1:string>RoofedForestEnchanted</d4p1:string>
+        <d4p1:string>Savanna M</d4p1:string>
+        <d4p1:string>Savanna Plateau M</d4p1:string>
+        <d4p1:string>Savanna Plateau</d4p1:string>
+        <d4p1:string>Savanna</d4p1:string>
+        <d4p1:string>SavannaEdge</d4p1:string>
+        <d4p1:string>SavannaHills</d4p1:string>
+        <d4p1:string>SavannaSmall</d4p1:string>
+        <d4p1:string>Sky</d4p1:string>
+        <d4p1:string>Snowy Cliffs</d4p1:string>
+        <d4p1:string>SnowyCanyon</d4p1:string>
+        <d4p1:string>SnowyCanyonHigh</d4p1:string>
+        <d4p1:string>SnowyCanyonMid</d4p1:string>
+        <d4p1:string>SnowyCliff</d4p1:string>
+        <d4p1:string>SnowyCliffM</d4p1:string>
+        <d4p1:string>SnowyCliffsEdge</d4p1:string>
+        <d4p1:string>SnowyCliffsMountainPeak1</d4p1:string>
+        <d4p1:string>SnowyCliffsMountainPeak2</d4p1:string>
+        <d4p1:string>SnowyCliffsThicket</d4p1:string>
+        <d4p1:string>SnowyCliffsThicketMountain</d4p1:string>
+        <d4p1:string>SnowyExtremeHills</d4p1:string>
+        <d4p1:string>SnowyLonePeak</d4p1:string>
+        <d4p1:string>SnowyMesa</d4p1:string>
+        <d4p1:string>SnowyMesaEdge</d4p1:string>
+        <d4p1:string>SnowyMesaForest</d4p1:string>
+        <d4p1:string>SnowyMesaRocks</d4p1:string>
+        <d4p1:string>SnowyMountains</d4p1:string>
+        <d4p1:string>SnowyMountainsEdge</d4p1:string>
+        <d4p1:string>SnowyPlains</d4p1:string>
+        <d4p1:string>SnowyPlainsEdge</d4p1:string>
+        <d4p1:string>SnowyPlainsM</d4p1:string>
+        <d4p1:string>SpookyGrove</d4p1:string>
+        <d4p1:string>SpookyGroveEdge</d4p1:string>
+        <d4p1:string>Steppe</d4p1:string>
+        <d4p1:string>SteppeHeathland</d4p1:string>
+        <d4p1:string>SteppeHill</d4p1:string>
+        <d4p1:string>SteppeRocks</d4p1:string>
+        <d4p1:string>Stone Beach</d4p1:string>
+        <d4p1:string>Sunflower Plains</d4p1:string>
+        <d4p1:string>Swampland Bushes</d4p1:string>
+        <d4p1:string>Swampland M</d4p1:string>
+        <d4p1:string>Swampland</d4p1:string>
+        <d4p1:string>SwamplandBorder</d4p1:string>
+        <d4p1:string>SwamplandLarge</d4p1:string>
+        <d4p1:string>SwamplandRuins</d4p1:string>
+        <d4p1:string>SwamplandSmall</d4p1:string>
+        <d4p1:string>SwamplandSpooky</d4p1:string>
+        <d4p1:string>Taiga M</d4p1:string>
+        <d4p1:string>Taiga</d4p1:string>
+        <d4p1:string>TaigaHighlands</d4p1:string>
+        <d4p1:string>TaigaHighlandsPeak</d4p1:string>
+        <d4p1:string>TaigaHills</d4p1:string>
+        <d4p1:string>TaigaPlateau</d4p1:string>
+        <d4p1:string>TaigaPlateauEdge</d4p1:string>
+        <d4p1:string>TaigaSmall</d4p1:string>
+        <d4p1:string>TemperateHills</d4p1:string>
+        <d4p1:string>TemperateHillsBorder</d4p1:string>
+        <d4p1:string>TemperateHillsForest</d4p1:string>
+        <d4p1:string>TemperateLonePeak</d4p1:string>
+        <d4p1:string>TemperateLowlands</d4p1:string>
+        <d4p1:string>TemperateLowlandsEdge</d4p1:string>
+        <d4p1:string>TemperatePlains</d4p1:string>
+        <d4p1:string>TemperatePlainsCypresshill</d4p1:string>
+        <d4p1:string>TemperatePlainsDarkMeadow</d4p1:string>
+        <d4p1:string>TemperatePlainsHeathland</d4p1:string>
+        <d4p1:string>TemperatePlainsM</d4p1:string>
+        <d4p1:string>TemperatePlainsMeadow</d4p1:string>
+        <d4p1:string>TemperatePlainsMeadowBorder</d4p1:string>
+        <d4p1:string>TemperatePlainsMeadowM</d4p1:string>
+        <d4p1:string>TemperatePlainsOakgrove</d4p1:string>
+        <d4p1:string>TemperatePlainsOakgroveBorder</d4p1:string>
+        <d4p1:string>The Void</d4p1:string>
+        <d4p1:string>Tropical Savanna Canyon High</d4p1:string>
+        <d4p1:string>Tropical Savanna Canyon Mid</d4p1:string>
+        <d4p1:string>Tropical Savanna Canyon</d4p1:string>
+        <d4p1:string>Tropical Savanna Edge</d4p1:string>
+        <d4p1:string>Tropical Savanna Summit</d4p1:string>
+        <d4p1:string>Tropical Savanna</d4p1:string>
+        <d4p1:string>TropicalMountain</d4p1:string>
+        <d4p1:string>TropicalPillarLarge</d4p1:string>
+        <d4p1:string>TropicalPillars</d4p1:string>
+        <d4p1:string>TropicalPillarSmall</d4p1:string>
+        <d4p1:string>Tundra</d4p1:string>
+        <d4p1:string>TundraCliffs</d4p1:string>
+        <d4p1:string>TundraEdge</d4p1:string>
+        <d4p1:string>TundraForest</d4p1:string>
+        <d4p1:string>Uplands</d4p1:string>
+        <d4p1:string>UplandsBlackSpruce</d4p1:string>
+        <d4p1:string>UplandsEdge</d4p1:string>
+        <d4p1:string>Webbed Forest Grove</d4p1:string>
+        <d4p1:string>Webbed Forest</d4p1:string>
+        <d4p1:string>Webbed Hills Edge</d4p1:string>
+        <d4p1:string>Webbed Hills</d4p1:string>
+        <d4p1:string>WoodlandBorder</d4p1:string>
+      </Biomes>
+      <Name>All</Name>
+    </Group>
+  </BiomeGroups>
+  <WorldConfig>
+    <Properties>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>Author</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>Description</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>SettingsMode</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>TerrainMode</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>BiomeMode</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CustomBiomes</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>GenerationDepth</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>BiomeRarityScale</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>false</OverrideParentValues>
+        <PropertyName>Biome Groups</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>false</OverrideParentValues>
+        <PropertyName>IsleBiomes</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>false</OverrideParentValues>
+        <PropertyName>BorderBiomes</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>LandRarity</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>LandSize</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>LandFuzzy</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>FrozenOcean</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>OceanFreezingTemperature</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>FreezeAllBiomesInColdGroup</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RiverRarity</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RiverSize</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RiversEnabled</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>ImprovedRivers</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RandomRivers</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>ImageMode</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>ImageFile</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>ImageOrientation</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>ImageFillBiome</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>ImageXOffset</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>ImageZOffset</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>WorldHeightScaleBits</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>WorldHeightCapBits</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>FractureHorizontal</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>FractureVertical</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RemoveSurfaceStone</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DisableBedrock</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CeilingBedrock</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>FlatBedrock</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>BedrockobBlock</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>PopulationBoundsCheck</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>WaterLevelMax</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>WaterLevelMin</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>WaterBlock</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>IceBlock</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CooledLavaBlock</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>FullyFreezeLakes</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>UseTemperatureForSnowHeight</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>BetterSnowFall</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>ResourcesSeed</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>StrongholdsEnabled</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>StrongholdCount</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>StrongholdDistance</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>StrongholdSpread</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>VillagesEnabled</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>VillageSize</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>VillageDistance</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RareBuildingsEnabled</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>MinimumDistanceBetweenRareBuildings</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>MaximumDistanceBetweenRareBuildings</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>WoodLandMansionsEnabled</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>OceanMonumentsEnabled</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>OceanMonumentGridSize</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>OceanMonumentRandomOffset</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>MaximumCustomStructureRadius</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>MineshaftsEnabled</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>NetherFortressesEnabled</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>WorldFog</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>WorldNightFog</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CaveRarity</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CaveFrequency</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CaveMinAltitude</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CaveMaxAltitude</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>IndividualCaveRarity</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CaveSystemFrequency</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CaveSystemPocketChance</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CaveSystemPocketMinSize</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CaveSystemPocketMaxSize</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>EvenCaveDistrubution</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RavineRarity</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RavineMinAltitude</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RavineMaxAltitude</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RavineMinLength</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RavineMaxLength</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RavineDepth</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>OldBiomeSize</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>MinMoisture</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>MaxMoisture</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>MinTemperature</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>MaxTemperature</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>WorldSeed</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>BO3AtSpawn</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>PreGenerationRadius</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>WorldBorderRadius</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>Dimensions</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DimensionBelow</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DimensionAbove</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DimensionPortalMaterials</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>TeleportToSpawnOnly</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>Cartographer</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CommandBlockOutput</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DisableElytraMovementCheck</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DoDaylightCycle</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DoEntityDrops</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DoFireTick</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DoMobLoot</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DoMobSpawning</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DoTileDrops</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DoWeatherCycle</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>KeepInventory</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>LogAdminCommands</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>MaxEntityCramming</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>MobGriefing</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>NaturalRegeneration</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>RandomTickSpeed</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>ReducedDebugInfo</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>SendCommandFeedback</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>ShowDeathMessages</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>SpawnRadius</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>SpectatorsGenerateChunks</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>WelcomeMessage</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DepartMessage</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>HasSkyLight</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>IsSurfaceWorld</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CanRespawnHere</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DoesWaterVaporize</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>DoesXZShowFog</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>UseCustomFogColor</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>FogColorRed</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>FogColorGreen</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>FogColorBlue</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>IsSkyColored</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CloudHeight</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CanDoLightning</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CanDoRainSnowIce</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>IsNightWorld</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>VoidFogYFactor</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>ShouldMapSpin</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+      <Property>
+        <Merge>false</Merge>
+        <Override>false</Override>
+        <OverrideParentValues>true</OverrideParentValues>
+        <PropertyName>CanDropChunk</PropertyName>
+        <Value i:nil="true" />
+      </Property>
+    </Properties>
+  </WorldConfig>
+</SettingsFile>

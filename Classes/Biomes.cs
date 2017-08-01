@@ -295,8 +295,9 @@ namespace OTGEdit
                 StringBuilder aggregateValue = new StringBuilder();
                 StringBuilder defaultValue = new StringBuilder();
 
-                foreach (System.IO.FileInfo file in sourceDirectory.GetFiles())
-                {                   
+                List<FileInfo> biomeFiles = DirectoryUtils.GetAllFilesInDirAndSubDirs(sourceDirectory.FullName);
+                foreach (System.IO.FileInfo file in biomeFiles)
+                {                
                     BiomeConfig defaultBiome = biomeConfigsDefaultValues.FirstOrDefault(a => a.FileName == file.Name);
                     if (defaultBiome != null)
                     {

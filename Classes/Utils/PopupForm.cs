@@ -1295,7 +1295,8 @@ namespace OTGEdit.Utils
                                     List<BiomeConfig> biomeConfigs = new List<BiomeConfig>();
                                     if (biomesDir != null)// || biomeConfigsDirPresent != null)
                                     {
-                                        foreach (FileInfo biomeFile in biomesDir.GetFiles().ToList())
+                                        List<FileInfo> allBiomeFiles = Utils.DirectoryUtils.GetAllFilesInDirAndSubDirs(biomesDir.FullName);
+                                        foreach (FileInfo biomeFile in allBiomeFiles)
                                         {
                                             BiomeConfig biomeConfig = Biomes.LoadBiomeConfigFromFile(biomeFile, versionConfig, false, ref txtErrorsWrongValue, ref txtErrorsNoSetting);
                                             if (biomeConfig != null)
@@ -1359,7 +1360,8 @@ namespace OTGEdit.Utils
                                     txtErrorsWrongValue = "";
                                     txtErrorsNoSetting = "";
 
-                                    foreach (FileInfo biomeFile in defaultBiomesDir.GetFiles().ToList())
+                                    List<FileInfo> biomeFiles = DirectoryUtils.GetAllFilesInDirAndSubDirs(defaultBiomesDir.FullName);
+                                    foreach (System.IO.FileInfo biomeFile in biomeFiles)
                                     {
                                         try
                                         {
@@ -1447,7 +1449,7 @@ namespace OTGEdit.Utils
                                             if (!defaultBiomeConfigs.Any(a => a.BiomeName == biomeConfig.BiomeName))
                                             {
                                                 //isDefaultWorld = false;
-                                                customBiomes.BiomesHash.Add(biomeConfig.BiomeName);
+                                                customBiomes.AddBiome(biomeConfig.BiomeName);
                                             } else {
                                                 BiomeConfig biomeDefaultConfig = defaultBiomeConfigs.FirstOrDefault(a => a.BiomeName == biomeConfig.BiomeName);
                                                 bool hasDefaultValues = true;
@@ -1671,6 +1673,18 @@ namespace OTGEdit.Utils
                     {
                         lb.SetSelected(i, true);
                     }
+                }
+                lb.ResumeLayout();
+            }
+            else if (e.Control && e.KeyCode == Keys.A)
+            {
+                e.SuppressKeyPress = true;
+
+                ListBox lb = (ListBox)sender;
+                lb.SuspendLayout();
+                for (int i = 0; i < lb.Items.Count; i++)
+                {
+                    lb.SetSelected(i, true);
                 }
                 lb.ResumeLayout();
             }

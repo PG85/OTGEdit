@@ -425,5 +425,19 @@ namespace OTGEdit.Utils
                 }
             }
         }
+
+        public static List<FileInfo> GetAllFilesInDirAndSubDirs(string dir)
+        {
+            List<FileInfo> files = new List<FileInfo>();
+            foreach (string f in Directory.GetFiles(dir))
+            {
+                files.Add(new FileInfo(f));
+            }
+            foreach (string d in Directory.GetDirectories(dir))
+            {
+                files.AddRange(GetAllFilesInDirAndSubDirs(d));
+            }
+            return files;
+        }
     }
 }

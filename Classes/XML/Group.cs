@@ -15,9 +15,10 @@ namespace OTGEdit.XML
         [DataMember]
         private List<string> Biomes = new List<string>();
 
+        [XmlIgnore]
         private HashSet<string> biomesHash = null;
         [XmlIgnore]
-        public HashSet<string> BiomesHash
+        public HashSet<string> BiomesHash // TODO: Fix this properly and don't expose this
         {
             get
             {
@@ -37,11 +38,28 @@ namespace OTGEdit.XML
             }
         }
 
-
         [DataMember]
         public BiomeConfig BiomeConfig;
 
         public bool showDefaults { get { return BiomesHash.Count == 1 && Name.Equals(BiomesHash.First()); } }
+
+        public void AddBiome(string biomeName)
+        {
+            BiomesHash.Add(biomeName);
+            Biomes.Add(biomeName);
+        }
+
+        public void RemoveBiome(string biomeName)
+        {
+            BiomesHash.Remove(biomeName);
+            Biomes.Remove(biomeName);
+        }
+
+        public void ClearBiomes()
+        {
+            BiomesHash.Clear();
+            Biomes.Clear();
+        }
 
         public Group(string name, VersionConfig config)
         {
