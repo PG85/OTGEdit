@@ -990,7 +990,7 @@
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "OTGEdit v1.0.12";
+            this.Text = "OTGEdit v1.0.13";
             this.Click += new System.EventHandler(this.btClickBackGround);
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);

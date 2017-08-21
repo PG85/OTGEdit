@@ -1465,7 +1465,7 @@
 			<Optional>true</Optional>
 			<MinValue>0</MinValue>
 			<MaxValue>999999</MaxValue>			
-        </TCProperty>
+        </TCProperty>		
 		<TCProperty>
             <Group>World border radius</Group>
             <LabelText i:nil="true" />        
@@ -1476,6 +1476,14 @@
 			<MinValue>0</MinValue>
 			<MaxValue>999999</MaxValue>			
         </TCProperty>
+		<TCProperty>
+            <Group>OTG+</Group>
+            <LabelText i:nil="true" />        
+            <Name>IsOTGPlus</Name>            
+            <PropertyType>Bool</PropertyType>
+            <ScriptHandle>IsOTGPlus:</ScriptHandle>
+			<Optional>true</Optional>
+        </TCProperty>		
 		<TCProperty>
             <Group>Dimension</Group>
             <LabelText i:nil="true" />        

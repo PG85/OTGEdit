@@ -1643,7 +1643,7 @@ namespace OTGEdit.Utils
             return PopUpForm.SingleSelectListBox(versions, "Select a OTG/TerrainControl version", "Which version of OTG/TerrainControl will you use with this world?");
         }
 
-        static void listBox_KeyDown(object sender, KeyEventArgs e)
+        public static void listBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.C)
             {

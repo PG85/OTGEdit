@@ -86,6 +86,9 @@ namespace OTGEdit
                 lbGroup.MouseWheel += lbBiomesTab_MouseWheel;
                 lbBiomes.MouseWheel += lbBiomesTab_MouseWheel;
 
+                lbGroup.KeyDown += PopUpForm.listBox_KeyDown;
+                lbBiomes.KeyDown += PopUpForm.listBox_KeyDown;
+
                 this.Width = Session.ClosedWidth;
                 this.Height = Session.ClosedHeight;
 
@@ -4509,8 +4512,11 @@ namespace OTGEdit
                         {
                             if (!Session.BiomeGroups.ContainsKey(groupName))
                             {
-                                Session.BiomeGroups[(string)lbGroups.Items[lbGroups.SelectedIndex]].Name = groupName;
-                                lbGroups.Items[lbGroups.SelectedIndex] = groupName;                        
+                                Group grp = Session.BiomeGroups[(string)lbGroups.SelectedItem];
+                                grp.Name = groupName; 
+                                Session.BiomeGroups.Remove((string)lbGroups.SelectedItem);
+                                Session.BiomeGroups.Add(groupName, grp);
+                                lbGroups.Items[lbGroups.SelectedIndex] = groupName;
                             } else {
                                 PopUpForm.CustomMessageBox("A group with this name already exists", "Error: Illegal input");
                             }
@@ -4545,7 +4551,7 @@ namespace OTGEdit
                     if(groupToClone != null && groupToClone.BiomesHash.Count > 1)
                     {
                         string groupName = "";
-                        if (PopUpForm.InputBox("Name new group", "Enter a name for the group. Only a-z A-Z 0-9 space + - and _ are allowed.", ref groupName, false, false, false, true) == DialogResult.OK)
+                        if (PopUpForm.InputBox("Name new group", "Enter a name for the group. Only a-z A-Z 0-9 space + - and _ are allowed.", ref groupName, false, false, false, false) == DialogResult.OK)
                         {
                             if (!string.IsNullOrWhiteSpace(groupName))
                             {
@@ -4562,7 +4568,7 @@ namespace OTGEdit
                                         if(tcProp != null)
                                         {
                                             g.BiomeConfig.SetProperty(tcProp, groupToClone.BiomeConfig.GetPropertyValueAsString(tcProp), groupToClone.BiomeConfig.GetPropertyMerge(tcProp), groupToClone.BiomeConfig.GetPropertyOverrideParentValues(tcProp));
-                                            g.BiomeConfig.PropertiesDict[tcProp.Name].Override = true;
+                                            g.BiomeConfig.PropertiesDict[tcProp.Name].Override = groupToClone.BiomeConfig.Properties.FirstOrDefault(a => a.PropertyName == prop).Override;
                                         }
                                     }
                                     Session.BiomeGroups.Add(g.Name, g);
@@ -5282,24 +5288,27 @@ namespace OTGEdit
                                         }
                                         foreach (Property prop in biomeGroup.BiomeConfig.PropertiesDict.Values.Where(c => c.Override && Session.VersionConfig.BiomeConfigDict.ContainsKey(c.PropertyName) && Session.VersionConfig.BiomeConfigDict[c.PropertyName].PropertyType == "BiomesList"))
                                         {
-                                            string[] biomeNames = prop.Value.Split(',');
                                             string newBiomeNames = "";
-                                            for (int k = 0; k < biomeNames.Length; k++)
+                                            if(prop.Value != null)
                                             {
-                                                if (!Session.BiomeNames.Any(a => (string)a.Trim() == (string)biomeNames[k].Trim()))
+                                                string[] biomeNames = prop.Value.Split(',');
+                                                for (int k = 0; k < biomeNames.Length; k++)
                                                 {
-                                                    if(!String.IsNullOrEmpty(biomeNames[k].Trim()))
+                                                    if (!Session.BiomeNames.Any(a => (string)a.Trim() == (string)biomeNames[k].Trim()))
                                                     {
-                                                        sErrorMessage2 += "Could not select biome \"" + biomeNames[k].Trim() + "\" for setting \"" + prop.PropertyName + "\" in biome group \"" + biomeGroup.Name + "\".\r\n";
-                                                    }
-                                                } else {
-                                                    if (newBiomeNames != (string)biomeNames[k].Trim() + "," && !newBiomeNames.Contains("," + (string)biomeNames[k].Trim() + ","))
-                                                    {
-                                                        newBiomeNames += (string)biomeNames[k].Trim() + ",";
+                                                        if(!String.IsNullOrEmpty(biomeNames[k].Trim()))
+                                                        {
+                                                            sErrorMessage2 += "Could not select biome \"" + biomeNames[k].Trim() + "\" for setting \"" + prop.PropertyName + "\" in biome group \"" + biomeGroup.Name + "\".\r\n";
+                                                        }
+                                                    } else {
+                                                        if (newBiomeNames != (string)biomeNames[k].Trim() + "," && !newBiomeNames.Contains("," + (string)biomeNames[k].Trim() + ","))
+                                                        {
+                                                            newBiomeNames += (string)biomeNames[k].Trim() + ",";
+                                                        }
                                                     }
                                                 }
                                             }
-                                            prop.Value = newBiomeNames.Length == 0 ? newBiomeNames : newBiomeNames.Substring(0, newBiomeNames.Length - 1);
+                                            prop.Value = prop.Value == null ? null : newBiomeNames.Length == 0 ? newBiomeNames : newBiomeNames.Substring(0, newBiomeNames.Length - 1);
                                         }
                                         propertiesToRemove = new List<string>();
                                         foreach (Property prop in biomeGroup.BiomeConfig.PropertiesDict.Values)
@@ -5667,7 +5676,7 @@ namespace OTGEdit
                         DialogResult exportForTCResult = !useBranches ? DialogResult.Yes : PopUpForm.CustomYesNoBox("OTG/TerrainControl or MCW/OTG+?", "Export BO3's for TC/OTG or MCW/OTG+?", "OTG/TerrainControl", "MCW/OTG+");
                         if (exportForTCResult != System.Windows.Forms.DialogResult.Cancel)
                         {
-                            bool exportForTC = useBranchesResult == DialogResult.Yes;
+                            bool exportForTC = exportForTCResult == DialogResult.Yes;
 
                             DialogResult removeAirResult = PopUpForm.CustomYesNoBox("Remove air blocks?", "", "Remove air", "Keep air");
                             if(removeAirResult != System.Windows.Forms.DialogResult.Cancel)
