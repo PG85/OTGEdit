@@ -1475,15 +1475,7 @@
 			<Optional>true</Optional>
 			<MinValue>0</MinValue>
 			<MaxValue>999999</MaxValue>			
-        </TCProperty>
-		<TCProperty>
-            <Group>OTG+</Group>
-            <LabelText i:nil="true" />        
-            <Name>IsOTGPlus</Name>            
-            <PropertyType>Bool</PropertyType>
-            <ScriptHandle>IsOTGPlus:</ScriptHandle>
-			<Optional>true</Optional>
-        </TCProperty>		
+        </TCProperty>	
 		<TCProperty>
             <Group>Dimension</Group>
             <LabelText i:nil="true" />        

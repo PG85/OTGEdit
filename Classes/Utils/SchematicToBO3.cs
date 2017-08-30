@@ -571,7 +571,7 @@ namespace OTGEdit.Utils
                                 BO3String.Append("Description: No description\r\n");
                                 BO3String.Append("\r\n");
                                 BO3String.Append("# The BO3 version, don't change this! It can be used by external applications to do a version check.\r\n");
-                                BO3String.Append("Version: MCW104\r\n");
+                                BO3String.Append("Version: 4\r\n");
                                 BO3String.Append("\r\n");
                                 BO3String.Append("# The settings mode, WriteAll, WriteWithoutComments or WriteDisable. See WorldConfig.\r\n");
                                 BO3String.Append("SettingsMode: WriteDisable\r\n");
@@ -581,6 +581,8 @@ namespace OTGEdit.Utils
                                 BO3String.Append("# |                          Main settings                          | #\r\n");
                                 BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                                 BO3String.Append("#######################################################################\r\n");
+                                BO3String.Append("\r\n");
+                                BO3String.Append("IsOTGPlus: true");
                                 BO3String.Append("\r\n");
                                 BO3String.Append("# This settings is currently unavailable for MCW/OTG+.\r\n");
                                 BO3String.Append("Tree: false\r\n");
@@ -860,7 +862,7 @@ namespace OTGEdit.Utils
                                 BO3String.Append("\r\n");
                             }
 
-                            if ((chunk.Key.X != 0 || chunk.Key.Z != 0 || !firstPass) && blocksPerChunkArr[chunk.Key.X, chunk.Key.Z] != null)
+                            if ((chunk.Key.X != 0 || chunk.Key.Z != 0 || !firstPass) && blocksPerChunkArr[chunk.Key.X + 1, chunk.Key.Z] != null)
                             {
                                 if (exportForTC)
                                 {
@@ -871,7 +873,7 @@ namespace OTGEdit.Utils
                             }
                             if ((chunk.Key.X != 0 || chunk.Key.Z != 0 || !firstPass) && chunk.Key.X == 0)
                             {
-                                if (blocksPerChunkArr[chunk.Key.X, chunk.Key.Z] != null)
+                                if (blocksPerChunkArr[chunk.Key.X, chunk.Key.Z + 1] != null)
                                 {
                                     if (exportForTC)
                                     {
