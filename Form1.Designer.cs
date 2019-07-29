@@ -35,14 +35,12 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBoxWithBorder7 = new System.Windows.Forms.TextBox();
             this.textBoxWithBorder6 = new System.Windows.Forms.TextBox();
             this.textBoxWithBorder4 = new System.Windows.Forms.TextBox();
             this.textBoxWithBorder5 = new System.Windows.Forms.TextBox();
             this.rtbHelpTabLink1 = new System.Windows.Forms.RichTextBox();
             this.rtbHelpTabLink3 = new System.Windows.Forms.RichTextBox();
             this.rtbHelpTabLink2 = new System.Windows.Forms.RichTextBox();
-            this.rtbHelpTabLink5 = new System.Windows.Forms.RichTextBox();
             this.rtbHelpTabLink4 = new System.Windows.Forms.RichTextBox();
             this.textBoxWithBorder1 = new System.Windows.Forms.TextBox();
             this.textBoxWithBorder2 = new System.Windows.Forms.TextBox();
@@ -80,7 +78,6 @@
             this.lbBiomes = new System.Windows.Forms.ListBox();
             this.btSave = new System.Windows.Forms.Button();
             this.btLoad = new System.Windows.Forms.Button();
-            this.cbDeleteRegion = new System.Windows.Forms.CheckBox();
             this.btCopyBO3s = new System.Windows.Forms.Button();
             this.btImportWorld = new System.Windows.Forms.Button();
             this.btSelectSourceWorld = new System.Windows.Forms.Button();
@@ -175,14 +172,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.groupBox3.Controls.Add(this.textBoxWithBorder7);
             this.groupBox3.Controls.Add(this.textBoxWithBorder6);
             this.groupBox3.Controls.Add(this.textBoxWithBorder4);
             this.groupBox3.Controls.Add(this.textBoxWithBorder5);
             this.groupBox3.Controls.Add(this.rtbHelpTabLink1);
             this.groupBox3.Controls.Add(this.rtbHelpTabLink3);
             this.groupBox3.Controls.Add(this.rtbHelpTabLink2);
-            this.groupBox3.Controls.Add(this.rtbHelpTabLink5);
             this.groupBox3.Controls.Add(this.rtbHelpTabLink4);
             this.groupBox3.Controls.Add(this.textBoxWithBorder1);
             this.groupBox3.Controls.Add(this.textBoxWithBorder2);
@@ -195,48 +190,36 @@
             this.groupBox3.Text = "Help";
             this.groupBox3.Click += new System.EventHandler(this.btClickBackGround);
             // 
-            // textBoxWithBorder7
-            // 
-            this.textBoxWithBorder7.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.textBoxWithBorder7.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxWithBorder7.Location = new System.Drawing.Point(26, 355);
-            this.textBoxWithBorder7.Name = "textBoxWithBorder7";
-            this.textBoxWithBorder7.ReadOnly = true;
-            this.textBoxWithBorder7.Size = new System.Drawing.Size(899, 13);
-            this.textBoxWithBorder7.TabIndex = 30;
-            this.textBoxWithBorder7.TabStop = false;
-            this.textBoxWithBorder7.Text = "MCW: PeeGee85";
-            // 
             // textBoxWithBorder6
             // 
             this.textBoxWithBorder6.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.textBoxWithBorder6.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxWithBorder6.Location = new System.Drawing.Point(26, 329);
+            this.textBoxWithBorder6.Location = new System.Drawing.Point(26, 288);
             this.textBoxWithBorder6.Name = "textBoxWithBorder6";
             this.textBoxWithBorder6.ReadOnly = true;
             this.textBoxWithBorder6.Size = new System.Drawing.Size(899, 13);
             this.textBoxWithBorder6.TabIndex = 29;
             this.textBoxWithBorder6.TabStop = false;
-            this.textBoxWithBorder6.Text = "TerrainControl: RutgerKok, TimeThor, Khorn/Wickth, Olof Larsson. And lots of comm" +
-    "unity contributors, special thanks to BloodMC and PeeGee85.";
+            this.textBoxWithBorder6.Text = "TerrainControl: RutgerKok, TimeThor, Khorn/Wickth, Olof Larsson. Lots of communit" +
+    "y contributors, special thanks to BloodMC and PeeGee85.";
             // 
             // textBoxWithBorder4
             // 
             this.textBoxWithBorder4.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.textBoxWithBorder4.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxWithBorder4.Location = new System.Drawing.Point(26, 277);
+            this.textBoxWithBorder4.Location = new System.Drawing.Point(26, 236);
             this.textBoxWithBorder4.Name = "textBoxWithBorder4";
             this.textBoxWithBorder4.ReadOnly = true;
             this.textBoxWithBorder4.Size = new System.Drawing.Size(899, 13);
             this.textBoxWithBorder4.TabIndex = 28;
             this.textBoxWithBorder4.TabStop = false;
-            this.textBoxWithBorder4.Text = "OTG / OTG+: PeeGee85 (code), MCPitman (wiki/reddit/websites, art, community)";
+            this.textBoxWithBorder4.Text = "OTG : PeeGee85/PG85 (code), MCPitman (wiki/reddit/websites/art/community)";
             // 
             // textBoxWithBorder5
             // 
             this.textBoxWithBorder5.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.textBoxWithBorder5.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxWithBorder5.Location = new System.Drawing.Point(26, 303);
+            this.textBoxWithBorder5.Location = new System.Drawing.Point(26, 262);
             this.textBoxWithBorder5.Name = "textBoxWithBorder5";
             this.textBoxWithBorder5.ReadOnly = true;
             this.textBoxWithBorder5.Size = new System.Drawing.Size(899, 13);
@@ -283,19 +266,6 @@
             this.rtbHelpTabLink2.TabStop = false;
             this.rtbHelpTabLink2.Text = "OTG wiki: http://openterraingen.wikia.com/wiki/Open_Terrain_Generator_Wiki";
             // 
-            // rtbHelpTabLink5
-            // 
-            this.rtbHelpTabLink5.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.rtbHelpTabLink5.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbHelpTabLink5.Location = new System.Drawing.Point(26, 168);
-            this.rtbHelpTabLink5.Multiline = false;
-            this.rtbHelpTabLink5.Name = "rtbHelpTabLink5";
-            this.rtbHelpTabLink5.ReadOnly = true;
-            this.rtbHelpTabLink5.Size = new System.Drawing.Size(899, 13);
-            this.rtbHelpTabLink5.TabIndex = 23;
-            this.rtbHelpTabLink5.TabStop = false;
-            this.rtbHelpTabLink5.Text = "MCW/OTGEdit video tutorials: https://www.youtube.com/user/PeeGee85";
-            // 
             // rtbHelpTabLink4
             // 
             this.rtbHelpTabLink4.BackColor = System.Drawing.SystemColors.ControlLightLight;
@@ -307,7 +277,7 @@
             this.rtbHelpTabLink4.Size = new System.Drawing.Size(899, 13);
             this.rtbHelpTabLink4.TabIndex = 16;
             this.rtbHelpTabLink4.TabStop = false;
-            this.rtbHelpTabLink4.Text = "TerrainControl Wiki: https://github.com/MCTCP/TerrainControl/wiki";
+            this.rtbHelpTabLink4.Text = "MCW/OTGEdit video tutorials: https://www.youtube.com/user/PeeGee85";
             // 
             // textBoxWithBorder1
             // 
@@ -327,7 +297,7 @@
             this.textBoxWithBorder2.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.textBoxWithBorder2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxWithBorder2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxWithBorder2.Location = new System.Drawing.Point(26, 218);
+            this.textBoxWithBorder2.Location = new System.Drawing.Point(26, 177);
             this.textBoxWithBorder2.Name = "textBoxWithBorder2";
             this.textBoxWithBorder2.ReadOnly = true;
             this.textBoxWithBorder2.Size = new System.Drawing.Size(899, 13);
@@ -339,13 +309,13 @@
             // 
             this.textBoxWithBorder3.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.textBoxWithBorder3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxWithBorder3.Location = new System.Drawing.Point(26, 251);
+            this.textBoxWithBorder3.Location = new System.Drawing.Point(26, 210);
             this.textBoxWithBorder3.Name = "textBoxWithBorder3";
             this.textBoxWithBorder3.ReadOnly = true;
             this.textBoxWithBorder3.Size = new System.Drawing.Size(899, 13);
             this.textBoxWithBorder3.TabIndex = 10;
             this.textBoxWithBorder3.TabStop = false;
-            this.textBoxWithBorder3.Text = "OTGEdit: PeeGee85 (code), MCPitman (pre-sets)";
+            this.textBoxWithBorder3.Text = "OTGEdit: PeeGee85/PG85 (code), MCPitman (pre-sets)";
             // 
             // groupBoxWorldTab
             // 
@@ -522,7 +492,7 @@
             this.btBiomeTabHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btBiomeTabHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btBiomeTabHelp.ForeColor = System.Drawing.Color.White;
-            this.btBiomeTabHelp.Location = new System.Drawing.Point(905, 13);
+            this.btBiomeTabHelp.Location = new System.Drawing.Point(848, 13);
             this.btBiomeTabHelp.Name = "btBiomeTabHelp";
             this.btBiomeTabHelp.Size = new System.Drawing.Size(85, 25);
             this.btBiomeTabHelp.TabIndex = 42;
@@ -537,7 +507,7 @@
             this.btSearchBiomeConfigNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btSearchBiomeConfigNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btSearchBiomeConfigNext.ForeColor = System.Drawing.Color.White;
-            this.btSearchBiomeConfigNext.Location = new System.Drawing.Point(875, 13);
+            this.btSearchBiomeConfigNext.Location = new System.Drawing.Point(818, 13);
             this.btSearchBiomeConfigNext.Name = "btSearchBiomeConfigNext";
             this.btSearchBiomeConfigNext.Size = new System.Drawing.Size(26, 25);
             this.btSearchBiomeConfigNext.TabIndex = 40;
@@ -552,7 +522,7 @@
             this.btSearchBiomeConfigPrev.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btSearchBiomeConfigPrev.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btSearchBiomeConfigPrev.ForeColor = System.Drawing.Color.White;
-            this.btSearchBiomeConfigPrev.Location = new System.Drawing.Point(845, 13);
+            this.btSearchBiomeConfigPrev.Location = new System.Drawing.Point(788, 13);
             this.btSearchBiomeConfigPrev.Name = "btSearchBiomeConfigPrev";
             this.btSearchBiomeConfigPrev.Size = new System.Drawing.Size(26, 25);
             this.btSearchBiomeConfigPrev.TabIndex = 39;
@@ -564,7 +534,7 @@
             // tbSearchBiomeConfig
             // 
             this.tbSearchBiomeConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbSearchBiomeConfig.Location = new System.Drawing.Point(685, 16);
+            this.tbSearchBiomeConfig.Location = new System.Drawing.Point(628, 16);
             this.tbSearchBiomeConfig.Name = "tbSearchBiomeConfig";
             this.tbSearchBiomeConfig.Size = new System.Drawing.Size(154, 20);
             this.tbSearchBiomeConfig.TabIndex = 38;
@@ -799,7 +769,7 @@
             this.btSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btSave.ForeColor = System.Drawing.Color.White;
-            this.btSave.Location = new System.Drawing.Point(17, 65);
+            this.btSave.Location = new System.Drawing.Point(332, 64);
             this.btSave.Name = "btSave";
             this.btSave.Size = new System.Drawing.Size(105, 25);
             this.btSave.TabIndex = 26;
@@ -813,7 +783,7 @@
             this.btLoad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btLoad.ForeColor = System.Drawing.Color.White;
-            this.btLoad.Location = new System.Drawing.Point(128, 65);
+            this.btLoad.Location = new System.Drawing.Point(443, 64);
             this.btLoad.Name = "btLoad";
             this.btLoad.Size = new System.Drawing.Size(109, 25);
             this.btLoad.TabIndex = 28;
@@ -822,28 +792,13 @@
             this.btLoad.UseVisualStyleBackColor = false;
             this.btLoad.Click += new System.EventHandler(this.btLoad_Click);
             // 
-            // cbDeleteRegion
-            // 
-            this.cbDeleteRegion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbDeleteRegion.AutoSize = true;
-            this.cbDeleteRegion.Checked = true;
-            this.cbDeleteRegion.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDeleteRegion.Location = new System.Drawing.Point(125, 690);
-            this.cbDeleteRegion.Name = "cbDeleteRegion";
-            this.cbDeleteRegion.Size = new System.Drawing.Size(137, 17);
-            this.cbDeleteRegion.TabIndex = 33;
-            this.cbDeleteRegion.TabStop = false;
-            this.cbDeleteRegion.Text = "Delete /region directory";
-            this.cbDeleteRegion.UseVisualStyleBackColor = true;
-            this.cbDeleteRegion.Visible = false;
-            // 
             // btCopyBO3s
             // 
             this.btCopyBO3s.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btCopyBO3s.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btCopyBO3s.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btCopyBO3s.ForeColor = System.Drawing.Color.White;
-            this.btCopyBO3s.Location = new System.Drawing.Point(273, 685);
+            this.btCopyBO3s.Location = new System.Drawing.Point(120, 685);
             this.btCopyBO3s.Name = "btCopyBO3s";
             this.btCopyBO3s.Size = new System.Drawing.Size(162, 25);
             this.btCopyBO3s.TabIndex = 36;
@@ -858,7 +813,7 @@
             this.btImportWorld.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btImportWorld.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btImportWorld.ForeColor = System.Drawing.Color.White;
-            this.btImportWorld.Location = new System.Drawing.Point(243, 65);
+            this.btImportWorld.Location = new System.Drawing.Point(558, 64);
             this.btImportWorld.Name = "btImportWorld";
             this.btImportWorld.Size = new System.Drawing.Size(126, 25);
             this.btImportWorld.TabIndex = 37;
@@ -872,9 +827,9 @@
             this.btSelectSourceWorld.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btSelectSourceWorld.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btSelectSourceWorld.ForeColor = System.Drawing.Color.White;
-            this.btSelectSourceWorld.Location = new System.Drawing.Point(418, 36);
+            this.btSelectSourceWorld.Location = new System.Drawing.Point(733, 35);
             this.btSelectSourceWorld.Name = "btSelectSourceWorld";
-            this.btSelectSourceWorld.Size = new System.Drawing.Size(125, 23);
+            this.btSelectSourceWorld.Size = new System.Drawing.Size(94, 23);
             this.btSelectSourceWorld.TabIndex = 8;
             this.btSelectSourceWorld.TabStop = false;
             this.btSelectSourceWorld.Text = "Select";
@@ -888,7 +843,7 @@
             this.cbVersion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbVersion.ForeColor = System.Drawing.Color.Black;
             this.cbVersion.FormattingEnabled = true;
-            this.cbVersion.Location = new System.Drawing.Point(17, 36);
+            this.cbVersion.Location = new System.Drawing.Point(332, 35);
             this.cbVersion.Name = "cbVersion";
             this.cbVersion.Size = new System.Drawing.Size(191, 21);
             this.cbVersion.TabIndex = 31;
@@ -901,7 +856,7 @@
             this.cbWorld.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbWorld.ForeColor = System.Drawing.Color.Black;
             this.cbWorld.FormattingEnabled = true;
-            this.cbWorld.Location = new System.Drawing.Point(214, 36);
+            this.cbWorld.Location = new System.Drawing.Point(529, 35);
             this.cbWorld.Name = "cbWorld";
             this.cbWorld.Size = new System.Drawing.Size(198, 21);
             this.cbWorld.TabIndex = 33;
@@ -933,9 +888,10 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = global::OTGEdit.Properties.Resources.OTGEdit;
-            this.pictureBox1.Location = new System.Drawing.Point(593, 27);
+            this.pictureBox1.Location = new System.Drawing.Point(2, 4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(304, 63);
+            this.pictureBox1.Size = new System.Drawing.Size(326, 104);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 38;
             this.pictureBox1.TabStop = false;
             // 
@@ -943,7 +899,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(212, 17);
+            this.label4.Location = new System.Drawing.Point(527, 16);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(78, 13);
             this.label4.TabIndex = 35;
@@ -953,7 +909,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(16, 17);
+            this.label1.Location = new System.Drawing.Point(331, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(144, 13);
             this.label1.TabIndex = 34;
@@ -964,12 +920,12 @@
             this.btnConvertSchematicToBO3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(150)))), ((int)(((byte)(134)))));
             this.btnConvertSchematicToBO3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnConvertSchematicToBO3.ForeColor = System.Drawing.Color.White;
-            this.btnConvertSchematicToBO3.Location = new System.Drawing.Point(375, 65);
+            this.btnConvertSchematicToBO3.Location = new System.Drawing.Point(690, 64);
             this.btnConvertSchematicToBO3.Name = "btnConvertSchematicToBO3";
-            this.btnConvertSchematicToBO3.Size = new System.Drawing.Size(168, 25);
+            this.btnConvertSchematicToBO3.Size = new System.Drawing.Size(137, 25);
             this.btnConvertSchematicToBO3.TabIndex = 35;
             this.btnConvertSchematicToBO3.TabStop = false;
-            this.btnConvertSchematicToBO3.Text = "Convert .schematic to BO3";
+            this.btnConvertSchematicToBO3.Text = "Convert schematic";
             this.btnConvertSchematicToBO3.UseVisualStyleBackColor = false;
             this.btnConvertSchematicToBO3.Click += new System.EventHandler(this.btnConvertSchematicToBO3_Click);
             // 
@@ -983,14 +939,13 @@
             this.Controls.Add(this.groupBoxBiomesTab);
             this.Controls.Add(this.btCopyBO3s);
             this.Controls.Add(this.groupBoxWorldTab);
-            this.Controls.Add(this.cbDeleteRegion);
-            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pnlVersionWorldSelect);
             this.Controls.Add(this.btGenerate);
+            this.Controls.Add(this.tabControl1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "OTGEdit v1.0.13";
+            this.Text = "OTGEdit v1.0.14";
             this.Click += new System.EventHandler(this.btClickBackGround);
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -1012,7 +967,6 @@
             this.pnlVersionWorldSelect.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -1040,13 +994,11 @@
         private System.Windows.Forms.Button btEditGroup;
         private System.Windows.Forms.Button btGroupMoveDown;
         private System.Windows.Forms.Button btGroupMoveUp;
-        private System.Windows.Forms.CheckBox cbDeleteRegion;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox textBoxWithBorder1;
         private System.Windows.Forms.TextBox textBoxWithBorder2;
         private System.Windows.Forms.TextBox textBoxWithBorder3;
-        private System.Windows.Forms.RichTextBox rtbHelpTabLink5;
         private System.Windows.Forms.Button btCopyBO3s;
         private System.Windows.Forms.Button btImportWorld;
         private System.Windows.Forms.Button btCloneGroup;
@@ -1077,9 +1029,7 @@
         private System.Windows.Forms.TextBox textBoxWithBorder4;
         private System.Windows.Forms.TextBox textBoxWithBorder5;
         private System.Windows.Forms.RichTextBox rtbHelpTabLink1;
-        private System.Windows.Forms.TextBox textBoxWithBorder7;
         private System.Windows.Forms.Button btWorldTabHelp;
         private System.Windows.Forms.Button btBiomeTabHelp;
     }
 }
-

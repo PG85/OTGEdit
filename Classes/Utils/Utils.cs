@@ -114,7 +114,7 @@ namespace OTGEdit.Utils
         }
     }
 
-    public static class TCSettingsUtils
+    public static class OTGSettingsUtils
     {
         public static bool CompareBiomeLists(string biomeList, string biomeList2)
         {

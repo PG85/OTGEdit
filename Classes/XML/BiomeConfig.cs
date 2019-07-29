@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace OTGEdit.XML
 {
-    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/TCEE")]
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/OTGEdit")]
     public class BiomeConfig
     {
         [DataMember]
@@ -51,9 +51,9 @@ namespace OTGEdit.XML
         public BiomeConfig(VersionConfig config)
         {
             propertiesDict = new Dictionary<string, Property>();
-            foreach (TCProperty tcProperty in config.BiomeConfigDict.Values)
+            foreach (OTGProperty otgProperty in config.BiomeConfigDict.Values)
             {
-                AddProperty(new Property(null, false, tcProperty.Name, false, tcProperty.PropertyType != "BiomesList" && tcProperty.PropertyType != "ResourceQueue"));
+                AddProperty(new Property(null, false, otgProperty.Name, false, otgProperty.PropertyType != "BiomesList" && otgProperty.PropertyType != "BiomesListSingle" && otgProperty.PropertyType != "ResourceQueue"));
             }
         }
 
@@ -70,9 +70,9 @@ namespace OTGEdit.XML
             Properties.Remove(property);
         }
 
-        public void SetProperty(TCProperty tcProperty, string value, bool merge, bool overrideParentValues)
+        public void SetProperty(OTGProperty otgProperty, string value, bool merge, bool overrideParentValues)
         {
-            if (tcProperty.PropertyType != "String" && tcProperty.PropertyType != "BigString" && tcProperty.PropertyType != "BiomesList" && tcProperty.PropertyType != "ResourceQueue" && String.IsNullOrWhiteSpace(value))
+            if (otgProperty.PropertyType != "String" && otgProperty.PropertyType != "BigString" && otgProperty.PropertyType != "BiomesList" && otgProperty.PropertyType != "BiomesListSingle" && otgProperty.PropertyType != "ResourceQueue" && String.IsNullOrWhiteSpace(value))
             {
                 value = null;
             }
@@ -80,25 +80,25 @@ namespace OTGEdit.XML
             {
                 value = value.Trim();
             }
-            Property property = PropertiesDict[tcProperty.Name];
+            Property property = PropertiesDict[otgProperty.Name];
             property.Value = value;
             property.Merge = merge;
             property.OverrideParentValues = overrideParentValues;
         }
 
-        public string GetPropertyValueAsString(TCProperty property)
+        public string GetPropertyValueAsString(OTGProperty property)
         {
             Property prop = PropertiesDict.ContainsKey(property.Name) ? PropertiesDict[property.Name] : null;
             return prop != null ? prop.Value : null;
         }
 
-        public bool GetPropertyMerge(TCProperty property)
+        public bool GetPropertyMerge(OTGProperty property)
         {
             Property prop = PropertiesDict.ContainsKey(property.Name) ? PropertiesDict[property.Name] : null;
             return prop != null ? prop.Merge : false;
         }
 
-        public bool GetPropertyOverrideParentValues(TCProperty property)
+        public bool GetPropertyOverrideParentValues(OTGProperty property)
         {
             Property prop = PropertiesDict.ContainsKey(property.Name) ? PropertiesDict[property.Name] : null;
             return prop != null ? prop.OverrideParentValues : false;

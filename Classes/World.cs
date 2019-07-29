@@ -23,7 +23,7 @@ namespace OTGEdit
 
                 StringBuilder defaultText = new StringBuilder(System.IO.File.ReadAllText(file.FullName));
                 string sDefaultText = defaultText.ToString();
-                foreach (TCProperty property in versionConfig.WorldConfigDict.Values)
+                foreach (OTGProperty property in versionConfig.WorldConfigDict.Values)
                 {
                     if (!loadUI || Session.WorldSettingsInputs.ContainsKey(property))
                     {
@@ -139,7 +139,27 @@ namespace OTGEdit
 
                                 if (replaceLength > 0)
                                 {
-                                    propertyValue = defaultText.ToString(replaceStartIndex, replaceLength).Trim();
+                                    string[] lines = defaultText.ToString(replaceStartIndex, replaceLength).Trim().Split(
+                                        new[] { "\r\n", "\r", "\n" },
+                                        StringSplitOptions.None
+                                    );
+                                    for (int i = 0; i < lines.Length; i++)
+                                    {
+                                        String line = lines[i];
+                                        bool isResourceLine = false;
+                                        foreach (ResourceQueueItem prop in versionConfig.ResourceQueueOptions)
+                                        {
+                                            if (line.Trim().StartsWith(prop.Name))
+                                            {
+                                                isResourceLine = true;
+                                                break;
+                                            }
+                                        }
+                                        if (isResourceLine)
+                                        {
+                                            propertyValue += line.Trim() + (i != lines.Length - 1 ? Environment.NewLine : "");
+                                        }
+                                    }
                                 }
 
                                 if (loadUI)
@@ -177,7 +197,7 @@ namespace OTGEdit
                                 if (!property.Optional)
                                 {
                                     PopUpForm.CustomMessageBox(txtErrorsNoSetting, "Version warnings");
-                                    PopUpForm.CustomMessageBox("The files you are importing contain critical errors, they were probably not made for use with the selected version of TC/MCW/OTG/OTG+ and require manual updating.", "Error reading configuration files");
+                                    PopUpForm.CustomMessageBox("The files you are importing contain critical errors, they were probably not made for use with the selected version of OTG and require manual updating.", "Error reading configuration files");
                                     return null;
                                 }
                                 //throw new Exception();
@@ -300,6 +320,24 @@ namespace OTGEdit
                                                 }
                                                 ((RadioButton)Session.WorldSettingsInputs[property].Item6.Controls.Find("Override", true)[0]).Checked = true;
                                                 ((RadioButton)Session.WorldSettingsInputs[property].Item6.Controls.Find("Merge", true)[0]).Checked = false;
+                                            break;
+                                            case "BiomesListSingle":
+                                                ((ListBox)Session.WorldSettingsInputs[property].Item1).SelectedItems.Clear();
+                                                string[] biomeNames3 = propertyValue.Split(',');
+                                                for (int k = 0; k < biomeNames3.Length; k++)
+                                                {
+                                                    if (Session.BiomeNames.Any(a => (string)a.Trim() == (string)biomeNames3[k].Trim()))
+                                                    {
+                                                        for (int l = 0; l < ((ListBox)Session.WorldSettingsInputs[property].Item1).Items.Count; l++)
+                                                        {
+                                                            if (((string)((ListBox)Session.WorldSettingsInputs[property].Item1).Items[l]).Trim() == (string)biomeNames3[k].Trim())
+                                                            {
+                                                                ((ListBox)Session.WorldSettingsInputs[property].Item1).SelectedItems.Add(((ListBox)Session.WorldSettingsInputs[property].Item1).Items[l]);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                Session.WorldSettingsInputs[property].Item2.Checked = false;
                                                 break;
                                             case "Bool":
                                                 if (propertyValue.ToLower() == "true")
@@ -380,7 +418,7 @@ namespace OTGEdit
                                 if (!property.Optional)
                                 {
                                     PopUpForm.CustomMessageBox(txtErrorsNoSetting, "Version warnings");
-                                    PopUpForm.CustomMessageBox("The files you are importing contain critical errors, they were probably not made for use with the selected version of TC/MCW/OTG/OTG+ and require manual updating.", "Error reading configuration files");
+                                    PopUpForm.CustomMessageBox("The files you are importing contain critical errors, they were probably not made for use with the selected version of OTG and require manual updating.", "Error reading configuration files");
                                     return null;
                                 }
 
@@ -411,7 +449,7 @@ namespace OTGEdit
                 StringBuilder defaultText = new StringBuilder(System.IO.File.ReadAllText(defaultWorldConfig.FullName));
                 StringBuilder newValue = new StringBuilder();
                 string errorsTxt = "";
-                foreach (TCProperty property in versionConfig.WorldConfigDict.Values)
+                foreach (OTGProperty property in versionConfig.WorldConfigDict.Values)
                 {
                     newValue.Clear();
 
@@ -424,12 +462,12 @@ namespace OTGEdit
                         (
                             newValueString == worldConfigDefaultValues.GetPropertyValueAsString(property) || 
                             (
-                                property.PropertyType.Equals("BiomesList") &&
-                                Utils.TCSettingsUtils.CompareBiomeLists(newValueString, worldConfigDefaultValues.GetPropertyValueAsString(property))
+                                (property.PropertyType.Equals("BiomesList") || property.PropertyType.Equals("BiomesListSingle")) &&
+                                Utils.OTGSettingsUtils.CompareBiomeLists(newValueString, worldConfigDefaultValues.GetPropertyValueAsString(property))
                             ) || 
                             (
                                 property.PropertyType.Equals("ResourceQueue") &&
-                                Utils.TCSettingsUtils.CompareResourceQueues(newValueString, worldConfigDefaultValues.GetPropertyValueAsString(property))
+                                Utils.OTGSettingsUtils.CompareResourceQueues(newValueString, worldConfigDefaultValues.GetPropertyValueAsString(property))
                             )
                         )
                     )
@@ -641,7 +679,7 @@ namespace OTGEdit
                                     }
                                 }
 
-                                if (property.PropertyType == "BiomesList" && worldConfig.GetPropertyMerge(property) && valueStringLength > 0)
+                                if ((property.PropertyType == "BiomesList" || property.PropertyType == "BiomesListSingle") && worldConfig.GetPropertyMerge(property) && valueStringLength > 0)
                                 {
                                     string[] biomesListItemNames = newValue.Length > 0 ? newValue.ToString().Split(',') : null;
                                     string[] defaultBiomesListItemNames = worldConfigDefaultValues.GetPropertyValueAsString(property) != null ? worldConfigDefaultValues.GetPropertyValueAsString(property).Split(',') : null;

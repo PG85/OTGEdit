@@ -14,12 +14,12 @@ namespace OTGEdit
     public static class Session
     {
         public static int ClosedHeight = 142;
-        public static int ClosedWidth = 950;        
+        public static int ClosedWidth = 858;        
 
         public static int OpenedHeight = 743;
         public static int OpenedWidth = 950;
 
-        public static DirectoryInfo VersionDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\");
+        public static DirectoryInfo VersionDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\");
 
         // TODO: Pass most of these as method parameters instead of using static fields
 
@@ -33,13 +33,13 @@ namespace OTGEdit
 
         public static WorldConfig WorldConfigDefaultValues;
         public static WorldConfig WorldConfig1;
-        public static Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> WorldSettingsInputs = new Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>>();
+        public static Dictionary<OTGProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> WorldSettingsInputs = new Dictionary<OTGProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>>();
 
         public static bool IgnorePropertyInputChangedWorld = false;
         public static bool IgnoreOverrideCheckChangedWorld = false;
 
         public static Dictionary<string, Group> BiomeGroups = new Dictionary<string, Group>();
-        public static Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> BiomeSettingsInputs = new Dictionary<TCProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>>();
+        public static Dictionary<OTGProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>> BiomeSettingsInputs = new Dictionary<OTGProperty, Tuple<Control, CheckBox, Button, Label, ListBox, Panel, Button>>();
 
         public static ToolTip ToolTip1 = new ToolTip() { AutoPopDelay = 32000, InitialDelay = 500, ReshowDelay = 0, ShowAlways = true, IsBalloon = true };
         public static ToolTip ToolTip2 = new ToolTip() { AutoPopDelay = 32000, InitialDelay = 0, ReshowDelay = 0, ShowAlways = true }; //AutomaticDelay = 0, 
@@ -53,7 +53,6 @@ namespace OTGEdit
         public static Button btGenerate;
         public static ListBox lbGroups;
         public static Button btCopyBO3s;
-        public static CheckBox cbDeleteRegion;
 
         public static void Init()
         {

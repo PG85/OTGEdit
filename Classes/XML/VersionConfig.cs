@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace OTGEdit.XML
 {
-    [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TCEE")]
+    [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/OTGEdit")]
     public class VersionConfig
     {
         [DataMember]
@@ -18,21 +18,21 @@ namespace OTGEdit.XML
         [DataMember]
         public List<ResourceQueueItem> ResourceQueueOptions;
         [DataMember]
-        public List<TCProperty> WorldConfig = new List<TCProperty>();
+        public List<OTGProperty> WorldConfig = new List<OTGProperty>();
         [DataMember]
-        public List<TCProperty> BiomeConfig = new List<TCProperty>();
+        public List<OTGProperty> BiomeConfig = new List<OTGProperty>();
 
         [XmlIgnore]
-        private Dictionary<string, TCProperty> worldConfigDict = null;
+        private Dictionary<string, OTGProperty> worldConfigDict = null;
         [XmlIgnore]
-        public Dictionary<string, TCProperty> WorldConfigDict
+        public Dictionary<string, OTGProperty> WorldConfigDict
         {
             get
             {
                 if (worldConfigDict == null)
                 {
-                    worldConfigDict = new Dictionary<string, TCProperty>();
-                    foreach (TCProperty property in WorldConfig)
+                    worldConfigDict = new Dictionary<string, OTGProperty>();
+                    foreach (OTGProperty property in WorldConfig)
                     {
                         worldConfigDict.Add(property.Name, property);
                     }
@@ -42,16 +42,16 @@ namespace OTGEdit.XML
         }
 
         [XmlIgnore]
-        private Dictionary<string, TCProperty> biomeConfigDict = null;
+        private Dictionary<string, OTGProperty> biomeConfigDict = null;
         [XmlIgnore]
-        public Dictionary<string, TCProperty> BiomeConfigDict
+        public Dictionary<string, OTGProperty> BiomeConfigDict
         {
             get
             {
                 if (biomeConfigDict == null)
                 {
-                    biomeConfigDict = new Dictionary<string, TCProperty>();
-                    foreach (TCProperty property in BiomeConfig)
+                    biomeConfigDict = new Dictionary<string, OTGProperty>();
+                    foreach (OTGProperty property in BiomeConfig)
                     {
                         biomeConfigDict.Add(property.Name, property);
                     }

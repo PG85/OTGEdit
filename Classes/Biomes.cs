@@ -20,7 +20,7 @@ namespace OTGEdit
 
             StringBuilder defaultText = new StringBuilder(System.IO.File.ReadAllText(file.FullName));
             string sDefaultText = defaultText.ToString();
-            foreach (TCProperty property in versionConfig.BiomeConfigDict.Values)
+            foreach (OTGProperty property in versionConfig.BiomeConfigDict.Values)
             {
                 string propertyValue = "";
                 if (property.PropertyType == "ResourceQueue")
@@ -134,16 +134,35 @@ namespace OTGEdit
 
                         if (replaceLength > 0)
                         {
-                            propertyValue = defaultText.ToString(replaceStartIndex, replaceLength).Trim();
+                            string[] lines = defaultText.ToString(replaceStartIndex, replaceLength).Trim().Split(
+                                new[] { "\r\n", "\r", "\n" },
+                                StringSplitOptions.None
+                            );
+                            for (int i = 0; i < lines.Length; i++)
+                            {
+                                String line = lines[i];
+                                bool isResourceLine = false;
+                                foreach (ResourceQueueItem prop in versionConfig.ResourceQueueOptions)
+                                {
+                                    if (line.Trim().StartsWith(prop.Name))
+                                    {
+                                        isResourceLine = true;
+                                        break;
+                                    }
+                                }
+                                if (isResourceLine)
+                                {
+                                    propertyValue += line.Trim() + (i != lines.Length - 1 ? Environment.NewLine : "");
+                                }
+                            }
                         }
-
                         biomeConfig.SetProperty(property, propertyValue, false, false);
                     } else {
                         txtErrorsNoSetting += "\r\nSetting \"" + property.Name + "\" could not be found in file " + file.Name;
                         if (!property.Optional)
                         {
                             PopUpForm.CustomMessageBox(txtErrorsNoSetting, "Version warnings");
-                            PopUpForm.CustomMessageBox("The file " + file.Name + " contains critical errors, it was probably not made for use with the selected version of TC/MCW/OTG/OTG+ and requires manual updating.", "Error reading configuration file");
+                            PopUpForm.CustomMessageBox("The file " + file.Name + " contains critical errors, it was probably not made for use with the selected version of OTG and requires manual updating.", "Error reading configuration file");
                             return null;
                         }
                         //throw new Exception("Setting \"" + property.Name + "\" could not be found in file " + file.Name);
@@ -269,7 +288,7 @@ namespace OTGEdit
                             if (!property.Optional)// && property.Name != "BiomeSizeWhenIsle" && property.Name != "BiomeRarityWhenIsle" && property.Name != "BiomeSizeWhenBorder")
                             {
                                 PopUpForm.CustomMessageBox(txtErrorsNoSetting, "Version warnings");
-                                PopUpForm.CustomMessageBox("The files you are importing contain critical errors, they were probably not made for use with the selected version of TC/MCW/OTG/OTG+ and require manual updating.", "Error reading configuration files");
+                                PopUpForm.CustomMessageBox("The files you are importing contain critical errors, they were probably not made for use with the selected version of OTG and require manual updating.", "Error reading configuration files");
                                 return null;
 
                                 //throw new InvalidDataException("Setting \"" + property.Name + "\" could not be found in file " + file.Name);
@@ -311,7 +330,7 @@ namespace OTGEdit
                         }
 
                         StringBuilder defaultText = new StringBuilder(System.IO.File.ReadAllText(file.FullName));
-                        foreach (TCProperty property in versionConfig.BiomeConfigDict.Values)
+                        foreach (OTGProperty property in versionConfig.BiomeConfigDict.Values)
                         {
                             string sDefaultText = defaultText.ToString();
 
@@ -321,7 +340,7 @@ namespace OTGEdit
                             aggregateValue.Clear();
                             defaultValue.Clear();
 
-                            if (property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
+                            if (property.PropertyType == "BiomesList" || property.PropertyType == "BiomesListSingle" || property.PropertyType == "ResourceQueue")
                             {
                                 bool bFound = false;
                                 foreach (Group group in biomeGroups.Values)
@@ -402,19 +421,19 @@ namespace OTGEdit
                                             bMerge = biomeGroup.BiomeConfig.GetPropertyMerge(property);
                                             bOverrideParentvalues = biomeGroup.BiomeConfig.PropertiesDict[property.Name].OverrideParentValues;
 
-                                            if (biomeGroup.BiomeConfig.GetPropertyOverrideParentValues(property) || (property.PropertyType != "BiomesList" && property.PropertyType != "ResourceQueue"))
+                                            if (biomeGroup.BiomeConfig.GetPropertyOverrideParentValues(property) || (property.PropertyType != "BiomesList" && property.PropertyType != "BiomesListSingle" && property.PropertyType != "ResourceQueue"))
                                             {
-                                                if (!String.IsNullOrEmpty(biomeGroup.BiomeConfig.GetPropertyValueAsString(property)) || property.PropertyType == "String" || property.PropertyType == "BigString"  || property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
+                                                if (!String.IsNullOrEmpty(biomeGroup.BiomeConfig.GetPropertyValueAsString(property)) || property.PropertyType == "String" || property.PropertyType == "BigString"  || property.PropertyType == "BiomesList" || property.PropertyType == "BiomesListSingle" || property.PropertyType == "ResourceQueue")
                                                 {
                                                     groupvalue = biomeGroup.BiomeConfig.GetPropertyValueAsString(property);
                                                     aggregateValue.Clear();
                                                     aggregateValue.Append(biomeGroup.BiomeConfig.GetPropertyValueAsString(property));
                                                 }
                                             }
-                                            else if (property.PropertyType == "BiomesList" || property.PropertyType == "ResourceQueue")
+                                            else if (property.PropertyType == "BiomesList" || property.PropertyType == "BiomesListSingle" || property.PropertyType == "ResourceQueue")
                                             {
                                                 if (
-                                                    property.PropertyType == "BiomesList" && 
+                                                    (property.PropertyType == "BiomesList" || property.PropertyType == "BiomesListSingle") && 
                                                     (
                                                         ignoreOverrideCheck ||
                                                         biomeGroup.BiomeConfig.PropertiesDict[property.Name].Override
@@ -766,7 +785,7 @@ namespace OTGEdit
                                         }
                                     }
 
-                                    if (property.PropertyType == "BiomesList" && bMerge && valueStringLength > 0)
+                                    if ((property.PropertyType == "BiomesList" || property.PropertyType == "BiomesListSingle") && bMerge && valueStringLength > 0)
                                     {
                                         string[] biomesListItemNames = newValue.Length > 0 ? newValue.ToString().Split(',') : null;
                                         string[] defaultBiomesListItemNames = defaultBiome.GetPropertyValueAsString(property) != null ? defaultBiome.GetPropertyValueAsString(property).Split(',') : null;

@@ -340,7 +340,7 @@ namespace OTGEdit.Utils
                     PopUpForm.CreateWorldBox(cbVersion.Text, (string)listBoxWorlds.SelectedItem);
 
                     listBoxWorlds.Items.Clear();
-                    DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\");
+                    DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\");
                     if (versionDir3.Exists)
                     {
                         foreach (DirectoryInfo dir2 in versionDir3.GetDirectories())
@@ -381,8 +381,8 @@ namespace OTGEdit.Utils
                     string newWorldName = (string)listBoxWorlds.SelectedItem;
                     if (listBoxWorlds.SelectedItem != null && PopUpForm.InputBox("Rename world", "", ref newWorldName, false, false, false, true) == DialogResult.OK)
                     {
-                        DirectoryInfo srcworldDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\");
-                        DirectoryInfo worldDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + newWorldName + "\\");
+                        DirectoryInfo srcworldDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\");
+                        DirectoryInfo worldDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + newWorldName + "\\");
                         if (srcworldDir3.Exists)
                         {
                             if (!worldDir3.Exists)
@@ -396,7 +396,7 @@ namespace OTGEdit.Utils
                                 srcworldDir3.MoveTo(worldDir3.FullName);
 
                                 listBoxWorlds.Items.Clear();
-                                DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\");
+                                DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\");
                                 if (versionDir3.Exists)
                                 {
                                     foreach (DirectoryInfo dir2 in versionDir3.GetDirectories())
@@ -441,7 +441,7 @@ namespace OTGEdit.Utils
             (
                 delegate
                 {
-                    DirectoryInfo srcworldDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\");
+                    DirectoryInfo srcworldDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\");
                     if (srcworldDir3.Exists)
                     {
                         if (PopUpForm.CustomYesNoBox("Delete world", "Are you sure you want to delete world \"" + listBoxWorlds.SelectedItem + "\"?", "Delete", "Cancel") == DialogResult.Yes)
@@ -464,11 +464,11 @@ namespace OTGEdit.Utils
                                 return;
                             }
 
-                            srcworldDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\");
+                            srcworldDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\");
                             srcworldDir3.Refresh();
 
                             listBoxWorlds.Items.Clear();
-                            DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\");
+                            DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\");
                             if (versionDir3.Exists)
                             {
                                 foreach (DirectoryInfo dir2 in versionDir3.GetDirectories())
@@ -513,7 +513,7 @@ namespace OTGEdit.Utils
                     PopUpForm.CreateBiomeBox(cbVersion.Text, (string)listBoxWorlds.SelectedItem);
 
                     listBoxBiomes.Items.Clear();
-                    DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\");
+                    DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\");
                     if (versionDir3.Exists)
                     {
                         foreach (FileInfo file2 in versionDir3.GetFiles())
@@ -555,8 +555,8 @@ namespace OTGEdit.Utils
                     string newBiomeName = (string)listBoxBiomes.SelectedItem;
                     if (listBoxBiomes.SelectedItem != null && PopUpForm.InputBox("Rename biome", "", ref newBiomeName, false, false, false, true) == DialogResult.OK)
                     {
-                        FileInfo srcbiomeFile3 = new FileInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\" + listBoxBiomes.SelectedItem + ".bc");
-                        FileInfo biomeFile3 = new FileInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\" + newBiomeName + ".bc");
+                        FileInfo srcbiomeFile3 = new FileInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\" + listBoxBiomes.SelectedItem + ".bc");
+                        FileInfo biomeFile3 = new FileInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\" + newBiomeName + ".bc");
                         if (srcbiomeFile3.Exists)
                         {
                             if (!biomeFile3.Exists)
@@ -570,7 +570,7 @@ namespace OTGEdit.Utils
                                 srcbiomeFile3.MoveTo(biomeFile3.FullName);
 
                                 listBoxBiomes.Items.Clear();
-                                DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\");
+                                DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\");
                                 if (versionDir3.Exists)
                                 {
                                     foreach (FileInfo file2 in versionDir3.GetFiles())
@@ -617,7 +617,7 @@ namespace OTGEdit.Utils
             (
                 delegate
                 {
-                    FileInfo srcBiomedFile3 = new FileInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\" + listBoxBiomes.SelectedItem + ".bc");
+                    FileInfo srcBiomedFile3 = new FileInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\" + listBoxBiomes.SelectedItem + ".bc");
                     if (srcBiomedFile3.Exists)
                     {
                         if (PopUpForm.CustomYesNoBox("Delete biome", "Are you sure you want to delete biome \"" + listBoxBiomes.SelectedItem + "\"?", "Delete", "Cancel") == DialogResult.Yes)
@@ -632,7 +632,7 @@ namespace OTGEdit.Utils
                             srcBiomedFile3.Refresh();
 
                             listBoxBiomes.Items.Clear();
-                            DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\");
+                            DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\");
                             if (versionDir3.Exists)
                             {
                                 foreach (FileInfo file2 in versionDir3.GetFiles())
@@ -674,7 +674,7 @@ namespace OTGEdit.Utils
             cbVersion.SelectedIndexChanged += new EventHandler(delegate(object s, EventArgs args)
             {
                 listBoxWorlds.Items.Clear();
-                DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\");
+                DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\");
                 if (versionDir3.Exists)
                 {
                     foreach (DirectoryInfo dir2 in versionDir3.GetDirectories())
@@ -708,7 +708,7 @@ namespace OTGEdit.Utils
             listBoxWorlds.SelectedIndexChanged += new EventHandler(delegate(object s, EventArgs args)
             {
                 listBoxBiomes.Items.Clear();
-                DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\");
+                DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + cbVersion.SelectedItem + "\\Worlds\\" + listBoxWorlds.SelectedItem + "\\WorldBiomes\\");
                 if (versionDir3.Exists)
                 {
                     foreach (FileInfo file2 in versionDir3.GetFiles())
@@ -1209,7 +1209,7 @@ namespace OTGEdit.Utils
                 DirectoryInfo worldObjectsDir = sourceWorldDir.GetDirectories().FirstOrDefault(a => a.Name.ToLower() == "worldobjects");
 
                 bool canContinue = false;
-                DirectoryInfo destinationDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + versionName + "\\Worlds\\" + sourceWorldDir.Name + "\\");
+                DirectoryInfo destinationDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + versionName + "\\Worlds\\" + sourceWorldDir.Name + "\\");
                 if (!destinationDir.Exists)
                 {
                     destinationDir.Create();
@@ -1230,7 +1230,7 @@ namespace OTGEdit.Utils
                         destinationDir.Delete(true);
                         destinationDir.Refresh();
 
-                        destinationDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + versionName + "\\Worlds\\" + sourceWorldDir.Name + "\\");
+                        destinationDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + versionName + "\\Worlds\\" + sourceWorldDir.Name + "\\");
 
                         destinationDir.Create();
                         destinationDir.Refresh();
@@ -1245,13 +1245,13 @@ namespace OTGEdit.Utils
 
                     if (worldBiomesDir != null || worldObjectsDir != null)
                     {
-                        DirectoryInfo versionDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\");
+                        DirectoryInfo versionDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\");
                         if (versionDir.Exists)
                         {
                             var xmlSerializer = new System.Xml.Serialization.XmlSerializer(typeof(VersionConfig));
 
                             VersionConfig versionConfig = null;
-                            string path = Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + versionName + "\\VersionConfig.xml";
+                            string path = Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + versionName + "\\VersionConfig.xml";
                             if (File.Exists(path))
                             {
                                 using (var reader = new XmlTextReader(path))
@@ -1304,7 +1304,7 @@ namespace OTGEdit.Utils
                                                 biomeConfigs.Add(biomeConfig);
                                             } else {
                                                 Session.HideProgessBox();
-                                                PopUpForm.CustomMessageBox("The file " + biomeFile.Name + " contains critical errors, it was probably not made for use with the selected version of TC/MCW/OTG/OTG+ and requires manual updating.", "Error reading configuration file");
+                                                PopUpForm.CustomMessageBox("The file " + biomeFile.Name + " contains critical errors, it was probably not made for use with the selected version of OTG and requires manual updating.", "Error reading configuration file");
                                                 return;
                                             }
                                         }
@@ -1328,11 +1328,11 @@ namespace OTGEdit.Utils
                                     //
                                     //}
 
-                                    // Load default resources for the selected version of TC
+                                    // Load default resources for the selected version of OTG
 
                                     // Load worldConfig
                                     WorldConfig defaultWorldConfig = new WorldConfig(versionConfig);
-                                    FileInfo defaultWorldConfigFile = new FileInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + versionName + "\\Worlds\\Default\\WorldConfig.ini");
+                                    FileInfo defaultWorldConfigFile = new FileInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + versionName + "\\Worlds\\Default\\WorldConfig.ini");
                                     if (defaultWorldConfigFile.Exists)
                                     {
                                         try
@@ -1350,12 +1350,12 @@ namespace OTGEdit.Utils
                                         }
                                     } else {
                                         Session.HideProgessBox();
-                                        throw new Exception("WorldConfig.ini could not be loaded. Please make sure that WorldConfig.ini is present in the TCVersionConfig directory for the selected version. Exiting OTGEdit.");
+                                        throw new Exception("WorldConfig.ini could not be loaded. Please make sure that WorldConfig.ini is present in the VersionConfigs directory for the selected version. Exiting OTGEdit.");
                                     }
 
                                     // Load biomeconfigs
                                     List<BiomeConfig> defaultBiomeConfigs = new List<BiomeConfig>();
-                                    DirectoryInfo defaultBiomesDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + versionName + "\\Worlds\\Default\\" + "WorldBiomes");
+                                    DirectoryInfo defaultBiomesDir = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + versionName + "\\Worlds\\Default\\" + "WorldBiomes");
 
                                     txtErrorsWrongValue = "";
                                     txtErrorsNoSetting = "";
@@ -1383,11 +1383,11 @@ namespace OTGEdit.Utils
 
                                     if (txtErrorsWrongValue.Length > 0)
                                     {
-                                        PopUpForm.CustomMessageBox(txtErrorsWrongValue + "\r\n\r\nThe biome config files for this world contain errors, they were probably not generated with the selected version of TC/MCW/OTG/OTG+ and require manual updating.", "Version warnings");
+                                        PopUpForm.CustomMessageBox(txtErrorsWrongValue + "\r\n\r\nThe biome config files for this world contain errors, they were probably not generated with the selected version of OTG and require manual updating.", "Version warnings");
                                     }
                                     if (txtErrorsNoSetting.Length > 0)
                                     {
-                                        PopUpForm.CustomMessageBox(txtErrorsNoSetting + "\r\n\r\nThe biome config files for this world contain errors, they were probably not generated with the selected version of TC/MCW/OTG/OTG+ and require manual updating.", "Version warnings");
+                                        PopUpForm.CustomMessageBox(txtErrorsNoSetting + "\r\n\r\nThe biome config files for this world contain errors, they were probably not generated with the selected version of OTG and require manual updating.", "Version warnings");
                                     }
 
                                     Session.HideProgessBox();
@@ -1413,7 +1413,7 @@ namespace OTGEdit.Utils
                                     if (useDefaults)
                                     {
                                         // Check which settings in WorldConfig are different from default, save them as OTGEdit pre-set. If this world turns out to be non-compatible with default world then create new world folder and copy default worldconfig to it
-                                        foreach (TCProperty property in versionConfig.WorldConfigDict.Values)
+                                        foreach (OTGProperty property in versionConfig.WorldConfigDict.Values)
                                         {
                                             string value = worldConfig.PropertiesDict[property.Name].Value;
                                             if (
@@ -1453,7 +1453,7 @@ namespace OTGEdit.Utils
                                             } else {
                                                 BiomeConfig biomeDefaultConfig = defaultBiomeConfigs.FirstOrDefault(a => a.BiomeName == biomeConfig.BiomeName);
                                                 bool hasDefaultValues = true;
-                                                foreach (TCProperty property in versionConfig.BiomeConfigDict.Values)
+                                                foreach (OTGProperty property in versionConfig.BiomeConfigDict.Values)
                                                 {
                                                     string value = biomeConfig.PropertiesDict[property.Name].Value;
                                                     if (
@@ -1545,7 +1545,7 @@ namespace OTGEdit.Utils
                                         FileInfo presetFileName = new FileInfo(!String.IsNullOrWhiteSpace(sfd.FileName) ? sfd.FileName : sourceWorldDir.FullName);
 
                                         // Copy world config
-                                        World.ConfigWorld(useDefaults ? defaultWorldConfig : worldConfig, defaultWorldConfig, versionConfig, Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + versionName + "\\Worlds\\Default\\", destinationDir.FullName, true);
+                                        World.ConfigWorld(useDefaults ? defaultWorldConfig : worldConfig, defaultWorldConfig, versionConfig, Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + versionName + "\\Worlds\\Default\\", destinationDir.FullName, true);
                                         sfd.CheckFileExists = false;
 
                                         // Copy BO2's/BO3's
@@ -1619,7 +1619,7 @@ namespace OTGEdit.Utils
             }
 
             ManageWorldsBoxFormLbWorlds.Items.Clear();
-            DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\TCVersionConfigs\\" + ManageWorldsBoxFormLbVersion.SelectedItem + "\\Worlds\\");
+            DirectoryInfo versionDir3 = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath) + "\\VersionConfigs\\" + ManageWorldsBoxFormLbVersion.SelectedItem + "\\Worlds\\");
             if (versionDir3.Exists)
             {
                 foreach (DirectoryInfo dir2 in versionDir3.GetDirectories())
@@ -1638,7 +1638,7 @@ namespace OTGEdit.Utils
         /// </summary>
         private static string SelectVersion()
         {
-            // Get available versions from TCVersionConfigs
+            // Get available versions from VersionConfigs
             List<string> versions = Session.VersionDir.GetDirectories().Select(a => a.Name).ToList();
             return PopUpForm.SingleSelectListBox(versions, "Select a OTG/TerrainControl version", "Which version of OTG/TerrainControl will you use with this world?");
         }

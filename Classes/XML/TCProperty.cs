@@ -7,8 +7,8 @@ using System.Xml.Serialization;
 
 namespace OTGEdit.XML
 {
-    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/TCEE")]
-    public class TCProperty
+    [DataContract(Namespace= "http://schemas.datacontract.org/2004/07/OTGEdit")]
+    public class OTGProperty
     {
         [DataMember]
         public string Group;

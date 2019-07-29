@@ -44,7 +44,7 @@ namespace OTGEdit.Utils
 
     public class SchematicToBO3
     {
-        public static void doSchematicToBO3(System.IO.FileInfo loadFile, System.IO.DirectoryInfo saveDir, bool exportForTC, bool useBranches, int centerBlockId, bool removeAir)
+        public static void doSchematicToBO3(System.IO.FileInfo loadFile, System.IO.DirectoryInfo saveDir, bool exportForNonOTGPlus, bool useBranches, int centerBlockId, bool removeAir)
         {
             // Most of the code for reading NBT files was ported from WorldEdit!
 
@@ -177,6 +177,8 @@ namespace OTGEdit.Utils
                     }
                 }
 
+                // Calculate the center-point and bounding rectangle.
+
                 int tileEntityCount = 1;
 
                 int widthMin = width;
@@ -251,15 +253,17 @@ namespace OTGEdit.Utils
                     centerPointZ = (int)Math.Floor(bO3Length / 2d);
                 }
 
+                // Create the text for the BO3/BO4
+
                 StringBuilder[,] blocksPerChunkArr = new StringBuilder[Math.Abs(widthMin - widthMax) + 1, Math.Abs(lengthMin - lengthMax) + 1];
 
+                // Fetch the output directory, we'll need the filepath when writing separate .nbt files.
                 System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(saveDir.FullName + "\\" + fileName);
                 if (!dir.Exists)
                 {
                     dir.Create();
                     dir.Refresh();
                 }
-
                 System.Security.AccessControl.DirectorySecurity sec = dir.GetAccessControl();
                 System.Security.AccessControl.FileSystemAccessRule accRule = new System.Security.AccessControl.FileSystemAccessRule(Environment.UserDomainName + "\\" + Environment.UserName, System.Security.AccessControl.FileSystemRights.FullControl, System.Security.AccessControl.AccessControlType.Allow);
                 sec.AddAccessRule(accRule);
@@ -273,6 +277,7 @@ namespace OTGEdit.Utils
                             StringBuilder blocksInChunk = new StringBuilder();
                             Coordinates chunkCoordinates = null;
 
+                            // Split the BO3/BO4 into 16x16 branches
                             if (useBranches)
                             {
                                 chunkCoordinates = new Coordinates((int)Math.Floor(x / 16d), 0, (int)Math.Floor(z / 16d));
@@ -291,34 +296,42 @@ namespace OTGEdit.Utils
                             byte blockSubType = blockData[index];
                             short blockMaterial = blocks[index];
 
+                            // Leaves
                             if (blockMaterial == 18)
                             {
                                 if (blockSubType == 4 || blockSubType == 8 || blockSubType == 12)
                                 {
+                                    // Oak leaves
                                     blockSubType = 0;
                                 }
                                 if (blockSubType == 5 || blockSubType == 9 || blockSubType == 13)
                                 {
-                                    blockSubType = 1;
+                                    // Spruce leaves
+                                     blockSubType = 1;
                                 }
                                 if (blockSubType == 6 || blockSubType == 10 || blockSubType == 14)
                                 {
+                                    // Birch leaves
                                     blockSubType = 2;
                                 }
                                 if (blockSubType == 7 || blockSubType == 11 || blockSubType == 15)
                                 {
+                                    // Jungle leaves
                                     blockSubType = 3;
                                 }
                             }
 
+                            // Leaves
                             if (blockMaterial == 161)
                             {
                                 if (blockSubType == 4 || blockSubType == 8 || blockSubType == 12)
                                 {
+                                    // Acacia leaves
                                     blockSubType = 0;
                                 }
                                 if (blockSubType == 5 || blockSubType == 9 || blockSubType == 13)
                                 {
+                                    // Dark oak leaves
                                     blockSubType = 1;
                                 }
                             }
@@ -329,7 +342,7 @@ namespace OTGEdit.Utils
                                 Tuple<Coordinates, String, List<NbtTag>> extraData = tileEntitiesMap.FirstOrDefault(a => a.Item1.Equals(new Coordinates(x,y,z)));
                                 if (extraData != null)
                                 {                                    
-                                    tileEntityName = extraData.Item2 + ".nbt";
+                                    tileEntityName = (extraData.Item2 + ".nbt").Replace(":", "_");
 
                                     // Save entityData as seperate file
                                     NbtFile entityFile = new NbtFile();
@@ -370,8 +383,9 @@ namespace OTGEdit.Utils
                 sec2.AddAccessRule(accRule2);
 
                 bool saveSubDirCreated = false;
-                bool firstPass = true;
+                bool isStartBO3 = true;
 
+                // Export a BO3/BO4 for each chunk (or only a single chunk if not using branches)
                 for (int x1 = 0; x1 <= Math.Abs(widthMin - widthMax); x1++)
                 {
                     for (int z1 = 0; z1 <= Math.Abs(lengthMin - lengthMax); z1++)
@@ -384,6 +398,9 @@ namespace OTGEdit.Utils
 
                         KeyValuePair<Coordinates, StringBuilder> chunk = new KeyValuePair<Coordinates, StringBuilder>(new Coordinates(x1, 0, z1), sb);
 
+                        // When exporting a customstructure, an additional "Starting point" or "Start" BO3 is eported for chunk 0,0 that contains no blocks.
+                        // For OTG+, the start BO3/BO4 inherits its blocks from the C0R0 BO3/BO4.
+                        // For OTG, the start BO3/BO4 has the C0R0 BO3 as a branch.
                         for (int i = 0; i < 1; i++)
                         {
                             BO3String = new StringBuilder();
@@ -393,7 +410,7 @@ namespace OTGEdit.Utils
                             BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                             BO3String.Append("#######################################################################\r\n");
                             BO3String.Append("\r\n");
-                            if (!useBranches || exportForTC)
+                            if (!useBranches || exportForNonOTGPlus)
                             {
                                 BO3String.Append("# The descriptions in this file are accurate only for TerrainControl and OTG.\r\n");
                                 BO3String.Append("# For MCW and OTG+ these descriptions are only accurate if the BO3 is used as a CustomObject.\r\n");
@@ -503,7 +520,7 @@ namespace OTGEdit.Utils
                                 BO3String.Append("# Entity() spawns an entity instead of a block. The entity is spawned only once when the BO3 is spawned.\r\n");
                                 BO3String.Append("# Entities are persistent by default so they don't de-spawn when no player is near, they are only unloaded.\r\n");
                                 BO3String.Append("# Usage: Entity(x,y,z,mobName,groupSize,NameTagOrNBTFileName) or Entity(x,y,z,mobName,groupSize)\r\n");
-                                BO3String.Append("# Use /tc entities or /otg entities to get a list of entities that can be used as mobName, this includes entities added by other mods.\r\n");
+                                BO3String.Append("# Use /otg entities or /otg entities to get a list of entities that can be used as mobName, this includes entities added by other mods.\r\n");
                                 BO3String.Append("# NameTagOrNBTFileName can be either a nametag for the mob or an nbt file (such as mymobinfo.nbt or mymobinfo.txt).\r\n");
                                 BO3String.Append("# When using a text file you can use the same mob spawning parameters used with the /summon command to equip the\r\n");
                                 BO3String.Append("# entity and give it custom attributes etc. You can copy the DATA part of a summon command including surrounding\r\n");
@@ -550,7 +567,8 @@ namespace OTGEdit.Utils
                                     BO3String.Append("\r\n");
                                     BO3String.Append("# WeightedBranch(x,y,z,branchName,rotation,chance[,anotherBranchName,rotation,chance[,...]][MaxChanceOutOf])\r\n");
                                     BO3String.Append("# MaxChanceOutOf - The chance all branches have to spawn out of, assumed to be 100 when left blank\r\n");
-                                    if (chunk.Key.X == 0 && chunk.Key.Z == 0 && firstPass)
+                                    // When creating the start BO3/BO4, add C0R0 as a branch.
+                                    if (isStartBO3)
                                     {
                                         BO3String.Append("Branch(0,0,0," + fileName + "C0R0,NORTH,100)\r\n");
                                     }
@@ -639,7 +657,8 @@ namespace OTGEdit.Utils
                                 BO3String.Append("# NOTE: you can delete any of these settings if you're not using them, the default values will automatically be used. #\r\n");
                                 BO3String.Append("\r\n");
                                 BO3String.Append("# Copies the blocks and branches of an existing BO3 into this BO3.\r\n");
-                                if (chunk.Key.X == 0 && chunk.Key.Z == 0 && firstPass)
+                                // When creating the start BO3/BO4 at 0,0, add C0R0 as InheritBO3.
+                                if (isStartBO3)
                                 {
                                     BO3String.Append("InheritBO3: " + fileName + "C0R0\r\n");
                                 } else {
@@ -743,7 +762,8 @@ namespace OTGEdit.Utils
                                 BO3String.Append("# the BO3 origin, and give it a 50% chance to have the contents of chest.nbt, or, if that\r\n");
                                 BO3String.Append("# fails, a 100% percent chance to have the contents of anotherchest.nbt.\r\n");
                                 BO3String.Append("\r\n");
-                                if (chunk.Key.X != 0 || chunk.Key.Z != 0 || !firstPass)
+                                // The start BO3/BO4 at 0,0 inherits its blocks from C0R0, so don't write blocks.
+                                if (!isStartBO3)
                                 {
                                     BO3String.Append(chunk.Value);
                                     if (chunk.Value.Length > 0)
@@ -765,21 +785,21 @@ namespace OTGEdit.Utils
                                 BO3String.Append("# MCW has some built in ModData commands for basic mob and block spawning.\r\n");
                                 BO3String.Append("# These are mostly just a demonstration for mod makers to show how ModData.\r\n");
                                 BO3String.Append("# can be used by other mods.\r\n");
-                                BO3String.Append("# For mob spawning in MCW use: ModData(x,y,z,TC/MCW,mob/MobType/Count/Persistent/Name)\r\n");
+                                BO3String.Append("# For mob spawning in MCW use: ModData(x,y,z,OTG,mob/MobType/Count/Persistent/Name)\r\n");
                                 BO3String.Append("# mob: Makes MCW recognise this as a mob spawning command.\r\n");
                                 BO3String.Append("# MobType: Lower-case, no spaces. Any vanilla mob like dragon, skeleton, wither, villager etc\r\n");
                                 BO3String.Append("# Count: The number of mobs to spawn\r\n");
                                 BO3String.Append("# Persistent (true/false): Should the mobs never de-spawn? If set to true the mob will get a\r\n");
                                 BO3String.Append("# name-tag ingame so you can recognise it.\r\n");
                                 BO3String.Append("# Name: A name-tag for the monster/npc.\r\n");
-                                BO3String.Append("# Example: ModData(0,0,0,TC/MCW,villager/1/true/Bob)\r\n");
+                                BO3String.Append("# Example: ModData(0,0,0,OTG,villager/1/true/Bob)\r\n");
                                 BO3String.Append("# For a complete list of possible creatures check the mc forums or the mctcp forums.\r\n");
-                                BO3String.Append("# To spawn blocks using ModData use: ModData(x,y,z,TC/MCW,block/material)\r\n");
+                                BO3String.Append("# To spawn blocks using ModData use: ModData(x,y,z,OTG,block/material)\r\n");
                                 BO3String.Append("# block: Makes MCW recognise this as a block spawning command.\r\n");
                                 BO3String.Append("# material: id or text, custom blocks can be added using ModName:MaterialName.\r\n");
                                 BO3String.Append("# To send all ModData within a radius in chunks around the player to the specified mod\r\n");
                                 BO3String.Append("# use this console command: /mcw GetModData ModName Radius\r\n");
-                                BO3String.Append("# ModName: name of the mod, for MCW commands use TC/MCW \r\n");
+                                BO3String.Append("# ModName: name of the mod, for MCW commands use OTG \r\n");
                                 BO3String.Append("# Radius (optional): Radius in chunks around the player.\r\n");
                                 BO3String.Append("# Mod makers can use ModData and the /mcw GetModData command to test IMC communications between MCW\r\n");
                                 BO3String.Append("# and their mod.\r\n");
@@ -794,7 +814,7 @@ namespace OTGEdit.Utils
                                 BO3String.Append("# Entity() spawns an entity instead of a block. The entity is spawned only once when the BO3 is spawned.\r\n");
                                 BO3String.Append("# Entities are persistent by default so they don't de-spawn when no player is near, they are only unloaded.\r\n");
                                 BO3String.Append("# Usage: Entity(x,y,z,mobName,groupSize,NameTagOrNBTFileName) or Entity(x,y,z,mobName,groupSize)\r\n");
-                                BO3String.Append("# Use /tc entities or /otg entities to get a list of entities that can be used as mobName, this includes entities added by other mods.\r\n");
+                                BO3String.Append("# Use /otg entities or /otg entities to get a list of entities that can be used as mobName, this includes entities added by other mods.\r\n");
                                 BO3String.Append("# NameTagOrNBTFileName can be either a nametag for the mob or an nbt file (such as mymobinfo.nbt or mymobinfo.txt).\r\n");
                                 BO3String.Append("# When using a text file you can use the same mob spawning parameters used with the /summon command to equip the\r\n");
                                 BO3String.Append("# entity and give it custom attributes etc. You can copy the DATA part of a summon command including surrounding\r\n");
@@ -849,8 +869,7 @@ namespace OTGEdit.Utils
                                 BO3String.Append("# +-----------------------------------------------------------------+ #\r\n");
                                 BO3String.Append("#######################################################################\r\n");
                                 BO3String.Append("\r\n");
-                                BO3String.Append("# Check the otg docs, mctcp forums, the mc forums and PeeGee85 YT channel for.\r\n");
-                                BO3String.Append("# Documentation and tutorials for the branching features.\r\n");
+                                BO3String.Append("# Check the otg wiki and our Discord for more information.\r\n");
                                 BO3String.Append("# Branch(x,y,z,isBranchEnding,branchName,rotation,chance,branchLength)\r\n");
                                 BO3String.Append("# branchName - filename of the object to spawn (without extension).\r\n");
                                 BO3String.Append("# rotation - NORTH, SOUTH, EAST or WEST.\r\n");
@@ -862,20 +881,28 @@ namespace OTGEdit.Utils
                                 BO3String.Append("\r\n");
                             }
 
-                            if ((chunk.Key.X != 0 || chunk.Key.Z != 0 || !firstPass) && blocksPerChunkArr[chunk.Key.X + 1, chunk.Key.Z] != null)
+                            // Branching structure:
+                            // The schematic's bounding rectangle is found, the content is divided into chunks (can be empty), for each chunk a BO3/BO4 is exported for use as a branch.
+                            // Branching starts in the top left chunk at x0. Each BO3/BO4 in the x0 column spawns a branch beneath (if any) and to the right (x1).
+                            // Each branch in following x columns only spawn a branch to their right.
+                            // Customstructures generated by OTGEdit are always a perfect rectangle of 16x16 chunks.
+                            // TODO: Optimise this and create smarter branching, don't add branches without blocks, it disallows spawning of other structures in the empty chunks.
+
+                            // If this isn't the Start BO3/BO4, add branches (blocks and branches are inherited by the start BO3/BO4 from the C0R0 BO3/BO4).
+                            if (!isStartBO3 && blocksPerChunkArr.Length > chunk.Key.X + 1 && blocksPerChunkArr.GetLength(chunk.Key.X + 1) > chunk.Key.Z && blocksPerChunkArr[chunk.Key.X + 1, chunk.Key.Z] != null)
                             {
-                                if (exportForTC)
+                                if (exportForNonOTGPlus)
                                 {
                                     BO3String.Append("Branch(16,0,0," + fileName + "C" + (chunk.Key.X + 1) + "R" + chunk.Key.Z + ",NORTH,100)\r\n");
                                 } else {
                                     BO3String.Append("Branch(16,0,0,true," + fileName + "C" + (chunk.Key.X + 1) + "R" + chunk.Key.Z + ",NORTH,100,0)\r\n");
                                 }
                             }
-                            if ((chunk.Key.X != 0 || chunk.Key.Z != 0 || !firstPass) && chunk.Key.X == 0)
+                            if (!isStartBO3 && chunk.Key.X == 0)
                             {
-                                if (blocksPerChunkArr[chunk.Key.X, chunk.Key.Z + 1] != null)
+                                if (blocksPerChunkArr.GetLength(chunk.Key.X) > chunk.Key.Z + 1 && blocksPerChunkArr[chunk.Key.X, chunk.Key.Z + 1] != null)
                                 {
-                                    if (exportForTC)
+                                    if (exportForNonOTGPlus)
                                     {
                                         BO3String.Append("Branch(0,0,16," + fileName + "C" + chunk.Key.X + "R" + (chunk.Key.Z + 1) + ",NORTH,100)\r\n");
                                     } else {
@@ -884,7 +911,7 @@ namespace OTGEdit.Utils
                                 }
                             }
 
-                            if (!useBranches || (chunk.Key.X == 0 && chunk.Key.Z == 0 && firstPass))
+                            if (!useBranches || isStartBO3)
                             {
                                 using (System.IO.StreamWriter outputFile = new System.IO.StreamWriter(saveDir.FullName + "\\" + fileName + ".BO3"))
                                 {
@@ -910,9 +937,9 @@ namespace OTGEdit.Utils
                                     outputFile.Write(BO3String);
                                 }
                             }
-                            if ((chunk.Key.X == 0 && chunk.Key.Z == 0 && firstPass))
+                            if (isStartBO3)
                             {
-                                firstPass = false;
+                                isStartBO3 = false;
                                 i--;
                             }
                         }
